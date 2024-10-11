@@ -1,0 +1,145 @@
+.hotel-booking-wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.hotel-booking-header {
+    display: flex;
+    gap: 10px;
+    background-color: #AADDFF;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.hotel-booking-input {
+    flex: 1;
+    padding: 8px;
+}
+
+.hotel-booking-button {
+    padding: 8px 16px;
+    background-color: #AADDFF;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.hotel-booking-content {
+    display: flex;
+    margin-top: 20px;
+}
+
+.hotel-booking-sidebar {
+    width: 250px;
+    margin-right: 20px;
+}
+
+.hotel-booking-main {
+    flex: 1;
+}
+
+.hotel-booking-alert {
+    background-color: #ffcc80;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.hotel-booking-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.hotel-card {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    margin: 20px 0;
+}
+
+.hotel-card-content {
+    display: flex;
+    width: 100%;
+}
+
+.hotel-image-container {
+    flex: 1;
+}
+
+.hotel-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.hotel-details {
+    flex: 2;
+    padding: 15px;
+}
+
+.hotel-title {
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.hotel-address {
+    color: #555;
+}
+
+.badge {
+    background-color: #f0f0f0;
+    border-radius: 12px;
+    padding: 5px 10px;
+    margin-right: 5px;
+}
+
+.hotel-partnership {
+    margin: 10px 0;
+}
+
+.hotel-rating-price {
+    margin-top: 10px;
+}
+
+.hotel-rating {
+    display: flex;
+    align-items: center;
+}
+
+.star,
+.star-half {
+    color: #ffcc00;
+}
+
+.reviews {
+    margin-left: 10px;
+    color: #888;
+}
+
+.hotel-pricing {
+    display: flex;
+    align-items: center;
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: #999;
+    margin-right: 10px;
+}
+
+.new-price {
+    color: #d32f2f;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.additional-info {
+    margin-top: 5px;
+    color: #666;
+}
