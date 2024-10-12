@@ -1,0 +1,226 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Afacad FLux', sans-serif;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-size: 18px; /* Tăng kích thước font chữ cơ bản */
+}
+
+.plan-container {
+    position: relative;
+    text-align: center;
+    padding: 20px;
+    background: url('https://images.pexels.com/photos/8824644/pexels-photo-8824644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+h1, h3 {
+    z-index: 2;
+    margin-bottom: 15px;
+}
+
+h1 {
+    font-size: 3rem;
+    font-weight: 800;
+}
+
+h3 {
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+
+.form-container {
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.form-container .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.form-label {
+    flex: 1;
+    text-align: left;
+    margin-bottom: 0.5rem;
+    color: Gray;
+}
+
+input, select {
+    font-size: 1.125rem;
+    padding: 12px;
+    height: 50px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+input::placeholder, 
+select::placeholder {
+    font-weight: bold;
+    color: #D3D3D3;
+}
+
+button {
+    font-size: 1.5rem;
+    padding: 15px 30px;
+    background-color: #1e90ff;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #227bc7;
+}
+
+.number-box {
+    position: absolute;
+    background-color: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    padding: 6px;
+    z-index: 10;
+    top: 77%;
+    left: 10px;
+    transform: translateX(22.7rem);
+}
+
+.number-box ul li {
+    list-style: none;
+    display: flex;
+    color: black;
+    justify-content: space-between;
+    height: 40px;
+}
+
+.number-left, .number-right {
+    display: flex;
+    align-items: center;
+}
+
+.number-right {
+    gap: 10px;
+}
+
+.number-left p {
+    margin-bottom: 0;
+}
+
+.number-right button {
+    background-color: #ffffff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    color: black;
+    position: relative!important;
+}
+
+.number-right span {
+    font-size: 1.5rem;
+}
+
+/* Styles for error message */
+.loiNgay {
+    display: block;
+    margin-top: 5px; /* Add space between fields and the error message */
+    font-size: large;
+    text-align: left; /* Align text to the left of the container */
+}
+
+.suggestions {
+    position: absolute; /* Đặt vị trí tuyệt đối để danh sách gợi ý nằm bên dưới trường nhập liệu */
+    top: 30%;
+    width: 313px;
+    /* right: 0; Căn phải cho danh sách gợi ý */
+    border: 1px solid #ccc; /* Đường viền cho danh sách gợi ý */
+    background-color: white; /* Màu nền cho danh sách gợi ý */
+    max-height: 200px; /* Đặt chiều cao tối đa cho danh sách gợi ý */
+    overflow-y: auto; /* Cho phép cuộn nếu quá nhiều gợi ý */
+    z-index: 10; /* Đảm bảo danh sách gợi ý nằm trên các phần tử khác */
+    color: black;
+}
+
+.suggestions li {
+    padding: 10px; /* Padding cho từng mục gợi ý */
+    cursor: pointer; /* Con trỏ chuột thay đổi khi hover */
+    transition: background-color 0.2s; /* Hiệu ứng chuyển màu nền khi hover */
+    list-style: none;
+    text-align: start;
+}
+
+.suggestions li:hover {
+    background-color: #f0f0f0; /* Màu nền khi hover vào mục gợi ý */
+}
+  
+
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+    h1 {
+        font-size: 2.25rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+    }
+
+    .form-container {
+        padding: 15px;
+    }
+
+    button {
+        font-size: 1.25rem;
+    }
+
+    .loiNgay {
+        font-size: 0.75rem;
+    }
+
+    .number-box {
+        top: 80%; /* Adjust the position slightly for mobile */
+    }
+}
+
+@media (max-width: 576px) {
+    .loiNgay {
+        font-size: 0.7rem; /* Further decrease font size for very small screens */
+    }
+
+    .number-box {
+        top: 85%; /* Further adjustment for smaller screens */
+    }
+}
