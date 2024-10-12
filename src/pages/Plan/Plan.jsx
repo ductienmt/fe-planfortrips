@@ -51,7 +51,7 @@ const Plan = () => {
             <img
               src="https://th.bing.com/th/id/OIP.SXEca_HW7gt0926jorc8YwHaEs?w=286&h=182&c=7&r=0&o=5&pid=1.7"
               alt="Phương Trang Bus"
-              className="img-fluid rounded bus-image"
+              className=" rounded bus-image"
             />
             <div className="bus-info p-3">
               <div className="d-flex justify-content-between align-items-center">
@@ -59,11 +59,11 @@ const Plan = () => {
                   <h6>Phương Trang</h6>
                   <p>A01</p>
                 </div>
-                <div className="logo-placeholder">
+                <div className=" logo-placeholder">
                   <img
-                    src="logo-placeholder-url.png"
+                    src="https://th.bing.com/th?id=OIP.w2uJ9frg48bM_-FUVjxeAwAAAA&w=176&h=197&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2"
                     alt="Logo"
-                    className="logo"
+                    className="rounded logo"
                   />
                 </div>
               </div>
@@ -105,12 +105,13 @@ const Plan = () => {
                 <img
                   src="https://th.bing.com/th?id=OIF.zQMG80Z%2fvMvQhIgLvP0R3w&w=258&h=180&c=7&r=0&o=5&pid=1.7"
                   alt="Homestay Room"
-                  className="img-fluid rounded mb-2 homestay-image"
+                  className="rounded homestay-image"
                 />
               </div>
             </div>
             <div className="homestay-info p-3">
               <h6>Babyboo Homestay</h6>
+              <p>A906 - Phòng đôi 2 người</p>
               <p>Check-in: 14:00 - Check-out: 12:00</p>
               <div className="d-flex justify-content-between">
                 <button className="btn btn-primary">Xem chi tiết nơi ở</button>
@@ -128,7 +129,7 @@ const Plan = () => {
             <img
               src="https://th.bing.com/th/id/OIP.ZW7_kPqGruR7TuqNh-FojAHaEK?w=321&h=180&c=7&r=0&o=5&pid=1.7"
               alt="Vũng Tàu Beach"
-              className="img-fluid rounded beach-image"
+              className=" rounded beach-image"
             />
             <div className="beach-info p-3">
               <p className="text-center mt-2">

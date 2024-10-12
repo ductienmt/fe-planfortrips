@@ -60,8 +60,8 @@ body {
   opacity: 1;
 }
 
-/* Bus Card Styling */
-.bus-card, .beach-card, .homestay-card {
+/* Card Styling (Bus, Homestay, Beach) */
+.bus-card, .homestay-card, .beach-card {
   height: 100%; /* Đồng nhất chiều cao của các card */
   display: flex;
   flex-direction: column;
@@ -73,18 +73,69 @@ body {
   transition: all 0.3s ease;
 }
 
-.bus-image, .homestay-image, .beach-image {
+/* Image Styling */
+.homestay-image {
   width: 100%;
-  max-height: 200px; /* Giới hạn chiều cao hình ảnh để giữ layout đẹp */
-  object-fit: cover;
+  height: 110%; /* Giới hạn chiều cao hình ảnh để giữ layout đẹp */
+  
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-/* Bus Info */
-.bus-info, .homestay-info, .beach-info {
+/* Beach Image Full-Width */
+.beach-card {
+  position: relative;
+  background-color: #fff;
+  height: 550px; /* Chiều cao phù hợp với các card khác */
+  margin: 0;
+  padding: 0;
+   /* Nếu muốn hình ảnh tràn viền, loại bỏ border-radius */
+}
+
+.beach-image {
+  width: 100%; /* Chiếm toàn bộ chiều rộng của thẻ */
+  height: 100%; /* Chiếm toàn bộ chiều cao của thẻ */
+  object-fit: cover;
+  position: absolute;
+  max-height: -webkit-fill-available;
+}
+
+/* Text on Image for Beach Section */
+.beach-info {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  background: white; /* Nền bán trong suốt cho phần chữ */
+  color: #fff;
+  text-align: center;
+  border-radius: 50px;
+  margin-bottom: 10px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.beach-info p {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+  color: #fff;
+}
+
+/* Bus and Homestay Info */
+.bus-info, .homestay-info {
   padding: 20px;
   background-color: #f8f9fa;
+}
+
+.bus-image{
+  width: 100%;
+  height: 100%; /* Giới hạn chiều cao hình ảnh để giữ layout đẹp */
+  object-fit: cover;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .bus-info h6, .homestay-info h6, .beach-info p {
