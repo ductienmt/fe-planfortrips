@@ -3,40 +3,149 @@ import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { handleInputChange } from "../../utils/FormatMoney"; // Đường dẫn tới file FormatMoney.js
-import provinces from "../../utils/Province"; // Đường dẫn tới file Province.js
+import provinces from "../../utils/Provinces.json"; // Đường dẫn tới file Province.json
+import { useSnackbar } from "notistack"; // Thêm Notistack
 import "./HomePage.css";
 
 function HomePage() {
+  const { enqueueSnackbar } = useSnackbar(); // Sử dụng Notistack
+
   const [adults, setAdults] = useState(0);
   const [children, setChildren] = useState(0);
   const [infants, setInfants] = useState(0);
+
   const [showNumberBox, setShowNumberBox] = useState(false);
 
   const ngayDiRef = useRef(null);
   const ngayVeRef = useRef(null);
-  const [loiNgay, setLoiNgay] = useState("");
+  // const [loiNgay, setLoiNgay] = useState("");
 
   const [budget, setBudget] = useState(""); // Trạng thái cho ngân sách
-  const [error, setError] = useState(""); // Trạng thái cho thông báo lỗi
+  // const [error, setError] = useState(""); // Trạng thái cho thông báo lỗi
 
-  const [viTriHienTai, setViTriHienTai] = useState("");
+  // Trạng thái cho các ô nhập gợi ý
+  const [queryCurrentCity, setQueryCurrentCity] = useState(""); // Tỉnh, thành phố đang ở
+  const [queryDestination, setQueryDestination] = useState(""); // Điểm đến
+  const [filteredCurrentCities, setFilteredCurrentCities] = useState([]); // Gợi ý cho tỉnh, thành phố đang ở
+  const [filteredDestinations, setFilteredDestinations] = useState([]); // Gợi ý cho điểm đến
 
-  // Hàm tìm kiếm và gợi ý
-  const filteredProvinces = provinces.filter((province) =>
-    province.toLowerCase().startsWith(viTriHienTai.toLowerCase())
-  );
+  const handlePlan = () => {
+    // Kiểm tra tất cả các trường đã được điền
+    // if (!queryCurrentCity || !queryDestination || !ngayDiRef.current.value || !ngayVeRef.current.value || !budget) {
+    //   enqueueSnackbar('Vui lòng điền tất cả các trường!', { variant: 'error' });
+    //   return;
+    // }
 
-  useEffect(() => {
-    if (error) {
-      // Ẩn thông báo lỗi sau 3 giây
-      const timer = setTimeout(() => {
-        setError("");
-      }, 3000);
+    const totalPeople = adults + children + infants;
 
-      // Dọn dẹp hàm trong useEffect
-      return () => clearTimeout(timer);
+    if (totalPeople > 20) {
+      enqueueSnackbar("Số lượng người không được vượt quá 20!", {
+        variant: "error",
+      });
+      return false;
     }
-  }, [error]);
+
+    if ((children > 0 || infants > 0) && adults === 0) {
+      enqueueSnackbar(
+        "Cần ít nhất 1 người lớn nếu có trẻ em hoặc trẻ sơ sinh!",
+        {
+          variant: "error",
+        }
+      );
+      return false;
+    }
+
+    if (!queryCurrentCity) {
+      enqueueSnackbar("Vui lòng chọn thành phố hiện tại!", {
+        variant: "error",
+      });
+      return;
+    }
+
+    if (!queryDestination) {
+      enqueueSnackbar("Vui lòng chọn điểm đến!", { variant: "error" });
+      return;
+    }
+
+    if (!ngayDiRef.current.value) {
+      enqueueSnackbar("Vui lòng chọn ngày đi!", { variant: "error" });
+      return;
+    }
+
+    if (!ngayVeRef.current.value) {
+      enqueueSnackbar("Vui lòng chọn ngày về!", { variant: "error" });
+      return;
+    }
+
+    if (!budget) {
+      enqueueSnackbar("Vui lòng nhập ngân sách!", { variant: "error" });
+      return;
+    }
+
+    if (adults === 0 && children === 0 && infants === 0) {
+      enqueueSnackbar("Vui lòng chọn ít nhất một người!", { variant: "error" });
+      return false; // Không tiếp tục nếu chưa chọn số lượng người
+    }
+    return enqueueSnackbar("Kế hoạch đã được lưu!", { variant: "success" }); // Tiếp tục nếu đã chọn ít nhất một người
+
+    // Nếu mọi thứ hợp lệ, thực hiện kế hoạch
+    // enqueueSnackbar("Kế hoạch đã được lưu!", { variant: "success" });
+    // Thêm logic để lưu kế hoạch của bạn ở đây
+  };
+
+  const handleBudgetChange = (event) => {
+    handleInputChange(event, setBudget, (errorMessage) => {
+      if (errorMessage) {
+        enqueueSnackbar(errorMessage, {
+          // Sử dụng notistack để hiện thông báo lỗi
+          variant: "error",
+          autoHideDuration: 3000,
+        });
+      }
+    });
+  };
+
+  // Xử lý khi người dùng nhập tỉnh, thành phố đang ở
+  const handleInputChangeCurrentCity = (event) => {
+    const value = event.target.value;
+    setQueryCurrentCity(value);
+
+    if (value.trim() !== "") {
+      const suggestions = provinces.results.filter((province) =>
+        province.province_name.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilteredCurrentCities(suggestions);
+    } else {
+      setFilteredCurrentCities([]);
+    }
+  };
+
+  // Xử lý khi người dùng nhập điểm đến
+  const handleInputChangeDestination = (event) => {
+    const value = event.target.value;
+    setQueryDestination(value);
+
+    if (value.trim() !== "") {
+      const suggestions = provinces.results.filter((province) =>
+        province.province_name.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilteredDestinations(suggestions);
+    } else {
+      setFilteredDestinations([]);
+    }
+  };
+
+  // Khi chọn gợi ý tỉnh, thành phố
+  const handleCurrentCitySuggestionClick = (provinceName) => {
+    setQueryCurrentCity(provinceName); // Điền tỉnh đã chọn vào input
+    setFilteredCurrentCities([]); // Xóa danh sách gợi ý sau khi chọn
+  };
+
+  // Khi chọn gợi ý điểm đến
+  const handleDestinationSuggestionClick = (provinceName) => {
+    setQueryDestination(provinceName); // Điền tỉnh đã chọn vào input
+    setFilteredDestinations([]); // Xóa danh sách gợi ý sau khi chọn
+  };
 
   const today = new Date();
   const maxDate = new Date(new Date().setFullYear(today.getFullYear() + 1));
@@ -99,43 +208,48 @@ function HomePage() {
     if (ngayDiRef.current && ngayVeRef.current) {
       const ngayDiPicker = flatpickr(ngayDiRef.current, {
         altInput: true,
-        altFormat: "d-m-Y",
-        dateFormat: "Y-m-d",
+        altFormat: "d-m-Y H:i", // Định dạng hiển thị ngày và giờ
+        dateFormat: "Y-m-d H:i", // Định dạng cho giá trị thực
         locale: VietnamesePlan,
         minDate: today,
         maxDate: maxDate,
+        enableTime: true, // Bật chọn giờ
+        time_24hr: true, // Sử dụng định dạng 24 giờ
         onChange: function (selectedDates) {
           const ngayDi = selectedDates[0];
           const ngayVe = ngayVePicker.selectedDates[0];
 
           if (ngayVe && ngayVe < ngayDi) {
             ngayVePicker.setDate(ngayDi);
-            setLoiNgay("Ngày về không thể trước ngày đi!");
-          } else {
-            setLoiNgay("");
+            enqueueSnackbar("Ngày về không thể trước ngày đi!", {
+              variant: "error",
+            });
           }
         },
       });
 
       const ngayVePicker = flatpickr(ngayVeRef.current, {
         altInput: true,
-        altFormat: "d-m-Y",
-        dateFormat: "Y-m-d",
+        altFormat: "d-m-Y H:i", // Định dạng hiển thị ngày và giờ
+        dateFormat: "Y-m-d H:i", // Định dạng cho giá trị thực
         locale: VietnamesePlan,
         minDate: today,
         maxDate: maxDate,
+        enableTime: true, // Bật chọn giờ
+        time_24hr: true, // Sử dụng định dạng 24 giờ
         onChange: function (selectedDates) {
           const ngayDi = ngayDiPicker.selectedDates[0];
           const ngayVe = selectedDates[0];
 
           if (ngayDi && ngayVe < ngayDi) {
-            setLoiNgay("Ngày về không thể trước ngày đi!");
-          } else {
-            setLoiNgay("");
+            enqueueSnackbar("Ngày về không thể trước ngày đi!", {
+              variant: "error",
+            });
           }
         },
       });
 
+      // Mở ngayVePicker khi ngày đi được chọn
       ngayDiPicker.config.onChange.push(() => {
         ngayVePicker.open();
       });
@@ -148,6 +262,15 @@ function HomePage() {
   }, []);
 
   const handleIncrement = (type) => {
+    const totalPeople = adults + children + infants;
+  
+    if (totalPeople >= 20) {
+      enqueueSnackbar("Số lượng người không được vượt quá 20!", {
+        variant: "error",
+      });
+      return;
+    }
+  
     if (type === "adult") {
       setAdults(adults + 1);
     } else if (type === "child") {
@@ -178,37 +301,60 @@ function HomePage() {
         {/* Nhập điểm đến */}
         <div className="row mb-3">
           <div className="col-md-6 mb-3 mb-md-0 d-flex flex-column">
-          <label htmlFor="viTriHienTai" className="form-label">
-                Vị trí hiện tại
+            <label htmlFor="current-city" className="form-label">
+              Vị trí hiện tại
             </label>
             <input
-                type="text"
-                id="viTriHienTai"
-                className="form-control"
-                placeholder="Nhập Tỉnh, thành phố bạn đang ở"
-                value={viTriHienTai}
-                onChange={(e) => setViTriHienTai(e.target.value)}
+              type="text"
+              id="current-city"
+              value={queryCurrentCity}
+              onChange={handleInputChangeCurrentCity}
+              placeholder="Nhập tỉnh hoặc thành phố nơi bạn sống"
+              className="homepage-input"
             />
-            {viTriHienTai && filteredProvinces.length > 0 && (
-                <ul className="suggestions">
-                    {filteredProvinces.map((province, index) => (
-                        <li key={index} onClick={() => setViTriHienTai(province)}>
-                            {province}
-                        </li>
-                    ))}
-                </ul>
+            {/* Hiển thị gợi ý */}
+            {filteredCurrentCities.length > 0 && (
+              <ul className="suggestions-list">
+                {filteredCurrentCities.map((province) => (
+                  <li
+                    key={province.province_id}
+                    onClick={() =>
+                      handleCurrentCitySuggestionClick(province.province_name)
+                    }
+                  >
+                    {province.province_name}
+                  </li>
+                ))}
+              </ul>
             )}
           </div>
           <div className="col-md-6 d-flex flex-column">
-            <label htmlFor="diemDen" className="form-label">
+            <label htmlFor="destination" className="form-label">
               Điểm đến
             </label>
             <input
               type="text"
-              id="diemDen"
-              className="form-control"
+              id="destination"
+              value={queryDestination}
+              onChange={handleInputChangeDestination}
               placeholder="Nhập thành phố hoặc địa điểm du lịch"
+              className="homepage-input"
             />
+            {/* Hiển thị gợi ý */}
+            {filteredDestinations.length > 0 && (
+              <ul className="suggestions-list">
+                {filteredDestinations.map((province) => (
+                  <li
+                    key={province.province_id}
+                    onClick={() =>
+                      handleDestinationSuggestionClick(province.province_name)
+                    }
+                  >
+                    {province.province_name}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
 
@@ -221,8 +367,8 @@ function HomePage() {
             <input
               ref={ngayDiRef}
               id="ngay-di"
-              className="form-control"
-              placeholder="Chọn ngày đi"
+              className="homepage-input"
+              placeholder="Chọn ngày, giờ đi"
             />
           </div>
           <div className="col-md-6 mb-3 mb-md-0 d-flex flex-column">
@@ -232,31 +378,26 @@ function HomePage() {
             <input
               ref={ngayVeRef}
               id="ngay-ve"
-              className="form-control"
-              placeholder="Chọn ngày về"
+              className="homepage-input"
+              placeholder="Chọn ngày, giờ về"
             />
           </div>
         </div>
-        <div>
-          {/* Hiển thị lỗi nếu có */}
-          {loiNgay && <div className="text-danger mb-3 loiNgay">{loiNgay}</div>}
-        </div>
 
+        {/* Nhập ngân sách */}
         <div className="row mb-3">
           <div className="col-md-6 mb-3 d-flex flex-column">
             <label htmlFor="budget" className="form-label">
-              Chi phí cho chuyến đi
+              Chi phí cho chuyến đi (VNĐ)
             </label>
             <input
               type="text"
               id="budget"
-              className="form-control"
+              className="homepage-input"
               placeholder="Ví dụ: 5,000,000₫"
               value={budget}
-              onChange={(e) => handleInputChange(e, setBudget, setError)} // Sử dụng hàm xử lý
+              onChange={handleBudgetChange}
             />
-            {/* Hiển thị thông báo lỗi nếu có */}
-            {error && <div className="text-danger mb-3">{error}</div>}
           </div>
           <div className="col-md-6 mb-3 d-flex flex-column">
             <label htmlFor="people" className="form-label">
@@ -265,7 +406,7 @@ function HomePage() {
             <input
               type="text"
               id="people"
-              className="form-control"
+              className="homepage-input"
               value={`${adults} người lớn, ${children} trẻ em, ${infants} trẻ sơ sinh`}
               readOnly
               onClick={() => setShowNumberBox(!showNumberBox)}
@@ -340,8 +481,8 @@ function HomePage() {
             )}
           </div>
         </div>
-
-        <button type="button" className="btn btn-primary w-100">
+        {/* Nút lên kế hoạch */}
+        <button type="button" className="homepage-button" onClick={handlePlan}>
           Lên kế hoạch
         </button>
       </div>

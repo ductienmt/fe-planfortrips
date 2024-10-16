@@ -1,3 +1,4 @@
+/* Tổng quát */
 * {
     margin: 0;
     padding: 0;
@@ -72,36 +73,42 @@ h3 {
 .form-label {
     flex: 1;
     text-align: left;
-    margin-bottom: 0.5rem;
-    color: Gray;
+    margin-bottom: 0.1rem;
+    color: #8592a6;
 }
 
-input, select {
-    font-size: 1.125rem;
-    padding: 12px;
-    height: 50px;
+.homepage-input, .homepage-select {
+    font-size: 1rem;
+    padding: 10px;
+    height: 45px;
     border-radius: 5px;
     border: 1px solid #ccc;
+    width: 100%;
+    outline-color: #8fbbfe;
 }
 
-input::placeholder, 
-select::placeholder {
-    font-weight: bold;
-    color: #D3D3D3;
+
+
+.homepage-input::placeholder, 
+.homepage-select::placeholder {
+    font-weight: normal;
+    color: #ced2d9;
 }
 
-button {
-    font-size: 1.5rem;
-    padding: 15px 30px;
+.homepage-button {
+    font-size: 1.4rem;
+    padding: 8px 16px;
     background-color: #1e90ff;
     border: none;
     border-radius: 5px;
     color: white;
-    font-weight: 600;
+    font-weight: 400;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
 }
 
-button:hover {
+.homepage-button:hover {
     background-color: #227bc7;
 }
 
@@ -112,9 +119,15 @@ button:hover {
     border-radius: 5px;
     padding: 6px;
     z-index: 10;
-    top: 77%;
+    top: 73%;
     left: 10px;
-    transform: translateX(22.7rem);
+    transform: translateX(22.1rem);
+    
+}
+
+.number-box ul{
+    padding-left: 1rem;
+    margin-bottom: 0;
 }
 
 .number-box ul li {
@@ -146,47 +159,44 @@ button:hover {
     border-radius: 5px;
     font-size: 1.2rem;
     color: black;
-    position: relative!important;
+    transition: background-color 0.3s ease;
+}
+
+.number-right button:hover {
+    background-color: #f0f0f0;
 }
 
 .number-right span {
     font-size: 1.5rem;
 }
 
-/* Styles for error message */
-.loiNgay {
-    display: block;
-    margin-top: 5px; /* Add space between fields and the error message */
-    font-size: large;
-    text-align: left; /* Align text to the left of the container */
-}
-
-.suggestions {
-    position: absolute; /* Đặt vị trí tuyệt đối để danh sách gợi ý nằm bên dưới trường nhập liệu */
-    top: 30%;
-    width: 313px;
-    /* right: 0; Căn phải cho danh sách gợi ý */
-    border: 1px solid #ccc; /* Đường viền cho danh sách gợi ý */
-    background-color: white; /* Màu nền cho danh sách gợi ý */
-    max-height: 200px; /* Đặt chiều cao tối đa cho danh sách gợi ý */
-    overflow-y: auto; /* Cho phép cuộn nếu quá nhiều gợi ý */
-    z-index: 10; /* Đảm bảo danh sách gợi ý nằm trên các phần tử khác */
+/* Gợi ý tìm kiếm */
+.suggestions-list {
+    position: absolute; 
+    top: 27%; /* Hiển thị ngay dưới trường input */
+    width: 44.8%;
+    border: 1px solid #ccc;
+    background-color: white;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 10;
     color: black;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ để tạo chiều sâu */
+    border-radius: 4px; /* Bo tròn góc */
+    padding: 0; /* Xóa padding mặc định */
 }
 
-.suggestions li {
-    padding: 10px; /* Padding cho từng mục gợi ý */
-    cursor: pointer; /* Con trỏ chuột thay đổi khi hover */
-    transition: background-color 0.2s; /* Hiệu ứng chuyển màu nền khi hover */
+.suggestions-list li {
+    padding: 12px 15px; /* Tăng padding cho cảm giác rộng rãi hơn */
+    cursor: pointer;
+    transition: background-color 0.2s;
     list-style: none;
-    text-align: start;
+    text-align: left;
 }
 
-.suggestions li:hover {
-    background-color: #f0f0f0; /* Màu nền khi hover vào mục gợi ý */
+.suggestions-list li:hover {
+    background-color: #e0e0e0; /* Thay đổi màu nền khi hover */
 }
-  
-
 
 /* Responsive adjustments */
 @media (max-width: 767px) {
@@ -206,21 +216,14 @@ button:hover {
         font-size: 1.25rem;
     }
 
-    .loiNgay {
-        font-size: 0.75rem;
-    }
-
     .number-box {
-        top: 80%; /* Adjust the position slightly for mobile */
+        top: 80%; 
     }
 }
 
 @media (max-width: 576px) {
-    .loiNgay {
-        font-size: 0.7rem; /* Further decrease font size for very small screens */
-    }
 
     .number-box {
-        top: 85%; /* Further adjustment for smaller screens */
+        top: 85%; 
     }
 }
