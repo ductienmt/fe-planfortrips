@@ -22,6 +22,7 @@
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "dayjs": "^1.11.13",
+    "feather-icons": "^4.29.2",
     "flatpickr": "^4.6.13",
     "notistack": "^3.0.1",
     "react": "^18.3.1",
