@@ -1,0 +1,63 @@
+.resultsSummary {
+    display: flex;
+    max-width: 1020px;
+    margin-left: 600px;
+    /* margin-top: -960px; */
+    align-items: start;
+    gap: 40px 100px;
+    color: #000;
+    flex-wrap: wrap;
+    font: 700 14px/22px Roboto, sans-serif;
+}
+
+@media (max-width: 991px) {
+    .resultsSummary {
+        max-width: 100%;
+    }
+}
+
+.resultsCount {
+    flex-grow: 1;
+}
+
+.sortOptions {
+    border-radius: 3px;
+    background-color: #edf8ff;
+    display: flex;
+    margin-top: 18px;
+    gap: 14px;
+    padding: 3px 7px;
+}
+
+.sortLabel {
+    color: #979797;
+    margin: auto 0;
+}
+
+.sortButton {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+}
+
+.sortIcon {
+    aspect-ratio: 0.53;
+    object-fit: contain;
+    object-position: center;
+    width: 8px;
+}
+
+.hotDealsButton {
+    color: #e11818;
+    font-weight: 400;
+    line-height: 18px;
+    margin: auto 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
