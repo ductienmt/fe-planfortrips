@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import BookingHotelImageGallery from './BookingHotelImageGallery';
 import BookingHotelHotelInfo from './BookingHotelHotelInfo';
 import BookingHotelRoomOptions from './BookingHotelRoomOptions';
@@ -18,7 +18,23 @@ function BookingHotel() {
         { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/a8555031c2c2aa5b8f15bc3bab3d75413b8aa9a39b59c21959403b718e19b050?placeholderIfAbsent=true&apiKey=c589bfd2cd264978bf52e7f54b2517b8", name: "Tủ lạnh" },
         { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/5cec712bafe3b7a20bb123c9e728de18e6eb21da262427c3f198fdcf93618d82?placeholderIfAbsent=true&apiKey=c589bfd2cd264978bf52e7f54b2517b8", name: "Vật dụng tắm rửa" }
     ];
-
+    // const [hotel,setHotel] = useState({});
+    // useEffect(()=>{
+    //   const fetchHotel = async () => {
+    //     try {
+    //       const hotelData = await findHotelById(
+    //        1
+    //       );
+    //       setHotels(hotelData.hotelResponseList);
+    //       setTotalPages(hotelData.totalPage);
+    //     } catch (error) {
+    //       console.error("Error:", error);
+    //       const query = `[Javascript] fix error: ${error.message}`;
+    //       window.open(`https://chatgpt.com/?q=${encodeURIComponent(query)}`);
+    //     }
+    //   };
+    //   fetchHotel();
+    // },[]);
     return (
         <main className="booking-hotel">
             <BookingHotelImageGallery />

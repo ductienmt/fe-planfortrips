@@ -1,5 +1,5 @@
 import { useState } from "react";
-import AuthService from "../../../../services/apis/AuthService";
+// import AuthService from "../../../../services/apis/AuthService";
 import "./Register.css"; // Custom CSS
 
 const Register = () => {

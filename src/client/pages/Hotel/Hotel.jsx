@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import SearchBar from './SearchBar'; // Nhập component SearchBar
 import HotDealsNotification from './HotDealsNotification'; // Nhập component HotDealsNotification
 import ResultsSummary from './ResultsSummary'; // Nhập component ResultsSummary
 import AccommodationCard from './AccommodationCard'; // Nhập component AccommodationCard
 import SearchResults from './SearchResults';
 import "./HotelBooking.css";
+import { getHotels } from '../../../services/apis/HotelService';
 
 const Hotel = () => {
     const accommodations = [
@@ -34,7 +35,26 @@ const Hotel = () => {
 
         // Thêm các đối tượng accommodation khác nếu cần
     ];
-
+    const [pagePresent, setPagePresent] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    const [hotels,setHotels] = useState([]);
+    useEffect(()=>{
+        const fetchHotel = async () => {
+            try {
+              const hotelData = await getHotels(
+                pagePresent,
+                10,
+              );
+              setHotels(hotelData.hotelResponseList);
+              setTotalPages(hotelData.totalPage);
+            } catch (error) {
+              console.error("Error:", error);
+              const query = `[Javascript] fix error: ${error.message}`;
+              window.open(`https://chatgpt.com/?q=${encodeURIComponent(query)}`);
+            }
+          };
+          fetchHotel();
+    },[pagePresent]);
     return (
         <main>
 
@@ -44,7 +64,7 @@ const Hotel = () => {
                 <SearchResults />
                 <HotDealsNotification />
                 <ResultsSummary />
-                {accommodations.map(accommodation => (
+                {hotels.map(accommodation => (
                     <AccommodationCard key={accommodation.id} {...accommodation} />
                 ))} *
             </section>
