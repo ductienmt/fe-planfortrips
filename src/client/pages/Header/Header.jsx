@@ -3,7 +3,7 @@ import "./Header.css";
 const Header = () => {
   return (
     <>
-      <header className="mt-3">
+      <header className="custom-header mt-3">
         <div className="container-fluid d-flex justify-content-between align-items-center">
           <form className="d-flex me-2" role="search">
             <div className="input-group">

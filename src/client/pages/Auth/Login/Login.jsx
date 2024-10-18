@@ -16,35 +16,35 @@ const Login = () => {
       return;
     }
 
-    // try {
-    //   const response = await AuthService.login({ username, password });
-    //   console.log("Đăng nhập thành công:", response.data);
-    // } catch (error) {
-    //   setErrorMessage(error.response?.data?.message || "Đăng nhập thất bại");
-    // }
+    try {
+      const response = await AuthService.login({ username, password });
+      console.log("Đăng nhập thành công:", response.data);
+    } catch (error) {
+      setErrorMessage(error.response?.data?.message || "Đăng nhập thất bại");
+    }
   };
 
   return (
-    <section className="vh-100">
+    <section className="vh-100 login-container">
       <div className="container-fluid h-custom">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-md-7 d-flex justify-content-center">
             <img
               src="https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg"
               alt="Background"
-              className="custom-image"
+              className="auth-image"
             />
           </div>
 
           <div className="col-md-5 ">
-            <form onSubmit={handleLogin}>
+            <form className="login-form">
               <div className="text-center mt-4 ">
-                <h2 className="fw-bold">Đăng nhập</h2>
+                <h2 className="login-title">Đăng nhập</h2>
               </div>
 
-              <div>
+              <div className="input-grup">
                 {/* Tên tài khoản input */}
-                <div className="form-outline mb-4">
+                <div className=" custom-input form-outline mb-4">
                   <input
                     type="username"
                     id="username"
@@ -56,7 +56,7 @@ const Login = () => {
                     Tên tài khoản
                   </label>
                 </div>
-                <div className="form-outline mb-4">
+                <div className=" custom-input form-outline mb-4">
                   <input
                     type="password"
                     id="password"
@@ -70,23 +70,23 @@ const Login = () => {
                     Mật khẩu
                   </label>
                 </div>
-                <div className=" text-body mb-2">
+                <div className=" forgot-password text-body mb-2">
                   <a href="#!" className="text-body">
                     Quên mật khẩu?
                   </a>
                 </div>
               </div>
 
-              <div className="text-center ">
-                <button type="submit" className="btn btn-lg mb-1">
+              <div className=" auth-action text-center ">
+                <button type="submit" className="btn login-btn btn-lg mb-1">
                   Đăng nhập
                 </button>
-                <p className="small mb-1">
-                  Bạn chưa có tài khoản? <a href="/register">Đăng ký ngay!</a>
+               <p className="small fw-bold">
+                  Bạn đã có tài khoản? <a href="/register">Đăng ký ngay!</a>
                 </p>
               </div>
 
-              <div className="divider d-flex align-items-center mb-1">
+              <div className="divider d-flex  ">
                 <p className="">Hoặc đăng nhập bằng</p>
               </div>
 

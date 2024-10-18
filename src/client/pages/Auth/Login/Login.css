@@ -1,4 +1,11 @@
-.text-center h2 {
+.auth-image{
+  width: 100%;
+  /* Đảm bảo ảnh chiếm toàn bộ chiều rộng của phần chứa */
+  height: 100vh;
+  /* Để giữ tỷ lệ khung hình của ảnh */
+  margin-right: 24px;
+}
+.text-center .login-title{
   font-size: 20px;
   /* Giảm kích thước chữ, có thể điều chỉnh theo ý thích */
   font-weight: bold;
@@ -9,17 +16,47 @@
   /* Khoảng cách phía dưới */
 
 }
+.form-label {
+  background-color: #FFFFFF;
+
+}
+.forgot-password .text-body {
+  text-decoration: none;
+  /* Bỏ dấu gạch chân */
+  display: block;
+  margin-top: -20px;
+  /* Giảm khoảng cách so với ô input mật khẩu */
 
 
+}
+
+.auth-action .btn.login-btn{
+  background-color: #4285F4;
+  color: white;
+  font-weight: bold;
+  height: 50px;
+  width: 381px;
+}
+.icon-text1 {
+  margin-left: 10px;
+
+}
 
 .divider {
   display: flex;
   align-items: center;
-  text-align: center;
   width: 100%;
   /* Để đảm bảo divider chiếm hết chiều rộng */
   color: #999999;
   /* Màu chữ */
+  margin-left: 10px;
+}
+.divider p {
+  margin: 10px;
+  /* Đảm bảo không có khoảng cách xung quanh chữ */
+  font-size: 20px;
+  color: #999999;
+  /* Màu của chữ */
 }
 
 .divider::before,
@@ -27,16 +64,11 @@
   content: '';
   width: 100px;
   height: 1px;
+
   /* Độ cao của đường kẻ */
   background-color: #ddd;
   /* Màu của đường kẻ */
 }
-
-.divider::before {
-  margin-left: 70px;
-
-}
-
 /* Nút Đăng Nhập bằng Google */
 .btn.btn-google {
   border: 1px solid #2196F3;
@@ -52,8 +84,6 @@
   /* Khoảng cách bên dưới */
   background-color: #FFFFFF;
 }
-
-
 /* Nút Đăng Nhập bằng Facebook */
 .btn.btn-facebook {
   border: 1px solid #2196F3;
@@ -67,46 +97,53 @@
   /* Chữ đậm */
   background-color: #FFFFFF;
 }
-
-
-.divider p {
-  margin: 10px;
-  /* Đảm bảo không có khoảng cách xung quanh chữ */
-  font-size: 14px;
-  color: #999999;
-  /* Màu của chữ */
-}
-
-
-.text-body {
-  text-decoration: none;
-  /* Bỏ dấu gạch chân */
-  display: block;
-  margin-left: 35px;
-  margin-top: -20px;
-  /* Giảm khoảng cách so với ô input mật khẩu */
-
+/* */
+.login-form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 400px; /* Đảm bảo form không quá rộng */
+  margin: 0 auto; /* Căn giữa form */
 
 }
+.input-grup .custom-input {
+  position: relative;
+  /* Giúp vị trí của label được xác định đúng */
+ 
+}
+.input-grup .custom-input label {
+  position: absolute;
+  /* Định vị label */
+  top: 2px;
+  /* Vị trí từ trên cùng của ô nhập */
+  left: 30px;
+  /* Điều chỉnh vị trí từ bên trái, tăng lên 15px */
+  font-size: 15px;
+  /* Kích thước chữ cho label */
+  color: #999;
+  /* Màu sắc cho label */
+  /* Để label không bị ảnh hưởng khi người dùng tương tác */
+  transition: 0, 2s ease all;
+  /* Hiệu ứng chuyển tiếp khi ô nhập được focus */
 
 
-.form-label {
-  background-color: white;
 }
 
-.btn.btn-lg.mb-1 {
-  background-color: #4285F4;
-  color: white;
-  font-weight: bold;
-  height: 50px;
+.input-grup .custom-input.form-outline .form-control:focus+label,
+.input-grup .custom-input.form-outline .form-control:not(:placeholder-shown)+label {
+  top: -20px;
+  /* Đưa label lên trên */
+  left: 20px;
+  /* Giữ nguyên bên trái */
+  font-size: 10px;
+  /* Kích thước chữ nhỏ hơn */
+  color: black;
+  /* Màu sắc cho label khi focus */
+}
+.input-grup .custom-input .form-control{
   width: 381px;
 }
 
-.form-outline.mb-4 {
-  height: 40px;
-}
 
-.icon-text1 {
-  margin-left: 10px;
 
-}

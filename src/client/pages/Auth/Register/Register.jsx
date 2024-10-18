@@ -55,13 +55,13 @@ const Register = () => {
             <img
               src="https://www.banjaluka.com/wp-content/uploads/2024/10/amac0-440x315.jpeg"
               alt="Background"
-              className="custom-image"
+              className="register-custom-image"
             />
 
             {/* Đặt thông báo và nút Đăng Nhập bên trái */}
             <div className="position-absolute custom-left-container">
-              <div className="dividerr d-flex ">
-                <p className="text-white">Hoặc đăng nhập bằng</p>
+              <div className="register-divider d-flex ">
+                <p className="">Hoặc đăng nhập bằng</p>
               </div>
 
               {/* Nút Đăng Nhập bằng Google và Facebook */}
@@ -117,13 +117,13 @@ const Register = () => {
               </div>
             </div>
           </div>
-          <div className="col-md-5">
-            <form onSubmit={handleRegister}>
+          <div className=" col-md-5 text-center ">
+            <form className="registration">
               <div className="text-center mt-4">
-                <h2 className="fw-bold">Đăng ký</h2>
+                <h2 className="title-registration fw-bold">Đăng ký</h2>
               </div>
 
-              <div className="form-outline mb-4">
+              <div className="custom-input form-outline mb-4">
                 <input
                   type="text"
                   id="username"
@@ -139,7 +139,7 @@ const Register = () => {
               </div>
 
               {/* Mật khẩu input */}
-              <div className="form-outline mb-4">
+              <div className=" custom-input form-outline mb-4">
                 <input
                   type="password"
                   id="password"
@@ -155,7 +155,7 @@ const Register = () => {
               </div>
 
               {/* Xác nhận mật khẩu input */}
-              <div className="form-outline mb-4">
+              <div className=" custom-input form-outline mb-4">
                 <input
                   type="password"
                   id="confirmPassword"
@@ -171,7 +171,7 @@ const Register = () => {
               </div>
 
               {/* Họ và Tên input */}
-              <div className="form-outline mb-4">
+              <div className=" custom-input form-outline mb-4">
                 <input
                   type="text"
                   id="fullName"
@@ -187,7 +187,7 @@ const Register = () => {
               </div>
 
               {/* Email input */}
-              <div className="form-outline mb-4">
+              <div className="custom-input form-outline mb-4">
                 <input
                   type="email"
                   id="email"
@@ -203,7 +203,7 @@ const Register = () => {
               </div>
 
               {/* Số điện thoại input */}
-              <div className="form-outline mb-4">
+              <div className="custom-input form-outline mb-4">
                 <input
                   type="tel"
                   id="phone"
