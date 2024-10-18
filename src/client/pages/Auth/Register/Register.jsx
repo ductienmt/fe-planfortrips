@@ -48,7 +48,7 @@ const Register = () => {
   };
 
   return (
-    <section className="vh-100">
+    <section className="vh-100 register-container">
       <div className="container-fluid h-custom">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-md-7 d-flex justify-content-center position-relative">
@@ -66,7 +66,7 @@ const Register = () => {
 
               {/* Nút Đăng Nhập bằng Google và Facebook */}
               <div className="d-flex flex-column align-items-center">
-                <button className="btn btn-google  ">
+                <button className="btn btn-register btn-google  ">
                   <a href="#" className="text-decoration-none ">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -96,7 +96,7 @@ const Register = () => {
                     <span className="icon-text">Google</span>
                   </a>
                 </button>
-                <button className="btn btn-facebook  ">
+                <button className="btn btn-register btn-facebook  ">
                   <a href="#" className="text-decoration-none ">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

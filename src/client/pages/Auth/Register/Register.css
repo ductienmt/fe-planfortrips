@@ -1,4 +1,4 @@
-.title-registration {
+.register-container .title-registration {
   font-size: 20px;
   /* Giảm kích thước chữ, có thể điều chỉnh theo ý thích */
   font-weight: bold;
@@ -9,7 +9,7 @@
   /* Khoảng cách phía dưới */
 }
 
-.register-custom-image{
+.register-container .register-custom-image{
   width: 100%;
   /* Đảm bảo ảnh chiếm toàn bộ chiều rộng của phần chứa */
   height: 100vh;
@@ -17,8 +17,8 @@
   margin-right: 24px;
 }
 /* Cấu hình cho đường chia */
-.register-divider::before,
-.register-divider::after {
+.register-container .register-divider::before,
+.register-container .register-divider::after {
   content: '';
   width: 100px;
   height: 1px;
@@ -27,7 +27,7 @@
   /* Màu của đường kẻ */
 
 }
-.register-divider {
+.register-container .register-divider {
   display: flex;
   align-items: center;
   text-align: center;
@@ -37,29 +37,29 @@
   /* Màu chữ */
 
 }
-.register-divider p {
+.register-container .register-divider p {
   margin: 10px;
   /* Đảm bảo không có khoảng cách xung quanh chữ */
   font-size: 14px;
   color: #FFFFFF;
   /* Màu của chữ */
 }
-.custom-left-container {
+.register-container .custom-left-container {
   bottom:50px;
   /* Điều chỉnh vị trí dọc của container */
 }
 
 
 /* Định dạng cho khung input */
-.custom-input.form-outline {
+.register-container .custom-input.form-outline {
   position: relative;
   /* Giúp vị trí của label được xác định đúng */
  
 }
-.icon-text {
+.register-container .icon-text {
   margin-left: 10px;
 }
-.custom-input.form-outline label {
+.register-container .custom-input.form-outline label {
   position: absolute;
   /* Định vị label */
   top: 2px;
@@ -76,8 +76,8 @@
 
 
 }
-.custom-input.form-outline .form-control:focus+label,
-.custom-input.form-outline .form-control:not(:placeholder-shown)+label {
+.register-container .custom-input.form-outline .form-control:focus+label,
+.register-container .custom-input.form-outline .form-control:not(:placeholder-shown)+label {
   top: -20px;
   /* Đưa label lên trên */
   left: 20px;
@@ -88,7 +88,7 @@
   /* Màu sắc cho label khi focus */
 }
 
-.btn.btn-lg.mb-4 {
+.register-container .btn.btn-lg.mb-4 {
   background-color: #4285F4;
   color: white;
   font-weight: bold;
@@ -96,10 +96,10 @@
   width: 381px;
 
 }
-.form-control{
+.register-container .form-control{
   width: 381px;
 }
-.registration {
+.register-container .registration {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -107,3 +107,33 @@
   max-width: 400px; /* Đảm bảo form không quá rộng */
   margin: 0 auto; /* Căn giữa form */
 }
+
+.register-container .btn.btn-register.btn-facebook {
+  border: 1px solid #2196F3;
+  /* Đường viền xanh của Facebook luôn hiển thị */
+  width: 312px;
+  /* Chiều rộng nút */
+  height: 50px;
+  padding: 10px;
+  /* Padding bên trong nút */
+  font-weight: bold;
+  /* Chữ đậm */
+  margin-bottom: 10px;
+  /* Khoảng cách bên dưới */
+  background-color: #FFFFFF;
+}
+.register-container .btn.btn-register.btn-google{
+  border: 1px solid #2196F3;
+  /* Đường viền xanh của Facebook luôn hiển thị */
+  width: 312px;
+  /* Chiều rộng nút */
+  height: 50px;
+  padding: 10px;
+  /* Padding bên trong nút */
+  font-weight: bold;
+  /* Chữ đậm */
+  margin-bottom: 10px;
+  /* Khoảng cách bên dưới */
+  background-color: #FFFFFF;
+}
+
