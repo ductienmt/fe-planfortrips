@@ -1,11 +1,11 @@
 import "./App.css";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import HomePage from "./pages/HomePage/HomePage";
-import TravelPlan from "./pages/Plan/TravelPlan";
-import Hotel from "./pages/Client/Hotel/Hotel"; // Sửa lại chỉ nhập một lần
-import BookingHotel from "./pages/Client/Hotel/BookingHotel/BookingHotel";
-import HotelInfo from "./pages/Client/Hotel/HotelDetails/HotelInfo";
+import HomePage from "./client/pages/HomePage/HomePage";
+import TravelPlan from "./client/pages/Plan/TravelPlan";
+import Hotel from "./client/pages/Hotel/Hotel"; // Sửa lại chỉ nhập một lần
+import BookingHotel from "./client/pages/Hotel/BookingHotel/BookingHotel";
+import HotelInfo from "./client/pages/Hotel/HotelDetails/HotelInfo";
 import { SnackbarProvider } from "notistack";
 
 function App() {
