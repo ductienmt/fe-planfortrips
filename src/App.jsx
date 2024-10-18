@@ -33,7 +33,8 @@ function App() {
           <Route path="/register" element={<Register />} />
         </Routes>
         {window.location.pathname !== "/login" &&
-          window.location.pathname !== "/register" && <Footer />}
+          window.location.pathname !== "/register" &&
+          window.location.pathname !== "/" && <Footer />}
       </BrowserRouter>
     </SnackbarProvider>
   );
