@@ -11,14 +11,24 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/icons-material": "^6.1.3",
+    "@mui/material": "^6.1.3",
     "@mui/system": "^6.1.3",
+    "@mui/x-date-pickers": "^7.20.0",
+    "@mui/x-date-pickers-pro": "^7.20.0",
+    "@react-google-maps/api": "^2.20.3",
+    "antd": "^5.21.4",
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
+    "dayjs": "^1.11.13",
+    "feather-icons": "^4.29.2",
     "flatpickr": "^4.6.13",
     "notistack": "^3.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.2"
+    "react-router-dom": "^6.27.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",
