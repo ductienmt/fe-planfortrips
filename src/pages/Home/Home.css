@@ -1,0 +1,118 @@
+
+.btn-login {
+    text-decoration: none; /* Bỏ dấu gạch chân */
+    color: white; /* Màu sắc chữ nếu bạn muốn */
+    background-color: black;
+    
+}
+
+
+
+
+.input-group{
+    margin-left: 100px;
+}
+
+h1 {
+    font-size: 2rem; /* Kích thước chữ tiêu đề */
+    margin: 0; /* Bỏ margin */
+}
+
+.btn-login{
+    margin-right: 50px;
+    border-radius: 28px; /* Bo tròn góc button */
+}
+
+
+.navbar {
+    justify-content: center; /* Căn giữa các phần tử trong navbar */
+}
+
+
+.container-fluid {
+    display: flex; /* Sử dụng flexbox cho container */
+    align-items: center; /* Căn giữa theo chiều dọc */
+}
+
+
+.navbar-nav {
+    justify-content: center; /* Căn giữa các liên kết */
+    width: 100%; /* Chiếm toàn bộ chiều rộng */
+}
+.nav-link {
+    color: black; /* Màu chữ mặc định */
+    position: relative; /* Cần để tạo pseudo-element */
+    padding: 10px; /* Thêm khoảng cách cho liên kết */
+    transition: color 0.3s ease; /* Hiệu ứng chuyển tiếp cho màu chữ */
+}
+
+.nav-link:hover, .nav-link:focus {
+    color: black; /* Màu chữ khi hover hoặc focus */
+    font-weight: bold; /* Chữ in đậm khi hover hoặc focus */
+}
+
+.nav-link::after {
+    content: ''; /* Tạo pseudo-element */
+    position: absolute; /* Đặt vị trí tuyệt đối */
+    left: 0px; 
+    right: 0; 
+    bottom: 47px; /* Đặt vị trí thanh gạch ở dưới cùng */
+    height: 2px; 
+    background-color: black; 
+    transform: scaleX(0); /* Bắt đầu với chiều rộng 0 */
+    transition: transform 0.3s ease; /* Hiệu ứng chuyển tiếp */
+}
+
+.nav-link:hover::after, .nav-link:focus::after {
+    transform: scaleX(1); /* Mở rộng thanh ngang khi hover hoặc focus */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.nav-link:hover::after {
+    transform: scaleX(0.9); /* Mở rộng thanh ngang khi hover */
+}
+
+
+.nav-link:hover {
+    color: black; 
+    font-weight: bold;
+}
+
+/**/
+/* Căn giữa các mục navbar */
+.custom-nav {
+    display: flex;
+    justify-content: center; /* Để căn giữa các mục nav */
+    width: 100%;
+    padding: 0 200px; /* Khoảng đệm để các mục không dính vào các cạnh */
+  }
+  
+  /* Đảm bảo mỗi mục nav chiếm không gian đều */
+  .custom-nav .nav-link {
+    text-align: center;
+     /* Đảm bảo mỗi mục chiếm không gian bằng nhau */
+    padding: 0;
+    width: 110px;
+    text-decoration: none;
+    color: black;
+    max-width: 150px; /* Tùy chọn: Giới hạn chiều rộng tối đa của mỗi mục */
+  }
+  
+ 
+  /**/
+ 
+  
+  
+  
+  
+  

@@ -7,6 +7,8 @@ import { Routes, Route } from "react-router-dom";
 import Hotel from "./pages/Client/Hotel/Hotel"; // Sửa lại chỉ nhập một lần
 import BookingHotel from "./pages/Client/Hotel/BookingHotel/BookingHotel";
 import HotelInfo from "./pages/Client/Hotel/HotelDetails/HotelInfo";
+import Login from './pages/Auth/Login/Login'
+import Register from './pages/Auth/Login/Register';
 import { SnackbarProvider } from "notistack";
 
 function App() {
@@ -27,11 +29,16 @@ function App() {
                <Route path="/" element={<Hotel />} />
         <Route path="/BookingHotel" element={<BookingHotel />} />
         <Route path="/HotelInfo" element={<HotelInfo />} />
+           <Route path="/footer" element={<Footer />} />
+      <Route path="/home" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
           </Routes>
         </BrowserRouter>
       </SnackbarProvider>
     </>
   );
 }
+
 
 export default App;
