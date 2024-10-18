@@ -1,8 +1,6 @@
-import React from 'react';
-import './Home.css'; // Đảm bảo rằng bạn đã nhập CSS ở đây
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "./Header.css";
 
-const HomePage = () => {
+const Header = () => {
   return (
     <>
       <header className="mt-3">
@@ -14,20 +12,19 @@ const HomePage = () => {
                 type="search"
                 placeholder="Tìm kiếm..."
                 aria-label="Search"
-
               />
-
-
-
             </div>
-          
           </form>
 
           <h1 className="text-center flex-grow-1">Plan for Trips</h1>
 
           <div>
-            <a href="/register" className="btn btn-register">Đăng ký</a>
-            <a href="/login" className="btn btn-login">Đăng nhập</a>
+            <a href="/register" className="btn btn-register">
+              Đăng ký
+            </a>
+            <a href="/login" className="btn btn-login">
+              Đăng nhập
+            </a>
           </div>
         </div>
         <hr />
@@ -46,12 +43,24 @@ const HomePage = () => {
             </button>
             <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
               <div className="navbar-nav custom-nav">
-                <a className="nav-link" href="#">Trang chủ</a>
-                <a className="nav-link" href="#">Phương tiện</a>
-                <a className="nav-link" href="#">Khách sạn</a>
-                <a className="nav-link" href="#">Hàn quán</a>
-                <a className="nav-link" href="#">Tham quan</a>
-                <a className="nav-link" href="#">Hợp tác</a>
+                <a className="nav-link" href="#">
+                  Trang chủ
+                </a>
+                <a className="nav-link" href="#">
+                  Phương tiện
+                </a>
+                <a className="nav-link" href="#">
+                  Khách sạn
+                </a>
+                <a className="nav-link" href="#">
+                  Hàn quán
+                </a>
+                <a className="nav-link" href="#">
+                  Tham quan
+                </a>
+                <a className="nav-link" href="#">
+                  Hợp tác
+                </a>
               </div>
             </div>
           </div>
@@ -61,4 +70,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default Header;

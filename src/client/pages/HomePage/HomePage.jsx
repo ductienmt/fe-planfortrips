@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { handleInputChange } from "../../utils/FormatMoney"; // Đường dẫn tới file FormatMoney.js
-import provinces from "../../utils/Provinces.json"; // Đường dẫn tới file Province.json
+import { handleInputChange } from "../../../utils/FormatMoney"; // Đường dẫn tới file FormatMoney.js
+import provinces from "../../../utils/Provinces.json"; // Đường dẫn tới file Province.json
 import { useSnackbar } from "notistack"; // Thêm Notistack
 import "./HomePage.css";
 
@@ -263,14 +263,14 @@ function HomePage() {
 
   const handleIncrement = (type) => {
     const totalPeople = adults + children + infants;
-  
+
     if (totalPeople >= 20) {
       enqueueSnackbar("Số lượng người không được vượt quá 20!", {
         variant: "error",
       });
       return;
     }
-  
+
     if (type === "adult") {
       setAdults(adults + 1);
     } else if (type === "child") {

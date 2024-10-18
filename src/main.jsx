@@ -1,19 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter as Router } from "react-router-dom";
 // import "./index.css";
 import App from "./App";
-import ErrorBoundary from "antd/es/alert/ErrorBoundary";
-import 'bootstrap/dist/css/bootstrap.min.css'
+import "bootstrap/dist/css/bootstrap.min.css";
 
-
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <Router>
-      <ErrorBoundary>
-        <App />
-      </ErrorBoundary>
-    </Router>
+    <App />
   </React.StrictMode>
 );
 
