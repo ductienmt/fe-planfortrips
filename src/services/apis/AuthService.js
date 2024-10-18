@@ -10,6 +10,11 @@ const AuthService = {
     return response;
   },
   // register: async (data) => {},
+  // đăng ký
+  Register: async (data) => {
+    const response = await Http.post("/api/v1/auth/Register", data);
+    return response;
+  },
 };
 
 export default AuthService;

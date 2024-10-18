@@ -6,12 +6,14 @@
     font-family: 'Afacad FLux', sans-serif;
 }
 
-html, body {
+html,
+body {
     height: 100%;
 }
 
 body {
-    font-size: 18px; /* Tăng kích thước font chữ cơ bản */
+    font-size: 18px;
+    /* Tăng kích thước font chữ cơ bản */
 }
 
 .plan-container {
@@ -38,7 +40,8 @@ body {
     z-index: 1;
 }
 
-h1, h3 {
+h1,
+h3 {
     z-index: 2;
     margin-bottom: 15px;
 }
@@ -77,7 +80,8 @@ h3 {
     color: #8592a6;
 }
 
-.homepage-input, .homepage-select {
+.homepage-input,
+.homepage-select {
     font-size: 1rem;
     padding: 10px;
     height: 45px;
@@ -89,7 +93,7 @@ h3 {
 
 
 
-.homepage-input::placeholder, 
+.homepage-input::placeholder,
 .homepage-select::placeholder {
     font-weight: normal;
     color: #ced2d9;
@@ -122,10 +126,10 @@ h3 {
     top: 73%;
     left: 10px;
     transform: translateX(22.1rem);
-    
+
 }
 
-.number-box ul{
+.number-box ul {
     padding-left: 1rem;
     margin-bottom: 0;
 }
@@ -138,7 +142,8 @@ h3 {
     height: 40px;
 }
 
-.number-left, .number-right {
+.number-left,
+.number-right {
     display: flex;
     align-items: center;
 }
@@ -172,8 +177,9 @@ h3 {
 
 /* Gợi ý tìm kiếm */
 .suggestions-list {
-    position: absolute; 
-    top: 27%; /* Hiển thị ngay dưới trường input */
+    position: absolute;
+    top: 27%;
+    /* Hiển thị ngay dưới trường input */
     width: 44.8%;
     border: 1px solid #ccc;
     background-color: white;
@@ -181,13 +187,17 @@ h3 {
     overflow-y: auto;
     z-index: 10;
     color: black;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ để tạo chiều sâu */
-    border-radius: 4px; /* Bo tròn góc */
-    padding: 0; /* Xóa padding mặc định */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Thêm bóng đổ để tạo chiều sâu */
+    border-radius: 4px;
+    /* Bo tròn góc */
+    padding: 0;
+    /* Xóa padding mặc định */
 }
 
 .suggestions-list li {
-    padding: 12px 15px; /* Tăng padding cho cảm giác rộng rãi hơn */
+    padding: 12px 15px;
+    /* Tăng padding cho cảm giác rộng rãi hơn */
     cursor: pointer;
     transition: background-color 0.2s;
     list-style: none;
@@ -195,7 +205,8 @@ h3 {
 }
 
 .suggestions-list li:hover {
-    background-color: #e0e0e0; /* Thay đổi màu nền khi hover */
+    background-color: #e0e0e0;
+    /* Thay đổi màu nền khi hover */
 }
 
 /* Responsive adjustments */
@@ -217,13 +228,13 @@ h3 {
     }
 
     .number-box {
-        top: 80%; 
+        top: 80%;
     }
 }
 
 @media (max-width: 576px) {
 
     .number-box {
-        top: 85%; 
+        top: 85%;
     }
 }

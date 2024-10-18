@@ -1,0 +1,112 @@
+.text-center h2 {
+  font-size: 20px;
+  /* Giảm kích thước chữ, có thể điều chỉnh theo ý thích */
+  font-weight: bold;
+  /* Đậm chữ */
+  color: #333;
+  /* Màu chữ */
+  margin-bottom: 20px;
+  /* Khoảng cách phía dưới */
+
+}
+
+
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  /* Để đảm bảo divider chiếm hết chiều rộng */
+  color: #999999;
+  /* Màu chữ */
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  width: 100px;
+  height: 1px;
+  /* Độ cao của đường kẻ */
+  background-color: #ddd;
+  /* Màu của đường kẻ */
+}
+
+.divider::before {
+  margin-left: 70px;
+
+}
+
+/* Nút Đăng Nhập bằng Google */
+.btn.btn-google {
+  border: 1px solid #2196F3;
+  /* Đường viền xanh của Facebook luôn hiển thị */
+  width: 312px;
+  /* Chiều rộng nút */
+  height: 50px;
+  padding: 10px;
+  /* Padding bên trong nút */
+  font-weight: bold;
+  /* Chữ đậm */
+  margin-bottom: 10px;
+  /* Khoảng cách bên dưới */
+  background-color: #FFFFFF;
+}
+
+
+/* Nút Đăng Nhập bằng Facebook */
+.btn.btn-facebook {
+  border: 1px solid #2196F3;
+  /* Đường viền xanh của Facebook luôn hiển thị */
+  width: 312px;
+  /* Chiều rộng nút */
+  height: 50px;
+  padding: 10px;
+  /* Padding bên trong nút */
+  font-weight: bold;
+  /* Chữ đậm */
+  background-color: #FFFFFF;
+}
+
+
+.divider p {
+  margin: 10px;
+  /* Đảm bảo không có khoảng cách xung quanh chữ */
+  font-size: 14px;
+  color: #999999;
+  /* Màu của chữ */
+}
+
+
+.text-body {
+  text-decoration: none;
+  /* Bỏ dấu gạch chân */
+  display: block;
+  margin-left: 35px;
+  margin-top: -20px;
+  /* Giảm khoảng cách so với ô input mật khẩu */
+
+
+}
+
+
+.form-label {
+  background-color: white;
+}
+
+.btn.btn-lg.mb-1 {
+  background-color: #4285F4;
+  color: white;
+  font-weight: bold;
+  height: 50px;
+  width: 381px;
+}
+
+.form-outline.mb-4 {
+  height: 40px;
+}
+
+.icon-text1 {
+  margin-left: 10px;
+
+}
