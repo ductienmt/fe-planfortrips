@@ -15,6 +15,7 @@ function HomePage() {
   const [infants, setInfants] = useState(0);
 
   const [showNumberBox, setShowNumberBox] = useState(false);
+  const [showHeader, setShowHeader] = useState(false); // Trạng thái cho header
 
   const ngayDiRef = useRef(null);
   const ngayVeRef = useRef(null);
@@ -293,10 +294,14 @@ function HomePage() {
   return (
     <div className="plan-container">
       <div className="overlay"></div>
-      <h1 className="text-white">Nhập điểm đến của bạn</h1>
-      <h3 className="text-white">
-        Plan for Trips, Nơi những chuyến đi tạo nên những ký ức đẹp.
-      </h3>
+
+      <>
+        <h1 className="text-white">Nhập điểm đến của bạn</h1>
+        <h3 className="text-white">
+          Plan for Trips, Nơi những chuyến đi tạo nên những ký ức đẹp.
+        </h3>
+      </>
+
       <div className="form-container p-4 bg-light rounded">
         {/* Nhập điểm đến */}
         <div className="row mb-3">

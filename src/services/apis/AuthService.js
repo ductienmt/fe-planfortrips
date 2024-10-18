@@ -11,8 +11,8 @@ const AuthService = {
   },
   // register: async (data) => {},
   // đăng ký
-  Register: async (data) => {
-    const response = await Http.post("/api/v1/auth/Register", data);
+  register: async (data) => {
+    const response = await Http.post("/api/v1/auth/register", data);
     return response;
   },
 };
