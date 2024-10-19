@@ -48,7 +48,7 @@ const Register = () => {
   };
 
   return (
-    <section className="vh-100">
+    <section className="vh-100 register-container">
       <div className="container-fluid h-custom">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-md-7 d-flex justify-content-center position-relative">

@@ -1,11 +1,11 @@
-footer .container-fluid {
+.custom-footer .container-fluid {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: flex-start;
 }
 
-footer .text-end {
+.custom-footer .text-end {
     flex: 1;
     /* Cho phép phần tử bên phải chiếm không gian */
 }
@@ -15,13 +15,13 @@ footer .text-end {
 
 
 
-footer {
+.custom-footer {
     padding: 0;
     border-top: 1px solid #e9ecef;
 }
 
 
-footer .row {
+.custom-footer .row {
     margin: 0px;
 }
 
@@ -32,22 +32,22 @@ footer .row {
 
 
 
-footer h5 {
+.custom-footer h5 {
     margin-bottom: 15px;
     /* Khoảng cách giữa tiêu đề và nội dung */
 }
 
-footer p {
+.custom-footer p {
     margin-bottom: 5px;
     /* Khoảng cách giữa các đoạn văn */
 }
 
 
-footer .col-md-2 {
+.custom-footer .col-md-2 {
     padding: 0px 30px;
 }
 
 
-footer .text-center h6 {
+.custom-footer .text-center h6 {
     margin-top: 20px;
 }
