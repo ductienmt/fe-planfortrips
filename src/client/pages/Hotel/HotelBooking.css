@@ -261,10 +261,6 @@ label {
     /* Hiệu ứng chuyển động */
 }
 
-label:hover {
-    background-color: #e9ecef;
-    /* Hiệu ứng hover cho các mục */
-}
 
 input[type="checkbox"] {
     margin-right: 10px;
