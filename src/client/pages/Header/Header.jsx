@@ -1,6 +1,10 @@
 import "./Header.css";
+import { useState } from "react";
 
 const Header = () => {
+  const [showMenu, setShowMenu] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   return (
     <>
       <header className="custom-header mt-3">
@@ -19,12 +23,32 @@ const Header = () => {
           <h1 className="text-center flex-grow-1">Plan for Trips</h1>
 
           <div>
-            <a href="/register" className="btn btn-register">
-              Đăng ký
-            </a>
-            <a href="/login" className="btn btn-login">
-              Đăng nhập
-            </a>
+            {isLoggedIn ? (
+              <div>
+                <img
+                  src="path_to_user_avatar"
+                  alt="User Avatar"
+                  className="user-avatar"
+                  onClick={() => setShowMenu(!showMenu)}
+                />
+                {showMenu && (
+                  <div className="avatar-menu">
+                    <a href="/profile">My Profile</a>
+                    <a href="/my-trips">My Trips</a>
+                    <a href="/logout">Log Out</a>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                <a href="/register" className="btn btn-register">
+                  Đăng ký
+                </a>
+                <a href="/login" className="btn btn-login">
+                  Đăng nhập
+                </a>
+              </>
+            )}
           </div>
         </div>
         <hr />

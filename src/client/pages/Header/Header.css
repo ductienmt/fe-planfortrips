@@ -1,37 +1,33 @@
-.btn-login {
+.custom-header .btn-login {
     text-decoration: none;
     /* Bỏ dấu gạch chân */
     color: white;
     /* Màu sắc chữ nếu bạn muốn */
     background-color: black;
+    margin-right: 50px;
+    border-radius: 28px;
 
 }
 
-.input-group {
+.custom-header .input-group {
     margin-left: 100px;
 }
 
-h1 {
+.custom-header h1 {
     font-size: 2rem;
     /* Kích thước chữ tiêu đề */
     margin: 0;
     /* Bỏ margin */
 }
 
-.btn-login {
-    margin-right: 50px;
-    border-radius: 28px;
-    /* Bo tròn góc button */
-}
 
-
-.navbar {
+.custom-header .navbar {
     justify-content: center;
     /* Căn giữa các phần tử trong navbar */
 }
 
 
-.container-fluid {
+.custom-header .container-fluid {
     display: flex;
     /* Sử dụng flexbox cho container */
     align-items: center;
@@ -39,14 +35,14 @@ h1 {
 }
 
 
-.navbar-nav {
+.custom-header .navbar-nav {
     justify-content: center;
     /* Căn giữa các liên kết */
     width: 100%;
     /* Chiếm toàn bộ chiều rộng */
 }
 
-.nav-link {
+.custom-header .nav-link {
     color: black;
     /* Màu chữ mặc định */
     position: relative;
@@ -57,15 +53,15 @@ h1 {
     /* Hiệu ứng chuyển tiếp cho màu chữ */
 }
 
-.nav-link:hover,
-.nav-link:focus {
+.custom-header .nav-link:hover,
+.custom-header .nav-link:focus {
     color: black;
     /* Màu chữ khi hover hoặc focus */
     font-weight: bold;
     /* Chữ in đậm khi hover hoặc focus */
 }
 
-.nav-link::after {
+.custom-header .nav-link::after {
     content: '';
     /* Tạo pseudo-element */
     position: absolute;
@@ -82,26 +78,26 @@ h1 {
     /* Hiệu ứng chuyển tiếp */
 }
 
-.nav-link:hover::after,
-.nav-link:focus::after {
+.custom-header .nav-link:hover::after,
+.custom-header .nav-link:focus::after {
     transform: scaleX(1);
     /* Mở rộng thanh ngang khi hover hoặc focus */
 }
 
-.nav-link:hover::after {
+.custom-header .nav-link:hover::after {
     transform: scaleX(0.9);
     /* Mở rộng thanh ngang khi hover */
 }
 
 
-.nav-link:hover {
+.custom-header .nav-link:hover {
     color: black;
     font-weight: bold;
 }
 
 /**/
 /* Căn giữa các mục navbar */
-.custom-nav {
+.custom-header .nav {
     display: flex;
     justify-content: center;
     /* Để căn giữa các mục nav */
@@ -111,7 +107,7 @@ h1 {
 }
 
 /* Đảm bảo mỗi mục nav chiếm không gian đều */
-.custom-nav .nav-link {
+.custom-header .custom-nav .nav-link {
     text-align: center;
     /* Đảm bảo mỗi mục chiếm không gian bằng nhau */
     padding: 0;
@@ -124,3 +120,53 @@ h1 {
 
 
 /**/
+
+.custom-header.user-avatar {
+    width: 40px;
+    /* Set the width of the avatar */
+    height: 40px;
+    /* Set the height of the avatar */
+    border-radius: 50%;
+    /* Make the avatar circular */
+    cursor: pointer;
+    /* Change cursor to pointer on hover */
+    margin-right: 10px;
+    /* Add some space to the right */
+}
+
+.custom-header.avatar-menu {
+    position: absolute;
+    /* Position the menu absolutely */
+    top: 50px;
+    /* Adjust the position below the avatar */
+    right: 0;
+    /* Align to the right */
+    background-color: white;
+    /* Background color of the menu */
+    border: 1px solid #ccc;
+    /* Border for the menu */
+    border-radius: 5px;
+    /* Rounded corners */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    /* Add shadow for depth */
+    z-index: 1000;
+    /* Ensure the menu appears above other elements */
+    padding: 10px;
+    /* Padding inside the menu */
+}
+
+.custom-header .avatar-menu a {
+    display: block;
+    /* Make links block elements */
+    padding: 8px 12px;
+    /* Padding for links */
+    color: black;
+    /* Text color */
+    text-decoration: none;
+    /* Remove underline */
+}
+
+.custom-header .avatar-menu a:hover {
+    background-color: #f0f0f0;
+    /* Change background on hover */
+}
