@@ -1,6 +1,8 @@
 // src/components/Auth/Login.jsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Login.css";
+import { callBackUrlGoogle, getAuthUrl } from "../../../../services/apis/Oauth2Service";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -24,6 +26,34 @@ const Login = () => {
     }
   };
 
+  const queryParam = new URLSearchParams(window.location.search);
+  const navi = useNavigate();
+  const [authUrl, setAuthUrl] = useState('');
+
+  useEffect(() => {
+    getAuthUrl().then((res) => {
+      setAuthUrl(res);
+    });
+  }, []);
+
+  useEffect(() => {
+    const code = queryParam.get('code');
+    if (code) {
+      handleLoginWithGoogle(code);
+    }
+  }, [queryParam])
+
+
+  const handleLoginWithGoogle = async (code) => {
+    const res = await callBackUrlGoogle(code);
+    if (res.firstOauth2)
+      alert("Chào mừng bạn lần đầu đăng nhập Google!")
+    // Đi đâu sau khi đăng nhập thành công thì bỏ vào
+    else alert("Chào mừng bạn quay trở lại!")
+
+    navi('/user')
+  }
+
   return (
     <section className="vh-100 login-container">
       <div className="container-fluid h-custom">
@@ -36,31 +66,33 @@ const Login = () => {
             />
           </div>
 
-          <div className="col-md-5 ">
-            <form className="login-form">
-              <div className="text-center mt-4 ">
+          <div className="col-md-5">
+            <form className="login-form" onSubmit={handleLogin}>
+              <div className="text-center mt-4">
                 <h2 className="login-title">Đăng nhập</h2>
               </div>
 
               <div className="input-grup">
                 {/* Tên tài khoản input */}
-                <div className=" custom-input form-outline mb-4">
+                <div className="custom-input form-outline mb-4">
                   <input
-                    type="username"
+                    type="text"
                     id="username"
                     className="form-control"
                     placeholder=" "
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
                   />
-
                   <label className="form-label" htmlFor="username">
                     Tên tài khoản
                   </label>
                 </div>
-                <div className=" custom-input form-outline mb-4">
+                <div className="custom-input form-outline mb-4">
                   <input
                     type="password"
                     id="password"
-                    className="form-control " // Sử dụng lớp mới
+                    className="form-control"
                     placeholder=" "
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -70,30 +102,30 @@ const Login = () => {
                     Mật khẩu
                   </label>
                 </div>
-                <div className=" forgot-password text-body mb-2">
+                <div className="forgot-password text-body mb-2">
                   <a href="#!" className="text-body">
                     Quên mật khẩu?
                   </a>
                 </div>
               </div>
 
-              <div className=" auth-action text-center ">
+              <div className="auth-action text-center">
                 <button type="submit" className="btn login-btn btn-lg mb-1">
                   Đăng nhập
                 </button>
-               <p className="small fw-bold">
+                <p className="small fw-bold">
                   Bạn đã có tài khoản? <a href="/register">Đăng ký ngay!</a>
                 </p>
               </div>
 
-              <div className="divider d-flex  ">
+              <div className="divider d-flex">
                 <p className="">Hoặc đăng nhập bằng</p>
               </div>
 
               {/* Nút Đăng Nhập bằng Google và Facebook */}
               <div className="d-flex flex-column align-items-center justify-content-center mb-4">
-                <button className="btn btn-google">
-                  <a href="#" className="text-decoration-none">
+                <Link to={authUrl} className="btn btn-google">
+                  <div  className="text-decoration-none">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -120,8 +152,8 @@ const Login = () => {
                       />
                     </svg>
                     <span className="icon-text1">Google</span>
-                  </a>
-                </button>
+                  </div>
+                </Link>
 
                 <button className="btn btn-facebook">
                   <a href="#" className="text-decoration-none">
