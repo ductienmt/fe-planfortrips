@@ -55,7 +55,7 @@
 
 
 /* Định dạng cho khung input */
-.register-container .custom-input.form-outline {
+.register-container .custom-input{
   position: relative;
   /* Giúp vị trí của label được xác định đúng */
 
@@ -65,7 +65,7 @@
   margin-left: 10px;
 }
 
-.register-container .custom-input.form-outline label {
+.register-container .custom-input label {
   position: absolute;
   /* Định vị label */
   top: 2px;
@@ -83,19 +83,19 @@
 
 }
 
-.register-container .custom-input.form-outline .form-control:focus+label,
-.register-container .custom-input.form-outline .form-control:not(:placeholder-shown)+label {
+.register-container .custom-input :focus+label,
+.register-container .custom-input :not(:placeholder-shown)+label {
   top: -20px;
   /* Đưa label lên trên */
   left: 20px;
   /* Giữ nguyên bên trái */
   font-size: 10px;
   /* Kích thước chữ nhỏ hơn */
-  color: black;
+  color: #333;
   /* Màu sắc cho label khi focus */
 }
 
-.register-container .btn.btn-lg.mb-4 {
+.register-container .registration-button{
   background-color: #4285F4;
   color: white;
   font-weight: bold;
@@ -117,4 +117,29 @@
   /* Đảm bảo form không quá rộng */
   margin: 0 auto;
   /* Căn giữa form */
+}
+.register-container .register-google{
+  border: 1px solid #2196F3;
+  /* Đường viền xanh của Facebook luôn hiển thị */
+  width: 312px;
+  /* Chiều rộng nút */
+  height: 50px;
+  padding: 10px;
+  /* Padding bên trong nút */
+  font-weight: bold;
+  /* Chữ đậm */
+  background-color: #FFFFFF;
+  margin-bottom: 10px;
+}
+.register-container .register-facebook  {
+  border: 1px solid #2196F3;
+  /* Đường viền xanh của Facebook luôn hiển thị */
+  width: 312px;
+  /* Chiều rộng nút */
+  height: 50px;
+  padding: 10px;
+  /* Padding bên trong nút */
+  font-weight: bold;
+  /* Chữ đậm */
+  background-color: #FFFFFF;
 }

@@ -66,7 +66,7 @@ const Register = () => {
 
               {/* Nút Đăng Nhập bằng Google và Facebook */}
               <div className="d-flex flex-column align-items-center">
-                <button className="btn btn-google  ">
+                <button className="btn register-google  ">
                   <a href="#" className="text-decoration-none ">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -96,7 +96,7 @@ const Register = () => {
                     <span className="icon-text">Google</span>
                   </a>
                 </button>
-                <button className="btn btn-facebook  ">
+                <button className="btn register-facebook  ">
                   <a href="#" className="text-decoration-none ">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -111,7 +111,7 @@ const Register = () => {
                         fill="#1877F2"
                       />
                     </svg>
-                    <span className="icon-text">Facebook</span>
+                    <span className="icon-text1">Facebook</span>
                   </a>
                 </button>
               </div>
@@ -219,7 +219,7 @@ const Register = () => {
               </div>
 
               <div className="text-center">
-                <button type="submit" className="btn  btn-lg mb-4">
+                <button type="submit" className="btn registration-button mb-4">
                   Đăng ký
                 </button>
                 <p className="small fw-bold">
