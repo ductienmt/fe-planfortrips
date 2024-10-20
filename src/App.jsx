@@ -10,6 +10,7 @@ import Footer from "./client/pages/Footer/Footer";
 import Header from "./client/pages/Header/Header";
 import { SnackbarProvider } from "notistack";
 import LandingPage from "./client/pages/Homepage/LandingPage";
+import PlanBefore from "./client/pages/PlanBefore/Plan";
 
 function App() {
   return (
@@ -26,7 +27,8 @@ function App() {
 
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/plan" element={<TravelPlan />} />
+          <Route path="/plan" element={<PlanBefore />} />
+          <Route path="/plan/trip" element={<TravelPlan />} />
           <Route path="/hotel" element={<Hotel />} />
           <Route path="/booking-hotel" element={<BookingHotel />} />
           <Route path="/hotel-info" element={<HotelInfo />} />
@@ -34,7 +36,8 @@ function App() {
           <Route path="/register" element={<Register />} />
         </Routes>
         {window.location.pathname !== "/login" &&
-          window.location.pathname !== "/register" && <Footer />}
+          window.location.pathname !== "/register" &&
+          window.location.pathname !== "/plan" && <Footer />}
       </BrowserRouter>
     </SnackbarProvider>
   );

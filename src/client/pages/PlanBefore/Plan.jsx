@@ -6,6 +6,7 @@ import { handleInputChange } from "../../../utils/FormatMoney"; // Đường d�
 import provinces from "../../../utils/Provinces.json"; // Đường dẫn tới file Province.json
 import { useSnackbar } from "notistack"; // Thêm Notistack
 import "./Plan.css";
+import { flatpickrConfig } from "../../../utils/ConfigFlatpickr";
 
 function HomePage() {
   const { enqueueSnackbar } = useSnackbar(); // Sử dụng Notistack
@@ -23,16 +24,19 @@ function HomePage() {
   const [budget, setBudget] = useState(""); // Trạng thái cho ngân sách
   // const [error, setError] = useState(""); // Trạng thái cho thông báo lỗi
 
-  // Trạng thái cho các ô nhập gợi ý
   const [queryCurrentCity, setQueryCurrentCity] = useState(""); // Tỉnh, thành phố đang ở
   const [queryDestination, setQueryDestination] = useState(""); // Điểm đến
   const [filteredCurrentCities, setFilteredCurrentCities] = useState([]); // Gợi ý cho tỉnh, thành phố đang ở
   const [filteredDestinations, setFilteredDestinations] = useState([]); // Gợi ý cho điểm đến
 
   const handlePlan = () => {
-    const totalPeople = adults + children + infants;
+    if (validatePlan()) {
+      window.location.href = "/plan/trip";
+    }
+  };
 
-    // Consolidate error messages into an array for easier management
+  const validatePlan = () => {
+    const totalPeople = adults + children + infants;
     const errorMessages = [
       totalPeople > 20 && "Số lượng người không được vượt quá 20!",
       (children > 0 || infants > 0) &&
@@ -54,8 +58,6 @@ function HomePage() {
       enqueueSnackbar(errorMessages[0], { variant: "error" });
       return false;
     }
-
-    return enqueueSnackbar("Kế hoạch đã được lưu!", { variant: "success" });
   };
 
   const handleBudgetChange = (event) => {
@@ -111,67 +113,13 @@ function HomePage() {
   const today = new Date();
   const maxDate = new Date(new Date().setFullYear(today.getFullYear() + 1));
 
-  const VietnamesePlan = {
-    weekdays: {
-      shorthand: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
-      longhand: [
-        "Chủ Nhật",
-        "Thứ Hai",
-        "Thứ Ba",
-        "Thứ Tư",
-        "Thứ Năm",
-        "Thứ Sáu",
-        "Thứ Bảy",
-      ],
-    },
-    months: {
-      shorthand: [
-        "Th1",
-        "Th2",
-        "Th3",
-        "Th4",
-        "Th5",
-        "Th6",
-        "Th7",
-        "Th8",
-        "Th9",
-        "Th10",
-        "Th11",
-        "Th12",
-      ],
-      longhand: [
-        "Tháng 1",
-        "Tháng 2",
-        "Tháng 3",
-        "Tháng 4",
-        "Tháng 5",
-        "Tháng 6",
-        "Tháng 7",
-        "Tháng 8",
-        "Tháng 9",
-        "Tháng 10",
-        "Tháng 11",
-        "Tháng 12",
-      ],
-    },
-    firstDayOfWeek: 1,
-    rangeSeparator: " đến ",
-    weekAbbreviation: "Tuần",
-    scrollTitle: "Cuộn để tăng giảm",
-    toggleTitle: "Nhấp để chuyển đổi",
-    ordinal: (nth) => {
-      if (nth > 1) return "th";
-      return "";
-    },
-  };
-
   useEffect(() => {
     if (ngayDiRef.current && ngayVeRef.current) {
       const ngayDiPicker = flatpickr(ngayDiRef.current, {
         altInput: true,
         altFormat: "d-m-Y H:i", // Định dạng hiển thị ngày và giờ
         dateFormat: "Y-m-d H:i", // Định dạng cho giá trị thực
-        locale: VietnamesePlan,
+        locale: flatpickrConfig,
         minDate: today,
         maxDate: maxDate,
         enableTime: true, // Bật chọn giờ
@@ -193,7 +141,7 @@ function HomePage() {
         altInput: true,
         altFormat: "d-m-Y H:i", // Định dạng hiển thị ngày và giờ
         dateFormat: "Y-m-d H:i", // Định dạng cho giá trị thực
-        locale: VietnamesePlan,
+        locale: flatpickrConfig,
         minDate: today,
         maxDate: maxDate,
         enableTime: true, // Bật chọn giờ
