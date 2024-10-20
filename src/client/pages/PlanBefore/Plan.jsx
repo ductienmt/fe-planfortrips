@@ -114,6 +114,8 @@ function HomePage() {
   const maxDate = new Date(new Date().setFullYear(today.getFullYear() + 1));
 
   useEffect(() => {
+    document.title = "Lên kế hoạch";
+    window.scrollTo(0, 200);
     if (ngayDiRef.current && ngayVeRef.current) {
       const ngayDiPicker = flatpickr(ngayDiRef.current, {
         altInput: true,

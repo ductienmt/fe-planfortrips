@@ -6,7 +6,6 @@ const Http = axios.create({
 });
 
 const getAccessToken = () => {
-  // Logic to retrieve the access token from local storage or any other secure storage
   return localStorage.getItem("accessToken");
 };
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import logo from "../../../assets/beach.jpg";
 import "./LandingPage.css";
 import { Link } from "react-router-dom";
@@ -16,6 +16,10 @@ import feedback5 from "../../../assets/feedback5.jpg";
 import feedback6 from "../../../assets/feedback6.jpeg";
 
 const LandingPage = () => {
+  useEffect(() => {
+    document.title = "Trang chủ";
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
       <div className="landing-page">
