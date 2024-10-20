@@ -67,7 +67,7 @@ const Header = () => {
             </button>
             <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
               <div className="navbar-nav custom-nav">
-                <a className="nav-link" href="#">
+                <a className="nav-link" href="/">
                   Trang chủ
                 </a>
                 <a className="nav-link" href="#">
