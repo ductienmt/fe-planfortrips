@@ -16,13 +16,14 @@ function App() {
     <SnackbarProvider
       maxSnack={3}
       anchorOrigin={{
-        vertical: "top",
+        vertical: "bottom",
         horizontal: "right",
       }}
     >
       <BrowserRouter>
         {window.location.pathname !== "/login" &&
           window.location.pathname !== "/register" && <Header />}
+
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/plan" element={<TravelPlan />} />
