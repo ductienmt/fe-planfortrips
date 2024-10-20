@@ -3,12 +3,17 @@ import AuthService from "../../../../services/apis/AuthService";
 import "./Register.css"; // Custom CSS
 import { useSnackbar } from "notistack";
 import background from "../../../../assets/image 37.png";
-import { useNavigate } from "react-router-dom";
-import handleToken from "../../../../services/HandleToken";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  callBackUrlGoogle,
+  getAuthUrl,
+} from "../../../../services/apis/Oauth2Service";
 
 const Register = () => {
   const { enqueueSnackbar } = useSnackbar();
+  const queryParam = new URLSearchParams(window.location.search);
   const navigate = useNavigate();
+  const [authUrl, setAuthUrl] = useState("");
   // const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState({
     userName: "",
@@ -83,11 +88,40 @@ const Register = () => {
     return true;
   };
 
+  const handleLoginWithGoogle = async (code) => {
+    const res = await callBackUrlGoogle(code);
+    if (res.firstOauth2)
+      enqueueSnackbar("Chào mừng bạn lần đầu đăng nhập Google!", {
+        variant: "success",
+        autoHideDuration: 1000,
+        onExit: () => {
+          navigate("/");
+        },
+      });
+    // Đi đâu sau khi đăng nhập thành công thì bỏ vào
+    else
+      enqueueSnackbar("Chào mừng bạn quay trở lại!", {
+        variant: "success",
+        autoHideDuration: 1000,
+        onExit: () => {
+          navigate("/");
+        },
+      });
+  };
+
   useEffect(() => {
     document.title = "Đăng ký";
     window.scrollTo(0, 200);
     localStorage.clear();
-  }, []);
+    getAuthUrl().then((res) => {
+      setAuthUrl(res);
+    });
+
+    const code = queryParam.get("code");
+    if (code) {
+      handleLoginWithGoogle(code);
+    }
+  }, [queryParam]);
 
   return (
     <section className="vh-100 register-container">
@@ -108,8 +142,8 @@ const Register = () => {
 
               {/* Nút Đăng Nhập bằng Google và Facebook */}
               <div className="d-flex flex-column align-items-center">
-                <button className="btn register-google  ">
-                  <a href="#" className="text-decoration-none ">
+                <Link to={authUrl} className="btn register-google  ">
+                  <div className="text-decoration-none ">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -136,8 +170,8 @@ const Register = () => {
                       />
                     </svg>{" "}
                     <span className="icon-text">Google</span>
-                  </a>
-                </button>
+                  </div>
+                </Link>
                 <button className="btn register-facebook  ">
                   <a href="#" className="text-decoration-none ">
                     <svg

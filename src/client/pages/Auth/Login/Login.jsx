@@ -59,16 +59,15 @@ const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  useEffect(() => {
-    getAuthUrl().then((res) => {
-      setAuthUrl(res);
-    });
-    document.title = "Đăng nhập";
-    window.scrollTo(0, 200);
-  }, []);
+  useEffect(() => {}, []);
 
   useEffect(() => {
     localStorage.clear();
+    document.title = "Đăng nhập";
+    window.scrollTo(0, 200);
+    getAuthUrl().then((res) => {
+      setAuthUrl(res);
+    });
     const code = queryParam.get("code");
     if (code) {
       handleLoginWithGoogle(code);
