@@ -5,6 +5,7 @@
   overflow: hidden;
   padding: 34px 63px;
 }
+
 .travel-details {
   margin-top: 47px;
   display: flex;
@@ -14,17 +15,20 @@
 
 .active {
   transform: scale(1.05);
-  opacity: 1; /* Card được click sẽ nổi bật */
+  opacity: 1;
+  /* Card được click sẽ nổi bật */
 }
 
 .inactive {
-  opacity: 0.5; /* Các card không được click sẽ mờ đi */
+  opacity: 0.5;
+  /* Các card không được click sẽ mờ đi */
 }
 
 @media (max-width: 991px) {
   .travel-plan {
     padding: 0 20px;
   }
+
   .travel-details {
     flex-direction: column;
     align-items: stretch;

@@ -125,7 +125,7 @@ const Login = () => {
               {/* Nút Đăng Nhập bằng Google và Facebook */}
               <div className="d-flex flex-column align-items-center justify-content-center mb-4">
                 <Link to={authUrl} className="btn btn-google">
-                  <div  className="text-decoration-none">
+                  <div className="text-decoration-none">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"

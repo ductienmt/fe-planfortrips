@@ -1,0 +1,49 @@
+.hotel-highlights-container-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+    background-color: #FFFBFB;
+    /* Nền xanh */
+    border-radius: 8px;
+    padding: 16px 24px;
+}
+
+.hotel-highlights-container-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+    width: 90%;
+    max-width: 100%;
+}
+
+@media (max-width: 991px) {
+    .hotel-highlights-container-content {
+        padding: 0 20px;
+    }
+}
+
+.hotel-highlight-item-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.hotel-highlight-item-icon {
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 40px;
+}
+
+.hotel-highlight-item-text {
+    font-size: 14px;
+    font-weight: 400;
+    color: #003366;
+    /* Màu chữ xanh đậm */
+    line-height: 20px;
+    margin-top: 8px;
+    text-align: center;
+}

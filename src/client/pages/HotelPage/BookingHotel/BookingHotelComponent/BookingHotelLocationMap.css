@@ -1,0 +1,24 @@
+.booking-hotel-location-map {
+    width: 100%;
+    /* Chiếm toàn bộ chiều rộng */
+    margin-top: 20px;
+    /* Khoảng cách phía trên */
+}
+
+.booking-hotel-section-title {
+    font-size: 24px;
+    /* Kích thước font chữ cho tiêu đề */
+    font-weight: bold;
+    /* Đậm */
+    margin-bottom: 10px;
+    /* Khoảng cách phía dưới tiêu đề */
+}
+
+.booking-hotel-map-image {
+    width: 100%;
+    /* Chiếm toàn bộ chiều rộng */
+    height: auto;
+    /* Tự động điều chỉnh chiều cao để giữ tỷ lệ */
+    border-radius: 5px;
+    /* Bo tròn góc */
+}
