@@ -1,0 +1,39 @@
+.gallery {
+    margin: 0 200px;
+    display: flex;
+    justify-content: stretch;
+    gap: 10px;
+    height: 500px;
+}
+
+.images-1,
+.images-2,
+.images-3,
+.images-4 {
+    flex-grow: 2;
+    flex-basis: 25%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.images-1 img,
+.images-2 img,
+.images-3 img,
+.images-4 img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.images-1 img,
+.images-3 img {
+    height: 245px;
+}
+
+.images-2 img,
+.images-4 img {
+    height: 500px;
+}

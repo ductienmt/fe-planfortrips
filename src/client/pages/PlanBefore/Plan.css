@@ -20,7 +20,7 @@ body {
     position: relative;
     text-align: center;
     padding: 20px;
-    background: url('https://images.pexels.com/photos/8824644/pexels-photo-8824644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') no-repeat center center fixed;
+    background: url('../../../assets/beach1.jpg') no-repeat center center fixed;
     background-size: cover;
     color: white;
     display: flex;
