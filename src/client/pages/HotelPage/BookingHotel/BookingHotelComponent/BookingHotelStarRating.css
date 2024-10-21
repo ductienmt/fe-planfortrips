@@ -1,0 +1,17 @@
+.booking-hotel-star-rating-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 14px;
+}
+
+.booking-hotel-star-icon {
+    width: 15px;
+    height: 15px;
+}
+
+.booking-hotel-review-count {
+    color: #999;
+    font-size: 10px;
+    font-weight: 600;
+}
