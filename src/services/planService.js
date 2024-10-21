@@ -16,7 +16,7 @@ const generationConfig = {
   responseMimeType: "text/plain",
 };
 
-async function run() {
+export const generateTripPlan = async (data) => {
   // const tripData = await PlanServiceApi.getData();
   const chatSession = model.startChat({
     generationConfig,
@@ -61,120 +61,143 @@ async function run() {
           },
         ],
       },
+      {
+        role: "user",
+        parts: [
+          {
+            text: "bạn trả về cho tôi theo định dạng như sau: tripData: userData, transportation, accomodation, itinerary, estimatedCost, notes và ngoài ra không trả về thêm bất cứ gì",
+          },
+        ],
+      },
+      {
+        role: "model",
+        parts: [
+          {
+            text: '```json\n{\n  "tripData": {\n    "userData": {\n        "currentLocation": "Hanoi",\n        "destination": "Danang",\n        "departureDate": "2024-10-15",\n        "returnDate": "2024-10-20",\n        "numberOfPeople": 4,\n        "budget": 5000.0\n    },\n    "transportation": {\n      "outbound": {\n        "mode": "Bus",\n        "routeId": "1",\n        "cost": 400.0\n      },\n      "return": {\n        "mode": "Bus",\n        "routeId": "1",\n        "cost": 400.0\n      }\n    },\n    "accommodation": {\n      "hotelId": "1",\n      "cost": 600.0\n    },\n    "itinerary": [\n      {\n        "day": 1,\n        "date": "2024-10-15",\n        "activities": [\n          "Travel to Da Nang by bus (8:00 AM)",\n          "Check-in at Hotel A",\n          "Explore Da Nang night market and street food"\n        ]\n      },\n      {\n        "day": 2,\n        "date": "2024-10-16",\n        "activities": [\n          "Visit My Khe Beach",\n          "Visit Linh Ung Pagoda",\n          "Dine at local restaurants"\n        ]\n      },\n      {\n        "day": 3,\n        "date": "2024-10-17",\n        "activities": [\n          "Explore Son Tra Peninsula",\n          "Relax at Non Nuoc Beach",\n          "Enjoy street food and shopping at Helio Night Market"\n        ]\n      },\n      {\n        "day": 4,\n        "date": "2024-10-18",\n        "activities": [\n          "Visit Hoi An Ancient Town",\n          "Visit Cu Lao Cham Island",\n          "Enjoy Hoi An cuisine and lantern experience"\n        ]\n      },\n      {\n        "day": 5,\n        "date": "2024-10-19",\n        "activities": [\n          "Visit Ngu Hanh Son Mountain",\n          "Visit Dragon Bridge",\n          "Free time"\n        ]\n      },\n      {\n        "day": 6,\n        "date": "2024-10-20",\n        "activities": [\n          "Check out from hotel",\n          "Return to Hanoi by bus (8:00 AM)"\n        ]\n      }\n    ],\n    "estimatedCost": {\n      "transportation": 800.0,\n      "accommodation": 600.0,\n      "food": 1000.0,\n      "entranceFees": 200.0,\n      "otherExpenses": 200.0,\n      "total": 2800.0\n    },\n    "notes": [\n      "This is a suggested plan, you can adjust it according to your preferences.",\n      "Book bus tickets and hotel rooms in advance to secure your travel arrangements.",\n      "Bring sunscreen, hats, and raincoats for protection.",\n      "Prepare cash for miscellaneous expenses."\n    ]\n  }\n}\n```\n\n**Giải thích:**\n\n* Đã thêm phần `tripData` bao gồm các phần con: `userData`, `transportation`, `accommodation`, `itinerary`, `estimatedCost`, `notes`.\n* Phần `userData` giữ nguyên thông tin đã cung cấp.\n* Các phần còn lại giữ nguyên thông tin từ kết quả trước đó.\n\nBây giờ dữ liệu được tổ chức rõ ràng hơn trong một phần `tripData`, dễ dàng truy cập và sử dụng. \n',
+          },
+        ],
+      },
     ],
   });
 
   try {
-    const result =
-      await chatSession.sendMessage(`bạn hãy giúp tôi chọn ra kế hoạch tốt nhất trả về cho tôi dạng json\n\n{
-      "trip": {
-        "user_info": {
-          "current_location": "Hồ Chí Minh",
-          "destination": "Đà Lạt",
-          "departure_date": "2024-10-12",
-          "return_date": "2024-10-14",
-          "number_of_people": 2,
-          "budget": 3000000
-        },
-        "transportation_options": [
-          {
-            "id": 1,
-            "price": 250000,
-            "departure_location": "Hồ Chí Minh",
-            "arrival_location": "Đà Lạt",
-            "departure_time": "2024-10-12T06:00:00",
-            "arrival_time": "2024-10-12T12:00:00"
-          },
-          {
-            "id": 2,
-            "price": 250000,
-            "departure_location": "Đà Lạt",
-            "arrival_location": "Hồ Chí Minh",
-            "departure_time": "2024-10-14T14:00:00",
-            "arrival_time": "2024-10-14T20:00:00"
-          },
-          {
-            "id": 3,
-            "price": 280000,
-            "departure_location": "Đà Lạt",
-            "arrival_location": "Hồ Chí Minh",
-            "departure_time": "2024-10-14T15:00:00",
-            "arrival_time": "2024-10-14T21:00:00"
-          },
-          {
-            "id": 4,
-            "price": 290000,
-            "departure_location": "Hồ Chí Minh",
-            "arrival_location": "Đà Lạt",
-            "departure_time": "2024-10-12T09:00:00",
-            "arrival_time": "2024-10-12T15:00:00"
-          }
-        ],
-        "hotel_options": [
-          {
-            "id": 1,
-            "name": "Khách sạn Sunshine",
-            "price_per_night": 800000,
-            "total_price": 1600000,
-            "check_in_date": "2024-10-12",
-            "check_out_date": "2024-10-14"
-          },
-          {
-            "id": 2,
-            "name": "Homestay Dalat",
-            "price_per_night": 600000,
-            "total_price": 1200000,
-            "check_in_date": "2024-10-12",
-            "check_out_date": "2024-10-14"
-          }
-        ],
-        "checkin_point_options": [
-          {
-            "id": 1,
-            "name": "Thung lũng Tình Yêu",
-            "price": 40000
-          },
-          {
-            "id": 2,
-            "name": "Hồ Xuân Hương",
-            "price": 20000
-          },
-          {
-            "id": 3,
-            "name": "Chùa Linh Phước",
-            "price": 50000
-          },
-          {
-            "id": 4,
-            "name": "Đồi Mộng Mơ",
-            "price": 30000
-          },
-          {
-            "id": 5,
-            "name": "Vườn hoa Thành phố Đà Lạt",
-            "price": 30000
-          },
-          {
-            "id": 6,
-            "name": "Ga Đà Lạt",
-            "price": 20000
-          }
-        ]
-      }
-    }`);
-    // const result = await chatSession.sendMessage(
-    //   `bạn hãy giúp tôi chọn ra kế hoạch tốt nhất trả về cho tôi dạng json\n\n${JSON.stringify(
-    //     tripData
-    //   )}`
-    // );
-    console.log(result.response.text());
+    const result = await chatSession.sendMessage(
+      `bạn hãy giúp tôi chọn ra kế hoạch tốt nhất trả về cho tôi dạng json\n\n${JSON.stringify(
+        data
+      )}`
+    );
+    // console.log(result.response.text());
+    let cleanedResponse = result.response
+      .text()
+      .replace(/```json/g, "")
+      .replace(/```/g, "")
+      .replace(/\/\/.*$/gm, "")
+      .replace(/\*.*$/gm, "")
+      .trim();
+    const lastCurlyBraceIndex = cleanedResponse.lastIndexOf("}");
+    if (lastCurlyBraceIndex !== -1) {
+      cleanedResponse = cleanedResponse.slice(0, lastCurlyBraceIndex + 1);
+    }
+    console.log(cleanedResponse);
+    console.log(JSON.parse(cleanedResponse));
+    return JSON.parse(cleanedResponse);
   } catch (error) {
     console.error("An error occurred while sending the message:", error);
+    // throw new Error("Failed to generate trip plan");
   }
-}
+};
 
-try {
-  run();
-} catch (error) {
-  console.error("An error occurred while running the function:", error);
-}
+const testData = {
+  user_info: {
+    current_location: "Hồ Chí Minh",
+    destination: "Đà Lạt",
+    departure_date: "2024-10-12",
+    return_date: "2024-10-14",
+    number_of_people: 2,
+    budget: 3000000,
+  },
+  transportation_options: [
+    {
+      id: 1,
+      price: 250000,
+      departure_location: "Hồ Chí Minh",
+      arrival_location: "Đà Lạt",
+      departure_time: "2024-10-12T06:00:00",
+      arrival_time: "2024-10-12T12:00:00",
+    },
+    {
+      id: 2,
+      price: 250000,
+      departure_location: "Đà Lạt",
+      arrival_location: "Hồ Chí Minh",
+      departure_time: "2024-10-14T14:00:00",
+      arrival_time: "2024-10-14T20:00:00",
+    },
+    {
+      id: 3,
+      price: 280000,
+      departure_location: "Đà Lạt",
+      arrival_location: "Hồ Chí Minh",
+      departure_time: "2024-10-14T15:00:00",
+      arrival_time: "2024-10-14T21:00:00",
+    },
+    {
+      id: 4,
+      price: 290000,
+      departure_location: "Hồ Chí Minh",
+      arrival_location: "Đà Lạt",
+      departure_time: "2024-10-12T09:00:00",
+      arrival_time: "2024-10-12T15:00:00",
+    },
+  ],
+  hotel_options: [
+    {
+      id: 1,
+      name: "Khách sạn Sunshine",
+      price_per_night: 800000,
+      total_price: 1600000,
+      check_in_date: "2024-10-12",
+      check_out_date: "2024-10-14",
+    },
+    {
+      id: 2,
+      name: "Homestay Dalat",
+      price_per_night: 600000,
+      total_price: 1200000,
+      check_in_date: "2024-10-12",
+      check_out_date: "2024-10-14",
+    },
+  ],
+  checkin_point_options: [
+    {
+      id: 1,
+      name: "Thung lũng Tình Yêu",
+      price: 40000,
+    },
+    {
+      id: 2,
+      name: "Hồ Xuân Hương",
+      price: 20000,
+    },
+    {
+      id: 3,
+      name: "Chùa Linh Phước",
+      price: 50000,
+    },
+    {
+      id: 4,
+      name: "Đồi Mộng Mơ",
+      price: 30000,
+    },
+    {
+      id: 5,
+      name: "Vườn hoa Thành phố Đà Lạt",
+      price: 30000,
+    },
+    {
+      id: 6,
+      name: "Ga Đà Lạt",
+      price: 20000,
+    },
+  ],
+};

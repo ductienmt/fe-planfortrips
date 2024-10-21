@@ -1,7 +1,7 @@
-import Http from "./Http";
+import Http from "../Http";
 
 export const PlanServiceApi = {
-  getData: async () => {
-    return await Http.get("/api/v1/plans/prepare");
+  getData: async (data) => {
+    return await Http.post("/api/v1/plans/prepare", data);
   },
 };

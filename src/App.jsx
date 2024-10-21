@@ -25,8 +25,10 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<LandingPage />} />
+
           <Route path="/plan" element={<PlanBefore />} />
           <Route path="/plan/trip" element={<TravelPlan />} />
+
           <Route path="/hotel" element={<Hotel />} />
           <Route path="/booking-hotel" element={<BookingHotel />} />
           <Route path="/hotel-info" element={<HotelInfo />} />

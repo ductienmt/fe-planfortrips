@@ -5,13 +5,10 @@ const Http = axios.create({
   baseURL: BASE_API,
 });
 
-const getAccessToken = () => {
-  return localStorage.getItem("accessToken");
-};
-
 Http.interceptors.request.use(
   (config) => {
-    const token = getAccessToken();
+    const token = localStorage.getItem("accessToken");
+    console.log(token);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
