@@ -1,13 +1,16 @@
 import "./TransportationCard.css";
 import "feather-icons/dist/feather";
-function TransportationCard({ className, onClick }) {
+function TransportationCard({
+  className,
+  onClick,
+  img,
+  nameVehicle,
+  departureTime,
+  arrivalTime,
+}) {
   return (
     <article className={`transportation-card ${className}`} onClick={onClick}>
-      <img
-        src="https://cdn.builder.io/api/v1/image/assets/TEMP/9dbd6442be390686e0fe9e6e4a46238c20406bfa1b5da82525c7dc7ecff84fb8?placeholderIfAbsent=true&apiKey=75fde3af215540558ff19397203996a6"
-        alt="Transportation image"
-        className="transport-image"
-      />
+      <img src={img} alt="Transportation image" className="transport-image" />
       <div className="transport-details">
         <div className="transport-header">
           <div className="company-info">
@@ -18,7 +21,7 @@ function TransportationCard({ className, onClick }) {
             />
 
             <div className="company-name">
-              <span className="name">Phương Trang</span>
+              <span className="name">{nameVehicle}</span>
               <span className="code">A01</span>
             </div>
           </div>
@@ -30,9 +33,9 @@ function TransportationCard({ className, onClick }) {
         </div>
         <div className="journey-info">
           <div className="time-info">
-            <TimeDisplay time="00:00" date="T4, 26 thg 9" />
+            <TimeDisplay time={departureTime} date="T4, 26 thg 9" />
             <span className="duration">1h 10m</span>
-            <TimeDisplay time="02:00" date="T4, 26 thg 9" />
+            <TimeDisplay time={arrivalTime} date="T4, 26 thg 9" />
           </div>
           <div className="location-info">
             <LocationDisplay

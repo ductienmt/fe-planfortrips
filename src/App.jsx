@@ -1,18 +1,17 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import TravelPlan from "./client/pages/Plan/TravelPlan";
 import BookingHotel from "./client/pages/HotelPage/BookingHotel/BookingHotel";
-import Hotel from "./client/pages/Hotel/Hotel";
+import TravelPlan from "./client/pages/PlanAfter/TravelPlan";
+import Hotel from "./client/pages/HotelPage/Hotel/Hotel";
 import Login from "./client/pages/Auth/Login/Login";
 import Register from "./client/pages/Auth/Register/Register";
 import Footer from "./client/pages/Footer/Footer";
 import Header from "./client/pages/Header/Header";
 import { SnackbarProvider } from "notistack";
-
-import HotelDetails from "./client/pages/HotelPage/HotelDetails/HotelDetails";
-
 import LandingPage from "./client/pages/Homepage/LandingPage";
 import PlanBefore from "./client/pages/PlanBefore/Plan";
+
+import HotelDetails from "./client/pages/HotelPage/HotelDetails/HotelDetails";
 
 function App() {
   return (
@@ -35,9 +34,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>
-        {window.location.pathname !== "/login" &&
-          window.location.pathname !== "/register" &&
-          window.location.pathname !== "/plan" && <Footer />}
+        {window.location.pathname !== "/login" ||
+          window.location.pathname !== "/register" ||
+          window.location.pathname !== "/plan" || <Footer />}
       </BrowserRouter>
     </SnackbarProvider>
   );
