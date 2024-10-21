@@ -1,0 +1,91 @@
+.hotel-details-container {
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.hotel-details-main-content {
+    background-color: #fff;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    overflow: hidden;
+    align-items: center;
+    padding: 60px 80px 26px;
+}
+
+@media (max-width: 991px) {
+    .hotel-details-main-content {
+        max-width: 100%;
+        padding: 0 20px;
+    }
+}
+
+.hotel-details-content-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 916px;
+    flex-direction: column;
+}
+
+@media (max-width: 991px) {
+    .hotel-details-content-wrapper {
+        max-width: 100%;
+    }
+}
+
+.hotel-information-section {
+    display: flex;
+    margin-top: 50px;
+    width: 100%;
+    padding-left: 5px;
+    flex-direction: column;
+}
+
+@media (max-width: 991px) {
+    .hotel-information-section {
+        max-width: 100%;
+        margin-top: 40px;
+    }
+}
+
+.hotel-information-grid {
+    gap: 20px;
+    display: flex;
+}
+
+@media (max-width: 991px) {
+    .hotel-information-grid {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+    }
+}
+
+.hotel-information-left {
+    display: flex;
+    flex-direction: column;
+    line-height: normal;
+    width: 69%;
+    margin-left: 0;
+}
+
+@media (max-width: 991px) {
+    .hotel-information-left {
+        width: 100%;
+    }
+}
+
+.hotel-information-right {
+    display: flex;
+    flex-direction: column;
+    line-height: normal;
+    width: 31%;
+    margin-left: 20px;
+}
+
+@media (max-width: 991px) {
+    .hotel-information-right {
+        width: 100%;
+    }
+}

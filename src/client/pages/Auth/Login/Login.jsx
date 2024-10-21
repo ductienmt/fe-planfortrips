@@ -1,58 +1,99 @@
 // src/components/Auth/Login.jsx
 import { useEffect, useState } from "react";
 import "./Login.css";
-import { callBackUrlGoogle, getAuthUrl } from "../../../../services/apis/Oauth2Service";
+import {
+  callBackUrlGoogle,
+  getAuthUrl,
+} from "../../../../services/apis/Oauth2Service";
 import { Link, useNavigate } from "react-router-dom";
+import AuthService from "../../../../services/apis/AuthService";
+import { useSnackbar } from "notistack";
+import handleToken from "../../../../services/HandleToken";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const { enqueueSnackbar } = useSnackbar();
+  const queryParam = new URLSearchParams(window.location.search);
+  const navigate = useNavigate();
+  const [authUrl, setAuthUrl] = useState("");
+  const [formData, setFormData] = useState({
+    userName: "",
+    password: "",
+  });
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setErrorMessage("");
-
-    if (!username || !password) {
-      setErrorMessage("Vui lòng điền đầy đủ thông tin.");
-      return;
-    }
-
     try {
-      const response = await AuthService.login({ username, password });
+      if (!validateForm()) {
+        return enqueueSnackbar("Vui lòng điền đầy đủ thông tin", {
+          variant: "error",
+          autoHideDuration: 1000,
+        });
+      }
+      const response = await AuthService.login(formData);
       console.log("Đăng nhập thành công:", response.data);
+      handleToken.save(
+        response.data.data.token,
+        response.data.data.userName,
+        response.data.data.role
+      );
+      enqueueSnackbar(response.data.message, {
+        variant: "success",
+        autoHideDuration: 1000,
+        onExit: () => {
+          navigate("/");
+        },
+      });
     } catch (error) {
-      setErrorMessage(error.response?.data?.message || "Đăng nhập thất bại");
+      enqueueSnackbar(error.response?.data?.message || "Đăng nhập thất bại", {
+        variant: "error",
+        autoHideDuration: 1000,
+      });
     }
   };
 
-  const queryParam = new URLSearchParams(window.location.search);
-  const navi = useNavigate();
-  const [authUrl, setAuthUrl] = useState('');
+  const validateForm = () => {
+    return Object.values(formData).every((value) => value.trim() !== "");
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  useEffect(() => {}, []);
 
   useEffect(() => {
+    localStorage.clear();
+    document.title = "Đăng nhập";
+    window.scrollTo(0, 200);
     getAuthUrl().then((res) => {
       setAuthUrl(res);
     });
-  }, []);
-
-  useEffect(() => {
-    const code = queryParam.get('code');
+    const code = queryParam.get("code");
     if (code) {
       handleLoginWithGoogle(code);
     }
-  }, [queryParam])
-
+  }, [queryParam]);
 
   const handleLoginWithGoogle = async (code) => {
     const res = await callBackUrlGoogle(code);
     if (res.firstOauth2)
-      alert("Chào mừng bạn lần đầu đăng nhập Google!")
+      enqueueSnackbar("Chào mừng bạn lần đầu đăng nhập Google!", {
+        variant: "success",
+        autoHideDuration: 1000,
+        onExit: () => {
+          navigate("/");
+        },
+      });
     // Đi đâu sau khi đăng nhập thành công thì bỏ vào
-    else alert("Chào mừng bạn quay trở lại!")
-
-    navi('/user')
-  }
+    else
+      enqueueSnackbar("Chào mừng bạn quay trở lại!", {
+        variant: "success",
+        autoHideDuration: 1000,
+        onExit: () => {
+          navigate("/");
+        },
+      });
+  };
 
   return (
     <section className="vh-100 login-container">
@@ -77,26 +118,22 @@ const Login = () => {
                 <div className="custom-input form-outline mb-4">
                   <input
                     type="text"
-                    id="username"
+                    name="userName"
                     className="form-control"
                     placeholder=" "
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
+                    value={formData.userName}
+                    onChange={(e) => handleChange(e)}
                   />
-                  <label className="form-label" htmlFor="username">
-                    Tên tài khoản
-                  </label>
+                  <label className="form-label">Tên tài khoản</label>
                 </div>
                 <div className="custom-input form-outline mb-4">
                   <input
                     type="password"
-                    id="password"
+                    name="password"
                     className="form-control"
                     placeholder=" "
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
+                    value={formData.password}
+                    onChange={(e) => handleChange(e)}
                   />
                   <label className="form-label" htmlFor="password">
                     Mật khẩu
@@ -125,7 +162,7 @@ const Login = () => {
               {/* Nút Đăng Nhập bằng Google và Facebook */}
               <div className="d-flex flex-column align-items-center justify-content-center mb-4">
                 <Link to={authUrl} className="btn btn-google">
-                  <div  className="text-decoration-none">
+                  <div className="text-decoration-none">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -174,8 +211,6 @@ const Login = () => {
                   </a>
                 </button>
               </div>
-
-              {errorMessage && <p className="text-danger">{errorMessage}</p>}
             </form>
           </div>
         </div>

@@ -1,0 +1,73 @@
+.attraction-card {
+  position: relative;
+  width: 25%;
+  /* aspect-ratio: 0.719; */
+  border-radius: 20px;
+  overflow: hidden;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* .hoverable:hover {
+  transform: scale(1.05);
+  opacity: 1; /* Khi hover, card này sẽ nổi bật hơn */
+}
+
+*/ .active {
+  transform: scale(1.05);
+  opacity: 1;
+  /* Card được click sẽ nổi bật */
+}
+
+.inactive {
+  opacity: 0.5;
+  /* Các card không được click sẽ mờ đi */
+}
+
+.attraction-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  aspect-ratio: 0.8;
+}
+
+.attraction-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  padding: 10px;
+  color: #fff;
+  /* display: flex;
+  justify-content: space-between; */
+}
+
+.attraction-icons {
+  display: flex;
+  justify-content: space-between;
+  /* gap: 10px; */
+  margin-bottom: 50%;
+}
+
+.attraction-icon {
+  width: 48px;
+  height: 48px;
+}
+
+.attraction-name {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.attraction-entry {
+  font-size: 15px;
+  margin: 5px 0 0;
+}
+
+@media (max-width: 991px) {
+  .attraction-card {
+    width: 100%;
+    margin-top: 40px;
+  }
+}

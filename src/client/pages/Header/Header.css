@@ -44,13 +44,9 @@
 
 .custom-header .nav-link {
     color: black;
-    /* Màu chữ mặc định */
     position: relative;
-    /* Cần để tạo pseudo-element */
     padding: 10px;
-    /* Thêm khoảng cách cho liên kết */
     transition: color 0.3s ease;
-    /* Hiệu ứng chuyển tiếp cho màu chữ */
 }
 
 .custom-header .nav-link:hover,
@@ -111,7 +107,7 @@
     text-align: center;
     /* Đảm bảo mỗi mục chiếm không gian bằng nhau */
     padding: 0;
-    width: 110px;
+    width: fit-content;
     text-decoration: none;
     color: black;
     max-width: 150px;

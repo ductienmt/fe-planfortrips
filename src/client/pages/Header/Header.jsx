@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./Header.css";
 import { useState } from "react";
 
@@ -67,24 +68,33 @@ const Header = () => {
             </button>
             <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
               <div className="navbar-nav custom-nav">
-                <a className="nav-link" href="#">
+                <Link className="nav-link" to="/">
                   Trang chủ
-                </a>
-                <a className="nav-link" href="#">
+                </Link>{" "}
+                <span>|</span>
+                <Link to="/plan" className="nav-link">
+                  Lập kế hoạch
+                </Link>
+                <span>|</span>
+                <Link className="nav-link" to="#">
                   Phương tiện
-                </a>
-                <a className="nav-link" href="#">
+                </Link>
+                <span>|</span>
+                <Link className="nav-link" to="#">
                   Khách sạn
-                </a>
-                <a className="nav-link" href="#">
-                  Hàn quán
-                </a>
-                <a className="nav-link" href="#">
+                </Link>
+                <span>|</span>
+                <Link className="nav-link" to="#">
+                  Ẩm thực
+                </Link>
+                <span>|</span>
+                <Link className="nav-link" to="#">
                   Tham quan
-                </a>
-                <a className="nav-link" href="#">
+                </Link>
+                <span>|</span>
+                <Link className="nav-link" to="#">
                   Hợp tác
-                </a>
+                </Link>
               </div>
             </div>
           </div>

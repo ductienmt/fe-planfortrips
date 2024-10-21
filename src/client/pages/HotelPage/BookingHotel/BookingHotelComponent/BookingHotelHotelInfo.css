@@ -1,0 +1,105 @@
+.booking-hotel-hotel-info-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 25px;
+    width: 100%;
+    padding: 20px;
+    /* Khoảng cách bên trong */
+    background-color: #f8f9fa;
+    /* Màu nền của container */
+    border-radius: 8px;
+    /* Bo tròn góc */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Bóng đổ nhẹ */
+}
+
+.booking-hotel-hotel-details {
+    max-width: 600px;
+    /* Giới hạn chiều rộng */
+}
+
+.booking-hotel-name {
+    color: #000;
+    font-size: 24px;
+    /* Kích thước chữ */
+    font-weight: 700;
+    /* Đậm */
+    line-height: 30px;
+    /* Khoảng cách giữa các dòng */
+}
+
+.booking-hotel-address {
+    color: #828282;
+    /* Màu chữ */
+    font-size: 15px;
+    /* Kích thước chữ */
+    line-height: 21px;
+    /* Khoảng cách giữa các dòng */
+}
+
+.booking-hotel-info {
+    text-align: right;
+    /* Canh phải */
+}
+
+.booking-hotel-price-info {
+    margin-bottom: 10px;
+    /* Khoảng cách dưới cùng */
+}
+
+.booking-hotel-original-price {
+    color: #0a0a0a;
+    /* Màu chữ */
+    font-size: 15px;
+    /* Kích thước chữ */
+}
+
+.booking-hotel-discounted-price {
+    color: #eb0101;
+    /* Màu chữ giảm giá */
+    font-size: 20px;
+    /* Kích thước chữ */
+    font-weight: 700;
+    /* Đậm */
+}
+
+.booking-hotel-tax-info {
+    color: #818181;
+    /* Màu chữ */
+    font-size: 13px;
+    /* Kích thước chữ */
+}
+
+.booking-hotel-book-button {
+    background-color: #0976cf;
+    /* Màu nền của nút */
+    color: #fff;
+    /* Màu chữ */
+    border: none;
+    /* Không có đường viền */
+    border-radius: 10px;
+    /* Bo tròn góc */
+    padding: 12px 24px;
+    /* Khoảng cách bên trong */
+    font-size: 16px;
+    /* Kích thước chữ */
+    font-weight: 700;
+    /* Đậm */
+    cursor: pointer;
+    /* Con trỏ tay khi hover */
+}
+
+@media (max-width: 991px) {
+    .booking-hotel-hotel-info-container {
+        flex-direction: column;
+        /* Thay đổi chiều hướng */
+        gap: 20px;
+        /* Khoảng cách giữa các phần tử */
+    }
+
+    .booking-hotel-info {
+        text-align: left;
+        /* Canh trái */
+    }
+}
