@@ -5,7 +5,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { handleInputChange } from "../../../utils/FormatMoney"; // Đường dẫn tới file FormatMoney.js
 import provinces from "../../../utils/Provinces.json"; // Đường dẫn tới file Province.json
 import { useSnackbar } from "notistack"; // Thêm Notistack
-import "./HomePage.css";
+import "./Plan.css";
+import { flatpickrConfig } from "../../../utils/ConfigFlatpickr";
 
 function HomePage() {
   const { enqueueSnackbar } = useSnackbar(); // Sử dụng Notistack
@@ -15,7 +16,6 @@ function HomePage() {
   const [infants, setInfants] = useState(0);
 
   const [showNumberBox, setShowNumberBox] = useState(false);
-  const [showHeader, setShowHeader] = useState(false); // Trạng thái cho header
 
   const ngayDiRef = useRef(null);
   const ngayVeRef = useRef(null);
@@ -24,74 +24,40 @@ function HomePage() {
   const [budget, setBudget] = useState(""); // Trạng thái cho ngân sách
   // const [error, setError] = useState(""); // Trạng thái cho thông báo lỗi
 
-  // Trạng thái cho các ô nhập gợi ý
   const [queryCurrentCity, setQueryCurrentCity] = useState(""); // Tỉnh, thành phố đang ở
   const [queryDestination, setQueryDestination] = useState(""); // Điểm đến
   const [filteredCurrentCities, setFilteredCurrentCities] = useState([]); // Gợi ý cho tỉnh, thành phố đang ở
   const [filteredDestinations, setFilteredDestinations] = useState([]); // Gợi ý cho điểm đến
 
   const handlePlan = () => {
-    // Kiểm tra tất cả các trường đã được điền
-    // if (!queryCurrentCity || !queryDestination || !ngayDiRef.current.value || !ngayVeRef.current.value || !budget) {
-    //   enqueueSnackbar('Vui lòng điền tất cả các trường!', { variant: 'error' });
-    //   return;
-    // }
+    if (validatePlan()) {
+      window.location.href = "/plan/trip";
+    }
+  };
 
+  const validatePlan = () => {
     const totalPeople = adults + children + infants;
-
-    if (totalPeople > 20) {
-      enqueueSnackbar("Số lượng người không được vượt quá 20!", {
-        variant: "error",
-      });
-      return false;
-    }
-
-    if ((children > 0 || infants > 0) && adults === 0) {
-      enqueueSnackbar(
+    const errorMessages = [
+      totalPeople > 20 && "Số lượng người không được vượt quá 20!",
+      (children > 0 || infants > 0) &&
+        adults === 0 &&
         "Cần ít nhất 1 người lớn nếu có trẻ em hoặc trẻ sơ sinh!",
-        {
-          variant: "error",
-        }
-      );
+      !queryCurrentCity && "Vui lòng chọn thành phố hiện tại!",
+      !queryDestination && "Vui lòng chọn điểm đến!",
+      !ngayDiRef.current.value && "Vui lòng chọn ngày đi!",
+      !ngayVeRef.current.value && "Vui lòng chọn ngày về!",
+      !budget && "Vui lòng nhập ngân sách!",
+      adults === 0 &&
+        children === 0 &&
+        infants === 0 &&
+        "Vui lòng chọn ít nhất một người!",
+    ].filter(Boolean); // Remove undefined values
+
+    // Show the first error message if any
+    if (errorMessages.length > 0) {
+      enqueueSnackbar(errorMessages[0], { variant: "error" });
       return false;
     }
-
-    if (!queryCurrentCity) {
-      enqueueSnackbar("Vui lòng chọn thành phố hiện tại!", {
-        variant: "error",
-      });
-      return;
-    }
-
-    if (!queryDestination) {
-      enqueueSnackbar("Vui lòng chọn điểm đến!", { variant: "error" });
-      return;
-    }
-
-    if (!ngayDiRef.current.value) {
-      enqueueSnackbar("Vui lòng chọn ngày đi!", { variant: "error" });
-      return;
-    }
-
-    if (!ngayVeRef.current.value) {
-      enqueueSnackbar("Vui lòng chọn ngày về!", { variant: "error" });
-      return;
-    }
-
-    if (!budget) {
-      enqueueSnackbar("Vui lòng nhập ngân sách!", { variant: "error" });
-      return;
-    }
-
-    if (adults === 0 && children === 0 && infants === 0) {
-      enqueueSnackbar("Vui lòng chọn ít nhất một người!", { variant: "error" });
-      return false; // Không tiếp tục nếu chưa chọn số lượng người
-    }
-    return enqueueSnackbar("Kế hoạch đã được lưu!", { variant: "success" }); // Tiếp tục nếu đã chọn ít nhất một người
-
-    // Nếu mọi thứ hợp lệ, thực hiện kế hoạch
-    // enqueueSnackbar("Kế hoạch đã được lưu!", { variant: "success" });
-    // Thêm logic để lưu kế hoạch của bạn ở đây
   };
 
   const handleBudgetChange = (event) => {
@@ -108,32 +74,28 @@ function HomePage() {
 
   // Xử lý khi người dùng nhập tỉnh, thành phố đang ở
   const handleInputChangeCurrentCity = (event) => {
-    const value = event.target.value;
+    const value = event.target.value.trim();
     setQueryCurrentCity(value);
-
-    if (value.trim() !== "") {
-      const suggestions = provinces.results.filter((province) =>
-        province.province_name.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredCurrentCities(suggestions);
-    } else {
-      setFilteredCurrentCities([]);
-    }
+    setFilteredCurrentCities(
+      value
+        ? provinces.results.filter((province) =>
+            province.province_name.toLowerCase().includes(value.toLowerCase())
+          )
+        : []
+    );
   };
 
   // Xử lý khi người dùng nhập điểm đến
   const handleInputChangeDestination = (event) => {
-    const value = event.target.value;
+    const value = event.target.value.trim();
     setQueryDestination(value);
-
-    if (value.trim() !== "") {
-      const suggestions = provinces.results.filter((province) =>
-        province.province_name.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredDestinations(suggestions);
-    } else {
-      setFilteredDestinations([]);
-    }
+    setFilteredDestinations(
+      value
+        ? provinces.results.filter((province) =>
+            province.province_name.toLowerCase().includes(value.toLowerCase())
+          )
+        : []
+    );
   };
 
   // Khi chọn gợi ý tỉnh, thành phố
@@ -151,67 +113,15 @@ function HomePage() {
   const today = new Date();
   const maxDate = new Date(new Date().setFullYear(today.getFullYear() + 1));
 
-  const VietnamesePlan = {
-    weekdays: {
-      shorthand: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
-      longhand: [
-        "Chủ Nhật",
-        "Thứ Hai",
-        "Thứ Ba",
-        "Thứ Tư",
-        "Thứ Năm",
-        "Thứ Sáu",
-        "Thứ Bảy",
-      ],
-    },
-    months: {
-      shorthand: [
-        "Th1",
-        "Th2",
-        "Th3",
-        "Th4",
-        "Th5",
-        "Th6",
-        "Th7",
-        "Th8",
-        "Th9",
-        "Th10",
-        "Th11",
-        "Th12",
-      ],
-      longhand: [
-        "Tháng 1",
-        "Tháng 2",
-        "Tháng 3",
-        "Tháng 4",
-        "Tháng 5",
-        "Tháng 6",
-        "Tháng 7",
-        "Tháng 8",
-        "Tháng 9",
-        "Tháng 10",
-        "Tháng 11",
-        "Tháng 12",
-      ],
-    },
-    firstDayOfWeek: 1,
-    rangeSeparator: " đến ",
-    weekAbbreviation: "Tuần",
-    scrollTitle: "Cuộn để tăng giảm",
-    toggleTitle: "Nhấp để chuyển đổi",
-    ordinal: (nth) => {
-      if (nth > 1) return "th";
-      return "";
-    },
-  };
-
   useEffect(() => {
+    document.title = "Lên kế hoạch";
+    window.scrollTo(0, 200);
     if (ngayDiRef.current && ngayVeRef.current) {
       const ngayDiPicker = flatpickr(ngayDiRef.current, {
         altInput: true,
         altFormat: "d-m-Y H:i", // Định dạng hiển thị ngày và giờ
         dateFormat: "Y-m-d H:i", // Định dạng cho giá trị thực
-        locale: VietnamesePlan,
+        locale: flatpickrConfig,
         minDate: today,
         maxDate: maxDate,
         enableTime: true, // Bật chọn giờ
@@ -233,7 +143,7 @@ function HomePage() {
         altInput: true,
         altFormat: "d-m-Y H:i", // Định dạng hiển thị ngày và giờ
         dateFormat: "Y-m-d H:i", // Định dạng cho giá trị thực
-        locale: VietnamesePlan,
+        locale: flatpickrConfig,
         minDate: today,
         maxDate: maxDate,
         enableTime: true, // Bật chọn giờ
@@ -272,23 +182,23 @@ function HomePage() {
       return;
     }
 
-    if (type === "adult") {
-      setAdults(adults + 1);
-    } else if (type === "child") {
-      setChildren(children + 1);
-    } else if (type === "infant") {
-      setInfants(infants + 1);
-    }
+    const incrementMap = {
+      adult: () => setAdults(adults + 1),
+      child: () => setChildren(children + 1),
+      infant: () => setInfants(infants + 1),
+    };
+
+    incrementMap[type]?.(); // Call the appropriate increment function
   };
 
   const handleDecrement = (type) => {
-    if (type === "adult" && adults > 0) {
-      setAdults(adults - 1);
-    } else if (type === "child" && children > 0) {
-      setChildren(children - 1);
-    } else if (type === "infant" && infants > 0) {
-      setInfants(infants - 1);
-    }
+    const decrementMap = {
+      adult: () => adults > 0 && setAdults(adults - 1),
+      child: () => children > 0 && setChildren(children - 1),
+      infant: () => infants > 0 && setInfants(infants - 1),
+    };
+
+    decrementMap[type]?.(); // Call the appropriate decrement function
   };
 
   return (

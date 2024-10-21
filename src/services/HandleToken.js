@@ -1,12 +1,14 @@
 const handleToken = {
   // Function to save the token in session storage
-  save: (token) => {
-    sessionStorage.setItem("accessToken", token);
+  save: (token, username, role) => {
+    localStorage.setItem("accessToken", token);
+    localStorage.setItem("username", username);
+    localStorage.setItem("role", role);
   },
 
   // Function to delete the token from session storage
   delete: () => {
-    sessionStorage.removeItem("accessToken");
+    localStorage.clear();
   },
 
   // Function to set a timeout for the token

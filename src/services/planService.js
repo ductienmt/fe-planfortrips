@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+// import { PlanServiceApi } from "./apis/PlanServiceApi";
 
 const apiKey = "AIzaSyC--UPHZ3h05O7JyeDsA-MtAFCbN9YjVkI";
 const genAI = new GoogleGenerativeAI(apiKey);
@@ -16,6 +17,7 @@ const generationConfig = {
 };
 
 async function run() {
+  // const tripData = await PlanServiceApi.getData();
   const chatSession = model.startChat({
     generationConfig,
     history: [
@@ -65,101 +67,106 @@ async function run() {
   try {
     const result =
       await chatSession.sendMessage(`bạn hãy giúp tôi chọn ra kế hoạch tốt nhất trả về cho tôi dạng json\n\n{
-  "trip": {
-    "user_info": {
-      "current_location": "Hồ Chí Minh",
-      "destination": "Đà Lạt",
-      "departure_date": "2024-10-12",
-      "return_date": "2024-10-14",
-      "number_of_people": 2,
-      "budget": 3000000
-    },
-    "transportation_options": [
-      {
-        "id": 1,
-        "price": 250000,
-        "departure_location": "Hồ Chí Minh",
-        "arrival_location": "Đà Lạt",
-        "departure_time": "2024-10-12T06:00:00",
-        "arrival_time": "2024-10-12T12:00:00"
-      },
-      {
-        "id": 2,
-        "price": 250000,
-        "departure_location": "Đà Lạt",
-        "arrival_location": "Hồ Chí Minh",
-        "departure_time": "2024-10-14T14:00:00",
-        "arrival_time": "2024-10-14T20:00:00"
-      },
-      {
-        "id": 3,
-        "price": 280000,
-        "departure_location": "Đà Lạt",
-        "arrival_location": "Hồ Chí Minh",
-        "departure_time": "2024-10-14T15:00:00",
-        "arrival_time": "2024-10-14T21:00:00"
-      },
-      {
-        "id": 4,
-        "price": 290000,
-        "departure_location": "Hồ Chí Minh",
-        "arrival_location": "Đà Lạt",
-        "departure_time": "2024-10-12T09:00:00",
-        "arrival_time": "2024-10-12T15:00:00"
+      "trip": {
+        "user_info": {
+          "current_location": "Hồ Chí Minh",
+          "destination": "Đà Lạt",
+          "departure_date": "2024-10-12",
+          "return_date": "2024-10-14",
+          "number_of_people": 2,
+          "budget": 3000000
+        },
+        "transportation_options": [
+          {
+            "id": 1,
+            "price": 250000,
+            "departure_location": "Hồ Chí Minh",
+            "arrival_location": "Đà Lạt",
+            "departure_time": "2024-10-12T06:00:00",
+            "arrival_time": "2024-10-12T12:00:00"
+          },
+          {
+            "id": 2,
+            "price": 250000,
+            "departure_location": "Đà Lạt",
+            "arrival_location": "Hồ Chí Minh",
+            "departure_time": "2024-10-14T14:00:00",
+            "arrival_time": "2024-10-14T20:00:00"
+          },
+          {
+            "id": 3,
+            "price": 280000,
+            "departure_location": "Đà Lạt",
+            "arrival_location": "Hồ Chí Minh",
+            "departure_time": "2024-10-14T15:00:00",
+            "arrival_time": "2024-10-14T21:00:00"
+          },
+          {
+            "id": 4,
+            "price": 290000,
+            "departure_location": "Hồ Chí Minh",
+            "arrival_location": "Đà Lạt",
+            "departure_time": "2024-10-12T09:00:00",
+            "arrival_time": "2024-10-12T15:00:00"
+          }
+        ],
+        "hotel_options": [
+          {
+            "id": 1,
+            "name": "Khách sạn Sunshine",
+            "price_per_night": 800000,
+            "total_price": 1600000,
+            "check_in_date": "2024-10-12",
+            "check_out_date": "2024-10-14"
+          },
+          {
+            "id": 2,
+            "name": "Homestay Dalat",
+            "price_per_night": 600000,
+            "total_price": 1200000,
+            "check_in_date": "2024-10-12",
+            "check_out_date": "2024-10-14"
+          }
+        ],
+        "checkin_point_options": [
+          {
+            "id": 1,
+            "name": "Thung lũng Tình Yêu",
+            "price": 40000
+          },
+          {
+            "id": 2,
+            "name": "Hồ Xuân Hương",
+            "price": 20000
+          },
+          {
+            "id": 3,
+            "name": "Chùa Linh Phước",
+            "price": 50000
+          },
+          {
+            "id": 4,
+            "name": "Đồi Mộng Mơ",
+            "price": 30000
+          },
+          {
+            "id": 5,
+            "name": "Vườn hoa Thành phố Đà Lạt",
+            "price": 30000
+          },
+          {
+            "id": 6,
+            "name": "Ga Đà Lạt",
+            "price": 20000
+          }
+        ]
       }
-    ],
-    "hotel_options": [
-      {
-        "id": 1,
-        "name": "Khách sạn Sunshine",
-        "price_per_night": 800000,
-        "total_price": 1600000,
-        "check_in_date": "2024-10-12",
-        "check_out_date": "2024-10-14"
-      },
-      {
-        "id": 2,
-        "name": "Homestay Dalat",
-        "price_per_night": 600000,
-        "total_price": 1200000,
-        "check_in_date": "2024-10-12",
-        "check_out_date": "2024-10-14"
-      }
-    ],
-    "checkin_point_options": [
-      {
-        "id": 1,
-        "name": "Thung lũng Tình Yêu",
-        "price": 40000
-      },
-      {
-        "id": 2,
-        "name": "Hồ Xuân Hương",
-        "price": 20000
-      },
-      {
-        "id": 3,
-        "name": "Chùa Linh Phước",
-        "price": 50000
-      },
-      {
-        "id": 4,
-        "name": "Đồi Mộng Mơ",
-        "price": 30000
-      },
-      {
-        "id": 5,
-        "name": "Vườn hoa Thành phố Đà Lạt",
-        "price": 30000
-      },
-      {
-        "id": 6,
-        "name": "Ga Đà Lạt",
-        "price": 20000
-      }
-    ]
-  }
-}`);
+    }`);
+    // const result = await chatSession.sendMessage(
+    //   `bạn hãy giúp tôi chọn ra kế hoạch tốt nhất trả về cho tôi dạng json\n\n${JSON.stringify(
+    //     tripData
+    //   )}`
+    // );
     console.log(result.response.text());
   } catch (error) {
     console.error("An error occurred while sending the message:", error);

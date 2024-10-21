@@ -1,14 +1,18 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import HomePage from "./client/pages/HomePage/HomePage";
 import TravelPlan from "./client/pages/Plan/TravelPlan";
 import BookingHotel from "./client/pages/HotelPage/BookingHotel/BookingHotel";
+import Hotel from "./client/pages/Hotel/Hotel";
 import Login from "./client/pages/Auth/Login/Login";
 import Register from "./client/pages/Auth/Register/Register";
 import Footer from "./client/pages/Footer/Footer";
 import Header from "./client/pages/Header/Header";
 import { SnackbarProvider } from "notistack";
+
 import HotelDetails from "./client/pages/HotelPage/HotelDetails/HotelDetails";
+
+import LandingPage from "./client/pages/Homepage/LandingPage";
+import PlanBefore from "./client/pages/PlanBefore/Plan";
 
 function App() {
   return (
@@ -20,11 +24,11 @@ function App() {
       }}
     >
       <BrowserRouter>
-        {window.location.pathname !== "/login" &&
-          window.location.pathname !== "/register" && <Header />}
+        <Header />
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/plan" element={<TravelPlan />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/plan" element={<PlanBefore />} />
+          <Route path="/plan/trip" element={<TravelPlan />} />
           <Route path="/hotel" element={<Hotel />} />
           <Route path="/booking-hotel" element={<BookingHotel />} />
           <Route path="/hotel-info" element={<HotelDetails />} />
@@ -33,7 +37,7 @@ function App() {
         </Routes>
         {window.location.pathname !== "/login" &&
           window.location.pathname !== "/register" &&
-          window.location.pathname !== "/" && <Footer />}
+          window.location.pathname !== "/plan" && <Footer />}
       </BrowserRouter>
     </SnackbarProvider>
   );
