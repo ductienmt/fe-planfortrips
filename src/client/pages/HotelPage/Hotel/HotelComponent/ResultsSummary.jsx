@@ -1,4 +1,6 @@
 import React from 'react';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import './ResultsSummary.css';
 
 const DetailedResultsSummaryContainer = () => {
@@ -13,19 +15,11 @@ const DetailedResultsSummaryContainer = () => {
                 </span>
                 <button className="detailed-results-summary-container-sort-button">
                     Giá
-                    <img
-                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/9f6f4fcc991ff53b18dde357ea304656aeb01059bfa4368cd1b06c01d101b4f4?placeholderIfAbsent=true&apiKey=c589bfd2cd264978bf52e7f54b2517b8"
-                        alt=""
-                        className="detailed-results-summary-container-sort-icon"
-                    />
+                    <ArrowDropDownIcon className="detailed-results-summary-container-sort-icon" />
                 </button>
                 <button className="detailed-results-summary-container-sort-button">
                     Xếp hạng
-                    <img
-                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/91a32ac6b072cbeba85ed6fcb6b2524feb36d3e59c0eac9784be552789e1311b?placeholderIfAbsent=true&apiKey=c589bfd2cd264978bf52e7f54b2517b8"
-                        alt=""
-                        className="detailed-results-summary-container-sort-icon"
-                    />
+                    <ArrowDropUpIcon className="detailed-results-summary-container-sort-icon" />
                 </button>
                 <button className="detailed-results-summary-container-hot-deals-button">
                     Hot Deals!

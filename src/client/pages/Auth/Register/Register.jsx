@@ -207,7 +207,7 @@ const Register = () => {
                   placeholder=" "
                   value={formData.userName}
                   onChange={(e) => handleChange(e)}
-                  // required
+                // required
                 />
                 <label className="form-label" htmlFor="username">
                   Tên tài khoản
@@ -223,7 +223,7 @@ const Register = () => {
                   placeholder=" "
                   value={formData.password}
                   onChange={(e) => handleChange(e)}
-                  // required
+                // required
                 />
                 <label className="form-label" htmlFor="password">
                   Mật khẩu
@@ -240,7 +240,7 @@ const Register = () => {
                   onBlur={(e) =>
                     validatePassword(formData.password, e.target.value)
                   }
-                  // required
+                // required
                 />
                 <label className="form-label" htmlFor="confirmPassword">
                   Xác nhận mật khẩu
@@ -256,7 +256,7 @@ const Register = () => {
                   placeholder=" "
                   value={formData.fullName}
                   onChange={(e) => handleChange(e)}
-                  // required
+                // required
                 />
                 <label className="form-label" htmlFor="fullName">
                   Họ và Tên
@@ -272,7 +272,7 @@ const Register = () => {
                   placeholder=" "
                   value={formData.email}
                   onChange={(e) => handleChange(e)}
-                  // required
+                // required
                 />
                 <label className="form-label" htmlFor="email">
                   Email
@@ -288,7 +288,7 @@ const Register = () => {
                   placeholder=" "
                   value={formData.phoneNumber}
                   onChange={(e) => handleChange(e)}
-                  // required
+                // required
                 />
                 <label className="form-label" htmlFor="phone">
                   Số điện thoại

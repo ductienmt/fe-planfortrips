@@ -22,7 +22,7 @@ const AccommodationCard = ({ image, name, address, amenities, rating, reviews, o
                         <h4 className="accommodation-card-rating-heading">Đánh giá</h4>
                         <div className="accommodation-card-rating-stars-container">
                             {[...Array(rating)].map((_, i) => (
-                                <img key={i} src={`http://b.io/ext_${14 + i}-`} alt="" className="accommodation-card-star-icon" />
+                                <img key={i} src={`https://cdn.builder.io/api/v1/image/assets/TEMP/359d68ff6db47925527305fd619fd5fea1f4b9a841fdb15e77d5236a1a8b7c53?placeholderIfAbsent=true&apiKey=c589bfd2cd264978bf52e7f54b2517b8${14 + i}-`} alt="" className="accommodation-card-star-icon" />
                             ))}
                         </div>
                         <span className="accommodation-card-review-count-text">( {reviews} )</span>
