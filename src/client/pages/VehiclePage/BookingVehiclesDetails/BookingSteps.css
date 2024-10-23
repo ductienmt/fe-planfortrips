@@ -1,0 +1,74 @@
+.booking-container-fullwidth {
+    text-align: center;
+    /* Căn giữa nội dung */
+}
+
+.steps-indicator-container {
+    align-self: center;
+    width: 615px;
+    max-width: 100%;
+    display: flex;
+    gap: 20px;
+}
+
+@media (max-width: 991px) {
+    .steps-indicator-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+    }
+}
+
+.booking-details-section-content {
+    border-radius: 20px;
+    background: #f4f7fa;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    padding: 12px 80px 32px;
+    margin-top: 18px;
+    width: 100%;
+    max-width: 964px;
+}
+
+@media (max-width: 991px) {
+    .booking-details-section-content {
+        padding: 12px 20px 32px;
+    }
+}
+
+.divider-line {
+    border: 1px solid #cdc9c9;
+    margin: 24px 0;
+}
+
+.booking-summary-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: Roboto, sans-serif;
+    margin: 5px 0;
+}
+
+.price-display-wrapper {
+    display: flex;
+    gap: 24px;
+    font-weight: 700;
+}
+
+.continue-button-action {
+    border-radius: 10px;
+    background: #0976cf;
+    color: #fff;
+    padding: 16px 48px;
+    font-weight: 700;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    float: right;
+    margin-top: 11px;
+}
+
+@media (max-width: 991px) {
+    .continue-button-action {
+        padding: 16px 20px;
+    }
+}

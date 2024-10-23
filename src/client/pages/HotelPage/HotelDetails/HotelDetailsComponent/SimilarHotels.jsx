@@ -3,7 +3,7 @@ import "./SimilarHotels.css";
 
 const SimilarHotels = () => {
     return (
-        <div className="similar-hotels-container"> {/* Thêm container */}
+        <div className="similar-hotels-container">
             <h2 className="similar-hotels-title">Gợi ý chỗ ở tương tự</h2>
             <div className="similar-hotels-card">
                 <div className="similar-hotels-content">

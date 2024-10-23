@@ -1,0 +1,54 @@
+.bus-info-container {
+    font-family: Roboto, sans-serif;
+}
+
+.bus-company-info-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.bus-company-name {
+    color: #1e252b;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.bus-type-info {
+    color: #595959;
+    font-size: 12px;
+    margin: 0;
+}
+
+.bus-rating-container {
+    display: flex;
+    gap: 7px;
+    align-items: center;
+    color: #474747;
+    font-size: 12px;
+}
+
+.bus-info-link {
+    color: #005aa1;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.bus-route-info-container {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    color: #595959;
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+.bus-schedule-info {
+    color: #000;
+    font-weight: 700;
+    font-size: 14px;
+    margin: 0;
+}

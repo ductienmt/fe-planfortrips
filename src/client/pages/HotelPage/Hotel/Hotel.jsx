@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from "react";
 import SearchBar from "./HotelComponent/SearchBar";
 import HotDealsNotification from "./HotelComponent/HotDealsNotification";
@@ -64,6 +65,5 @@ const Hotel = () => {
       </section>
     </main>
   );
-};
-
+}
 export default Hotel;

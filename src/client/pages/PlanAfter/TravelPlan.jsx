@@ -4,14 +4,16 @@ import TransportationCard from "./TransportationCard";
 import AccommodationCard from "./AccommodationCard";
 import AttractionCard from "./AttractionCard";
 import "./TravelPlan.css";
+import { ScheduleService } from "../../../services/apis/ScheduleService";
 
 function TravelPlan() {
   const [selectedCard, setSelectedCard] = useState("transportation");
   const tripData = JSON.parse(localStorage.getItem("tripData"));
-
-  const [tripPlan, setTripPlan] = useState({});
   const [summaryItems, setSummaryItems] = useState([]);
   const [accommodationItems, setAccommodationItems] = useState([]);
+  const seats = tripData.transportation.departure.seatBook
+    .map((seat) => seat.seat_number)
+    .join(", ");
 
   const calculateDuration = (departureTime, arrivalTime) => {
     const [departureHours, departureMinutes] = departureTime
@@ -73,35 +75,33 @@ function TravelPlan() {
     setSelectedCard("attraction"); // Luôn chọn AttractionCard khi nhấn next hoặc back
   };
 
-  const newSummaryItems = tripData.data.userData
+  const newSummaryItems = tripData.userData
     ? [
-        { label: "Location", value: tripData.data.userData.location },
-        { label: "Destination", value: tripData.data.userData.destination },
+        { label: "Location", value: tripData.userData.location },
+        { label: "Destination", value: tripData.userData.destination },
         {
           label: "Start Date",
-          value: formatDate(tripData.data.userData.startDate),
+          value: formatDate(tripData.userData.startDate),
         },
         {
           label: "End Date",
-          value: formatDate(tripData.data.userData.endDate),
+          value: formatDate(tripData.userData.endDate),
         },
         {
           label: "Number of People",
-          value: tripData.data.userData.numberPeople,
+          value: tripData.userData.numberPeople,
         },
         {
           label: "Budget",
-          value: convertToVND(tripData.data.userData.budget),
+          value: convertToVND(tripData.userData.budget),
         },
       ]
     : [];
 
   useEffect(() => {
     if (tripData) {
-      setTripPlan(tripData);
-
       setSummaryItems(newSummaryItems);
-    } // Cập nhật summaryItems ở đây
+    }
   }, []);
 
   return (
@@ -119,12 +119,14 @@ function TravelPlan() {
           onClick={() => handleCardClick("transportation")}
           img="https://flane.vn/wp-content/uploads/2023/12/xe-phuong-trang-7.png"
           departureTime={formatTime(
-            tripData.data.transportation.departure.departureTime
+            tripData.transportation.departure.departureTime
           )}
           arrivalTime={formatTime(
-            tripData.data.transportation.departure.arrivalTime
+            tripData.transportation.departure.arrivalTime
           )}
-          nameVehicle={tripData.data.transportation.departure.carCompanyName}
+          nameVehicle={tripData.transportation.departure.carName}
+          seatCode={seats}
+          scheduleId={tripData.transportation.departure.scheduleId}
         />
         <AccommodationCard
           className={
@@ -135,6 +137,11 @@ function TravelPlan() {
               : ""
           }
           onClick={() => handleCardClick("accommodation")}
+          name={tripData.accomodation.nameHotel}
+          room={tripData.accomodation.nameRoom}
+          roomtype={tripData.accomodation.roomType}
+          checkin={tripData.accomodation.checkin}
+          checkout={tripData.accomodation.checkout}
         />
         <AttractionCard
           className={

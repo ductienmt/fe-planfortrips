@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { ScheduleService } from "../../../services/apis/ScheduleService";
 import "./TransportationCard.css";
 import "feather-icons/dist/feather";
 
@@ -12,8 +14,27 @@ const TransportationCard = ({
   arrivalTime,
   timeCommunicate,
   seatCode,
+  scheduleId,
 }) => {
-  // const [infoSeat, setInfoSeat] = useState([]);
+  const [departureStationData, setDepartureStationData] = useState("");
+  const [arrivalStationData, setArrivalStationData] = useState("");
+  const loadStation = async (id) => {
+    try {
+      const response = await ScheduleService.getStation(id);
+      console.log("station", response.data);
+
+      setDepartureStationData(response.data.data.departureStation);
+      setArrivalStationData(response.data.data.arrivalStation);
+    } catch (error) {
+      console.error("Error fetching accommodation data", error);
+    }
+  };
+
+  useEffect(() => {
+    if (scheduleId) {
+      loadStation(scheduleId);
+    }
+  }, [scheduleId]);
   return (
     <article className={`transportation-card ${className}`} onClick={onClick}>
       <img src={img} alt="Transportation image" className="transport-image" />
@@ -54,7 +75,7 @@ const TransportationCard = ({
               place="Xuất phát"
               icon="https://cdn.builder.io/api/v1/image/assets/TEMP/385a865a60db67b2221563c86645d1ba2bb924639ea59ef346b2b709c6b210d2?placeholderIfAbsent=true&apiKey=75fde3af215540558ff19397203996a6"
               city="Hồ Chí Minh"
-              station="Bến xe Miền Đông Mới"
+              station={departureStationData}
               extraInfo="Đón tại Bến"
             />
             <div className="route-icons">
@@ -68,7 +89,7 @@ const TransportationCard = ({
               place="Đích đến"
               icon="https://cdn.builder.io/api/v1/image/assets/TEMP/2f2cda72d26f1c67915563e9cacfcc3716d8d5d11d87c08952c0484a418a3102?placeholderIfAbsent=true&apiKey=75fde3af215540558ff19397203996a6"
               city="Vũng Tàu"
-              station="Bến xe Vũng Tàu"
+              station={arrivalStationData}
               extraInfo="Trả tại quốc lộ 1A - Bãi tắm sau"
             />
           </div>

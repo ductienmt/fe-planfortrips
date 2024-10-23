@@ -9,12 +9,12 @@
     cursor: pointer;
 }
 
-.active {
+.method-item .active {
     border: 1px solid #1a7cb4;
     box-shadow: 5px 5px 10px rgba(9, 120, 211, 0.5);
     transform: scale(1.05);
 }
 
-.non-active {
+.method-item .non-active {
     transform: scale(0.9);
 }
