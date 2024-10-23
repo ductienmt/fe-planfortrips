@@ -1,6 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
-import BusResultItem from './BusResultItem';
+import './BusResultList.css';
+import BusResultItem from './BusResultItem.jsx';
 
 const busResults = [
     { id: 1, departureTime: '02:00', arrivalTime: '05:00', company: 'Phương Trang', rating: 5, type: 'Limousine', price: '140.000đ', seatsAvailable: 10 },
@@ -12,22 +12,12 @@ const busResults = [
 
 const BusResultList = () => {
     return (
-        <ResultListWrapper>
+        <section className="bus-result-list-wrapper">
             {busResults.map(result => (
                 <BusResultItem key={result.id} {...result} />
             ))}
-        </ResultListWrapper>
+        </section>
     );
 };
-
-const ResultListWrapper = styled.section`
-  display: flex;
-  flex-direction: column;
-  gap: 17px;
-  width: 67%;
-  @media (max-width: 991px) {
-    width: 100%;
-  }
-`;
 
 export default BusResultList;

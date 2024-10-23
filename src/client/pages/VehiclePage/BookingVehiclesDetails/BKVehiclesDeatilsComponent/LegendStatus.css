@@ -1,0 +1,29 @@
+.legend-wrapper {
+    display: flex;
+    gap: 32px;
+    margin: 9px 0 0 16px;
+    color: #595959;
+    font-size: 12px;
+}
+
+@media (max-width: 991px) {
+    .legend-wrapper {
+        margin-left: 10px;
+    }
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.status-box {
+    width: 30px;
+    height: 30px;
+    border-radius: 2px;
+}
+
+.status-label {
+    font-family: Roboto, sans-serif;
+}
