@@ -1,0 +1,113 @@
+.search-header-container-wrapper {
+    width: 100%;
+    max-width: 964px;
+}
+
+.search-header-step-indicator {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 21px;
+}
+
+.search-header-step-indicator-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #afafaf;
+    font: 700 23px/30px Roboto, sans-serif;
+}
+
+.search-header-step-indicator-number {
+    background-color: #d9d9d9;
+    border-radius: 50%;
+    width: 65px;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+}
+
+.search-header-step-indicator-number.active {
+    background-color: #0078d7;
+    color: #fff;
+}
+
+.search-header-step-indicator-text {
+    margin-top: 13px;
+}
+
+.search-header-form-container {
+    border-radius: 20px;
+    background-color: #f4f7fa;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    padding: 22px 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+@media (max-width: 991px) {
+    .search-header-form-container {
+        padding: 22px 20px;
+    }
+}
+
+.search-header-title {
+    color: #005293;
+    font-size: 23px;
+    font-weight: 700;
+    line-height: 30px;
+    margin-bottom: 8px;
+}
+
+.search-header-input-field {
+    border-radius: 3px;
+    background-color: #fff;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    height: 56px;
+    border: 2px solid #e2e7eb;
+    margin-bottom: 8px;
+}
+
+.search-header-date-selector {
+    border-radius: 3px;
+    background-color: #fff;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 4px 15px;
+    border: 2px solid #e2e7eb;
+}
+
+.search-header-date-info {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.search-header-date-label {
+    color: #27648c;
+    font-size: 12px;
+}
+
+.search-header-selected-date {
+    color: #1e252b;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.search-header-submit-button {
+    border-radius: 8px;
+    background-color: #41a5e8;
+    color: #fff;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 19px;
+    width: 100%;
+    border: none;
+    margin-top: 19px;
+    cursor: pointer;
+}

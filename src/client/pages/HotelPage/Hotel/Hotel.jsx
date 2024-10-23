@@ -1,5 +1,7 @@
 import React from 'react';
 import SearchBar from './HotelComponent/SearchBar';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 import HotDealsNotification from './HotelComponent/HotDealsNotification';
 import ResultsSummary from './HotelComponent/ResultsSummary';
 import AccommodationCard from './HotelComponent/AccommodationCard';
@@ -36,10 +38,8 @@ const Hotel = () => {
     ];
 
     return (
-        <main>
-
+        <main className='Hotel-container-page'>
             <SearchBar />
-
             <section>
                 <SearchResults />
                 <HotDealsNotification />
@@ -48,6 +48,9 @@ const Hotel = () => {
                     <AccommodationCard key={accommodation.id} {...accommodation} />
                 ))} *
             </section>
+
+            ]
+
         </main>
     );
 };

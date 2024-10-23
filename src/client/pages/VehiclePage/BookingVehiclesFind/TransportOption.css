@@ -1,0 +1,58 @@
+.options-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.options-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 90px;
+    /* Khoảng cách giữa các nút */
+    max-width: 800px;
+    /* Đặt giới hạn chiều rộng */
+    width: 100%;
+    /* Đảm bảo các nút căn giữa theo chiều ngang */
+    margin-left: 230px;
+}
+
+.transport-option-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #757575;
+    font: 700 23px/30px Roboto, sans-serif;
+    padding: 0;
+    flex: 1;
+}
+
+@media (max-width: 991px) {
+    .options-grid {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+.transport-option-icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    width: 95px;
+    height: 95px;
+    background-color: #e0e0e0;
+}
+
+.transport-option-icon {
+    font-size: 48px;
+    color: #006fc8;
+}
+
+.transport-option-label {
+    margin-top: 7px;
+    text-align: center;
+}
