@@ -1,0 +1,91 @@
+.hotel-amenities-full-container {
+    border-radius: 8px;
+    /* Tăng độ cong để tạo cảm giác mềm mại hơn */
+    background-color: #FFFBFB;
+    /* Màu nền nhẹ nhàng hơn */
+    margin-top: 29px;
+    padding: 20px;
+    /* Thêm padding để các phần tử không bị chạm vào mép */
+    border: 1px solid #ddd;
+    /* Đổi sang màu xám nhạt để nhẹ nhàng hơn */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    /* Thêm bóng nhẹ để tạo chiều sâu */
+}
+
+@media (max-width: 991px) {
+    .hotel-amenities-full-container {
+        max-width: 100%;
+        padding: 15px;
+        /* Giảm padding cho thiết bị di động */
+    }
+}
+
+.hotel-amenities-grid-layout {
+    gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    /* Cho phép các cột tự động xuống hàng khi không đủ không gian */
+}
+
+.hotel-amenities-column-layout {
+    flex: 1 1 30%;
+    /* Cho phép các cột tự điều chỉnh theo không gian */
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 991px) {
+    .hotel-amenities-column-layout {
+        flex: 1 1 100%;
+        /* Các cột chiếm toàn bộ chiều rộng trên thiết bị nhỏ */
+    }
+}
+
+.hotel-amenities-title-header {
+    color: #333;
+    /* Màu chữ tối hơn để dễ đọc */
+    font-size: 24px;
+    /* Kích thước chữ lớn hơn */
+    font-weight: 600;
+    /* Độ đậm vừa phải */
+    margin-bottom: 15px;
+    /* Khoảng cách dưới tiêu đề */
+}
+
+.hotel-amenities-list-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* Căn lề trái để các item đều nhau */
+    font-size: 15px;
+    /* Kích thước chữ lớn hơn một chút */
+    color: #555;
+    /* Màu chữ tối hơn */
+    font-weight: 400;
+}
+
+.hotel-amenity-item-layout {
+    display: flex;
+    align-items: center;
+    /* Căn giữa cho các icon và text */
+    gap: 10px;
+    /* Khoảng cách giữa icon và text */
+    padding: 8px 0;
+    /* Thêm padding để tạo khoảng cách cho các item */
+    transition: background-color 0.3s;
+    /* Thêm hiệu ứng chuyển động */
+}
+
+.hotel-amenity-item-layout:hover {
+    background-color: #e9ecef;
+    /* Màu nền nhẹ khi hover */
+}
+
+.hotel-amenity-icon-layout {
+    aspect-ratio: 1;
+    /* Đảm bảo hình vuông cho icon */
+    object-fit: contain;
+    object-position: center;
+    width: 25px;
+    /* Kích thước lớn hơn để dễ nhìn hơn */
+}

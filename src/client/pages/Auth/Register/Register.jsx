@@ -196,18 +196,20 @@ const Register = () => {
           <div className=" col-md-5 text-center ">
             <form className="registration">
               <div className="text-center mt-4">
-                <h2 className="title-registration fw-bold">Đăng ký</h2>
+                <h2 className="title-registration ">Đăng ký</h2>
               </div>
 
-              <div className="custom-input form-outline mb-4">
+              <div className="register-input form-outline mb-4">
                 <input
                   type="text"
                   name="userName"
                   className="form-control  "
                   placeholder=" "
+
                   value={formData.userName}
                   onChange={(e) => handleChange(e)}
                   // required
+
                 />
                 <label className="form-label" htmlFor="username">
                   Tên tài khoản
@@ -215,7 +217,7 @@ const Register = () => {
               </div>
 
               {/* Mật khẩu input */}
-              <div className=" custom-input form-outline mb-4">
+              <div className="register-input form-outline mb-4">
                 <input
                   type="password"
                   name="password"
@@ -231,7 +233,7 @@ const Register = () => {
               </div>
 
               {/* Xác nhận mật khẩu input */}
-              <div className=" custom-input form-outline mb-4">
+              <div className=" register-input form-outline mb-4">
                 <input
                   type="password"
                   id="confirmPassword"
@@ -248,7 +250,7 @@ const Register = () => {
               </div>
 
               {/* Họ và Tên input */}
-              <div className=" custom-input form-outline mb-4">
+              <div className=" register-input form-outline mb-4">
                 <input
                   type="text"
                   name="fullName"
@@ -264,15 +266,17 @@ const Register = () => {
               </div>
 
               {/* Email input */}
-              <div className="custom-input form-outline mb-4">
+              <div className="register-input form-outline mb-4">
                 <input
                   type="email"
                   name="email"
                   className="form-control " // Sử dụng lớp mới
                   placeholder=" "
+
                   value={formData.email}
                   onChange={(e) => handleChange(e)}
                   // required
+
                 />
                 <label className="form-label" htmlFor="email">
                   Email
@@ -280,7 +284,7 @@ const Register = () => {
               </div>
 
               {/* Số điện thoại input */}
-              <div className="custom-input form-outline mb-4">
+              <div className="register-input form-outline mb-4">
                 <input
                   type="tel"
                   name="phoneNumber"

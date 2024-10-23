@@ -1,0 +1,82 @@
+.detailed-search-bar-container {
+    background-color: #aaddff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    font-family: Roboto, sans-serif;
+    margin: 3%;
+    flex-wrap: wrap;
+    padding: 18px;
+    border: 1px solid #e9ebf8;
+}
+
+@media (max-width: 991px) {
+    .detailed-search-bar-container {
+        max-width: 100%;
+    }
+}
+
+.detailed-search-bar-container-destination-input,
+.detailed-search-bar-container-date-input,
+.detailed-search-bar-container-guests-input {
+    display: flex;
+    border-radius: 3px;
+    background-color: #fff;
+    max-width: 100vh;
+    align-items: flex-start;
+    padding: 5px 17px 11px;
+    border: 2px solid #e2e7eb;
+    max-height: min-content;
+}
+
+.detailed-search-bar-container-input-label {
+    color: #27648c;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.detailed-search-bar-container-input-field {
+    color: #757575;
+    font-size: 14px;
+    font-weight: 700;
+    margin-top: 4px;
+    border: none;
+    background: transparent;
+}
+
+.detailed-search-bar-container-input-icon,
+.detailed-search-bar-container-calendar-icon,
+.detailed-search-bar-container-guests-icon {
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 20px;
+    margin: auto 0;
+}
+
+.detailed-search-bar-container-date-input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 6px 4px 6px 12px;
+}
+
+.detailed-search-bar-container-nights-count {
+    font-size: 12px;
+    color: #27648c;
+    font-weight: 400;
+}
+
+.detailed-search-bar-container-search-button {
+    align-self: stretch;
+    border-radius: 8px;
+    background-color: #41a5e8;
+    box-shadow: 0px 4px 9px -1px rgba(0, 0, 0, 0.25);
+    min-width: 30px;
+    min-height: 56px;
+    color: #fff;
+    padding: 19px 8px;
+    font: 600 16px Roboto, sans-serif;
+    border: 1px solid #41a5e8;
+}

@@ -1,0 +1,273 @@
+.similar-hotels-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.similar-hotels-title {
+    color: #000;
+    align-self: start;
+    margin: 31px 0 0 22px;
+    font: 700 23px/30px Roboto, sans-serif;
+}
+
+@media (max-width: 991px) {
+    .similar-hotels-title {
+        margin-left: 10px;
+    }
+}
+
+.similar-hotels-card {
+    border-radius: 5px;
+    background-color: #edf8ff;
+    align-self: center;
+    margin-top: 17px;
+    width: 627px;
+    max-width: 100%;
+    padding-right: 18px;
+}
+
+.similar-hotels-content {
+    gap: 20px;
+    display: flex;
+}
+
+@media (max-width: 991px) {
+    .similar-hotels-content {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+    }
+}
+
+.similar-hotels-image-column {
+    display: flex;
+    flex-direction: column;
+    line-height: normal;
+    width: 32%;
+    margin-left: 0;
+}
+
+@media (max-width: 991px) {
+    .similar-hotels-image-column {
+        width: 100%;
+    }
+}
+
+.similar-hotels-image {
+    aspect-ratio: 0.87;
+    width: 189px;
+    border-radius: 5px 0 0 5px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    max-width: 100%;
+    flex-grow: 1;
+}
+
+@media (max-width: 991px) {
+    .similar-hotels-image {
+        margin-top: 26px;
+    }
+}
+
+.similar-hotels-info-column {
+    display: flex;
+    flex-direction: column;
+    line-height: normal;
+    width: 68%;
+    margin-left: 20px;
+}
+
+@media (max-width: 991px) {
+    .similar-hotels-info-column {
+        width: 100%;
+    }
+}
+
+.similar-hotels-info {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-self: stretch;
+    margin: auto 0;
+}
+
+@media (max-width: 991px) {
+    .similar-hotels-info {
+        margin-top: 33px;
+    }
+}
+
+.similar-hotels-header {
+    display: flex;
+    align-items: end;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.similar-hotels-details {
+    display: flex;
+    margin-top: 48px;
+    flex-direction: column;
+    font-size: 14px;
+    color: #000;
+}
+
+@media (max-width: 991px) {
+    .similar-hotels-details {
+        margin-top: 40px;
+    }
+}
+
+.similar-hotels-address {
+    font-family: Roboto, sans-serif;
+    font-weight: 400;
+    line-height: 21px;
+}
+
+.similar-hotels-amenities-title {
+    text-align: center;
+    font-family: Inter, sans-serif;
+    font-weight: 700;
+    line-height: 24px;
+    align-self: start;
+    margin-top: 5px;
+}
+
+.similar-hotels-amenities {
+    display: flex;
+    margin-top: 6px;
+    width: 100%;
+    flex-direction: column;
+    color: #727272;
+    text-align: center;
+    letter-spacing: 0.5px;
+    padding: 0 23px;
+    font: 500 11px/16px Roboto, sans-serif;
+}
+
+@media (max-width: 991px) {
+    .similar-hotels-amenities {
+        padding: 0 20px;
+    }
+}
+
+.similar-hotels-amenities-list {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.similar-hotels-rating {
+    display: flex;
+    margin-top: 22px;
+    flex-direction: column;
+}
+
+.similar-hotels-rating-header {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    padding: 0 5px;
+}
+
+.similar-hotels-rating-title {
+    color: #000;
+    text-align: center;
+    align-self: start;
+    font: 400 14px/21px Roboto, sans-serif;
+}
+
+.similar-hotels-rating-stars {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.similar-hotels-stars {
+    display: flex;
+}
+
+.similar-hotels-star {
+    width: 16px;
+    height: 16px;
+}
+
+.similar-hotels-review-count {
+    color: #727272;
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.similar-hotels-partnership {
+    display: flex;
+    align-items: center;
+    margin-top: 12px;
+}
+
+.partnership-icon {
+    width: 15px;
+    height: 15px;
+}
+
+.partnership-text {
+    color: #727272;
+    font-size: 12px;
+    margin-left: 4px;
+}
+
+.similar-hotels-price {
+    display: flex;
+    margin-top: 24px;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.similar-hotels-price-details {
+    display: flex;
+    align-items: baseline;
+}
+
+.similar-hotels-price-label {
+    color: #727272;
+    font-size: 12px;
+    margin-right: 5px;
+}
+
+.similar-hotels-original-price {
+    color: #727272;
+    font-size: 16px;
+}
+
+.similar-hotels-currency {
+    color: #727272;
+    font-size: 14px;
+}
+
+.similar-hotels-price-footer {
+    margin-top: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.similar-hotels-price-note {
+    color: #727272;
+    font-size: 12px;
+}
+
+.similar-hotels-discounted-price {
+    display: flex;
+    align-items: baseline;
+}
+
+.discounted-price-value {
+    color: #FF5126;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.discounted-price-currency {
+    color: #FF5126;
+    font-size: 14px;
+}
