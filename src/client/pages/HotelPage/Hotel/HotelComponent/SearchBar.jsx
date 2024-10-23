@@ -1,14 +1,15 @@
 import React from 'react';
 import './SearchBar.css';
 
-const DetailedSearchBarContainer = () => {
+const DetailedSearchBarContainer = ({keyword,setKeyword}) => {
+    
     return (
         <form className="detailed-search-bar-container">
             <div className="detailed-search-bar-container-destination-input">
                 <label htmlFor="destination" className="detailed-search-bar-container-input-label">
                     Điểm đến
                 </label>
-                <input type="text" id="destination" value="Lào Cai" className="detailed-search-bar-container-input-field" />
+                <input type="text" id="destination" value={keyword} className="detailed-search-bar-container-input-field" onChange={(e)=>setKeyword(e.target.value)} placeholder='Nhập nơi bạn muốn đến'/>
                 <img
                     src="https://cdn.builder.io/api/v1/image/assets/TEMP/325743133b68bf84b4542a1afed13849c883d0c5cfa6e1adb88047799b43d7fa?placeholderIfAbsent=true&apiKey=c589bfd2cd264978bf52e7f54b2517b8"
                     alt=""
