@@ -56,7 +56,8 @@
 
 
 /* Định dạng cho khung input */
-.register-container .custom-input {
+
+.register-container .register-input{
   position: relative;
   /* Giúp vị trí của label được xác định đúng */
 
@@ -66,7 +67,7 @@
   margin-left: 10px;
 }
 
-.register-container .custom-input label {
+.register-container .register-input label {
   position: absolute;
   /* Định vị label */
   top: 2px;
@@ -84,13 +85,21 @@
 
 }
 
-.register-container .custom-input :focus+label,
-.register-container .custom-input :not(:placeholder-shown)+label {
-  top: -20px;
+.register-container .form-control {
+  border: 1px solid #ccc; /* Màu viền mặc định */
+}
+.register-container .form-control:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: #ccc; /* Màu viền khi focus giống với viền mặc định */
+}
+.register-container .register-input :focus+label,
+.register-container .register-input :not(:placeholder-shown)+label {
+  top: -22px;
   /* Đưa label lên trên */
   left: 20px;
   /* Giữ nguyên bên trái */
-  font-size: 10px;
+  font-size: 20px;
   /* Kích thước chữ nhỏ hơn */
   color: #333;
   /* Màu sắc cho label khi focus */
@@ -101,12 +110,14 @@
   color: white;
   font-weight: bold;
   height: 50px;
-  width: 381px;
+  width: 500px;
 
 }
 
 .register-container .form-control {
-  width: 381px;
+  width: 500px;
+  height: 40px ;
+
 }
 
 .register-container .registration {
@@ -146,3 +157,4 @@
   /* Chữ đậm */
   background-color: #FFFFFF;
 }
+/* Hiệu ứng khi hover trên ô input */

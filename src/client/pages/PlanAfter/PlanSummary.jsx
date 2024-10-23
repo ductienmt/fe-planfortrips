@@ -1,14 +1,15 @@
+import { useEffect, useState } from "react";
 import "./PlanSummary.css";
+import { formatMoney } from "../../../utils/FormatMoney";
 
-function PlanSummary() {
-  const summaryItems = [
-    { label: "Điểm đến", value: "Vũng Tàu" },
-    { label: "Ngày đi", value: "26/09/2024" },
-    { label: "Ngày về", value: "27/09/2024" },
-    { label: "Số người", value: "2 người" },
-    { label: "Chi phí", value: "2.000.000VNĐ" },
-    { label: "Còn dư", value: "500.000VNĐ" },
-  ];
+const PlanSummary = ({ summaryItems }) => {
+  useEffect(() => {
+    document.title = "Plan Summary";
+
+    // console.log(tripPlan);
+  }, []);
+
+  // console.log(summaryItems);
 
   return (
     <div className="flex-container">
@@ -22,6 +23,6 @@ function PlanSummary() {
       </section>
     </div>
   );
-}
+};
 
 export default PlanSummary;

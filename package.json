@@ -22,6 +22,7 @@
     "antd": "^5.21.4",
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
+    "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "feather-icons": "^4.29.2",
     "flatpickr": "^4.6.13",
