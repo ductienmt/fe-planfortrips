@@ -24,8 +24,8 @@ function App() {
         {window.location.pathname !== "/login" &&
           window.location.pathname !== "/register" && <Header />}
         <Routes>
-          {/* <Route path="/" element={<HomePage />} />
-          <Route path="/plan" element={<TravelPlan />} /> */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/plan" element={<TravelPlan />} /> *
           <Route path="/hotel" element={<Hotel />} />
           <Route path="/booking-hotel" element={<BookingHotel />} />
           <Route path="/hotel-details" element={<HotelDetails />} />
