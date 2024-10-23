@@ -12,6 +12,7 @@ import { SnackbarProvider } from "notistack";
 import LandingPage from "./client/pages/Homepage/LandingPage";
 import PlanBefore from "./client/pages/PlanBefore/Plan";
 import Booking from "./client/pages/Booking/Booking";
+import Payment from "./client/pages/Payment/Payment";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/booking/:type" element={<Booking />} />
+          <Route path="/payment" element={<Payment />} />
         </Routes>
         {window.location.pathname !== "/login" ||
           window.location.pathname !== "/register" ||

@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import Accomodation from "./AccomodationCard/Accomodation";
 import UserInformation from "./UserInfomation/UserInformation";
 
-const Payment = () => {
+const Booking = () => {
   window.scrollTo(0, 0);
   const { type } = useParams();
   const stepsPlan = [
@@ -95,8 +95,8 @@ const Payment = () => {
   }, [type]);
 
   return (
-    <div className="payment-container">
-      <div className="payment-header">
+    <div className="booking-container">
+      <div className="booking-header">
         <Stepper activeStep={2} alternativeLabel>
           {steps.map((label) => (
             <Step key={label}>
@@ -105,8 +105,8 @@ const Payment = () => {
           ))}
         </Stepper>
       </div>
-      <div className="payment-body">
-        <div className="payment-body-left">
+      <div className="booking-body">
+        <div className="booking-body-left">
           {type === "plan" && transportationData && accommodationData && (
             <>
               <Transportation {...transportationData} />
@@ -120,7 +120,7 @@ const Payment = () => {
             <Transportation {...transportationData} />
           )}
         </div>
-        <div className="payment-body-right">
+        <div className="booking-body-right">
           <UserInformation totalPrice={100000} type={type} />
         </div>
       </div>
@@ -128,4 +128,4 @@ const Payment = () => {
   );
 };
 
-export default Payment;
+export default Booking;

@@ -4,16 +4,60 @@ import React, { useState } from "react";
 import "./UserInformation.css";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 const UserInformation = ({ totalPrice, type }) => {
+  const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
   const [form, setForm] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     phone: "",
     gender: "",
     note: "",
   });
+  const [isAgreed, setIsAgreed] = useState(false);
+
+  const handleCheckboxChange = () => {
+    setIsAgreed((prev) => !prev);
+  };
+
+  const handleContinueClick = (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      if (!validateEmail(form.email)) {
+        enqueueSnackbar("Email không hợp lệ.", {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      }
+      if (!validatePhone(form.phone)) {
+        enqueueSnackbar("Số điện thoại không hợp lệ.", {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      }
+      console.log(form);
+      if (!isAgreed) {
+        e.preventDefault();
+        enqueueSnackbar("Bạn cần đồng ý với điều khoản trước khi tiếp tục.", {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      } else {
+        // TODO: Call API to create ticket
+
+        navigate("/payment");
+      }
+    } else {
+      enqueueSnackbar("Vui lòng điền đẩy đủ thông tin.", {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
+    }
+  };
 
   const [showDetailPriceTransportation, setShowDetailPriceTransportation] =
     useState(false);
@@ -25,6 +69,30 @@ const UserInformation = ({ totalPrice, type }) => {
       .toString()
       .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return `${formattedAmount}.000VNĐ`;
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prevForm) => ({
+      ...prevForm,
+      [name]: value,
+    }));
+  };
+
+  const validateForm = () => {
+    return (
+      form.firstName || form.lastName || form.email || form.phone || form.gender
+    );
+  };
+
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const validatePhone = (phone) => {
+    const regex = /^(0[0-9]{9}|[0-9]{10,11})$/; // Ví dụ cho số điện thoại Việt Nam
+    return regex.test(phone);
   };
 
   return (
@@ -44,12 +112,18 @@ const UserInformation = ({ totalPrice, type }) => {
                   label="Họ"
                   variant="outlined"
                   className="name-input-1"
+                  name="firstName"
+                  value={form.firstName}
+                  onChange={handleChange}
                 />
                 <TextField
                   id="outlined-basic"
                   label="Tên đệm và tên"
                   variant="outlined"
                   className="name-input-2"
+                  name="lastName"
+                  value={form.lastName}
+                  onChange={handleChange}
                 />
               </div>
               <div className="contact">
@@ -58,12 +132,18 @@ const UserInformation = ({ totalPrice, type }) => {
                   label="Email"
                   variant="outlined"
                   className="contact-input-1"
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
                 />
                 <TextField
                   id="outlined-basic"
                   label="Số điện thoại"
                   variant="outlined"
                   className="contact-input-2"
+                  name="phone"
+                  value={form.phone}
+                  onChange={handleChange}
                 />
               </div>
               <div className="gender-note">
@@ -72,12 +152,18 @@ const UserInformation = ({ totalPrice, type }) => {
                   label="Giới tính"
                   variant="outlined"
                   className="gender-input"
+                  name="gender"
+                  value={form.gender}
+                  onChange={handleChange}
                 />
                 <TextField
                   id="outlined-basic"
                   label="Ghi chú"
                   variant="outlined"
                   className="note-input"
+                  name="note"
+                  value={form.note}
+                  onChange={handleChange}
                 />
               </div>
             </form>
@@ -346,6 +432,7 @@ const UserInformation = ({ totalPrice, type }) => {
               </div>
             )}
           </div>
+
           <div
             className="price-payment"
             style={{
@@ -366,6 +453,25 @@ const UserInformation = ({ totalPrice, type }) => {
         </div>
       </div>
 
+      <div
+        className="argree"
+        style={{ display: "flex", flexDirection: "row", marginTop: "10px" }}
+      >
+        <label className="checkBox">
+          <input
+            id="ch1"
+            type="checkbox"
+            checked={isAgreed}
+            onChange={handleCheckboxChange}
+          />
+          <div className="transition"></div>
+        </label>
+        <p style={{ margin: "0" }}>
+          Tôi đã đọc và đồng ý với <Link to="/">điều khoản sử dụng</Link> và{" "}
+          <Link to="/">chính sách bảo mật</Link> của chúng tôi.
+        </p>
+      </div>
+
       <div className="componentButtonNext">
         <div className="total-price">
           <div className="text">
@@ -380,9 +486,9 @@ const UserInformation = ({ totalPrice, type }) => {
           <Link to="/plan/trip" className="prev btn">
             Quay lại
           </Link>
-          <Link to="/payment" className="next btn">
+          <button onClick={handleContinueClick} className="next btn">
             Tiếp tục
-          </Link>
+          </button>
         </div>
       </div>
     </>
