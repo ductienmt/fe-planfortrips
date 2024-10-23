@@ -7,11 +7,36 @@ import "./TravelPlan.css";
 
 function TravelPlan() {
   const [selectedCard, setSelectedCard] = useState("transportation");
-
   const tripData = JSON.parse(localStorage.getItem("tripData"));
+
   const [tripPlan, setTripPlan] = useState({});
   const [summaryItems, setSummaryItems] = useState([]);
   const [accommodationItems, setAccommodationItems] = useState([]);
+
+  const calculateDuration = (departureTime, arrivalTime) => {
+    const [departureHours, departureMinutes] = departureTime
+      .split(":")
+      .map(Number);
+    const [arrivalHours, arrivalMinutes] = arrivalTime.split(":").map(Number);
+
+    const departureDate = new Date();
+    const arrivalDate = new Date();
+
+    departureDate.setHours(departureHours, departureMinutes);
+    arrivalDate.setHours(arrivalHours, arrivalMinutes);
+
+    let diffInMs = arrivalDate.getTime() - departureDate.getTime();
+
+    if (diffInMs < 0) {
+      diffInMs += 24 * 60 * 60 * 1000;
+    }
+
+    const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+    const hours = Math.floor(diffInMinutes / 60);
+    const minutes = diffInMinutes % 60;
+
+    return `${hours}h ${minutes}m`;
+  };
 
   const formatTime = (dateTime) => {
     if (typeof dateTime !== "string") {
@@ -92,6 +117,14 @@ function TravelPlan() {
               : ""
           }
           onClick={() => handleCardClick("transportation")}
+          img="https://flane.vn/wp-content/uploads/2023/12/xe-phuong-trang-7.png"
+          departureTime={formatTime(
+            tripData.data.transportation.departure.departureTime
+          )}
+          arrivalTime={formatTime(
+            tripData.data.transportation.departure.arrivalTime
+          )}
+          nameVehicle={tripData.data.transportation.departure.carCompanyName}
         />
         <AccommodationCard
           className={
@@ -102,10 +135,6 @@ function TravelPlan() {
               : ""
           }
           onClick={() => handleCardClick("accommodation")}
-          img="https://cdn.builder.io/api/v1/image/assets/TEMP/2d3c33d736aad4abccd8a47609cc0bf5d6d61ec0ca67ffba42062bcd29757826?placeholderIfAbsent=true&apiKey=75fde3af215540558ff19397203996a6"
-          departureTime={formatTime(tripData.data.transportation.departureTime)}
-          arrivalTime={formatTime(tripData.data.transportation.arrivalTime)}
-          nameVehicle={tripData.data.transportation.carCompanyName}
         />
         <AttractionCard
           className={

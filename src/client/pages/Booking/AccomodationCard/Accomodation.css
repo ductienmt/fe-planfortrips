@@ -1,0 +1,36 @@
+.accomodation-container {
+    border-radius: 30px;
+    width: 90%;
+    box-shadow: 2px 2px 7px #868686;
+}
+
+.accomodation-container .infomation-card {
+    text-align: center;
+    margin-bottom: 10px;
+    background-color: #41A5E8;
+    border-radius: 20px 20px 0px 0px;
+    height: 40px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.accomodation-container .accomodation-body p {
+    margin: 0px;
+}
+
+.accomodation-container .accomodation-body .text {
+    background-color: #c0c0c0;
+    padding: 3px;
+    border-radius: 5px;
+    opacity: 0.5;
+    width: 20%;
+    text-align: center;
+    font-size: 14px;
+}
+
+.accomodation-container .accomodation-body .time {
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 10px;
+}

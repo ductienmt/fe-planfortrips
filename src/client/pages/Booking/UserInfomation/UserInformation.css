@@ -1,0 +1,187 @@
+.user-information-container {
+    border-radius: 30px;
+    box-shadow: 2px 2px 7px #868686;
+}
+
+.user-information-container .user-information-card {
+    text-align: center;
+    margin-bottom: 10px;
+    background-color: #41A5E8;
+    border-radius: 20px 20px 0px 0px;
+    height: 40px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-information-container .user-information-header {
+    width: 100%;
+}
+
+.user-information-container .user-information-header .user-information-form .css-quhxjy-MuiInputBase-root-MuiOutlinedInput-root {
+    border-radius: 10px;
+    font-family: 'Afacad Flux', sans-serif;
+    border: 1px solid rgba(236, 236, 236, 0.2);
+}
+
+.user-information-container .user-information-header .user-information-form .css-quhxjy-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-width: 1px;
+    border-color: #41A5E8;
+}
+
+.user-information-container .user-information-header .user-information-form .name,
+.user-information-container .user-information-header .user-information-form .contact,
+.user-information-container .user-information-header .user-information-form .gender-note {
+    display: flex;
+    justify-content: strectch;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+
+.user-information-container .user-information-header .user-information-form .name .name-input-1 {
+    width: 30%;
+}
+
+
+.user-information-container .user-information-header .user-information-form .name .name-input-2 {
+    width: 70%;
+}
+
+.user-information-container .user-information-header .user-information-form .contact .contact-input-1 {
+    width: 60%;
+}
+
+.user-information-container .user-information-header .user-information-form .contact .contact-input-2 {
+    width: 40%;
+}
+
+.user-information-container .user-information-header .user-information-form .gender-note .gender-input {
+    width: 20%;
+}
+
+.user-information-container .user-information-header .user-information-form .gender-note .note-input {
+    width: 80%;
+}
+
+.componentButtonNext {
+    display: flex;
+    justify-content: stretch;
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 2px 2px 7px #868686;
+    margin-top: 20px;
+    align-items: center;
+}
+
+.componentButtonNext p {
+    margin: 0;
+}
+
+.componentButtonNext .total-price {
+    flex-grow: 1;
+    flex-basis: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.componentButtonNext .total-price .text {
+    text-align: left;
+    width: 50%;
+}
+
+.componentButtonNext .total-price .text .text-1 {
+    font-weight: 500;
+    font-size: 25px;
+}
+
+.componentButtonNext .total-price .text .text-2 {
+    font-size: 15px;
+}
+
+.componentButtonNext .total-price .price {
+    width: 50%;
+    text-align: center;
+    font-weight: 700;
+
+    font-size: 22px;
+}
+
+.componentButtonNext .button-next {
+    flex-grow: 1;
+    flex-basis: 50%;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.componentButtonNext .button-next .prev {
+    background-color: #E6E6E6;
+    width: 50%;
+}
+
+.componentButtonNext .button-next .next {
+    background-color: #0976CF;
+    width: 50%;
+    color: white;
+}
+
+.price-container {
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 2px 2px 7px #868686;
+    margin-top: 20px;
+}
+
+.price-detail {
+    display: flex;
+    justify-content: stretch;
+    gap: 10px;
+}
+
+.price-detail .price-detail-item {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 2;
+    flex-basis: 70%;
+}
+
+.price-detail .price-payment {
+    background-color: #41A5E8;
+    width: 30%;
+    flex-grow: 1;
+    flex-basis: 30%;
+    border-radius: 0 0 20px 0;
+}
+
+.price-detail .price-detail-item .price-transportation {
+    display: flex;
+    flex-direction: column;
+}
+
+.price-detail .price-detail-item .price-transportation .sumary-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price-detail .price-detail-item .price-transportation .detail-price {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.price-detail .price-detail-item .price-accommodation {
+    display: flex;
+    flex-direction: column;
+}
+
+.price-detail .price-detail-item .price-accommodation .sumary-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
