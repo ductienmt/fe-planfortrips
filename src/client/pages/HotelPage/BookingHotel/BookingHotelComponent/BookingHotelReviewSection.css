@@ -1,0 +1,150 @@
+.booking-hotel-review-container {
+    max-width: 1200px;
+    /* Đặt chiều rộng tối đa cho container */
+    margin: 0 auto;
+    /* Căn giữa container */
+    padding: 20px;
+    /* Thêm khoảng cách bên trong cho container */
+    background-color: #f9f9f9;
+    /* Màu nền cho container */
+    border-radius: 8px;
+    /* Bo tròn góc cho container */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* Thêm bóng cho container */
+}
+
+.booking-hotel-review-section {
+    width: 100%;
+    /* Chiếm toàn bộ chiều rộng */
+}
+
+.booking-hotel-review-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.booking-hotel-review-count {
+    color: #999;
+    /* Màu sắc cho số lượng đánh giá */
+    font-size: 14px;
+    /* Kích thước font chữ */
+}
+
+.booking-hotel-add-review-button {
+    background-color: #e4f3ff;
+    /* Màu nền cho nút */
+    color: #0976cf;
+    /* Màu chữ */
+    border: 1px solid #0976cf;
+    /* Viền nút */
+    border-radius: 10px;
+    /* Bo tròn góc */
+    padding: 8px 16px;
+    /* Khoảng cách bên trong nút */
+    font-weight: 700;
+    /* Đậm */
+    cursor: pointer;
+    /* Con trỏ chuột dạng tay */
+}
+
+.booking-hotel-review-summary {
+    display: flex;
+    /* Sắp xếp theo hàng ngang */
+    justify-content: space-between;
+    /* Khoảng cách giữa các phần tử */
+    align-items: center;
+    /* Căn giữa các phần tử theo chiều dọc */
+    margin-bottom: 20px;
+    /* Khoảng cách phía dưới */
+}
+
+.booking-hotel-overall-rating {
+    font-size: 40px;
+    /* Kích thước font chữ cho đánh giá tổng thể */
+    color: #f9bd2e;
+    /* Màu sắc cho đánh giá tổng thể */
+    font-weight: 600;
+    /* Đậm */
+}
+
+.booking-hotel-rating-filters {
+    display: flex;
+    /* Sắp xếp theo hàng ngang */
+    flex-wrap: wrap;
+    /* Cho phép xuống dòng */
+    gap: 5px;
+    /* Khoảng cách giữa các nút */
+}
+
+.booking-hotel-filter-button {
+    background-color: #fff;
+    /* Màu nền cho nút bộ lọc */
+    border: 1px solid #cacaca;
+    /* Viền nút */
+    border-radius: 30px;
+    /* Bo tròn góc */
+    padding: 4px 20px;
+    /* Khoảng cách bên trong nút */
+    font-size: 13px;
+    /* Kích thước font chữ */
+    color: #cacaca;
+    /* Màu chữ */
+    cursor: pointer;
+    /* Con trỏ chuột dạng tay */
+}
+
+.booking-hotel-filter-button.active {
+    background-color: #e8f1fd;
+    /* Màu nền cho nút đang được chọn */
+    color: #196ada;
+    /* Màu chữ cho nút đang được chọn */
+    border-color: #196ada;
+    /* Màu viền cho nút đang được chọn */
+}
+
+.booking-hotel-review-list {
+    display: flex;
+    /* Sắp xếp theo cột */
+    flex-direction: column;
+    /* Đặt các phần tử theo chiều dọc */
+    gap: 20px;
+    /* Khoảng cách giữa các đánh giá */
+}
+
+.booking-hotel-review-item {
+    border-bottom: 1px solid #ddd;
+    /* Viền dưới cho mỗi đánh giá */
+    padding-bottom: 20px;
+    /* Khoảng cách phía dưới của mỗi đánh giá */
+}
+
+.booking-hotel-reviewer-name {
+    font-weight: 700;
+    /* Đậm */
+    margin: 10px 0;
+    /* Khoảng cách trên và dưới */
+}
+
+.booking-hotel-review-comment {
+    color: #6f6f6f;
+    /* Màu chữ cho nhận xét */
+    font-size: 14px;
+    /* Kích thước font chữ cho nhận xét */
+    line-height: 1.5;
+    /* Khoảng cách giữa các dòng */
+}
+
+@media (max-width: 991px) {
+
+    .booking-hotel-review-header,
+    .booking-hotel-review-summary {
+        flex-direction: column;
+        /* Đặt theo chiều dọc trên màn hình nhỏ */
+        align-items: flex-start;
+        /* Căn bên trái */
+        gap: 10px;
+        /* Khoảng cách giữa các phần tử */
+    }
+}

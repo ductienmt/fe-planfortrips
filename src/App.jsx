@@ -9,10 +9,12 @@ import Register from "./client/pages/Auth/Register/Register";
 import Footer from "./client/pages/Footer/Footer";
 import Header from "./client/pages/Header/Header";
 import { SnackbarProvider } from "notistack";
+import HotelDetails from "./client/pages/HotelPage/HotelDetails/HotelDetails";
 import LandingPage from "./client/pages/Homepage/LandingPage";
 import PlanBefore from "./client/pages/PlanBefore/Plan";
 import Booking from "./client/pages/Booking/Booking";
 import Payment from "./client/pages/Payment/Payment";
+
 
 function App() {
   return (
@@ -33,7 +35,7 @@ function App() {
 
           <Route path="/hotel" element={<Hotel />} />
           <Route path="/booking-hotel" element={<BookingHotel />} />
-          <Route path="/hotel-info" element={<HotelInfo />} />
+          <Route path="/hotel-info" element={<HotelDetails />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/booking/:type" element={<Booking />} />
