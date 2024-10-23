@@ -70,9 +70,15 @@ export const generateTripPlan = async (data) => {
 
   try {
     const result = await chatSession.sendMessage(
-      `bạn dựa vào dữ liệu tôi cung cấp chọn ra kế hoạch tốt nhất, userData chứa dữ liệu của người dùng để ý số người trong chuyến đi để tính toán phù hợp, nếu từ 2 người trơẻ lên hãy tính toán vé xe, tại vé xe tôi cung cấp chỉ là 1 vé 1 người, tính toán thêm vé tham quan ở các nơi check in dựa vào số người,  các dữ liệu khác là tôi cung cấp, nếu là hotel trả về luôn phòng và id, nam, price phòng đó, trả về cho tôi theo định dạng json, không thêm bất cứ điều gì khác. Trả về theo cú pháp, userData, transportation(departure, return), accomodation(nameHotel, hotelId, price_per_night, total, nameRoom, checkin, checkout, roomType, roomId), checkins(dựa vào những nơi tôi cung cấp, ít nhất 5 nơi), estimatedCost, itinerary(trả theo ngày, day1, day2,... đi đâu vào ngày làm gì,...), để ý số người mà tính toán cho đúng\n\n${JSON.stringify(
-        data
-      )}`
+      `bạn dựa vào dữ liệu tôi cung cấp chọn ra kế hoạch tốt nhất dựa vào userData của tôi để ý số người, 
+      userData chứa dữ liệu của người dùng để ý số người trong chuyến đi để tính toán phù hợp, nếu từ 2 người trở lên hãy tính toán vé xe, 
+      tại vé xe tôi cung cấp chỉ là 1 vé 1 người, tính toán thêm vé tham quan ở các nơi check in dựa vào số người,  các dữ liệu khác là tôi cung cấp, 
+      nếu là hotel trả về luôn phòng và id, nam, price phòng đó, trả về cho tôi theo định dạng json, không thêm bất cứ điều gì khác. Bạn hãy chọn ghế trong 
+      transportation tôi có để một mảng là seatAvailable chọn ghế từ đây. Trả về theo cú pháp tôi cung cấp như sau.
+      userData, transportation(departure[departureTime, arrivalTime,vehicleCode,scheduleId,carName, seatBook, routeId], return[departureTime, arrivalTime,vehicleCode,scheduleId,carName, seatBook, routeId]),
+      accomodation(nameHotel, hotelId, price_per_night, total, nameRoom, checkin, checkout, roomType, roomId), 
+      checkins(dựa vào những nơi tôi cung cấp, ít nhất 5 nơi), estimatedCost, itinerary(trả theo ngày, day1, day2,... đi đâu vào ngày làm gì,...), 
+      để ý số người mà tính toán cho đúng\n\n${JSON.stringify(data)}`
     );
     // console.log(result.response.text());
     let cleanedResponse = result.response
