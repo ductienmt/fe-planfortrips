@@ -39,10 +39,10 @@ function App() {
           <Route path="/booking/:type" element={<Booking />} />
           <Route path="/payment" element={<Payment />} />
         </Routes>
-        {window.location.pathname !== "/login" ||
-          window.location.pathname !== "/register" ||
-          window.location.pathname !== "/plan" ||
-          window.location.pathname !== "/plan/trip" || <Footer />}
+        {window.location.pathname !== "/login" &&
+          window.location.pathname !== "/register" &&
+          window.location.pathname !== "/plan" &&
+          window.location.pathname !== "/plan/trip" && <Footer />}
       </BrowserRouter>
     </SnackbarProvider>
   );
