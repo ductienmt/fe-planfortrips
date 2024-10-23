@@ -2,17 +2,27 @@
 
 /**
  * Định dạng một số thành tiền tệ (không thêm VNĐ).
- * @param {string} value - Giá trị đầu vào để định dạng.
+ * @param {string|number} value - Giá trị đầu vào để định dạng.
  * @returns {string} - Chuỗi tiền tệ đã định dạng.
  */
 export const formatMoney = (value) => {
-    // Loại bỏ các ký tự không phải số
-    const cleanedValue = value.replace(/[^\d]/g, "");
+  // Chuyển đổi giá trị sang chuỗi nếu không phải chuỗi
+  if (typeof value !== "string") {
+    value = value.toString(); // Chuyển đổi số thành chuỗi
+  }
 
-    // Định dạng giá trị đã làm sạch với dấu phẩy
-    const formattedValue = cleanedValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  // Kiểm tra nếu value là chuỗi rỗng
+  if (!value) {
+    return ""; // Trả về chuỗi rỗng nếu không có giá trị
+  }
 
-    return formattedValue || ""; // Trả về giá trị đã định dạng
+  // Loại bỏ các ký tự không phải số
+  const cleanedValue = value.replace(/[^\d]/g, "");
+
+  // Định dạng giá trị đã làm sạch với dấu phẩy
+  const formattedValue = cleanedValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  return formattedValue || ""; // Trả về giá trị đã định dạng
 };
 
 /**
@@ -23,19 +33,17 @@ export const formatMoney = (value) => {
  * @param {Function} setError - Hàm thiết lập trạng thái để cập nhật thông báo lỗi.
  */
 export const handleInputChange = (event, setValue, setError) => {
-    const inputValue = event.target.value;
-    const cleanedValue = inputValue.replace(/[^\d]/g, ""); // Làm sạch giá trị đầu vào
+  const inputValue = event.target.value;
+  const cleanedValue = inputValue.replace(/[^\d]/g, ""); // Làm sạch giá trị đầu vào
 
-    // Kiểm tra xem giá trị có vượt quá 1 tỷ VNĐ không
-    const maxBudget = 1000000000; // 1 tỷ VNĐ
-    if (cleanedValue && parseInt(cleanedValue, 10) > maxBudget) {
-        setError("Chi phí không được vượt quá 1 tỷ VNĐ!"); // Gửi thông báo lỗi qua Notistack
-        return; // Ngăn chặn việc cập nhật giá trị nếu vượt quá ngân sách tối đa
-    }
+  // Kiểm tra xem giá trị có vượt quá 1 tỷ VNĐ không
+  const maxBudget = 1000000000; // 1 tỷ VNĐ
+  if (cleanedValue && parseInt(cleanedValue, 10) > maxBudget) {
+    setError("Chi phí không được vượt quá 1 tỷ VNĐ!"); // Gửi thông báo lỗi qua Notistack
+    return; // Ngăn chặn việc cập nhật giá trị nếu vượt quá ngân sách tối đa
+  }
 
-    setError(""); // Không gửi thông báo nếu không có lỗi
-    const formattedValue = formatMoney(inputValue);
-    setValue(formattedValue); // Cập nhật giá trị trong trạng thái
+  setError(""); // Không gửi thông báo nếu không có lỗi
+  const formattedValue = formatMoney(inputValue);
+  setValue(formattedValue); // Cập nhật giá trị trong trạng thái
 };
-
-
