@@ -1,7 +1,8 @@
 import React from 'react';
 import "./Bookingcard.css"; // Nhập tệp CSS
+import { Link } from 'react-router-dom';
 
-const BookingCard = () => {
+const BookingCard = ({room}) => {
     return (
         <div className="booking-card-container-wrapper">
             <div className="booking-card-content-area">
@@ -9,7 +10,7 @@ const BookingCard = () => {
                     <div className="booking-card-rating-stars-display">
                         <h3 className="booking-card-rating-title-text">Đánh giá</h3>
                         <div className="booking-card-star-rating-display">
-                            {[1, 2, 3, 4].map((star) => (
+                            {[...Array(room.rating)].map((star) => (
                                 <img
                                     key={star}
                                     loading="lazy"
@@ -23,13 +24,9 @@ const BookingCard = () => {
                     <span className="booking-card-rating-count-text">( 1k+)</span>
                 </div>
                 <a href="#" className="booking-card-read-reviews-link">Đọc mọi đánh giá</a>
-                <div className="booking-card-price-section-area">
-                    <span className="booking-card-price-label-text">Giá gốc:</span>
-                    <span className="booking-card-original-price-text">3,690,000đ</span>
-                </div>
                 <div className="booking-card-discounted-price-section-area">
-                    <span className="booking-card-discounted-price-label-text">Giá sau giảm:</span>
-                    <span className="booking-card-discounted-price-text">1,750,000đ</span>
+                    <span className="booking-card-discounted-price-label-text">Giá:</span>
+                    <span className="booking-card-discounted-price-text">{room.price} đ</span>
                 </div>
                 <p className="booking-card-price-note-text">( Đã bao gồm thuế, phí )</p>
                 <div className="booking-card-hotel-tag-section">
@@ -41,7 +38,7 @@ const BookingCard = () => {
                     />
                     <span className="booking-card-tag-text-description">Khách sạn giá tốt</span>
                 </div>
-                <button className="booking-card-book-now-button-action">Đặt phòng ngay</button>
+                <Link to={`/payment?amount=${room.price}`}><button className="booking-card-book-now-button-action">Đặt phòng ngay</button></Link>
             </div>
         </div>
     );

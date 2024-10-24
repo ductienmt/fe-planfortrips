@@ -1,5 +1,7 @@
 import "./App.css";
+
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import TravelPlan from "./client/pages/PlanAfter/TravelPlan";
 import Login from "./client/pages/Auth/Login/Login";
 import Register from "./client/pages/Auth/Register/Register";
 import Footer from "./client/pages/Footer/Footer";
@@ -7,7 +9,6 @@ import Header from "./client/pages/Header/Header";
 import { SnackbarProvider } from "notistack";
 import Hotel from "./client/pages/HotelPage/Hotel/Hotel";
 import BookingHotel from "./client/pages/HotelPage/BookingHotel/BookingHotel";
-import TravelPlan from "./client/pages/PlanAfter/TravelPlan";
 import HotelDetails from "./client/pages/HotelPage/HotelDetails/HotelDetails";
 import LandingPage from "./client/pages/Homepage/LandingPage";
 import PlanBefore from "./client/pages/PlanBefore/Plan";

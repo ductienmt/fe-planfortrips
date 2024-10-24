@@ -4,10 +4,13 @@ import "./Payment.css";
 import momo from "../../../assets/momo.png";
 import vnpay from "../../../assets/vnpay.png";
 import vietqr from "../../../assets/vietqr.png";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { PaymentService } from "../../../services/apis/PaymentService";
 
 const Payment = () => {
   const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const amount = searchParams.get('amount');  
   const queryParams = new URLSearchParams(location.search);
   const [ticketId, setTicketId] = useState(null);
   const [bookingId, setBookingId] = useState(null);
@@ -20,7 +23,7 @@ const Payment = () => {
     const formattedAmount = amount
       .toString()
       .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return `${formattedAmount}.000VNĐ`;
+    return `${formattedAmount}VNĐ`;
   };
 
   useEffect(() => {
@@ -31,6 +34,24 @@ const Payment = () => {
     if (bookingIdParam) setBookingId(bookingIdParam);
     console.log(ticketIdParam, bookingIdParam);
   }, [location.search]);
+  const handlePayment = async() =>{
+    const vnpay = {
+       order_id:1,
+        bank_code: "NCB"
+    }
+    try {
+      const response = await PaymentService.createPayment(vnpay);
+      if (response) {
+        window.location.href=response.url;
+      } else {
+        alert("Error creating");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      const query = `[Javascript] fix error: ${error.message}`;
+      window.open(`https://chatgpt.com/?q=${encodeURIComponent(query)}`);
+    }
+  }
   return (
     <>
       <div className="payment-container" style={{ margin: "0 200px" }}>
@@ -80,7 +101,7 @@ const Payment = () => {
                   <div className="content-item">
                     <div className="content-item-left">Tạm tính</div>
                     <div className="content-item-right">
-                      {convertToVND(1000)}
+                      {convertToVND(amount)}
                     </div>
                   </div>
                   <hr />
@@ -149,7 +170,7 @@ const Payment = () => {
                 <div className="content-item-left">
                   Dịch vụ bảo hiểm xe khách
                 </div>
-                <div className="content-item-right">{convertToVND(20)}</div>
+                <div className="content-item-right">{convertToVND(amount)}</div>
               </div>
             </div>
           </div>
@@ -179,14 +200,14 @@ const Payment = () => {
                   <p className="text-2">Đã bao gồm thuế và phí</p>
                 </div>
                 <div className="price">
-                  <p>{convertToVND(10000)}</p>
+                  <p>{convertToVND(amount)}</p>
                 </div>
               </div>
               <div className="button-next">
                 <Link to="/booking" className="prev btn">
                   Quay lại
                 </Link>
-                <button className="next btn">Tiếp tục</button>
+                <button className="next btn" onClick={()=>handlePayment()}>Tiếp tục</button>
               </div>
             </div>
           </div>
