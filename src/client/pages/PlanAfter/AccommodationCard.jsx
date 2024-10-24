@@ -1,6 +1,14 @@
 import "./AccommodationCard.css";
 
-function AccommodationCard({ className, onClick  }) {
+function AccommodationCard({
+  className,
+  onClick,
+  name,
+  room,
+  checkin,
+  checkout,
+  roomtype,
+}) {
   return (
     <article className={`accommodation-card ${className}`} onClick={onClick}>
       <div className="image-gallery">
@@ -23,9 +31,11 @@ function AccommodationCard({ className, onClick  }) {
       <div className="accommodation-details">
         <div className="details-header">
           <div className="accommodation-info">
-            <h3 className="accommodation-name">Babyboo Homestay</h3>
-            <p className="room-type">A906 - Phòng đôi 2 người</p>
-            <CheckInOut checkIn="T4, 26 thg 9" checkOut="T5, 27 thg 9" />
+            <h3 className="accommodation-name">{name}</h3>
+            <p className="room-type">
+              {room} - {roomtype}
+            </p>
+            <CheckInOut checkIn={checkin} checkOut={checkout} />
           </div>
           <img
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/8312b6c1afbf8ba2407ea61d3c83d5228f569367fc22cfce1fef9201d811a2c5?placeholderIfAbsent=true&apiKey=75fde3af215540558ff19397203996a6"

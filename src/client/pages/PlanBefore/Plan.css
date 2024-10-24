@@ -1,19 +1,5 @@
-/* Tổng quát */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Afacad FLux', sans-serif;
-}
-
-html,
-body {
-    height: 100%;
-}
-
 body {
     font-size: 18px;
-    /* Tăng kích thước font chữ cơ bản */
 }
 
 .plan-container {

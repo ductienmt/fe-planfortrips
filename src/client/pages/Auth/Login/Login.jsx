@@ -59,7 +59,6 @@ const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  useEffect(() => {}, []);
 
   useEffect(() => {
     localStorage.clear();
@@ -139,8 +138,8 @@ const Login = () => {
                     Mật khẩu
                   </label>
                 </div>
-                <div className="forgot-password text-body mb-2">
-                  <a href="#!" className="text-body">
+                <div className="register-forgot-password text-body mb-2">
+                  <a href="#!" className="register-text-body">
                     Quên mật khẩu?
                   </a>
                 </div>

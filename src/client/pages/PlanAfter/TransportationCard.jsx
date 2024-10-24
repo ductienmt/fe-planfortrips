@@ -1,13 +1,43 @@
+import { useEffect, useState } from "react";
+import { ScheduleService } from "../../../services/apis/ScheduleService";
 import "./TransportationCard.css";
 import "feather-icons/dist/feather";
-function TransportationCard({ className, onClick }) {
+
+const TransportationCard = ({
+  className,
+  onClick,
+  img,
+  nameVehicle,
+  departureDate,
+  arrivalDate,
+  departureTime,
+  arrivalTime,
+  timeCommunicate,
+  seatCode,
+  scheduleId,
+}) => {
+  const [departureStationData, setDepartureStationData] = useState("");
+  const [arrivalStationData, setArrivalStationData] = useState("");
+  const loadStation = async (id) => {
+    try {
+      const response = await ScheduleService.getStation(id);
+      console.log("station", response.data);
+
+      setDepartureStationData(response.data.data.departureStation);
+      setArrivalStationData(response.data.data.arrivalStation);
+    } catch (error) {
+      console.error("Error fetching accommodation data", error);
+    }
+  };
+
+  useEffect(() => {
+    if (scheduleId) {
+      loadStation(scheduleId);
+    }
+  }, [scheduleId]);
   return (
     <article className={`transportation-card ${className}`} onClick={onClick}>
-      <img
-        src="https://cdn.builder.io/api/v1/image/assets/TEMP/9dbd6442be390686e0fe9e6e4a46238c20406bfa1b5da82525c7dc7ecff84fb8?placeholderIfAbsent=true&apiKey=75fde3af215540558ff19397203996a6"
-        alt="Transportation image"
-        className="transport-image"
-      />
+      <img src={img} alt="Transportation image" className="transport-image" />
       <div className="transport-details">
         <div className="transport-header">
           <div className="company-info">
@@ -18,8 +48,12 @@ function TransportationCard({ className, onClick }) {
             />
 
             <div className="company-name">
-              <span className="name">Phương Trang</span>
-              <span className="code">A01</span>
+              <span className="name" style={{ fontSize: "18px" }}>
+                {nameVehicle}
+              </span>
+              <span className="code" style={{ fontSize: "14px" }}>
+                {seatCode}
+              </span>
             </div>
           </div>
           <img
@@ -30,16 +64,18 @@ function TransportationCard({ className, onClick }) {
         </div>
         <div className="journey-info">
           <div className="time-info">
-            <TimeDisplay time="00:00" date="T4, 26 thg 9" />
-            <span className="duration">1h 10m</span>
-            <TimeDisplay time="02:00" date="T4, 26 thg 9" />
+            <TimeDisplay time={departureTime} date={departureDate} />
+            <span className="duration" style={{ fontSize: "14px" }}>
+              {timeCommunicate}
+            </span>
+            <TimeDisplay time={arrivalTime} date={arrivalDate} />
           </div>
           <div className="location-info">
             <LocationDisplay
               place="Xuất phát"
               icon="https://cdn.builder.io/api/v1/image/assets/TEMP/385a865a60db67b2221563c86645d1ba2bb924639ea59ef346b2b709c6b210d2?placeholderIfAbsent=true&apiKey=75fde3af215540558ff19397203996a6"
               city="Hồ Chí Minh"
-              station="Bến xe Miền Đông Mới"
+              station={departureStationData}
               extraInfo="Đón tại Bến"
             />
             <div className="route-icons">
@@ -48,13 +84,12 @@ function TransportationCard({ className, onClick }) {
                 alt="Route start"
                 className="route-icon"
               />
-              {/* <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/2f2cda72d26f1c67915563e9cacfcc3716d8d5d11d87c08952c0484a418a3102?placeholderIfAbsent=true&apiKey=75fde3af215540558ff19397203996a6" alt="Route end" className="route-icon" /> */}
             </div>
             <LocationDisplay
               place="Đích đến"
               icon="https://cdn.builder.io/api/v1/image/assets/TEMP/2f2cda72d26f1c67915563e9cacfcc3716d8d5d11d87c08952c0484a418a3102?placeholderIfAbsent=true&apiKey=75fde3af215540558ff19397203996a6"
               city="Vũng Tàu"
-              station="Bến xe Vũng Tàu"
+              station={arrivalStationData}
               extraInfo="Trả tại quốc lộ 1A - Bãi tắm sau"
             />
           </div>
@@ -74,39 +109,47 @@ function TransportationCard({ className, onClick }) {
       </div>
     </article>
   );
-}
+};
 
-function TimeDisplay({ time, date }) {
+const TimeDisplay = ({ time, date }) => {
   return (
     <div className="time-display">
-      <span className="time">{time}</span>
-      <span className="date">{date}</span>
+      <span className="time" style={{ fontSize: "20px" }}>
+        {time}
+      </span>
+      <span className="date" style={{ fontSize: "14px" }}>
+        {date}
+      </span>
     </div>
   );
-}
+};
 
-function LocationDisplay({ place, icon, city, station, extraInfo }) {
+const LocationDisplay = ({ place, icon, city, station, extraInfo }) => {
   return (
     <div className="location-display">
       <img src={icon} alt="Location icon" className="location-icon" />
       <div className="location-text">
         <span className="place">{place}</span>
-        <span className="station">
+        <span className="station" style={{ fontSize: "17px" }}>
           {city} · {station}
         </span>
-        {extraInfo && <span className="extra-info">{extraInfo}</span>}
+        {extraInfo && (
+          <span className="extra-info" style={{ fontSize: "13px" }}>
+            {extraInfo}
+          </span>
+        )}
       </div>
     </div>
   );
-}
+};
 
-function ActionButton({ text, icon, primary }) {
+const ActionButton = ({ text, icon, primary }) => {
   return (
     <button className={`action-button ${primary ? "primary" : "secondary"}`}>
       {text}
       <img src={icon} alt="Action icon" className="action-icon" />
     </button>
   );
-}
+};
 
 export default TransportationCard;

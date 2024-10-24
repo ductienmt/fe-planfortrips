@@ -6,7 +6,7 @@
   margin-right: 24px;
 }
 
-.login-container .text-center .login-title {
+.login-container .login-title {
   font-size: 20px;
   /* Giảm kích thước chữ, có thể điều chỉnh theo ý thích */
   font-weight: bold;
@@ -18,17 +18,14 @@
 
 }
 
-.login-container .form-label {
-  background-color: #FFFFFF;
 
-}
-
-.login-container .forgot-password .text-body {
+.login-container .register-forgot-password .register-text-body {
   text-decoration: none;
   /* Bỏ dấu gạch chân */
   display: block;
   margin-top: -20px;
   /* Giảm khoảng cách so với ô input mật khẩu */
+  color: #333;
 
 
 }
@@ -38,7 +35,7 @@
   color: white;
   font-weight: bold;
   height: 50px;
-  width: 381px;
+  width: 500px;
 }
 
 .login-container .icon-text1 {
@@ -142,18 +139,29 @@
 
 }
 
+.login-container .form-control{
+  border: 1px solid #ccc; /* Màu viền mặc định */
+}
+.login-container .form-control:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: #ccc; /* Màu viền khi focus giống với viền mặc định */
+}
+
+
 .login-container .input-grup .custom-input.form-outline .form-control:focus+label,
 .login-container .input-grup .custom-input.form-outline .form-control:not(:placeholder-shown)+label {
-  top: -20px;
+  top: -22px;
   /* Đưa label lên trên */
   left: 20px;
   /* Giữ nguyên bên trái */
-  font-size: 10px;
+  font-size: 20px;
   /* Kích thước chữ nhỏ hơn */
   color: black;
   /* Màu sắc cho label khi focus */
 }
 
 .login-container .input-grup .custom-input .form-control {
-  width: 381px;
+  width: 500px;
+  height: 40px;
 }

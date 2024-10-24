@@ -1,5 +1,5 @@
 import React from 'react';
-import './BookingHotel.css'; // Nhập tệp CSS
+import './BookingHotel.css';
 import BookingHotelImageGallery from './BookingHotelComponent/BookingHotelImageGallery';
 import BookingHotelHotelInfo from './BookingHotelComponent/BookingHotelHotelInfo';
 import BookingHotelRoomOptions from './BookingHotelComponent/BookingHotelRoomOptions';
@@ -21,7 +21,7 @@ function BookingHotel() {
   ];
 
   return (
-    <div className="booking-hotel-container"> {/* Thêm container */}
+    <div className="booking-hotel-container">
       <main className="booking-hotel">
         <BookingHotelImageGallery />
         <BookingHotelHotelInfo />

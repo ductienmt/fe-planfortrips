@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './BusResultList.css';
 import BusResultItem from './BusResultItem.jsx';
+import { ScheduleService } from '../../../../../services/apis/ScheduleService.js'
 
 const busResults = [
     { id: 1, departureTime: '02:00', arrivalTime: '05:00', company: 'Phương Trang', rating: 5, type: 'Limousine', price: '140.000đ', seatsAvailable: 10 },
@@ -11,8 +12,9 @@ const busResults = [
 ];
 
 const BusResultList = () => {
+
     return (
-        <section className="bus-result-list-wrapper">
+        <section className="result-list-wrapper">
             {busResults.map(result => (
                 <BusResultItem key={result.id} {...result} />
             ))}

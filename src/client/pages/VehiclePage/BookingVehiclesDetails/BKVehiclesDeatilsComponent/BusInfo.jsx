@@ -1,7 +1,7 @@
 import React from 'react';
 import './BusInfo.css';
 import StarIcon from '@mui/icons-material/Star';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'; // Dùng cho biểu tượng đường đi
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const BusInfo = () => {
   return (
