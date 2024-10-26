@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useEffect, useState } from "react";
 import SearchBar from "./HotelComponent/SearchBar";
 import HotDealsNotification from "./HotelComponent/HotDealsNotification";
