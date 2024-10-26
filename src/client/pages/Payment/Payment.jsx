@@ -4,38 +4,41 @@ import "./Payment.css";
 import momo from "../../../assets/momo.png";
 import vnpay from "../../../assets/vnpay.png";
 import vietqr from "../../../assets/vietqr.png";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import BankService from './Bank/serviceBank'
+import { Description } from "@mui/icons-material";
 
-// Hàm để tạo chuỗi ngẫu nhiên gồm 6 ký tự
 const generateRandomString = () => {
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let result = "";
-  const length = 6; // Độ dài chuỗi ngẫu nhiên
-
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-
-  return result;
-};
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    const length = 6; // Độ dài chuỗi ngẫu nhiên
+  
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    console.log(result);
+    
+    return result;
+  };
 
 const Payment = () => {
   const location = useLocation();
-  const navi = useNavigate();
+  const [searchParams] = useSearchParams();
+  const amount = searchParams.get('amount');  
+  const queryParams = new URLSearchParams(location.search);
   const [ticketId, setTicketId] = useState(null);
+  const [randomCode,setRanDomCode] = useState("");
   const [bookingId, setBookingId] = useState(null);
+  const [planId, setPlanId] = queryParams.get('planid');
   const [activeMethod, setActiveMethod] = useState("");
+  const navi = useNavigate();
 
-  const [myBank, setMyBank] = useState({
-    BankId: "mbbank",
-    AccountNo: "0348308951",
-    AccountName: "HO MINH NHUT",
-  });
+  
+
 
   const [infoBank, setInfoBank] = useState({
-    Amount: 10000,
-    Description: `${generateRandomString()}`,
+    Amount: amount,
+    Description: `Thanh toan cho dich vu ${planId}`
   });
 
   const [qrCode, setQrCode] = useState("");
@@ -44,37 +47,57 @@ const Payment = () => {
     setActiveMethod(method);
   };
 
-  const generateQrCode = () => {
+  
+  const handlePayment = async () => {
     if (!activeMethod) {
-      alert("Chưa chọn phương thức thanh toán");
+      alert("Chưa chọn phương thức thanh toán")
       return;
     }
     if (activeMethod === "VIETQR") {
-      // Xây dựng URL cơ bản với mã ngân hàng và số tài khoản
-      const baseUrl = `https://img.vietqr.io/image/${myBank.BankId}-${myBank.AccountNo}-compact2.jpg`;
-
-      // Mã hóa mô tả và tên tài khoản để xử lý các ký tự đặc biệt
-      const encodedDescription = encodeURIComponent(infoBank.Description);
-      const encodedAccountName = encodeURIComponent(myBank.AccountName);
-
-      // Xây dựng URL cuối cùng với các tham số truy vấn
-      const qrCodeUrl = `${baseUrl}?amount=${infoBank.Amount}&addInfo=${encodedDescription}&accountName=${encodedAccountName}`;
-      setQrCode(qrCodeUrl);
+      // Thực hiện thanh toán VietQR
+      const code = generateRandomString();
+      setRanDomCode(code);
+      
+      const contentWithCode = infoBank.Description + " " + code;
+      
+      const qrCode = BankService.generateVietQR(infoBank.Amount, contentWithCode);
+      setQrCode(qrCode);
+    }
+    if (activeMethod === "VNPAY") {
+      // Thực hiện thanh toán VNPay
+      await BankService.VNPay();
     }
   };
 
-  useEffect(() => {
-    if (qrCode) {
-      // Bắt đầu kiểm tra thanh toán nếu mã QR đã được tạo
-      const intervalId = setInterval(() => {
-        checkPaid();
-      }, 3000); // Kiểm tra mỗi 5 giây
 
+ 
+
+
+  // Check khi thanh toán VietQR
+  useEffect(() => {
+     const params = new URLSearchParams(location.search);
+    const ticketIdParam = params.get("ticketid");
+    const bookingIdParam = params.get("bookingid");
+    if (ticketIdParam) setTicketId(ticketIdParam);
+    if (bookingIdParam) setBookingId(bookingIdParam);
+    console.log(ticketIdParam, bookingIdParam);
+    // Kiểm tra khi thanh toán bằng vietQR code
+    if (qrCode) {
+      // Check đã thanh toán -> Chuyển trang
+      // Bắt đầu kiểm tra thanh toán nếu mã QR đã được tạo      
+      const intervalId = setInterval(() => {
+        BankService.checkPaidVietQR(infoBank.Amount, infoBank.Description, randomCode).then((status) => {
+          if (status) {
+            navi('/success')
+          }
+        });
+      }, 3000); // Kiểm tra mỗi 3 giây
       // Xóa interval khi thanh toán thành công hoặc component bị unmount
       return () => clearInterval(intervalId);
     }
-  }, [qrCode]);
+  }, [qrCode, location.search]);
 
+  // Check thanh toán VnPay
   const convertToVND = (amount) => {
     const formattedAmount = amount
       .toString()
@@ -241,6 +264,7 @@ const Payment = () => {
                 </div>
               </div>
             </div>
+
           </div>
           <div className="payment-footer">
             {/* Footer cho tổng tiền và mã giảm giá */}
@@ -252,14 +276,14 @@ const Payment = () => {
                     <p className="text-2">Đã bao gồm thuế và phí</p>
                   </div>
                   <div className="price">
-                    <p>{convertToVND(1840000)}</p>
+                    <p>{convertToVND(infoBank.Amount)}</p>
                   </div>
                 </div>
                 <div className="button-next">
                   <Link to="/booking" className="prev btn">
                     Quay lại
                   </Link>
-                  <button className="next btn" onClick={generateQrCode}>
+                  <button className="next btn" onClick={handlePayment}>
                     Tiếp tục
                   </button>
                 </div>
@@ -268,11 +292,9 @@ const Payment = () => {
           </div>
         </div>
       ) : (
-        <div className="payment__qr-code">
+        <div className="payment__qr-code text-center">
           <h2>Vui lòng quét mã thanh toán</h2>
-          <h4 className="text-info">
-            Thanh toán thành công sẽ tự động chuyển trang
-          </h4>
+          <h4 className="text-info">Thanh toán thành công sẽ tự động chuyển trang</h4>
           <img src={qrCode} alt="Mã QR Thanh Toán" />
         </div>
       )}
