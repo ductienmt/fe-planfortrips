@@ -26,11 +26,10 @@ const Payment = () => {
   const [searchParams] = useSearchParams();
   const amount = searchParams.get('amount');  
   const queryParams = new URLSearchParams(location.search);
-  const ticketId = searchParams.get('ticketId');
+  const [ticketId, setTicketId] = useState(null);
   const [randomCode,setRanDomCode] = useState("");
-  
   const [bookingId, setBookingId] = useState(null);
-  const [planId, setPlanId] = queryParams.get('planId');
+  const [planId, setPlanId] = queryParams.get('planid');
   const [activeMethod, setActiveMethod] = useState("");
   const navi = useNavigate();
 
@@ -47,7 +46,6 @@ const Payment = () => {
   const handleMethodClick = (method) => {
     setActiveMethod(method);
   };
-
 
   
   const handlePayment = async () => {
@@ -77,6 +75,12 @@ const Payment = () => {
 
   // Check khi thanh toán VietQR
   useEffect(() => {
+     const params = new URLSearchParams(location.search);
+    const ticketIdParam = params.get("ticketid");
+    const bookingIdParam = params.get("bookingid");
+    if (ticketIdParam) setTicketId(ticketIdParam);
+    if (bookingIdParam) setBookingId(bookingIdParam);
+    console.log(ticketIdParam, bookingIdParam);
     // Kiểm tra khi thanh toán bằng vietQR code
     if (qrCode) {
       // Check đã thanh toán -> Chuyển trang
@@ -91,23 +95,36 @@ const Payment = () => {
       // Xóa interval khi thanh toán thành công hoặc component bị unmount
       return () => clearInterval(intervalId);
     }
-  }, [qrCode]);
+  }, [qrCode, location.search]);
 
   // Check thanh toán VnPay
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const ticketIdParam = params.get("ticketid");
-    const bookingIdParam = params.get("bookingid");
-    if (ticketIdParam) setTicketId(ticketIdParam);
-    if (bookingIdParam) setBookingId(bookingIdParam);
-    console.log(ticketIdParam, bookingIdParam);
-  }, [location.search]);
-
   const convertToVND = (amount) => {
     const formattedAmount = amount
       .toString()
       .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return `${formattedAmount}VNĐ`;
+  };
+
+  const checkPaid = async () => {
+    try {
+      console.log("Check 1 lần");
+      const response = await fetch(
+        "https://script.google.com/macros/s/AKfycbypcs1V21R_GxdsvjQo0mUBeZDhhDr7bTHeIejfVsKkfvQ5npazvDMyAqu0_Hd_7nJA/exec"
+      );
+      const res = await response.json();
+
+      for (let record of res.data) {
+        console.log(record);
+        if (
+          record["Giá trị"] === infoBank.Amount &&
+          record["Mô tả"].includes(infoBank.Description)
+        ) {
+          navi("/success");
+        }
+      }
+    } catch (error) {
+      console.error("Lỗi khi kiểm tra thanh toán:", error);
+    }
   };
 
   useEffect(() => {
@@ -155,7 +172,99 @@ const Payment = () => {
           </div>
           <h4>Chi tiết giao dịch</h4>
           <div className="payment-body">
-            {/* Nội dung chi tiết giao dịch */}
+            <div className="payment-body-left">
+              <div className="head">
+                <p style={{ margin: "0", color: "white" }}>
+                  Thanh toán dịch vụ
+                </p>
+              </div>
+              <div className="content">
+                {ticketId && bookingId ? (
+                  <>
+                    <div className="content-item">
+                      <div className="content-item-left">Dịch vụ</div>
+                      <div className="content-item-right">Mua vé xe khách</div>
+                    </div>
+                    <hr />
+                    <div className="content-item">
+                      <div className="content-item-left">Tạm tính</div>
+                      <div className="content-item-right">
+                        {convertToVND(1000000)}
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="content-item">
+                      <div className="content-item-left">Dịch vụ</div>
+                      <div className="content-item-right">
+                        Đặt phòng khách sạn
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="content-item">
+                      <div className="content-item-left">Tạm tính</div>
+                      <div className="content-item-right">
+                        {convertToVND(800000)}
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    {ticketId && (
+                      <>
+                        <div className="content-item">
+                          <div className="content-item-left">Dịch vụ</div>
+                          <div className="content-item-right">
+                            Mua vé xe khách
+                          </div>
+                        </div>
+                        <hr />
+                        <div className="content-item">
+                          <div className="content-item-left">Tạm tính</div>
+                          <div className="content-item-right">
+                            {convertToVND(1000)}
+                          </div>
+                        </div>
+                      </>
+                    )}
+                    {bookingId && (
+                      <>
+                        <div className="content-item">
+                          <div className="content-item-left">Dịch vụ</div>
+                          <div className="content-item-right">
+                            Đặt phòng khách sạn
+                          </div>
+                        </div>
+                        <hr />
+                        <div className="content-item">
+                          <div className="content-item-left">Tạm tính</div>
+                          <div className="content-item-right">
+                            {convertToVND(infoBank.Amount)}
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </>
+                )}
+              </div>
+            </div>
+            <div className="payment-body-right">
+              <div className="head">
+                <p style={{ margin: "0", color: "white" }}>
+                  Thanh toán giao dịch
+                </p>
+              </div>
+              <div className="content">
+                <div className="content-item">
+                  <div className="content-item-left">
+                    Dịch vụ bảo hiểm xe khách
+                  </div>
+                  <div className="content-item-right">
+                    {convertToVND(40000)}
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
           <div className="payment-footer">
             {/* Footer cho tổng tiền và mã giảm giá */}

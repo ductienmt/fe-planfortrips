@@ -49,7 +49,7 @@ const UserInformation = ({ totalPrice, type }) => {
       } else {
         // TODO: Call API to create ticket
 
-        navigate("/payment");
+        navigate(`/payment?ticketid=1&bookingid=1`);
       }
     } else {
       enqueueSnackbar("Vui lòng điền đẩy đủ thông tin.", {
@@ -197,7 +197,7 @@ const UserInformation = ({ totalPrice, type }) => {
                       className="price-icon"
                       style={{ display: "flex", flexDirection: "row" }}
                     >
-                      <p>{convertToVND(totalPrice)}</p>
+                      <p>{convertToVND(1000)}</p>
                       <button
                         onClick={() =>
                           setShowDetailPriceTransportation(
@@ -234,7 +234,7 @@ const UserInformation = ({ totalPrice, type }) => {
                       }}
                     >
                       <p>Giá cho 1 vé</p>
-                      <p>{convertToVND(totalPrice)}</p>
+                      <p>{convertToVND(250)}</p>
                     </div>
                     <div
                       style={{
@@ -244,7 +244,7 @@ const UserInformation = ({ totalPrice, type }) => {
                       }}
                     >
                       <p>Tổng số vé đã đặt</p>
-                      <p>1</p>
+                      <p>4 (cả đi và về)</p>
                     </div>
                   </div>
                 </div>
@@ -255,7 +255,7 @@ const UserInformation = ({ totalPrice, type }) => {
                       className="price-icon"
                       style={{ display: "flex", flexDirection: "row" }}
                     >
-                      <p>{convertToVND(totalPrice)}</p>
+                      <p>{convertToVND(800)}</p>
                       <button
                         onClick={() =>
                           setShowDetailPriceAccommodation(
@@ -292,7 +292,7 @@ const UserInformation = ({ totalPrice, type }) => {
                         }}
                       >
                         <p>Giá cho 1 phòng</p>
-                        <p>{convertToVND(totalPrice)}</p>
+                        <p>{convertToVND(400)}/1 đêm</p>
                       </div>
                       <div
                         style={{
@@ -302,7 +302,7 @@ const UserInformation = ({ totalPrice, type }) => {
                         }}
                       >
                         <p>Tổng số phòng đã đặt</p>
-                        <p>1</p>
+                        <p>1 (2 đêm)</p>
                       </div>
                     </div>
                   </div>
@@ -447,7 +447,7 @@ const UserInformation = ({ totalPrice, type }) => {
               Tổng thanh toán
             </p>
             <p style={{ fontSize: "24px", fontWeight: "500" }}>
-              {convertToVND(totalPrice)}
+              {convertToVND(1800)}
             </p>
           </div>
         </div>
