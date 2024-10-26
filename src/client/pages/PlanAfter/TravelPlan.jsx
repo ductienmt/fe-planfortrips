@@ -5,6 +5,7 @@ import AccommodationCard from "./AccommodationCard";
 import AttractionCard from "./AttractionCard";
 import "./TravelPlan.css";
 import { ScheduleService } from "../../../services/apis/ScheduleService";
+import { Link } from "react-router-dom";
 
 function TravelPlan() {
   const [selectedCard, setSelectedCard] = useState("transportation");
@@ -171,7 +172,8 @@ function TravelPlan() {
         }}
       >
         {/* <button className="travel-plan-footer-button">Edit</button> */}
-        <button
+        <Link
+          to={"/booking/plan"}
           className="travel-plan-footer-button btn"
           style={{
             width: "30%",
@@ -182,7 +184,7 @@ function TravelPlan() {
           }}
         >
           Xác nhận kế hoạch
-        </button>
+        </Link>
       </div>
     </main>
   );

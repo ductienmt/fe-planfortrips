@@ -103,7 +103,7 @@ const LandingPage = () => {
                   people="2 người"
                   nights="2N/1Đ"
                   rating="4.5"
-                  price="1.000.000"
+                  price="5.000.000"
                   feedback="25"
                   number="2"
                   handleClick={() => {}}
@@ -116,7 +116,7 @@ const LandingPage = () => {
                   people="10 người"
                   nights="7N/6Đ"
                   rating="4.8"
-                  price="1.000.000"
+                  price="6.000.000"
                   feedback="25"
                   number="10"
                   handleClick={() => {}}
@@ -129,7 +129,7 @@ const LandingPage = () => {
                   people="5 người"
                   nights="5N/4Đ"
                   rating="4.9"
-                  price="1.000.000"
+                  price="4.000.000"
                   feedback="25"
                   number="5"
                   handleClick={() => {}}

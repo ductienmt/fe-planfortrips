@@ -127,7 +127,7 @@ const Header = () => {
                   Phương tiện
                 </Link>
                 <span>|</span>
-                <Link className="nav-link" to="#">
+                <Link className="nav-link" to="/hotel">
                   Khách sạn
                 </Link>
                 <span>|</span>

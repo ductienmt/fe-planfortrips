@@ -11,7 +11,7 @@ import { DateFormatter } from "../../../utils/DateFormat";
 import { PlanServiceApi } from "../../../services/apis/PlanServiceApi";
 import { generateTripPlan } from "../../../services/planService";
 
-function HomePage() {
+function PlanBefore() {
   const { enqueueSnackbar } = useSnackbar(); // Sử dụng Notistack
   const [adults, setAdults] = useState(0);
   const [children, setChildren] = useState(0);
@@ -43,23 +43,24 @@ function HomePage() {
   const [planData, setPlanData] = useState({
     location: "Hồ Chí Minh",
     destination: "Vũng Tàu",
-    startDate: "10-10-2024 08:00:00",
-    endDate: "13-10-2024 14:00:00",
+    startDate: "25-10-2024 08:00:00",
+    endDate: "28-10-2024 14:00:00",
     numberPeople: 2,
     budget: 5000,
   });
 
   const handlePlan = async () => {
     // if (validatePlan()) {
-    // setFormData({
-    //   ...formData,
-    //   location: queryCurrentCity,
-    //   destination: queryDestination,
-    //   startDate: DateFormatter(ngayDiRef.current.value),
-    //   endDate: DateFormatter(ngayDiRef.current.value),
-    //   numberPeople: adults + children + infants,
-    //   budget: budget,
-    // });
+    //   setFormData({
+    //     ...formData,
+    //     location: queryCurrentCity,
+    //     destination: queryDestination,
+    //     startDate: DateFormatter(ngayDiRef.current.value),
+    //     endDate: DateFormatter(ngayDiRef.current.value),
+    //     numberPeople: adults + children + infants,
+    //     budget: budget,
+    //   });
+    //   console.log(formData);
     try {
       const response = await PlanServiceApi.getData(planData);
       console.log(response.data);
@@ -69,12 +70,11 @@ function HomePage() {
         console.log("Setting trip plan:", tripPlan);
         localStorage.setItem("tripData", JSON.stringify(tripPlan));
         // Chuyển hướng sau khi đã cập nhật tripPlan
-        // window.location.href = "/plan/trip";
+        window.location.href = "/plan/trip";
       }
     } catch (error) {
       console.log(error);
     }
-
     // }
   };
 
@@ -458,4 +458,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default PlanBefore;
