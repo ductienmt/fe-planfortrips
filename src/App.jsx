@@ -14,13 +14,14 @@ import LandingPage from "./client/pages/Homepage/LandingPage";
 import PlanBefore from "./client/pages/PlanBefore/Plan";
 import Booking from "./client/pages/Booking/Booking";
 import Payment from "./client/pages/Payment/Payment";
+import HomePage from "./enterprise/pages/HomePage/HomePage";
 
 function App() {
   const location = useLocation();
 
   // Danh sách các path mà không cần hiện Header hoặc Footer
-  const noHeaderFooterPaths = [""];
-  const noFooterPaths = ["/plan", "/plan/trip", "/login", "/register"];
+  const noHeaderFooterPaths = ["/enterprise", "/enterprise/test"];
+  const noFooterPaths = ["/plan", "/plan/trip", "/login", "/register", "/enterprise/test"];
 
   const shouldShowHeader = !noHeaderFooterPaths.includes(location.pathname);
   const shouldShowFooter =
@@ -47,6 +48,10 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/booking/:type" element={<Booking />} />
         <Route path="/payment" element={<Payment />} />
+
+        <Route path="/enterprise" >
+          <Route path="test" element={<HomePage/>}></Route>
+        </Route>
       </Routes>
       {shouldShowFooter && <Footer />}
     </SnackbarProvider>
