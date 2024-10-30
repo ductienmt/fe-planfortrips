@@ -18,6 +18,7 @@ const Login = () => {
   const [formData, setFormData] = useState({
     userName: "",
     password: "",
+    role: "ROLE_USER",
   });
 
   const handleLogin = async (e) => {
@@ -36,6 +37,7 @@ const Login = () => {
         response.data.data.userName,
         response.data.data.role
       );
+      handleToken.setTimeout(86400 * 10000);
       enqueueSnackbar(response.data.message, {
         variant: "success",
         autoHideDuration: 1000,
@@ -58,8 +60,6 @@ const Login = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  useEffect(() => {}, []);
 
   useEffect(() => {
     localStorage.clear();

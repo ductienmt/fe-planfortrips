@@ -117,7 +117,6 @@
 
 .login-container .input-grup .custom-input {
   position: relative;
-  /* Giúp vị trí của label được xác định đúng */
 
 }
 
@@ -139,13 +138,16 @@
 
 }
 
-.login-container .form-control{
-  border: 1px solid #ccc; /* Màu viền mặc định */
+.login-container .form-control {
+  border: 1px solid #ccc;
+  /* Màu viền mặc định */
 }
+
 .login-container .form-control:focus {
   outline: none;
   box-shadow: none;
-  border-color: #ccc; /* Màu viền khi focus giống với viền mặc định */
+  border-color: #ccc;
+  /* Màu viền khi focus giống với viền mặc định */
 }
 
 

@@ -9,7 +9,7 @@ export const HotelService = {
     return response.data;
   },
   findHotelById: async (id) => {
-    const response = await Http.get(`api/v1/hotels/${id}`);
+    const response = await Http.get(`api/v1/hotels/getById/${id}`);
     return response.data;
   },
   update: async (hotelId, data) => {
@@ -18,6 +18,10 @@ export const HotelService = {
   },
   delete: async (id) => {
     const response = await Http.delete(`api/v1/users/delete?id=${id}`);
+    return response.data;
+  },
+  getImageById: async (id) => {
+    const response = await Http.get(`api/v1/hotels/getImages/${id}`);
     return response.data;
   },
 };
