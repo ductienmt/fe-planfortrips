@@ -15,6 +15,7 @@ import PlanBefore from "./client/pages/PlanBefore/Plan";
 import Booking from "./client/pages/Booking/Booking";
 import Payment from "./client/pages/Payment/Payment";
 import Success from "./client/pages/Payment/Status/Success";
+import DashboardLayoutBasic from "./admin/dashboard/DashboardLayoutBasic";
 
 function App() {
   const location = useLocation();
@@ -52,6 +53,8 @@ function App() {
       </Routes>
       {shouldShowFooter && <Footer />}
     </SnackbarProvider>
+    // admin 
+    // <DashboardLayoutBasic/>
   );
 }
 
