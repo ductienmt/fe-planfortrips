@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import AuthService from "../../../../services/apis/AuthService";
 import "./Register.css"; // Custom CSS
 import { useSnackbar } from "notistack";
 import background from "../../../../assets/image 37.png";
@@ -113,11 +112,17 @@ const Register = () => {
 
   const handleLoginWithGoogle = async (code) => {
     const res = await callBackUrlGoogle(code);
-    enqueueSnackbar(
-      res.firstOauth2
-        ? "Chào mừng bạn lần đầu đăng nhập Google!"
-        : "Chào mừng bạn quay trở lại!",
-      {
+    if (res.firstOauth2)
+      enqueueSnackbar("Chào mừng bạn lần đầu đăng nhập Google!", {
+        variant: "success",
+        autoHideDuration: 1000,
+        onExit: () => {
+          navigate("/");
+        },
+      });
+    else
+      enqueueSnackbar("Chào mừng bạn quay trở lại!", {
+
         variant: "success",
         autoHideDuration: 1000,
         onExit: () => navigate("/"),

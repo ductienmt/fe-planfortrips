@@ -22,6 +22,7 @@ import Booking from "./client/pages/Booking/Booking";
 import Payment from "./client/pages/Payment/Payment";
 import Success from "./client/pages/Payment/Status/Success";
 import { ClientLayout } from "./layout/ClientLayout";
+import DashboardLayoutBasic from "./admin/dashboard/DashboardLayoutBasic";
 
 function App() {
   const location = useLocation();
@@ -52,6 +53,8 @@ function App() {
         </Route> */}
       </Routes>
     </SnackbarProvider>
+    // admin 
+    // <DashboardLayoutBasic/>
   );
 }
 

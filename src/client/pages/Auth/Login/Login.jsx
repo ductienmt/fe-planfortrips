@@ -1,4 +1,3 @@
-// src/components/Auth/Login.jsx
 import { useEffect, useState } from "react";
 import "./Login.css";
 import {
@@ -6,7 +5,6 @@ import {
   getAuthUrl,
 } from "../../../../services/apis/Oauth2Service";
 import { Link, useNavigate } from "react-router-dom";
-import AuthService from "../../../../services/apis/AuthService";
 import { useSnackbar } from "notistack";
 import handleToken from "../../../../services/HandleToken";
 import { InputFlied } from "../../../Components/Input/InputFlied";
