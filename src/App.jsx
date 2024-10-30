@@ -15,7 +15,7 @@ import PlanBefore from "./client/pages/PlanBefore/Plan";
 import Booking from "./client/pages/Booking/Booking";
 import Payment from "./client/pages/Payment/Payment";
 import Success from "./client/pages/Payment/Status/Success";
-import DashboardLayoutBasic from "./admin/dashboard/DashboardLayoutBasic";
+import DashboardLayoutBasic from "./admin/Dashboard/DashboardLayoutBasic";
 
 function App() {
   const location = useLocation();
@@ -30,31 +30,31 @@ function App() {
     !noFooterPaths.includes(location.pathname);
 
   return (
-    <SnackbarProvider
-      maxSnack={3}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-    >
-      {shouldShowHeader && <Header />}
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/plan" element={<PlanBefore />} />
-        <Route path="/plan/trip" element={<TravelPlan />} />
-        <Route path="/hotel" element={<Hotel />} />
-        <Route path="/booking-hotel" element={<BookingHotel />} />
-        <Route path="/hotel-details" element={<HotelDetails />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/booking/:type" element={<Booking />} />
-        <Route path="/payment" element={<Payment />} />
-        <Route path="/success" element={<Success />} />
-      </Routes>
-      {shouldShowFooter && <Footer />}
-    </SnackbarProvider>
+    // <SnackbarProvider
+    //   maxSnack={3}
+    //   anchorOrigin={{
+    //     vertical: "top",
+    //     horizontal: "right",
+    //   }}
+    // >
+    //   {shouldShowHeader && <Header />}
+    //   <Routes>
+    //     <Route path="/" element={<LandingPage />} />
+    //     <Route path="/plan" element={<PlanBefore />} />
+    //     <Route path="/plan/trip" element={<TravelPlan />} />
+    //     <Route path="/hotel" element={<Hotel />} />
+    //     <Route path="/booking-hotel" element={<BookingHotel />} />
+    //     <Route path="/hotel-details" element={<HotelDetails />} />
+    //     <Route path="/login" element={<Login />} />
+    //     <Route path="/register" element={<Register />} />
+    //     <Route path="/booking/:type" element={<Booking />} />
+    //     <Route path="/payment" element={<Payment />} />
+    //     <Route path="/success" element={<Success />} />
+    //   </Routes>
+    //   {shouldShowFooter && <Footer />}
+    // </SnackbarProvider>
     // admin 
-    // <DashboardLayoutBasic/>
+    <DashboardLayoutBasic/>
   );
 }
 

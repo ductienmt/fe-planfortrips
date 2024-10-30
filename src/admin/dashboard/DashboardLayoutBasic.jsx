@@ -23,7 +23,6 @@ const NAVIGATION = [
     title: "Menu",
   },
   {
-    segment: "dashboard",
     title: "Trang chủ",
     icon: <FontAwesomeIcon icon={faHouse} />,
   },
@@ -99,7 +98,6 @@ const demoTheme = createTheme({
 
 function DashboardLayoutBasic(props) {
   const { window } = props;
-  const router = useDemoRouter("/dashboard");
   const [session, setSession] = React.useState({
     user: {
       name: "Cô giáo thảo",
