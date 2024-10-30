@@ -3,16 +3,20 @@ import "./Header.css";
 import { useEffect, useState } from "react";
 import handleToken from "../../../services/HandleToken";
 import { useNavigate } from "react-router-dom";
-import avt from "../../../assets/avt.jpg";
+import Avatar from "../../Components/Avatar";
+import { InputFlied } from "../../Components/Input/InputFlied";
 
 const Header = () => {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Kiểm tra xem người dùng đã đăng nhập hay chưa
-  const [showDropdown, setShowDropdown] = useState(false); // Trạng thái của modal khi bấm vào avatar
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
   const user = localStorage.getItem("username");
+
   useEffect(() => {
     if (user) {
       setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
     }
   }, [user]);
 
@@ -20,23 +24,24 @@ const Header = () => {
     localStorage.removeItem("user");
     setIsLoggedIn(false);
     handleToken.delete();
+    setShowDropdown(false);
     navigate("/");
   };
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
+
   return (
     <>
       <header className="custom-header mt-3">
         <div className="container-fluid d-flex justify-content-between align-items-center">
           <form className="d-flex me-2" role="search">
             <div className="input-group">
-              <input
-                className="form-control"
-                type="search"
-                placeholder="Tìm kiếm..."
-                aria-label="Search"
+              <InputFlied
+                nameInput={"search"}
+                content={"Tìm kiếm"}
+                typeInput={"text"}
               />
             </div>
           </form>
@@ -46,12 +51,12 @@ const Header = () => {
           <div>
             {!isLoggedIn ? (
               <>
-                <a href="/register" className="btn btn-register">
+                <Link to={"/register"} className="btn btn-register">
                   Đăng ký
-                </a>
-                <a href="/login" className="btn btn-login">
+                </Link>
+                <Link to={"/login"} className="btn btn-login">
                   Đăng nhập
-                </a>
+                </Link>
               </>
             ) : (
               <div
@@ -63,38 +68,14 @@ const Header = () => {
                   flexDirection: "row",
                 }}
               >
-                <p style={{ margin: 0 }}>Xin chào, {user}</p>
-                <img
-                  src={avt}
-                  alt="User Avatar"
-                  className="user-avatar"
+                <Avatar
+                  fullname="Nguyễn Văn A"
+                  gender="Nam"
+                  imageUrl={null}
                   onClick={toggleDropdown}
+                  showDropdown={showDropdown}
+                  handleLogout={handleLogout}
                 />
-                {showDropdown && (
-                  <div className="user-dropdown">
-                    <ul>
-                      <li>
-                        <Link
-                          to="/profile"
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "10px",
-                          }}
-                        >
-                          <img
-                            src={avt}
-                            alt="User Avatar"
-                            className="user-avatar"
-                            onClick={toggleDropdown}
-                          />
-                          <p style={{ margin: 0 }}>{user}</p>
-                        </Link>
-                      </li>
-                      <li onClick={handleLogout}>Đăng xuất</li>
-                    </ul>
-                  </div>
-                )}
               </div>
             )}
           </div>
