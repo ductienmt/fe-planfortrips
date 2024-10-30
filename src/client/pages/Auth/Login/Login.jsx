@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../../../../services/apis/AuthService";
 import { useSnackbar } from "notistack";
 import handleToken from "../../../../services/HandleToken";
+import { InputFlied } from "../../../Components/Input/InputFlied";
 
 const Login = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -113,31 +114,24 @@ const Login = () => {
                 <h2 className="login-title">Đăng nhập</h2>
               </div>
 
-              <div className="input-grup">
-                {/* Tên tài khoản input */}
+              <div className="input-grup" style={{ width: "100%" }}>
                 <div className="custom-input form-outline mb-4">
-                  <input
-                    type="text"
-                    name="userName"
-                    className="form-control"
-                    placeholder=" "
+                  <InputFlied
+                    typeInput={"text"}
+                    nameInput={"userName"}
                     value={formData.userName}
                     onChange={(e) => handleChange(e)}
-                  />
-                  <label className="form-label">Tên tài khoản</label>
+                    content={"Username"}
+                  ></InputFlied>
                 </div>
                 <div className="custom-input form-outline mb-4">
-                  <input
-                    type="password"
-                    name="password"
-                    className="form-control"
-                    placeholder=" "
+                  <InputFlied
+                    content={"Mật khẩu"}
+                    typeInput={"password"}
+                    nameInput={"password"}
                     value={formData.password}
                     onChange={(e) => handleChange(e)}
                   />
-                  <label className="form-label" htmlFor="password">
-                    Mật khẩu
-                  </label>
                 </div>
                 <div className="register-forgot-password text-body mb-2">
                   <a href="#!" className="register-text-body">
@@ -146,7 +140,10 @@ const Login = () => {
                 </div>
               </div>
 
-              <div className="auth-action text-center">
+              <div
+                className="auth-action text-center"
+                style={{ width: "100%" }}
+              >
                 <button type="submit" className="btn login-btn btn-lg mb-1">
                   Đăng nhập
                 </button>

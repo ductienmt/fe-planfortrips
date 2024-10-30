@@ -20,8 +20,4 @@ export const HotelService = {
     const response = await Http.delete(`api/v1/users/delete?id=${id}`);
     return response.data;
   },
-  getImageById: async (id) => {
-    const response = await Http.get(`api/v1/hotels/getImages/${id}`);
-    return response.data;
-  },
 };

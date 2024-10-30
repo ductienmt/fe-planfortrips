@@ -51,15 +51,15 @@ function AttractionCard({ className, onClick, onNext, onBack, checkin }) {
                   Math.floor(Math.random() * imagesResponse.data.length)
                 ];
               console.log(randomImage.url);
-              return { ...place, images: randomImage.url }; // Cập nhật với URL hình ảnh
+              return { ...place, images: randomImage.url };
             }
           }
-          return place; // Trả lại đối tượng nếu có hình ảnh
+          return place;
         })
       );
 
       setAttractions(updatedAttractions);
-      console.log(updatedAttractions); // Kiểm tra giá trị attractions đã cập nhật
+      console.log(updatedAttractions);
     };
 
     fetchImages();
