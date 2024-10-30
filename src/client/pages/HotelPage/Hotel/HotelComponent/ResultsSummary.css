@@ -1,0 +1,80 @@
+.detailed-results-summary-container {
+    display: flex;
+    max-width: 1000px;
+    margin-left: 600px;
+    align-items: start;
+    gap: 40px 100px;
+    color: #000;
+    flex-wrap: wrap;
+    font: 700 14px/22px Roboto, sans-serif;
+}
+
+@media (max-width: 991px) {
+    .detailed-results-summary-container {
+        max-width: 100%;
+        margin-left: 0;
+        /* Điều chỉnh lại margin để phù hợp trên thiết bị nhỏ */
+    }
+}
+
+.detailed-results-summary-container-results-count {
+    flex-grow: 1;
+}
+
+.detailed-results-summary-container-sort-options-wrapper {
+    border-radius: 3px;
+    background-color: #edf8ff;
+    display: flex;
+    margin-top: 18px;
+    gap: 14px;
+    padding: 3px 7px;
+}
+
+.detailed-results-summary-container-sort-label {
+    color: #979797;
+    margin: auto 0;
+}
+
+.detailed-results-summary-container-sort-button {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+    padding: 5px;
+    /* Thêm padding để tăng kích thước vùng nhấn */
+    transition: color 0.3s ease;
+    /* Thêm hiệu ứng chuyển màu khi hover */
+}
+
+.detailed-results-summary-container-sort-button:hover {
+    color: #3395db;
+    /* Đổi màu khi hover */
+}
+
+.detailed-results-summary-container-sort-icon {
+    font-size: 16px;
+    /* Điều chỉnh kích thước icon */
+    color: inherit;
+    /* Giữ màu giống với màu của nút */
+}
+
+.detailed-results-summary-container-hot-deals-button {
+    color: #e11818;
+    font-weight: 400;
+    line-height: 18px;
+    margin: auto 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    /* Thêm hiệu ứng chuyển màu khi hover */
+}
+
+.detailed-results-summary-container-hot-deals-button:hover {
+    color: #b10f0f;
+    /* Đổi màu khi hover */
+}

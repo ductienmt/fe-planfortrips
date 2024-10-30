@@ -1,0 +1,124 @@
+.transportation-container {
+    border-radius: 30px;
+    width: 90%;
+    box-shadow: 2px 2px 7px #868686;
+    margin-bottom: 20px;
+}
+
+.transportation-container .infomation-card {
+    text-align: center;
+    margin-bottom: 10px;
+    background-color: #41A5E8;
+    border-radius: 20px 20px 0px 0px;
+    height: 40px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+
+
+.transportation-container .transportation-header .nameVehicle {
+    display: flex;
+    justify-content: space-between;
+}
+
+.transportation-container .transportation-header .nameVehicle h4,
+.transportation-container .transportation-header .nameVehicle p {
+    margin: 0px;
+}
+
+.transportation-container .transportation-header .seat p {
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+.transportation-container .transportation-body {
+    display: flex;
+    justify-content: stretch;
+    align-items: center;
+    text-align: center;
+}
+
+.transportation-container .transportation-body .departure,
+.transportation-container .transportation-body .arrival {
+    flex-grow: 2;
+    flex-basis: 40%;
+}
+
+.transportation-container .transportation-body .line {
+    flex-grow: 1;
+    flex-basis: 10%;
+}
+
+.transportation-container .transportation-body .departure p,
+.transportation-container .transportation-body .arrival p,
+.transportation-container .transportation-footer p {
+    margin: 0;
+}
+
+.transportation-container .transportation-body .departure .departure-time,
+.transportation-container .transportation-body .arrival .arrival-time {
+    background-color: #c0c0c0;
+    padding: 3px;
+    border-radius: 5px;
+    opacity: 0.5;
+    width: 40%;
+    margin: 10px auto 5px auto;
+    font-size: 14px;
+}
+
+.transportation-container .transportation-footer {
+    display: flex;
+    justify-content: stretch;
+    flex-direction: column;
+    margin-top: 20px;
+    margin-left: 40px;
+}
+
+.transportation-container .transportation-footer .footer-on .icon,
+.transportation-container .transportation-footer .footer-behind .icon {
+    margin: 0 auto;
+    color: #0639A3;
+}
+
+.transportation-container .transportation-footer .footer-on,
+.transportation-container .transportation-footer .footer-behind {
+    display: flex;
+    justify-content: stretch;
+}
+
+.transportation-container .transportation-footer .footer-on .icon,
+.transportation-container .transportation-footer .footer-behind .icon {
+    flex-basis: 20%;
+    flex-grow: 2;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.transportation-container .transportation-footer .footer-on .infomation,
+.transportation-container .transportation-footer .footer-behind .infomation {
+    flex-basis: 80%;
+    flex-grow: 3;
+    margin-left: 30px;
+}
+
+.transportation-container .transportation-footer .footer-on .infomation .pickup,
+.transportation-container .transportation-footer .footer-behind .infomation .dropoff {
+    background-color: #c0c0c0;
+    padding: 3px;
+    border-radius: 5px;
+    opacity: 0.5;
+    width: 25%;
+    text-align: center;
+    font-size: 14px;
+}
+
+.transportation-container .transportation-footer .footer-behind .infomation {
+    margin-bottom: 40px;
+}
+
+.transportation-container .transportation-footer .line {
+    color: #0639A3;
+}

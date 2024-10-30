@@ -1,9 +1,34 @@
+import { Link } from "react-router-dom";
 import "./Header.css";
+import { useEffect, useState } from "react";
+import handleToken from "../../../services/HandleToken";
+import { useNavigate } from "react-router-dom";
+import avt from "../../../assets/avt.jpg";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Kiểm tra xem người dùng đã đăng nhập hay chưa
+  const [showDropdown, setShowDropdown] = useState(false); // Trạng thái của modal khi bấm vào avatar
+  const user = localStorage.getItem("username");
+  useEffect(() => {
+    if (user) {
+      setIsLoggedIn(true);
+    }
+  }, [user]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setIsLoggedIn(false);
+    handleToken.delete();
+    navigate("/");
+  };
+
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
   return (
     <>
-      <header className="mt-3">
+      <header className="custom-header mt-3">
         <div className="container-fluid d-flex justify-content-between align-items-center">
           <form className="d-flex me-2" role="search">
             <div className="input-group">
@@ -19,12 +44,59 @@ const Header = () => {
           <h1 className="text-center flex-grow-1">Plan for Trips</h1>
 
           <div>
-            <a href="/register" className="btn btn-register">
-              Đăng ký
-            </a>
-            <a href="/login" className="btn btn-login">
-              Đăng nhập
-            </a>
+            {!isLoggedIn ? (
+              <>
+                <a href="/register" className="btn btn-register">
+                  Đăng ký
+                </a>
+                <a href="/login" className="btn btn-login">
+                  Đăng nhập
+                </a>
+              </>
+            ) : (
+              <div
+                className="user-menu"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  flexDirection: "row",
+                }}
+              >
+                <p style={{ margin: 0 }}>Xin chào, {user}</p>
+                <img
+                  src={avt}
+                  alt="User Avatar"
+                  className="user-avatar"
+                  onClick={toggleDropdown}
+                />
+                {showDropdown && (
+                  <div className="user-dropdown">
+                    <ul>
+                      <li>
+                        <Link
+                          to="/profile"
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "10px",
+                          }}
+                        >
+                          <img
+                            src={avt}
+                            alt="User Avatar"
+                            className="user-avatar"
+                            onClick={toggleDropdown}
+                          />
+                          <p style={{ margin: 0 }}>{user}</p>
+                        </Link>
+                      </li>
+                      <li onClick={handleLogout}>Đăng xuất</li>
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
         <hr />
@@ -43,24 +115,33 @@ const Header = () => {
             </button>
             <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
               <div className="navbar-nav custom-nav">
-                <a className="nav-link" href="#">
+                <Link className="nav-link" to="/">
                   Trang chủ
-                </a>
-                <a className="nav-link" href="#">
+                </Link>{" "}
+                <span>|</span>
+                <Link to="/plan" className="nav-link">
+                  Lập kế hoạch
+                </Link>
+                <span>|</span>
+                <Link className="nav-link" to="#">
                   Phương tiện
-                </a>
-                <a className="nav-link" href="#">
+                </Link>
+                <span>|</span>
+                <Link className="nav-link" to="/hotel">
                   Khách sạn
-                </a>
-                <a className="nav-link" href="#">
-                  Hàn quán
-                </a>
-                <a className="nav-link" href="#">
+                </Link>
+                <span>|</span>
+                <Link className="nav-link" to="#">
+                  Ẩm thực
+                </Link>
+                <span>|</span>
+                <Link className="nav-link" to="#">
                   Tham quan
-                </a>
-                <a className="nav-link" href="#">
+                </Link>
+                <span>|</span>
+                <Link className="nav-link" to="#">
                   Hợp tác
-                </a>
+                </Link>
               </div>
             </div>
           </div>

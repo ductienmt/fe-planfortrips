@@ -1,0 +1,59 @@
+.payment-body,
+.payment-footer {
+    display: flex;
+    justify-content: stretch;
+    gap: 10px;
+}
+
+.payment-body-left,
+.payment-body-right {
+    flex-grow: 1;
+    flex-basis: 50%;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+.payment__qr-code {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.payment-body-left .head,
+.payment-body-right .head {
+    background-color: #41A5E8;
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.payment-body .content {
+    padding: 10px;
+}
+
+.payment-body .content .content-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.payment-footer .voucher {
+    flex-grow: 1;
+    flex-basis: 30%;
+}
+
+.payment-footer .voucher .voucher-item {
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 2px 2px 7px #868686;
+    margin-top: 20px;
+    align-items: center;
+    height: 80px;
+    display: flex;
+    padding: 10px;
+}
+
+.payment-footer .payment-footer-right {
+    flex-grow: 2;
+    flex-basis: 70%;
+}

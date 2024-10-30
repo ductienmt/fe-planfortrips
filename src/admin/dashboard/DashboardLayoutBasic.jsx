@@ -2,9 +2,7 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import { createTheme } from "@mui/material/styles";
 import { AppProvider } from "@toolpad/core/AppProvider";
-import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import { useDemoRouter } from "@toolpad/core/internal";
-import PageContent from "./PageContent";  
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHouse,
@@ -18,6 +16,7 @@ import {
   faGear,
   faScrewdriverWrench,
 } from "@fortawesome/free-solid-svg-icons";
+import { Outlet } from "react-router-dom";
 const NAVIGATION = [
   {
     kind: "header",
@@ -101,7 +100,6 @@ const demoTheme = createTheme({
 function DashboardLayoutBasic(props) {
   const { window } = props;
   const router = useDemoRouter("/dashboard");
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [session, setSession] = React.useState({
     user: {
       name: "Cô giáo thảo",
@@ -109,14 +107,6 @@ function DashboardLayoutBasic(props) {
       image: "https://images.kienthuc.net.vn/zoomh/800/uploaded/phuongdh/2024_10_24/4/gai-xinh-so-huu-vong-3-to-bat-thuong-cham-chi-khoe-dang.jpg",
     },
   });
-
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
 
   const demoWindow = window !== undefined ? window() : undefined;
 
@@ -142,14 +132,16 @@ function DashboardLayoutBasic(props) {
       navigation={NAVIGATION}
       session={session}
       authentication={authentication}
-      router={router}
       theme={demoTheme}
       window={demoWindow}
+      branding={{
+        logo: (
+          <img src="src/assets/momo.png" alt="MUI logo" />
+        ),
+        title: "Plan for trips",
+      }}
     >
-      {/* <UserAvatar user={session.user} onClick={handleOpenUserMenu} /> */}
-      <DashboardLayout>
-        <PageContent pathname={router.pathname} />
-      </DashboardLayout>
+      <Outlet/>
     </AppProvider>
   );
 }

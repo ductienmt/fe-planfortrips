@@ -1,79 +1,153 @@
-import { useState } from "react";
-// import AuthService from "../../../../services/apis/AuthService";
+import { useEffect, useState } from "react";
 import "./Register.css"; // Custom CSS
+import { useSnackbar } from "notistack";
+import background from "../../../../assets/image 37.png";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  callBackUrlGoogle,
+  getAuthUrl,
+} from "../../../../services/apis/Oauth2Service";
 
 const Register = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const { enqueueSnackbar } = useSnackbar();
+  const queryParam = new URLSearchParams(window.location.search);
+  const navigate = useNavigate();
+  const [authUrl, setAuthUrl] = useState("");
+  // const [errorMessage, setErrorMessage] = useState("");
+  const [formData, setFormData] = useState({
+    userName: "",
+    password: "",
+    phoneNumber: "",
+    gender: "",
+    fullName: "",
+    email: "",
+    birthdate: "",
+  });
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    setErrorMessage("");
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    console.log("Thay đổi giá trị: ", e.target.name, e.target.value);
+  };
 
-    if (
-      !username ||
-      !password ||
-      !confirmPassword ||
-      !fullName ||
-      !email ||
-      !phone
-    ) {
-      setErrorMessage("Vui lòng điền đầy đủ thông tin.");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setErrorMessage("Mật khẩu không khớp.");
-      return;
-    }
-
+  const handleRegister = async () => {
     try {
-      const response = await AuthService.register({
-        username,
-        password,
-        fullName,
-        email,
-        phone,
-      });
+      if (!validateForm()) {
+        return enqueueSnackbar("Vui lòng điền đầy đủ thông tin", {
+          variant: "error",
+          autoHideDuration: 1000,
+        });
+      }
+      const formDataCopy = {
+        ...formData,
+        birthdate: new Date(formData.birthdate),
+      };
+      const response = await AuthService.register(formDataCopy);
       console.log("Đăng ký thành công:", response.data);
-      // Chuyển hướng đến trang đăng nhập hoặc trang chính
+      enqueueSnackbar(response.data.message, {
+        variant: "success",
+        autoHideDuration: 1000,
+        onExit: () => {
+          handleResetForm();
+          navigate("/");
+        },
+      });
     } catch (error) {
-      setErrorMessage(error.response?.data?.message || "Đăng ký thất bại");
+      enqueueSnackbar(error.response?.data?.message || "Đăng ký thất bại", {
+        variant: "error",
+        autoHideDuration: 1000,
+      });
     }
   };
 
+  const validateForm = () => {
+    console.log(formData);
+    return Object.values(formData).every((value) => value.trim() !== "");
+  };
+
+  const handleResetForm = () => {
+    setFormData({
+      userName: "",
+      password: "",
+      phoneNumber: "",
+      gender: "",
+      fullName: "",
+      email: "",
+      birthdate: "",
+    });
+  };
+
+  const validatePassword = (password, confirmPassword) => {
+    if (password !== confirmPassword) {
+      enqueueSnackbar("Mật khẩu không khớp", {
+        variant: "error",
+        autoHideDuration: 1000,
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const handleLoginWithGoogle = async (code) => {
+    const res = await callBackUrlGoogle(code);
+    if (res.firstOauth2)
+      enqueueSnackbar("Chào mừng bạn lần đầu đăng nhập Google!", {
+        variant: "success",
+        autoHideDuration: 1000,
+        onExit: () => {
+          navigate("/");
+        },
+      });
+    else
+      enqueueSnackbar("Chào mừng bạn quay trở lại!", {
+        variant: "success",
+        autoHideDuration: 1000,
+        onExit: () => {
+          navigate("/");
+        },
+      });
+  };
+
+  useEffect(() => {
+    document.title = "Đăng ký";
+    window.scrollTo(0, 200);
+    localStorage.clear();
+    getAuthUrl().then((res) => {
+      setAuthUrl(res);
+    });
+
+    const code = queryParam.get("code");
+    if (code) {
+      handleLoginWithGoogle(code);
+    }
+  }, [queryParam]);
+
   return (
-    <section className="vh-100">
+    <section className="vh-100 register-container">
       <div className="container-fluid h-custom">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-md-7 d-flex justify-content-center position-relative">
             <img
-              src="https://www.banjaluka.com/wp-content/uploads/2024/10/amac0-440x315.jpeg"
+              src={background}
               alt="Background"
-              className="custom-image"
+              className="register-custom-image"
             />
 
             {/* Đặt thông báo và nút Đăng Nhập bên trái */}
             <div className="position-absolute custom-left-container">
-              <div className="dividerr d-flex ">
-                <p className="text-white">Hoặc đăng nhập bằng</p>
+              <div className="register-divider d-flex ">
+                <p className="">Hoặc đăng nhập bằng</p>
               </div>
 
               {/* Nút Đăng Nhập bằng Google và Facebook */}
               <div className="d-flex flex-column align-items-center">
-                <button className="btn btn-google  ">
-                  <a href="#" className="text-decoration-none ">
+                <Link to={authUrl} className="btn register-google  ">
+                  <div className="text-decoration-none ">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       width="24"
                       height="24"
-                      class="main-grid-item-icon"
+                      className="main-grid-item-icon"
                       fill="none"
                     >
                       <path
@@ -94,16 +168,16 @@ const Register = () => {
                       />
                     </svg>{" "}
                     <span className="icon-text">Google</span>
-                  </a>
-                </button>
-                <button className="btn btn-facebook  ">
+                  </div>
+                </Link>
+                <button className="btn register-facebook  ">
                   <a href="#" className="text-decoration-none ">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       width="24"
                       height="24"
-                      class="main-grid-item-icon"
+                      className="main-grid-item-icon"
                       fill="none"
                     >
                       <path
@@ -111,27 +185,27 @@ const Register = () => {
                         fill="#1877F2"
                       />
                     </svg>
-                    <span className="icon-text">Facebook</span>
+                    <span className="icon-text1">Facebook</span>
                   </a>
                 </button>
               </div>
             </div>
           </div>
-          <div className="col-md-5">
-            <form onSubmit={handleRegister}>
+          <div className=" col-md-5 text-center ">
+            <form className="registration">
               <div className="text-center mt-4">
-                <h2 className="fw-bold">Đăng ký</h2>
+                <h2 className="title-registration ">Đăng ký</h2>
               </div>
 
-              <div className="form-outline mb-4">
+              <div className="register-input form-outline mb-4">
                 <input
                   type="text"
-                  id="username"
+                  name="userName"
                   className="form-control  "
                   placeholder=" "
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  required
+
+                  value={formData.userName}
+                  onChange={(e) => handleChange(e)}
                 />
                 <label className="form-label" htmlFor="username">
                   Tên tài khoản
@@ -139,15 +213,15 @@ const Register = () => {
               </div>
 
               {/* Mật khẩu input */}
-              <div className="form-outline mb-4">
+              <div className="register-input form-outline mb-4">
                 <input
                   type="password"
-                  id="password"
+                  name="password"
                   className="form-control " // Sử dụng lớp mới
                   placeholder=" "
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
+                  value={formData.password}
+                  onChange={(e) => handleChange(e)}
+                // required
                 />
                 <label className="form-label" htmlFor="password">
                   Mật khẩu
@@ -155,15 +229,16 @@ const Register = () => {
               </div>
 
               {/* Xác nhận mật khẩu input */}
-              <div className="form-outline mb-4">
+              <div className=" register-input form-outline mb-4">
                 <input
                   type="password"
                   id="confirmPassword"
                   className="form-control " // Sử dụng lớp mới
                   placeholder=" "
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
+                  onBlur={(e) =>
+                    validatePassword(formData.password, e.target.value)
+                  }
+                // required
                 />
                 <label className="form-label" htmlFor="confirmPassword">
                   Xác nhận mật khẩu
@@ -171,15 +246,15 @@ const Register = () => {
               </div>
 
               {/* Họ và Tên input */}
-              <div className="form-outline mb-4">
+              <div className=" register-input form-outline mb-4">
                 <input
                   type="text"
-                  id="fullName"
+                  name="fullName"
                   className="form-control " // Sử dụng lớp mới
                   placeholder=" "
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  required
+                  value={formData.fullName}
+                  onChange={(e) => handleChange(e)}
+                // required
                 />
                 <label className="form-label" htmlFor="fullName">
                   Họ và Tên
@@ -187,15 +262,15 @@ const Register = () => {
               </div>
 
               {/* Email input */}
-              <div className="form-outline mb-4">
+              <div className="register-input form-outline mb-4">
                 <input
                   type="email"
-                  id="email"
+                  name="email"
                   className="form-control " // Sử dụng lớp mới
                   placeholder=" "
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
+
+                  value={formData.email}
+                  onChange={(e) => handleChange(e)}
                 />
                 <label className="form-label" htmlFor="email">
                   Email
@@ -203,23 +278,55 @@ const Register = () => {
               </div>
 
               {/* Số điện thoại input */}
-              <div className="form-outline mb-4">
+              <div className="register-input form-outline mb-4">
                 <input
                   type="tel"
-                  id="phone"
+                  name="phoneNumber"
                   className="form-control " // Sử dụng lớp mới
                   placeholder=" "
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  required
+                  value={formData.phoneNumber}
+                  onChange={(e) => handleChange(e)}
+                // required
                 />
                 <label className="form-label" htmlFor="phone">
                   Số điện thoại
                 </label>
               </div>
 
+              {/* Ngày sinh input */}
+              <div className="custom-input form-outline mb-4">
+                <input
+                  type="date"
+                  name="birthdate"
+                  className="form-control"
+                  value={formData.birthdate}
+                  onChange={(e) => handleChange(e)}
+                />
+              </div>
+
+              {/* Giới tính input */}
+              <div className="custom-input form-outline mb-4">
+                <select
+                  name="gender"
+                  className="form-control"
+                  value={formData.gender}
+                  onChange={(e) => handleChange(e)}
+                >
+                  <option value="Nam">Nam</option>
+                  <option value="Nữ">Nữ</option>
+                  <option value="Khác">Khác</option>
+                </select>
+              </div>
+
               <div className="text-center">
-                <button type="submit" className="btn  btn-lg mb-4">
+                <button
+                  type="submit"
+                  className="btn registration-button mb-4"
+                  onClick={(e) => {
+                    e.preventDefault(); // Thêm hàm này để ngăn hành vi mặc định của form
+                    handleRegister();
+                  }}
+                >
                   Đăng ký
                 </button>
                 <p className="small fw-bold">
@@ -227,7 +334,7 @@ const Register = () => {
                 </p>
               </div>
 
-              {errorMessage && <p className="text-danger">{errorMessage}</p>}
+              {/* {errorMessage && <p className="text-danger">{errorMessage}</p>} */}
             </form>
           </div>
         </div>

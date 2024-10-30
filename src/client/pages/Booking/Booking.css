@@ -1,0 +1,31 @@
+.booking-container {
+    width: 100%;
+    height: 84.3vh;
+}
+
+.booking-header {
+    width: 60%;
+    height: 10%;
+    margin: 20px auto;
+}
+
+.booking-container .booking-body {
+    width: 80%;
+    display: flex;
+    justify-content: stretch;
+    margin: 0 auto;
+}
+
+.booking-container .booking-body .booking-body-left {
+    flex-grow: 4;
+    flex-basis: 40%;
+    height: 100%;
+
+}
+
+.payment-container .payment-body .payment-body-right {
+    flex-grow: 6;
+    flex-basis: 60%;
+    height: 100%;
+
+}

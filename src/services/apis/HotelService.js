@@ -1,30 +1,21 @@
-import axiosUtil from "../AxiosUtil";
-
-export const getHotels = async (page, limit) => {
-  try {
-    const response = await axiosUtil.get(`hotels?page=${page}&limit=${limit}`);
+export const HotelService = {
+  getHotels: async (page, limit, keyword) => {
+    const response = await Http.get(
+      `api/v1/hotels?page=${page}&limit=${limit}&keyword=${keyword}`
+    );
     console.log(response);
-    if (response.status === 200) {
-      return response.data;
-    } else {
-      throw new Error("Failed to get hotels");
-    }
-  } catch (error) {
-    console.error("Error in get hotels: ", error);
-    throw error;
-  }
-};
-export const findHotelById = async (hotelId) => {
-  try {
-    const response = await axiosUtil.get(`/hotels/${hotelId}`);
-    console.log(response);
-    if (response.status === 200) {
-      return response.data;
-    } else {
-      throw new Error("Failed to get hotels");
-    }
-  } catch (error) {
-    console.error("Error in get hotels: ", error);
-    throw error;
-  }
+    return response.data;
+  },
+  findHotelById: async (id) => {
+    const response = await Http.get(`api/v1/hotels/${id}`);
+    return response.data;
+  },
+  update: async (hotelId, data) => {
+    const response = await Http.put(`api/v1/hotels/${hotelId}`, data);
+    return response.data;
+  },
+  delete: async (id) => {
+    const response = await Http.delete(`api/v1/users/delete?id=${id}`);
+    return response.data;
+  },
 };

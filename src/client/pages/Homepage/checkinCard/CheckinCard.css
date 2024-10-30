@@ -1,0 +1,91 @@
+.checkin-card {
+    width: 100%;
+    height: 600px;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    position: relative;
+    cursor: pointer;
+}
+
+.checkin-card:hover {
+    transform: scale(1.05);
+}
+
+.checkin-card .checkin-card-item {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+}
+
+.checkin-card .checkin-card-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.checkin-card .content {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    padding: 20px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 30px;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.checkin-card .content .city-name {
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #47b5ff;
+}
+
+.checkin-card .content .checkin-name {
+    margin-bottom: 10px;
+    font-weight: 700;
+    /* color: #47b5ff; */
+}
+
+.checkin-card .content .rating-badge {
+    position: absolute;
+    top: -15px;
+    right: 30px;
+    padding: 5px 10px;
+    background-color: #41a5e8;
+    color: white;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    display: flex;
+    gap: 2px;
+}
+
+.checkin-card .content .rating-badge .star.full {
+    color: rgb(255, 255, 255);
+}
+
+.checkin-card .content .rating-badge .star.empty {
+    color: transparent;
+}
+
+.checkin-card .content .rating-badge .star.half {
+    position: relative;
+    display: inline-block;
+    color: lightblue;
+}
+
+.checkin-card .content .rating-badge .star.half::before {
+    content: '★';
+    position: absolute;
+    left: 0;
+    width: 50%;
+    overflow: hidden;
+    color: rgb(255, 255, 255);
+}

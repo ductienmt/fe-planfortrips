@@ -1,99 +1,166 @@
-// src/components/Auth/Login.jsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Login.css";
+import {
+  callBackUrlGoogle,
+  getAuthUrl,
+} from "../../../../services/apis/Oauth2Service";
+import { Link, useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
+import handleToken from "../../../../services/HandleToken";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const { enqueueSnackbar } = useSnackbar();
+  const queryParam = new URLSearchParams(window.location.search);
+  const navigate = useNavigate();
+  const [authUrl, setAuthUrl] = useState("");
+  const [formData, setFormData] = useState({
+    userName: "",
+    password: "",
+  });
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setErrorMessage("");
-
-    if (!username || !password) {
-      setErrorMessage("Vui lòng điền đầy đủ thông tin.");
-      return;
+    try {
+      if (!validateForm()) {
+        return enqueueSnackbar("Vui lòng điền đầy đủ thông tin", {
+          variant: "error",
+          autoHideDuration: 1000,
+        });
+      }
+      const response = await AuthService.login(formData);
+      console.log("Đăng nhập thành công:", response.data);
+      handleToken.save(
+        response.data.data.token,
+        response.data.data.userName,
+        response.data.data.role
+      );
+      enqueueSnackbar(response.data.message, {
+        variant: "success",
+        autoHideDuration: 1000,
+        onExit: () => {
+          navigate("/");
+        },
+      });
+    } catch (error) {
+      enqueueSnackbar(error.response?.data?.message || "Đăng nhập thất bại", {
+        variant: "error",
+        autoHideDuration: 1000,
+      });
     }
+  };
 
-    // try {
-    //   const response = await AuthService.login({ username, password });
-    //   console.log("Đăng nhập thành công:", response.data);
-    // } catch (error) {
-    //   setErrorMessage(error.response?.data?.message || "Đăng nhập thất bại");
-    // }
+  const validateForm = () => {
+    return Object.values(formData).every((value) => value.trim() !== "");
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  useEffect(() => {}, []);
+
+  useEffect(() => {
+    localStorage.clear();
+    document.title = "Đăng nhập";
+    window.scrollTo(0, 200);
+    getAuthUrl().then((res) => {
+      setAuthUrl(res);
+    });
+    const code = queryParam.get("code");
+    if (code) {
+      handleLoginWithGoogle(code);
+    }
+  }, [queryParam]);
+
+  const handleLoginWithGoogle = async (code) => {
+    const res = await callBackUrlGoogle(code);
+    if (res.firstOauth2)
+      enqueueSnackbar("Chào mừng bạn lần đầu đăng nhập Google!", {
+        variant: "success",
+        autoHideDuration: 1000,
+        onExit: () => {
+          navigate("/");
+        },
+      });
+    // Đi đâu sau khi đăng nhập thành công thì bỏ vào
+    else
+      enqueueSnackbar("Chào mừng bạn quay trở lại!", {
+        variant: "success",
+        autoHideDuration: 1000,
+        onExit: () => {
+          navigate("/");
+        },
+      });
   };
 
   return (
-    <section className="vh-100">
+    <section className="vh-100 login-container">
       <div className="container-fluid h-custom">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-md-7 d-flex justify-content-center">
             <img
               src="https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg"
               alt="Background"
-              className="custom-image"
+              className="auth-image"
             />
           </div>
 
-          <div className="col-md-5 ">
-            <form onSubmit={handleLogin}>
-              <div className="text-center mt-4 ">
-                <h2 className="fw-bold">Đăng nhập</h2>
+          <div className="col-md-5">
+            <form className="login-form" onSubmit={handleLogin}>
+              <div className="text-center mt-4">
+                <h2 className="login-title">Đăng nhập</h2>
               </div>
 
-              <div>
+              <div className="input-grup">
                 {/* Tên tài khoản input */}
-                <div className="form-outline mb-4">
+                <div className="custom-input form-outline mb-4">
                   <input
-                    type="username"
-                    id="username"
+                    type="text"
+                    name="userName"
                     className="form-control"
                     placeholder=" "
+                    value={formData.userName}
+                    onChange={(e) => handleChange(e)}
                   />
-
-                  <label className="form-label" htmlFor="username">
-                    Tên tài khoản
-                  </label>
+                  <label className="form-label">Tên tài khoản</label>
                 </div>
-                <div className="form-outline mb-4">
+                <div className="custom-input form-outline mb-4">
                   <input
                     type="password"
-                    id="password"
-                    className="form-control " // Sử dụng lớp mới
+                    name="password"
+                    className="form-control"
                     placeholder=" "
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
+                    value={formData.password}
+                    onChange={(e) => handleChange(e)}
                   />
                   <label className="form-label" htmlFor="password">
                     Mật khẩu
                   </label>
                 </div>
-                <div className=" text-body mb-2">
-                  <a href="#!" className="text-body">
+                <div className="register-forgot-password text-body mb-2">
+                  <a href="#!" className="register-text-body">
                     Quên mật khẩu?
                   </a>
                 </div>
               </div>
 
-              <div className="text-center ">
-                <button type="submit" className="btn btn-lg mb-1">
+              <div className="auth-action text-center">
+                <button type="submit" className="btn login-btn btn-lg mb-1">
                   Đăng nhập
                 </button>
-                <p className="small mb-1">
-                  Bạn chưa có tài khoản? <a href="/register">Đăng ký ngay!</a>
+                <p className="small fw-bold">
+                  Bạn đã có tài khoản? <a href="/register">Đăng ký ngay!</a>
                 </p>
               </div>
 
-              <div className="divider d-flex align-items-center mb-1">
+              <div className="divider d-flex">
                 <p className="">Hoặc đăng nhập bằng</p>
               </div>
 
               {/* Nút Đăng Nhập bằng Google và Facebook */}
               <div className="d-flex flex-column align-items-center justify-content-center mb-4">
-                <button className="btn btn-google">
-                  <a href="#" className="text-decoration-none">
+                <Link to={authUrl} className="btn btn-google">
+                  <div className="text-decoration-none">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -120,8 +187,8 @@ const Login = () => {
                       />
                     </svg>
                     <span className="icon-text1">Google</span>
-                  </a>
-                </button>
+                  </div>
+                </Link>
 
                 <button className="btn btn-facebook">
                   <a href="#" className="text-decoration-none">
@@ -142,8 +209,6 @@ const Login = () => {
                   </a>
                 </button>
               </div>
-
-              {errorMessage && <p className="text-danger">{errorMessage}</p>}
             </form>
           </div>
         </div>

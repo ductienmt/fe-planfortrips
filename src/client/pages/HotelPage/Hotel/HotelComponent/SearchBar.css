@@ -1,0 +1,81 @@
+.detailed-search-bar-container {
+    background-color: #AADDFF;
+    /* Màu nền nhẹ nhàng */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    font-family: Roboto, sans-serif;
+    margin: 3%;
+    padding: 18px;
+    border-radius: 8px;
+    /* Bo góc cho phần tìm kiếm */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* Thêm bóng cho container */
+    flex-wrap: wrap;
+}
+
+@media (max-width: 991px) {
+    .detailed-search-bar-container {
+        flex-direction: column;
+        max-width: 100%;
+    }
+}
+
+.detailed-search-bar-container-item {
+    flex: 1;
+    /* Cho phép các trường có không gian đều nhau */
+    margin: 5px;
+    /* Thêm khoảng cách giữa các trường */
+    background-color: #fff;
+}
+
+.detailed-search-bar-container-date-input {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    /* Giữ cấu trúc cho input */
+}
+
+.detailed-search-bar-container-nights-count {
+    font-size: 12px;
+    color: #27648c;
+    font-weight: 400;
+
+    /* Thêm khoảng cách giữa số đêm và trường */
+}
+
+.detailed-search-bar-container input {
+    background-color: white;
+    /* Màu nền trắng cho input */
+    padding: 10px;
+    /* Thêm padding cho input */
+}
+
+.detailed-search-bar-container .MuiInputAdornment-root {
+    background-color: white;
+    /* Màu nền trắng cho icon */
+    padding: 8px;
+    /* Thêm padding cho icon */
+    /* Không thêm border */
+}
+
+.detailed-search-bar-container-search-button {
+    align-self: stretch;
+    border-radius: 8px;
+    background-color: #41a5e8;
+    /* Màu nền cho nút tìm kiếm */
+    color: #fff;
+    padding: 10px 20px;
+    /* Tăng padding cho nút */
+    font: 600 16px Roboto, sans-serif;
+    border: none;
+    /* Xóa border */
+    transition: background-color 0.3s;
+    /* Thêm hiệu ứng chuyển màu */
+}
+
+.detailed-search-bar-container-search-button:hover {
+    background-color: #3395db;
+    /* Màu nền khi hover */
+}
