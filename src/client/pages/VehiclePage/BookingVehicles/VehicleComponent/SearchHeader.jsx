@@ -1,35 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './SearchHeader.css';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { ScheduleService } from '../../../../../services/apis/ScheduleService';
+import Flatpickr from 'react-flatpickr';
 
-
-
-const SearchHeader = () => {
-
+const SearchHeader = ({ onSearch }) => { // Thêm prop onSearch
     const [formData, setFormData] = useState({
+        originalLocation: '',
+        destination: '',
+        startDate: '',
+    });
 
-        originalLocation: "City X",
-        destination: "City Z",
-        startDate: "2024-10-10",
-    })
-
-    useEffect(() => {
-        handleSearch(formData)
-    }, [])
+    const [schedules, setSchedules] = useState([]);
 
     const handleSearch = async (data) => {
-
-
         try {
             const response = await ScheduleService.getSchedules(data);
-            console.log(response.data)
-            // setResults(response.data);
+            console.log(response.data);
+            const fetchedSchedules = response.data.data; // Lấy dữ liệu từ response
+            setSchedules(fetchedSchedules);
+            localStorage.setItem("schedules", JSON.stringify(fetchedSchedules)); // Lưu trữ dữ liệu mới
+
+            onSearch(); // Gọi hàm này sau khi đã lưu trữ dữ liệu
         } catch (error) {
             console.error("Error:", error);
             const query = `[Javascript] fix error: ${error.message}`;
@@ -38,7 +31,17 @@ const SearchHeader = () => {
     };
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.originalLocation]: e.target.value });
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const handleDateChange = (date) => {
+        setFormData({ ...formData, startDate: date[0] });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        handleSearch(formData);
     };
 
     return (
@@ -53,31 +56,43 @@ const SearchHeader = () => {
                     </div>
                 ))}
             </div>
-            <form className="search-header-form-container">
+            <form className="search-header-form-container" onSubmit={handleSubmit}>
                 <h2 className="search-header-title">Tìm chuyến xe</h2>
-                <div className='search-header-text-location'>
-                    <Box
-                        sx={{ display: 'flex', gap: '12px', width: '100%' }}
-                        noValidate
-                        autoComplete="off"
-                    >
-                        <TextField label="Điểm khởi hành" variant="outlined" />
-                        <TextField label="Điểm đến" variant="outlined" />
+                <div className="search-header-text-location">
+                    <Box sx={{ display: 'flex', gap: '12px', width: '100%' }} noValidate autoComplete="off">
+                        <TextField
+                            label="Điểm khởi hành"
+                            variant="outlined"
+                            name="originalLocation"
+                            value={formData.originalLocation}
+                            onChange={handleChange}
+                        />
+                        <TextField
+                            label="Điểm đến"
+                            variant="outlined"
+                            name="destination"
+                            value={formData.destination}
+                            onChange={handleChange}
+                        />
                     </Box>
                 </div>
                 <div className="search-header-date-selector">
                     <div className="search-header-date-info">
                         <span className="search-header-date-label">Ngày khởi hành</span>
-                        <div className="search-header-selected-date">
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DemoContainer components={['DatePicker']}>
-                                    <DatePicker label="Chọn ngày" sx={{ width: '100%' }} />
-                                </DemoContainer>
-                            </LocalizationProvider>
-                        </div>
+                        <Flatpickr
+                            name='startDate'
+                            value={formData.startDate}
+                            onChange={handleDateChange}
+                            options={{
+                                dateFormat: 'Y-m-d',
+                                enableTime: true,
+                                time_24hr: true,
+                            }}
+                            className="search-header-input-field"
+                        />
                     </div>
                 </div>
-                <button className="search-header-submit-button">Tìm kiếm</button>
+                <button type="submit" className="search-header-submit-button">Tìm kiếm</button>
             </form>
         </div>
     );
