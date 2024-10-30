@@ -15,14 +15,14 @@ import PlanBefore from "./client/pages/PlanBefore/Plan";
 import Booking from "./client/pages/Booking/Booking";
 import Payment from "./client/pages/Payment/Payment";
 import Success from "./client/pages/Payment/Status/Success";
-import DashboardLayoutBasic from "./admin/Dashboard/DashboardLayoutBasic";
+import DashboardLayoutBasic from "./admin/pages/Layout/DashboardLayoutBasic";
 
 function App() {
   const location = useLocation();
 
   // Danh sách các path mà không cần hiện Header hoặc Footer
-  const noHeaderFooterPaths = [""];
-  const noFooterPaths = ["/plan", "/plan/trip", "/login", "/register"];
+  const noHeaderFooterPaths = ["/enterprise", "/enterprise/test"];
+  const noFooterPaths = ["/plan", "/plan/trip", "/login", "/register", "/enterprise/test"];
 
   const shouldShowHeader = !noHeaderFooterPaths.includes(location.pathname);
   const shouldShowFooter =

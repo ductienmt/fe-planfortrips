@@ -1,13 +1,13 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
-import Layout from "../admin/dashboard/Layout";
-import LandingPage from "../client/pages/Homepage/LandingPage";
-import LoginAdmin from "../admin/Auth/Login";
-import Exchange from "../admin/Exchange/Exchange";
-import UserAdmin from "../admin/User/User";
-import EnterpriseAdmin from "../admin/Enterprise/Enterprise";
-import CouponAdmin from "../admin/Coupon/Coupon";
-import TravelAdmin from "../admin/Travel/Travel";
+import LoginAdmin from "../admin/pages/Auth/Login";
+import Exchange from "../admin/pages/Exchange/Exchange";
+import UserAdmin from "../admin/pages/User/User";
+import EnterpriseAdmin from "../admin/pages/Enterprise/Enterprise";
+import CouponAdmin from "../admin/pages/Coupon/Coupon";
+import TravelAdmin from "../admin/pages/Travel/Travel";
+import LayoutAdmin from "../admin/pages/Layout/Layout";
+import HomePage from "../admin/pages/Dashboard/HomePage";
 
 export const router = createBrowserRouter([
   {
@@ -15,11 +15,11 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        Component: Layout,
+        Component: LayoutAdmin,
         children: [
           {
             path: "/",
-            Component: LandingPage,
+            Component: HomePage,
           },
           {
             path: "users",
