@@ -1,16 +1,26 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Header from "../client/pages/Header/Header";
 import Footer from "../client/pages/Footer/Footer";
 
 export const ClientLayout = () => {
-  // Danh sách các path mà không cần hiện Header hoặc Footer
-  const noHeaderFooterPaths = [""];
-  const noFooterPaths = ["/plan", "/plan/trip", "/login", "/register"];
+  const location = useLocation();
 
+  // Danh sách các path mà không cần hiện Header hoặc Footer
+  const noHeaderFooterPaths = [""]; // Các đường dẫn cần ẩn Header và Footer
+  const noFooterPaths = [
+    "/plan",
+    "/plan/trip",
+    "/login",
+    "/register",
+    "/profile",
+    "/profile/**",
+  ]; // Các đường dẫn chỉ ẩn Footer
+
+  // Xác định hiển thị Header và Footer
   const shouldShowHeader = !noHeaderFooterPaths.includes(location.pathname);
   const shouldShowFooter =
-    !noHeaderFooterPaths.includes(location.pathname) &&
-    !noFooterPaths.includes(location.pathname);
+    shouldShowHeader && !noFooterPaths.includes(location.pathname);
+
   return (
     <>
       {shouldShowHeader && <Header />}

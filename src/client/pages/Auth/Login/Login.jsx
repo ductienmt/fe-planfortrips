@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import handleToken from "../../../../services/HandleToken";
 import { InputFlied } from "../../../Components/Input/InputFlied";
+import { AuthService } from "../../../../services/apis/AuthService";
 
 const Login = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -58,6 +59,7 @@ const Login = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    console.log(formData);
   };
 
   useEffect(() => {

@@ -5,16 +5,23 @@ import handleToken from "../../../services/HandleToken";
 import { useNavigate } from "react-router-dom";
 import Avatar from "../../Components/Avatar";
 import { InputFlied } from "../../Components/Input/InputFlied";
+import { UserService } from "../../../services/apis/UserService";
 
 const Header = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const user = localStorage.getItem("username");
+  const [userInfo, setUserInfo] = useState({
+    fullname: "",
+    gender: "",
+    imageUrl: "",
+  });
 
   useEffect(() => {
     if (user) {
       setIsLoggedIn(true);
+      loadUser();
     } else {
       setIsLoggedIn(false);
     }
@@ -32,10 +39,29 @@ const Header = () => {
     setShowDropdown(!showDropdown);
   };
 
+  const handleMoveYourTrip = (event) => {
+    event.preventDefault();
+    navigate(`/profile/your-trip`);
+  };
+
+  const loadUser = async () => {
+    try {
+      const res = await UserService.getImage();
+      setUserInfo({
+        fullname: res.data.data.fullname,
+        gender: res.data.data.gender,
+        imageUrl: res.data.data.url,
+      });
+      console.log(userInfo.imageUrl);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <header className="custom-header mt-3">
-        <div className="container-fluid d-flex justify-content-between align-items-center">
+        <div className="d-flex justify-content-between ms-3 me-3">
           <form className="d-flex me-2" role="search">
             <div className="input-group">
               <InputFlied
@@ -48,7 +74,7 @@ const Header = () => {
 
           <h1 className="text-center flex-grow-1">Plan for Trips</h1>
 
-          <div>
+          <div style={{ width: "209px" }}>
             {!isLoggedIn ? (
               <>
                 <Link to={"/register"} className="btn btn-register">
@@ -69,12 +95,13 @@ const Header = () => {
                 }}
               >
                 <Avatar
-                  fullname="Nguyễn Văn A"
-                  gender="Nam"
-                  imageUrl={null}
+                  fullname={userInfo.fullname}
+                  gender={userInfo.gender}
+                  imageUrl={userInfo.imageUrl}
                   onClick={toggleDropdown}
                   showDropdown={showDropdown}
                   handleLogout={handleLogout}
+                  handleMoveYourTrip={handleMoveYourTrip}
                 />
               </div>
             )}
@@ -99,27 +126,27 @@ const Header = () => {
                 <Link className="nav-link" to="/">
                   Trang chủ
                 </Link>{" "}
-                <span>|</span>
+                <span className="me-2 ms-2">|</span>
                 <Link to="/plan" className="nav-link">
                   Lập kế hoạch
                 </Link>
-                <span>|</span>
+                <span className="me-2 ms-2">|</span>
                 <Link className="nav-link" to="#">
                   Phương tiện
                 </Link>
-                <span>|</span>
+                <span className="me-2 ms-2">|</span>
                 <Link className="nav-link" to="/hotel">
                   Khách sạn
                 </Link>
-                <span>|</span>
+                <span className="me-2 ms-2">|</span>
                 <Link className="nav-link" to="#">
                   Ẩm thực
                 </Link>
-                <span>|</span>
+                <span className="me-2 ms-2">|</span>
                 <Link className="nav-link" to="#">
                   Tham quan
                 </Link>
-                <span>|</span>
+                <span className="me-2 ms-2">|</span>
                 <Link className="nav-link" to="#">
                   Hợp tác
                 </Link>
