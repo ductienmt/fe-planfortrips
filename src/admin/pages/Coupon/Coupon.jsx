@@ -1,47 +1,150 @@
-import * as React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
-import Paper from '@mui/material/Paper';
-import { TextField, Grid } from '@mui/material';
-
+import React, { useEffect } from "react";
+import { DataGrid } from "@mui/x-data-grid";
+import Paper from "@mui/material/Paper";
+import { TextField, Grid, Switch, IconButton } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import { CouponService } from "../../../services/apis/CouponService";
 const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'firstName', headerName: 'First name', width: 130 },
-  { field: 'lastName', headerName: 'Last name', width: 130 },
-  { field: 'age', headerName: 'Age', type: 'number', width: 90 },
+  { field: "code", headerName: "Mã", width: 70 },
+  { field: "discountType", headerName: "Thể loại giảm giá", width: 150 },
+  { field: "discountValue", headerName: "Giá trị giảm", width: 90 },
+  { field: "startDate", headerName: "Ngày bắt đầu", type: "Date", width: 130 },
+  { field: "endDate", headerName: "Ngày kết thúc", type: "Date", width: 130 },
+  { field: "useLimit", headerName: "Giới hạn", type: "number", width: 90 },
+  { field: "useCount", headerName: "Lượt dùng", type: "number", width: 90 },
   {
-    field: 'fullName',
-    headerName: 'Full name',
-    description: 'This column has a value getter and is not sortable.',
-    sortable: false,
-    width: 160,
+    field: "isActive",
+    headerName: "Trạng thái",
+    renderCell: () => <IOSSwitch />,
+    width: 90,
+  },
+  {
+    field: "action",
+    headerName: "Hành động",
+    renderCell: (params) => (
+      <span className="d-flex">
+        <IconButton aria-label="view">
+         <VisibilityIcon />
+        </IconButton>
+        <IconButton aria-label="edit">
+          <DeleteIcon />
+        </IconButton>
+        <IconButton aria-label="delete">
+          <EditIcon />
+        </IconButton>
+      </span>
+    ),
+    width: 150,
   },
 ];
-const rows = [
-  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35, date: '2023-01-15' },
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42, date: '2023-02-20' },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45, date: '2023-03-25' },
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16, date: '2023-04-10' },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null, date: '2023-05-30' },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150, date: '2023-06-05' },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44, date: '2023-07-15' },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36, date: '2023-08-20' },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65, date: '2023-09-25' },
-];
+const IOSSwitch = styled((props) => (
+  <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
+))(({ theme }) => ({
+  width: 42,
+  height: 26,
+  padding: 0,
+  "& .MuiSwitch-switchBase": {
+    padding: 0,
+    margin: 2,
+    transitionDuration: "300ms",
+    "&.Mui-checked": {
+      transform: "translateX(16px)",
+      color: "#fff",
+      "& + .MuiSwitch-track": {
+        backgroundColor: "#65C466",
+        opacity: 1,
+        border: 0,
+        ...theme.applyStyles("dark", {
+          backgroundColor: "#2ECA45",
+        }),
+      },
+      "&.Mui-disabled + .MuiSwitch-track": {
+        opacity: 0.5,
+      },
+    },
+    "&.Mui-focusVisible .MuiSwitch-thumb": {
+      color: "#33cf4d",
+      border: "6px solid #fff",
+    },
+    "&.Mui-disabled .MuiSwitch-thumb": {
+      color: theme.palette.grey[100],
+      ...theme.applyStyles("dark", {
+        color: theme.palette.grey[600],
+      }),
+    },
+    "&.Mui-disabled + .MuiSwitch-track": {
+      opacity: 0.7,
+      ...theme.applyStyles("dark", {
+        opacity: 0.3,
+      }),
+    },
+  },
+  "& .MuiSwitch-thumb": {
+    boxSizing: "border-box",
+    width: 22,
+    height: 22,
+  },
+  "& .MuiSwitch-track": {
+    borderRadius: 26 / 2,
+    backgroundColor: "#E9E9EA",
+    opacity: 1,
+    transition: theme.transitions.create(["background-color"], {
+      duration: 500,
+    }),
+    ...theme.applyStyles("dark", {
+      backgroundColor: "#39393D",
+    }),
+  },
+}));
 
 const paginationModel = { page: 0, pageSize: 5 };
 
 export default function CouponAdmin() {
-  const [startDate, setStartDate] = React.useState('');
-  const [endDate, setEndDate] = React.useState('');
+  const [startDate, setStartDate] = React.useState("");
+  const [endDate, setEndDate] = React.useState("");
+  const [coupons,setConpons] = React.useState([
+    {
+      id: "",
+      code: "",
+      discountType: "",
+      discountValue: 0,
+      startDate: "2023-01-15",
+      endDate: "2023-12-31",
+      useLimit: 0,
+      useCount: 0,
+      isActive: true,
+    },
+  ]);
+  const filteredRows = coupons.filter((row) => {
+    const rowStartDate = new Date(row.startDate);
+    const rowEndDate = new Date(row.endDate);
+    const filterStartDate = new Date(startDate);
+    const filterEndDate = new Date(endDate);
 
-  const filteredRows = rows.filter((row) => {
-    if (startDate && row.date < startDate) return false;
-    if (endDate && row.date > endDate) return false;
+    if (startDate && rowStartDate < filterStartDate) return false;
+    if (endDate && rowEndDate > filterEndDate) return false;
     return true;
   });
-
+  useEffect(()=>{
+    const fetchHotel = async () => {
+      try {
+        const hotelData = await CouponService.getCoupons(
+          paginationModel.page ,paginationModel.pageSize,null
+        );
+        setConpons(hotelData.hotelResponseList);
+      } catch (error) {
+        console.error("Error:", error);
+        const query = `[Javascript] fix error: ${error.message}`;
+        window.open(`https://chatgpt.com/?q=${encodeURIComponent(query)}`);
+      }
+    };
+    fetchHotel();
+  },[])
   return (
-    <Paper sx={{ height: 500, width: '100%', padding: 2 }}>
+    <Paper sx={{ height: 500, width: "100%", padding: 2 }}>
       <Grid container spacing={2} sx={{ marginBottom: 2 }}>
         <Grid item xs={6} md={3}>
           <TextField
