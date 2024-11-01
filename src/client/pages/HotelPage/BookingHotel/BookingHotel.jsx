@@ -5,7 +5,7 @@ import BookingHotelHotelInfo from './BookingHotelComponent/BookingHotelHotelInfo
 import BookingHotelRoomOptions from './BookingHotelComponent/BookingHotelRoomOptions';
 import BookingHotelLocationMap from './BookingHotelComponent/BookingHotelLocationMap';
 import BookingHotelReviewSection from './BookingHotelComponent/BookingHotelReviewSection';
-import BookingHotelAmenityItem from './BookingHotelComponent/BookingHotelAmenityItem';
+import BookingHotelAmenityItem from './BookingHotelComponent/BookingHotelAmenityItem';  //
 
 function BookingHotel() {
   const amenities = [

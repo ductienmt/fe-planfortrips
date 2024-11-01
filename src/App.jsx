@@ -17,6 +17,8 @@ import HomePage from "./client/pages/PlanBefore/Plan";
 import SearchResults from "./client/pages/VehiclePage/BookingVehicles/SearchResults";
 import BookingSteps from "./client/pages/VehiclePage/BookingVehiclesDetails/BookingSteps";
 import TransportSelectionPage from "./client/pages/VehiclePage/BookingVehiclesFind/TransportSelectionPage";
+import FormenterpriseComponent from "./client/pages/Enterprise/FormenterpriseComponent";
+import Sumbitenterprise from "./client/pages/Enterprise/Sumbitenterprise";
 
 function App() {
   return (
@@ -42,6 +44,9 @@ function App() {
           <Route path="/vehicle" element={<TransportSelectionPage />} />
           <Route path="/booking-vehicle" element={<SearchResults />} />
           <Route path="/vehicle-details" element={<BookingSteps />} />
+
+          <Route path="/formenterprise" element={<FormenterpriseComponent />} />
+          <Route path="/SignInForm" element={<Sumbitenterprise />} />
 
           <Route path="/hotel" element={<Hotel />} />
           <Route path="/booking-hotel" element={<BookingHotel />} />

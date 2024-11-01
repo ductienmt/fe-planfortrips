@@ -6,9 +6,9 @@ const FormenterpriseComponent = () => {
         <main className="formenterprise-main-wrapper">
             <section className="formenterprise-content-section-container">
                 <div className="formenterprise-text-content-container">
-                    <h1 className="formenterprise-headline-text">Kế nối với chúng tôi</h1>
+                    <h1 className="formenterprise-headline-text">Kết nối với chúng tôi</h1>
                     <p className="formenterprise-subheadline-text">
-                        Cùng nhau làm việc, Cùng <br /> nhau thành công
+                        cùng nhau làm việc, Cùng <br /> nhau thành công
                     </p>
                     <img
                         className="formenterprise-image-content"
@@ -24,32 +24,32 @@ const FormenterpriseComponent = () => {
                     </label>
 
                     <label className="formenterprise-input-field-container">
-                        Password
+                        Mật khẩu
                         <input type="password" name="password" className="formenterprise-input-field" />
                     </label>
 
                     <label className="formenterprise-input-field-container">
-                        Phone Number
+                        Số điện thoại
                         <input type="text" name="phone-number" className="formenterprise-input-field" />
                     </label>
 
                     <label className="formenterprise-input-field-container">
-                        Enterprise Name
+                        Tên doanh nghiệp
                         <input type="text" name="enterprise-name" className="formenterprise-input-field" />
                     </label>
 
                     <label className="formenterprise-input-field-container">
-                        Representative
+                        Người đại diện
                         <input type="text" name="representative" className="formenterprise-input-field" />
                     </label>
 
                     <label className="formenterprise-input-field-container">
-                        Tax Code
+                        Mã thuế
                         <input type="text" name="tax-code" className="formenterprise-input-field" />
                     </label>
 
                     <label className="formenterprise-input-field-container">
-                        Additional Info
+                        Địa chỉ
                         <input type="text" name="additional-info" className="formenterprise-input-field" />
                     </label>
 
