@@ -27,6 +27,39 @@ import DashboardLayoutBasic from "./admin/dashboard/DashboardLayoutBasic";
 function App() {
   const location = useLocation();
 
+  // Danh sách các path mà không cần hiện Header hoặc Footer
+  const noHeaderFooterPaths = ["/enterprise", "/enterprise/test"];
+  const noFooterPaths = ["/plan", "/plan/trip", "/login", "/register", "/enterprise/test"];
+
+  const shouldShowHeader = !noHeaderFooterPaths.includes(location.pathname);
+  const shouldShowFooter =
+    !noHeaderFooterPaths.includes(location.pathname) &&
+    !noFooterPaths.includes(location.pathname);
+
+  return (
+    // <SnackbarProvider
+    //   maxSnack={3}
+    //   anchorOrigin={{
+    //     vertical: "top",
+    //     horizontal: "right",
+    //   }}
+    // >
+    //   {shouldShowHeader && <Header />}
+    //   <Routes>
+    //     <Route path="/" element={<LandingPage />} />
+    //     <Route path="/plan" element={<PlanBefore />} />
+    //     <Route path="/plan/trip" element={<TravelPlan />} />
+    //     <Route path="/hotel" element={<Hotel />} />
+    //     <Route path="/booking-hotel" element={<BookingHotel />} />
+    //     <Route path="/hotel-details" element={<HotelDetails />} />
+    //     <Route path="/login" element={<Login />} />
+    //     <Route path="/register" element={<Register />} />
+    //     <Route path="/booking/:type" element={<Booking />} />
+    //     <Route path="/payment" element={<Payment />} />
+    //     <Route path="/success" element={<Success />} />
+    //   </Routes>
+    //   {shouldShowFooter && <Footer />}
+    // </SnackbarProvider>
   return (
     <SnackbarProvider
       maxSnack={3}
@@ -54,7 +87,7 @@ function App() {
       </Routes>
     </SnackbarProvider>
     // admin 
-    // <DashboardLayoutBasic/>
+    <DashboardLayoutBasic/>
   );
 }
 

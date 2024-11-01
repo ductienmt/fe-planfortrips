@@ -1,3 +1,5 @@
+import Http from "../Http";
+
 export const HotelService = {
   getHotels: async (page, limit, keyword) => {
     const response = await Http.get(
