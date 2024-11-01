@@ -2,17 +2,17 @@ import { useState, useEffect, useRef, useContext } from "react";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { handleInputChange } from "../../../utils/FormatMoney"; // Đường dẫn tới file FormatMoney.js
-import provinces from "../../../utils/Provinces.json"; // Đường dẫn tới file Province.json
-import { useSnackbar } from "notistack"; // Thêm Notistack
+import { handleInputChange } from "../../../utils/FormatMoney";
+import provinces from "../../../utils/Provinces.json";
+import { useSnackbar } from "notistack";
 import "./Plan.css";
 import { flatpickrConfig } from "../../../utils/ConfigFlatpickr";
 import { DateFormatter } from "../../../utils/DateFormat";
 import { PlanServiceApi } from "../../../services/apis/PlanServiceApi";
 import { generateTripPlan } from "../../../services/planService";
 
-function HomePage() {
-  const { enqueueSnackbar } = useSnackbar(); // Sử dụng Notistack
+function PlanBefore() {
+  const { enqueueSnackbar } = useSnackbar();
   const [adults, setAdults] = useState(0);
   const [children, setChildren] = useState(0);
   const [infants, setInfants] = useState(0);
@@ -21,15 +21,13 @@ function HomePage() {
 
   const ngayDiRef = useRef(null);
   const ngayVeRef = useRef(null);
-  // const [loiNgay, setLoiNgay] = useState("");
 
-  const [budget, setBudget] = useState(""); // Trạng thái cho ngân sách
-  // const [error, setError] = useState(""); // Trạng thái cho thông báo lỗi
+  const [budget, setBudget] = useState("");
 
-  const [queryCurrentCity, setQueryCurrentCity] = useState(""); // Tỉnh, thành phố đang ở
-  const [queryDestination, setQueryDestination] = useState(""); // Điểm đến
-  const [filteredCurrentCities, setFilteredCurrentCities] = useState([]); // Gợi ý cho tỉnh, thành phố đang ở
-  const [filteredDestinations, setFilteredDestinations] = useState([]); // Gợi ý cho điểm đến
+  const [queryCurrentCity, setQueryCurrentCity] = useState("");
+  const [queryDestination, setQueryDestination] = useState("");
+  const [filteredCurrentCities, setFilteredCurrentCities] = useState([]);
+  const [filteredDestinations, setFilteredDestinations] = useState([]);
 
   const [formData, setFormData] = useState({
     location: "",
@@ -43,23 +41,24 @@ function HomePage() {
   const [planData, setPlanData] = useState({
     location: "Hồ Chí Minh",
     destination: "Vũng Tàu",
-    startDate: "10-10-2024 08:00:00",
-    endDate: "13-10-2024 14:00:00",
-    numberPeople: 2,
+    startDate: "25-10-2024 08:00:00",
+    endDate: "28-10-2024 14:00:00",
+    numberPeople: 3,
     budget: 5000,
   });
 
   const handlePlan = async () => {
     // if (validatePlan()) {
-    // setFormData({
-    //   ...formData,
-    //   location: queryCurrentCity,
-    //   destination: queryDestination,
-    //   startDate: DateFormatter(ngayDiRef.current.value),
-    //   endDate: DateFormatter(ngayDiRef.current.value),
-    //   numberPeople: adults + children + infants,
-    //   budget: budget,
-    // });
+    //   setFormData({
+    //     ...formData,
+    //     location: queryCurrentCity,
+    //     destination: queryDestination,
+    //     startDate: DateFormatter(ngayDiRef.current.value),
+    //     endDate: DateFormatter(ngayDiRef.current.value),
+    //     numberPeople: adults + children + infants,
+    //     budget: budget,
+    //   });
+    //   console.log(formData);
     try {
       const response = await PlanServiceApi.getData(planData);
       console.log(response.data);
@@ -69,12 +68,11 @@ function HomePage() {
         console.log("Setting trip plan:", tripPlan);
         localStorage.setItem("tripData", JSON.stringify(tripPlan));
         // Chuyển hướng sau khi đã cập nhật tripPlan
-        // window.location.href = "/plan/trip";
+        window.location.href = "/plan/trip";
       }
     } catch (error) {
       console.log(error);
     }
-
     // }
   };
 
@@ -458,4 +456,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default PlanBefore;

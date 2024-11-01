@@ -1,0 +1,46 @@
+.admin__card-statistical {
+    display: flex;
+    min-height: 20vh;
+    border: 1px solid black;
+    border-radius: 13px;
+    background-color: black;
+}
+.admin__card-statistical-container {
+    padding: 13px;
+    flex: 1;
+}
+.admin__card-statistical__icon-container {
+    width: fit-content;
+    text-align: center;
+    padding: 12px;
+    border: 1px solid black;
+    border-radius: 100%;
+    background-color: white;
+}
+.admin__card-statistical-left-container {
+    height: 100%;
+}
+
+.admin__card-statistical__info {
+    color: white;
+}
+.admin__card-statistical__info .admin__card-statistical__info-number {
+    font-weight: 700 !important;
+    font-size: 1.3rem;
+    line-height: 1.375;
+}
+.admin__card-statistical__info-title {
+    display: block;
+    font-size: 1rem;
+    line-height: 1.5;
+    text-transform: capitalize;
+}
+
+.admin__card-statistical-right-container {
+    text-align: right;
+    color: white;
+    height: 100%;
+}
+.admin__card-statistical-right__detail .admin__card-statistical-right__detail-percent {
+    font-weight: 700;
+}

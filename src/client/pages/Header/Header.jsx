@@ -1,10 +1,36 @@
 import { Link } from "react-router-dom";
 import "./Header.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import handleToken from "../../../services/HandleToken";
+import { useNavigate } from "react-router-dom";
+import Avatar from "../../Components/Avatar";
+import { InputFlied } from "../../Components/Input/InputFlied";
 
 const Header = () => {
-  const [showMenu, setShowMenu] = useState(false);
+  const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const user = localStorage.getItem("username");
+
+  useEffect(() => {
+    if (user) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [user]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setIsLoggedIn(false);
+    handleToken.delete();
+    setShowDropdown(false);
+    navigate("/");
+  };
+
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
 
   return (
     <>
@@ -12,11 +38,10 @@ const Header = () => {
         <div className="container-fluid d-flex justify-content-between align-items-center">
           <form className="d-flex me-2" role="search">
             <div className="input-group">
-              <input
-                className="form-control"
-                type="search"
-                placeholder="Tìm kiếm..."
-                aria-label="Search"
+              <InputFlied
+                nameInput={"search"}
+                content={"Tìm kiếm"}
+                typeInput={"text"}
               />
             </div>
           </form>
@@ -24,31 +49,34 @@ const Header = () => {
           <h1 className="text-center flex-grow-1">Plan for Trips</h1>
 
           <div>
-            {isLoggedIn ? (
-              <div>
-                <img
-                  src="path_to_user_avatar"
-                  alt="User Avatar"
-                  className="user-avatar"
-                  onClick={() => setShowMenu(!showMenu)}
-                />
-                {showMenu && (
-                  <div className="avatar-menu">
-                    <a href="/profile">My Profile</a>
-                    <a href="/my-trips">My Trips</a>
-                    <a href="/logout">Log Out</a>
-                  </div>
-                )}
-              </div>
-            ) : (
+            {!isLoggedIn ? (
               <>
-                <a href="/register" className="btn btn-register">
+                <Link to={"/register"} className="btn btn-register">
                   Đăng ký
-                </a>
-                <a href="/login" className="btn btn-login">
+                </Link>
+                <Link to={"/login"} className="btn btn-login">
                   Đăng nhập
-                </a>
+                </Link>
               </>
+            ) : (
+              <div
+                className="user-menu"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  flexDirection: "row",
+                }}
+              >
+                <Avatar
+                  fullname="Nguyễn Văn A"
+                  gender="Nam"
+                  imageUrl={null}
+                  onClick={toggleDropdown}
+                  showDropdown={showDropdown}
+                  handleLogout={handleLogout}
+                />
+              </div>
             )}
           </div>
         </div>
@@ -80,7 +108,7 @@ const Header = () => {
                   Phương tiện
                 </Link>
                 <span>|</span>
-                <Link className="nav-link" to="#">
+                <Link className="nav-link" to="/hotel">
                   Khách sạn
                 </Link>
                 <span>|</span>
