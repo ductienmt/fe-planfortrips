@@ -6,4 +6,13 @@ export const ScheduleService = {
       `/api/v1/schedules/getStationByScheduleId?scheduleId=${id}`
     );
   },
+
+  getSchedules: async (data) => {
+    return await Http.post(`/api/v1/schedules/getSchedules`, data);
+  },
+
+  getScheduleID: async (scheduleId) => {
+    return await Http.get(`/api/v1/schedules/${scheduleId}`);
+  }
+
 };
