@@ -1,54 +1,137 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./Header.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import handleToken from "../../../services/HandleToken";
+import { useNavigate } from "react-router-dom";
+import Avatar from "../../Components/Avatar";
+import { InputFlied } from "../../Components/Input/InputFlied";
+import { UserService } from "../../../services/apis/UserService";
+import { useAuth } from "../../../context/AuthProvider";
 
 const Header = () => {
-  const [showMenu, setShowMenu] = useState(false);
+  const { username, logout } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation(); // Theo dõi URL
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [userInfo, setUserInfo] = useState({
+    fullname: "",
+    gender: "",
+    imageUrl: "",
+  });
+
+  useEffect(() => {
+    if (username) {
+      setIsLoggedIn(true);
+      loadUser();
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [username]);
+
+  // Đóng dropdown khi URL thay đổi
+  useEffect(() => {
+    setShowDropdown(false);
+  }, [location]);
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setShowDropdown(false);
+    logout();
+    navigate("/");
+  };
+
+  const toggleDropdown = () => {
+    setShowDropdown((prev) => !prev);
+  };
+
+  const handleMoveYourTrip = (event) => {
+    event.preventDefault();
+    navigate(`/profile/your-trip`);
+  };
+
+  const loadUser = async () => {
+    try {
+      const res = await UserService.getImage();
+      setUserInfo({
+        fullname: res.data.data.fullname,
+        gender: res.data.data.gender,
+        imageUrl: res.data.data.url,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // Đóng dropdown nếu nhấp ra ngoài
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest(".user-menu")) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <>
       <header className="custom-header mt-3">
-        <div className="container-fluid d-flex justify-content-between align-items-center">
+        <div className="d-flex justify-content-between ms-3 me-3">
           <form className="d-flex me-2" role="search">
             <div className="input-group">
-              <input
-                className="form-control"
-                type="search"
-                placeholder="Tìm kiếm..."
-                aria-label="Search"
+              <InputFlied
+                nameInput={"search"}
+                content={"Tìm kiếm"}
+                typeInput={"text"}
               />
             </div>
           </form>
 
           <h1 className="text-center flex-grow-1">Plan for Trips</h1>
 
-          <div>
-            {isLoggedIn ? (
-              <div>
-                <img
-                  src="path_to_user_avatar"
-                  alt="User Avatar"
-                  className="user-avatar"
-                  onClick={() => setShowMenu(!showMenu)}
+          <div style={{ width: "209px", justifyContent: "end" }}>
+            {!isLoggedIn ? (
+              <>
+                <Link to={"/register"} className="btn btn-register">
+                  Đăng ký
+                </Link>
+                <Link to={"/login"} className="btn btn-login">
+                  Đăng nhập
+                </Link>
+              </>
+            ) : (
+              <div
+                className="user-menu"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "end",
+                  gap: "10px",
+                  flexDirection: "row",
+                }}
+              >
+                <Avatar
+                  fullname={userInfo.fullname}
+                  gender={userInfo.gender}
+                  imageUrl={userInfo.imageUrl}
+                  onClick={toggleDropdown}
+                  showDropdown={showDropdown}
+                  handleLogout={handleLogout}
+                  handleMoveYourTrip={handleMoveYourTrip}
                 />
-                {showMenu && (
-                  <div className="avatar-menu">
-                    <a href="/profile">My Profile</a>
-                    <a href="/my-trips">My Trips</a>
-                    <a href="/logout">Log Out</a>
+                {/* Hiển thị dropdown nếu showDropdown là true */}
+                {showDropdown && (
+                  <div className="dropdown-menu">
+                    {/* Nội dung dropdown */}
+                    <button onClick={handleMoveYourTrip}>Your Trip</button>
+                    <button onClick={handleLogout}>Logout</button>
                   </div>
                 )}
               </div>
-            ) : (
-              <>
-                <a href="/register" className="btn btn-register">
-                  Đăng ký
-                </a>
-                <a href="/login" className="btn btn-login">
-                  Đăng nhập
-                </a>
-              </>
             )}
           </div>
         </div>
@@ -68,31 +151,39 @@ const Header = () => {
             </button>
             <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
               <div className="navbar-nav custom-nav">
-                <Link className="nav-link" to="/">
+                <Link className="nav-link" to="/" style={{ fontSize: "18px" }}>
                   Trang chủ
                 </Link>{" "}
-                <span>|</span>
-                <Link to="/plan" className="nav-link">
+                <span className="me-2 ms-2">|</span>
+                <Link
+                  to="/plan"
+                  className="nav-link"
+                  style={{ fontSize: "18px" }}
+                >
                   Lập kế hoạch
                 </Link>
-                <span>|</span>
-                <Link className="nav-link" to="#">
+                <span className="me-2 ms-2">|</span>
+                <Link className="nav-link" to="#" style={{ fontSize: "18px" }}>
                   Phương tiện
                 </Link>
-                <span>|</span>
-                <Link className="nav-link" to="#">
+                <span className="me-2 ms-2">|</span>
+                <Link
+                  className="nav-link"
+                  to="/hotel"
+                  style={{ fontSize: "18px" }}
+                >
                   Khách sạn
                 </Link>
-                <span>|</span>
-                <Link className="nav-link" to="#">
+                <span className="me-2 ms-2">|</span>
+                <Link className="nav-link" to="#" style={{ fontSize: "18px" }}>
                   Ẩm thực
                 </Link>
-                <span>|</span>
-                <Link className="nav-link" to="#">
+                <span className="me-2 ms-2">|</span>
+                <Link className="nav-link" to="#" style={{ fontSize: "18px" }}>
                   Tham quan
                 </Link>
-                <span>|</span>
-                <Link className="nav-link" to="#">
+                <span className="me-2 ms-2">|</span>
+                <Link className="nav-link" to="#" style={{ fontSize: "18px" }}>
                   Hợp tác
                 </Link>
               </div>

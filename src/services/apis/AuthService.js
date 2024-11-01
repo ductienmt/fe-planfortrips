@@ -1,6 +1,7 @@
 import Http from "../Http";
 
-const AuthService = {
+export const AuthService = {
+
   login: async (data) => {
     const response = await Http.post("/api/v1/auth/login", data);
     return response;
@@ -11,4 +12,3 @@ const AuthService = {
   },
 };
 
-export default AuthService;

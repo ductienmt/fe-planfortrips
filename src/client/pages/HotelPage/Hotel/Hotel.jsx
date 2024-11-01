@@ -38,19 +38,20 @@ const Hotel = () => {
     ];
 
     return (
-        <main className='Hotel-container-page'>
-            <SearchBar />
+        <main>
+            <SearchBar keyword={keyword} setKeyword={setKeyword} />
             <section>
                 <SearchResults />
                 <HotDealsNotification />
                 <ResultsSummary />
-                {accommodations.map(accommodation => (
-                    <AccommodationCard key={accommodation.id} {...accommodation} />
-                ))} *
+                {isLoading ? (
+                    <GradientCircularProgress />
+                ) : (
+                    hotels.map((hotel) => (
+                        <AccommodationCard key={hotel.hotel_id} {...hotel} />
+                    ))
+                )}
             </section>
-
-
-
         </main>
     );
 };

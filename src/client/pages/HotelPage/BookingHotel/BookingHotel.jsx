@@ -1,5 +1,5 @@
-import React from 'react';
-import './BookingHotel.css';
+
+import React, { useEffect, useState } from 'react';
 import BookingHotelImageGallery from './BookingHotelComponent/BookingHotelImageGallery';
 import BookingHotelHotelInfo from './BookingHotelComponent/BookingHotelHotelInfo';
 import BookingHotelRoomOptions from './BookingHotelComponent/BookingHotelRoomOptions';

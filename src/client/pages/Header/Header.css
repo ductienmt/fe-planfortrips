@@ -4,14 +4,10 @@
     color: white;
     /* Màu sắc chữ nếu bạn muốn */
     background-color: black;
-    margin-right: 50px;
     border-radius: 28px;
 
 }
 
-.custom-header .input-group {
-    margin-left: 100px;
-}
 
 .custom-header h1 {
     font-size: 2rem;

@@ -104,7 +104,8 @@ function DashboardLayoutBasic(props) {
     user: {
       name: "Cô giáo thảo",
       email: "hentaivn@gmail.com",
-      image: "https://images.kienthuc.net.vn/zoomh/800/uploaded/phuongdh/2024_10_24/4/gai-xinh-so-huu-vong-3-to-bat-thuong-cham-chi-khoe-dang.jpg",
+      image:
+        "https://images.kienthuc.net.vn/zoomh/800/uploaded/phuongdh/2024_10_24/4/gai-xinh-so-huu-vong-3-to-bat-thuong-cham-chi-khoe-dang.jpg",
     },
   });
 
@@ -117,7 +118,8 @@ function DashboardLayoutBasic(props) {
           user: {
             name: "Cô giáo thảo",
             email: "hentaivn@gmail.com",
-            image: "https://images.kienthuc.net.vn/zoomh/800/uploaded/phuongdh/2024_10_24/4/gai-xinh-so-huu-vong-3-to-bat-thuong-cham-chi-khoe-dang.jpg",
+            image:
+              "https://images.kienthuc.net.vn/zoomh/800/uploaded/phuongdh/2024_10_24/4/gai-xinh-so-huu-vong-3-to-bat-thuong-cham-chi-khoe-dang.jpg",
           },
         });
       },
@@ -135,13 +137,11 @@ function DashboardLayoutBasic(props) {
       theme={demoTheme}
       window={demoWindow}
       branding={{
-        logo: (
-          <img src="src/assets/momo.png" alt="MUI logo" />
-        ),
+        logo: <img src="src/assets/momo.png" alt="MUI logo" />,
         title: "Plan for trips",
       }}
     >
-      <Outlet/>
+      <Outlet />
     </AppProvider>
   );
 }

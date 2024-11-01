@@ -8,7 +8,7 @@ import { ScheduleService } from "../../../services/apis/ScheduleService";
 
 function TravelPlan() {
   const [selectedCard, setSelectedCard] = useState("transportation");
-  const tripData = JSON.parse(localStorage.getItem("tripData"));
+  const tripData = JSON.parse(sessionStorage.getItem("tripData"));
   const [summaryItems, setSummaryItems] = useState([]);
   const [accommodationItems, setAccommodationItems] = useState([]);
   const seats = tripData.transportation.departure.seatBook
@@ -113,8 +113,8 @@ function TravelPlan() {
             selectedCard === "transportation"
               ? "active"
               : selectedCard
-              ? "inactive"
-              : ""
+                ? "inactive"
+                : ""
           }
           onClick={() => handleCardClick("transportation")}
           img="https://flane.vn/wp-content/uploads/2023/12/xe-phuong-trang-7.png"
@@ -133,8 +133,8 @@ function TravelPlan() {
             selectedCard === "accommodation"
               ? "active"
               : selectedCard
-              ? "inactive"
-              : ""
+                ? "inactive"
+                : ""
           }
           onClick={() => handleCardClick("accommodation")}
           name={tripData.accomodation.nameHotel}
@@ -148,8 +148,8 @@ function TravelPlan() {
             selectedCard === "attraction"
               ? "active"
               : selectedCard
-              ? "inactive"
-              : ""
+                ? "inactive"
+                : ""
           }
           onClick={
             () => handleCardClick("attraction") // Gọi hàm này khi click vào AttractionCard
