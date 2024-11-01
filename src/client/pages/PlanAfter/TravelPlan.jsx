@@ -10,7 +10,7 @@ import { TicketService } from "../../../services/apis/TicketService";
 
 function TravelPlan() {
   const [selectedCard, setSelectedCard] = useState("transportation");
-  const tripData = JSON.parse(localStorage.getItem("tripData"));
+  const tripData = JSON.parse(sessionStorage.getItem("tripData"));
   const [summaryItems, setSummaryItems] = useState([]);
   const [accommodationItems, setAccommodationItems] = useState([]);
 
@@ -128,8 +128,8 @@ function TravelPlan() {
             selectedCard === "transportation"
               ? "active"
               : selectedCard
-              ? "inactive"
-              : ""
+                ? "inactive"
+                : ""
           }
           onClick={() => handleCardClick("transportation")}
           vehicleCode={tripData.transportation.departure.vehicleCode}
@@ -152,8 +152,8 @@ function TravelPlan() {
             selectedCard === "accommodation"
               ? "active"
               : selectedCard
-              ? "inactive"
-              : ""
+                ? "inactive"
+                : ""
           }
           onClick={() => handleCardClick("accommodation")}
           accomodation={tripData.accomodation}
@@ -163,8 +163,8 @@ function TravelPlan() {
             selectedCard === "attraction"
               ? "active"
               : selectedCard
-              ? "inactive"
-              : ""
+                ? "inactive"
+                : ""
           }
           onClick={
             () => handleCardClick("attraction") // Gọi hàm này khi click vào AttractionCard

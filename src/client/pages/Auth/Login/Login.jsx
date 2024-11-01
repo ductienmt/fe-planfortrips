@@ -8,8 +8,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import handleToken from "../../../../services/HandleToken";
 import { InputFlied } from "../../../Components/Input/InputFlied";
+import { AuthService } from "../../../../services/apis/AuthService";
+import { useAuth } from "../../../../context/AuthProvider";
 
 const Login = () => {
+  const { login } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const queryParam = new URLSearchParams(window.location.search);
   const navigate = useNavigate();
@@ -31,12 +34,11 @@ const Login = () => {
       }
       const response = await AuthService.login(formData);
       console.log("Đăng nhập thành công:", response.data);
-      handleToken.save(
+      login(
         response.data.data.token,
-        response.data.data.userName,
-        response.data.data.role
+        response.data.data.role,
+        response.data.data.userName
       );
-      handleToken.setTimeout(86400 * 10000);
       enqueueSnackbar(response.data.message, {
         variant: "success",
         autoHideDuration: 1000,
@@ -45,6 +47,7 @@ const Login = () => {
         },
       });
     } catch (error) {
+      console.error(error);
       enqueueSnackbar(error.response?.data?.message || "Đăng nhập thất bại", {
         variant: "error",
         autoHideDuration: 1000,
@@ -58,6 +61,7 @@ const Login = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    console.log(formData);
   };
 
   useEffect(() => {
