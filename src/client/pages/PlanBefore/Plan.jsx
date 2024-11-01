@@ -66,7 +66,7 @@ function PlanBefore() {
       console.log(tripPlan);
       if (tripPlan) {
         console.log("Setting trip plan:", tripPlan);
-        localStorage.setItem("tripData", JSON.stringify(tripPlan));
+        sessionStorage.setItem("tripData", JSON.stringify(tripPlan));
         // Chuyển hướng sau khi đã cập nhật tripPlan
         window.location.href = "/plan/trip";
       }

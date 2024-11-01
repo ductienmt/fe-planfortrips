@@ -15,7 +15,7 @@ import BookingHotel from "../client/pages/HotelPage/BookingHotel/BookingHotel";
 import HotelDetails from "../client/pages/HotelPage/HotelDetails/HotelDetails";
 import { EnterpriseLayout } from "../layout/EnterpriseLayout";
 import Profile from "../client/pages/Profile/Profile";
-// import EnterpriseLogin from "../enterprise/auth/login/EnterpriseLogin";
+// import EnterpriseLogin from "../enterprise/auth/login/EnterpriseLogin"
 
 export const router = createBrowserRouter([
   {

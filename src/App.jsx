@@ -13,6 +13,7 @@ function App() {
       }}
     >
       <DashboardLayoutBasic />
+      {/* <Outlet></Outlet> */}
     </SnackbarProvider>
   );
 }
