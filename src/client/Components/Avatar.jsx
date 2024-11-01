@@ -24,6 +24,7 @@ const UserAvatarWithDropdown = ({
   handleLogout,
   onClick,
   handleMoveYourTrip,
+  size,
 }) => {
   const initials = fullname
     ? fullname
@@ -34,6 +35,7 @@ const UserAvatarWithDropdown = ({
         .toUpperCase()
     : "";
 
+  const avatarSize = size || 40;
   const backgroundColor = useMemo(() => getBackgroundColor(gender), [gender]);
 
   return (
@@ -41,8 +43,8 @@ const UserAvatarWithDropdown = ({
       <Avatar
         sx={{
           bgcolor: imageUrl ? "transparent" : backgroundColor,
-          width: 40,
-          height: 40,
+          width: avatarSize,
+          height: avatarSize,
           fontSize: 20,
           fontWeight: "bold",
           cursor: "pointer",

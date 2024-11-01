@@ -10,8 +10,10 @@ import { flatpickrConfig } from "../../../utils/ConfigFlatpickr";
 import { DateFormatter } from "../../../utils/DateFormat";
 import { PlanServiceApi } from "../../../services/apis/PlanServiceApi";
 import { generateTripPlan } from "../../../services/planService";
+import Loading from "../../Components/Loading";
 
 function PlanBefore() {
+  const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const [adults, setAdults] = useState(0);
   const [children, setChildren] = useState(0);
@@ -61,6 +63,7 @@ function PlanBefore() {
     //   console.log(formData);
     try {
       const response = await PlanServiceApi.getData(planData);
+      setLoading(true);
       console.log(response.data);
       const tripPlan = await generateTripPlan(response.data);
       console.log(tripPlan);
@@ -71,7 +74,13 @@ function PlanBefore() {
         window.location.href = "/plan/trip";
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      enqueueSnackbar("Lỗi khi lên kế hoạch!", {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
+    } finally {
+      setLoading(false);
     }
     // }
   };
@@ -246,213 +255,225 @@ function PlanBefore() {
   };
 
   return (
-    <div className="plan-container">
-      <div className="overlay"></div>
+    <>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <div className="plan-container">
+            <div className="overlay"></div>
 
-      <>
-        <h1 className="text-white">Nhập điểm đến của bạn</h1>
-        <h3 className="text-white">
-          Plan for Trips, Nơi những chuyến đi tạo nên những ký ức đẹp.
-        </h3>
-      </>
+            <>
+              <h1 className="text-white">Nhập điểm đến của bạn</h1>
+              <h3 className="text-white">
+                Plan for Trips, Nơi những chuyến đi tạo nên những ký ức đẹp.
+              </h3>
+            </>
 
-      <div className="form-container p-4 bg-light rounded">
-        {/* Nhập điểm đến */}
-        <div className="row mb-3">
-          <div className="col-md-6 mb-3 mb-md-0 d-flex flex-column">
-            <label htmlFor="current-city" className="form-label">
-              Vị trí hiện tại
-            </label>
-            <input
-              type="text"
-              id="current-city"
-              value={queryCurrentCity}
-              onChange={handleInputChangeCurrentCity}
-              placeholder="Nhập tỉnh hoặc thành phố nơi bạn sống"
-              className="homepage-input"
-            />
-            {/* Hiển thị gợi ý */}
-            {filteredCurrentCities.length > 0 && (
-              <ul className="suggestions-list">
-                {filteredCurrentCities.map((province) => (
-                  <li
-                    key={province.province_id}
-                    onClick={() =>
-                      handleCurrentCitySuggestionClick(province.province_name)
-                    }
-                  >
-                    {province.province_name}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-          <div className="col-md-6 d-flex flex-column">
-            <label htmlFor="destination" className="form-label">
-              Điểm đến
-            </label>
-            <input
-              type="text"
-              id="destination"
-              value={queryDestination}
-              onChange={handleInputChangeDestination}
-              placeholder="Nhập thành phố hoặc địa điểm du lịch"
-              className="homepage-input"
-            />
-            {/* Hiển thị gợi ý */}
-            {filteredDestinations.length > 0 && (
-              <ul className="suggestions-list">
-                {filteredDestinations.map((province) => (
-                  <li
-                    key={province.province_id}
-                    onClick={() =>
-                      handleDestinationSuggestionClick(province.province_name)
-                    }
-                  >
-                    {province.province_name}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </div>
-
-        {/* Ngày đi và Ngày về */}
-        <div className="row mb-3">
-          <div className="col-md-6 mb-3 mb-md-0 d-flex flex-column">
-            <label htmlFor="ngay-di" className="form-label">
-              Ngày đi
-            </label>
-            <input
-              ref={ngayDiRef}
-              id="ngay-di"
-              className="homepage-input"
-              placeholder="Chọn ngày, giờ đi"
-            />
-          </div>
-          <div className="col-md-6 mb-3 mb-md-0 d-flex flex-column">
-            <label htmlFor="ngay-ve" className="form-label">
-              Ngày về
-            </label>
-            <input
-              ref={ngayVeRef}
-              id="ngay-ve"
-              className="homepage-input"
-              placeholder="Chọn ngày, giờ về"
-            />
-          </div>
-        </div>
-
-        {/* Nhập ngân sách */}
-        <div className="row mb-3">
-          <div className="col-md-6 mb-3 d-flex flex-column">
-            <label htmlFor="budget" className="form-label">
-              Chi phí cho chuyến đi (VNĐ)
-            </label>
-            <input
-              type="text"
-              id="budget"
-              className="homepage-input"
-              placeholder="Ví dụ: 5,000,000₫"
-              value={budget}
-              onChange={handleBudgetChange}
-            />
-          </div>
-          <div className="col-md-6 mb-3 d-flex flex-column">
-            <label htmlFor="people" className="form-label">
-              Số lượng người
-            </label>
-            <input
-              type="text"
-              id="people"
-              className="homepage-input"
-              value={`${adults} người lớn, ${children} trẻ em, ${infants} trẻ sơ sinh`}
-              readOnly
-              onClick={() => setShowNumberBox(!showNumberBox)}
-            />
-            {showNumberBox && (
-              <div className="number-box">
-                <ul>
-                  <li>
-                    <div className="number-left">
-                      <p>Người lớn</p>
-                    </div>
-                    <div className="number-right">
-                      <button
-                        className="decrement"
-                        onClick={() => handleDecrement("adult")}
-                      >
-                        -
-                      </button>
-                      <span>{adults}</span>
-                      <button
-                        className="increment"
-                        onClick={() => handleIncrement("adult")}
-                      >
-                        +
-                      </button>
-                    </div>
-                  </li>
-
-                  <li>
-                    <div className="number-left">
-                      <p>Trẻ em</p>
-                    </div>
-                    <div className="number-right">
-                      <button
-                        className="decrement"
-                        onClick={() => handleDecrement("child")}
-                      >
-                        -
-                      </button>
-                      <span>{children}</span>
-                      <button
-                        className="increment"
-                        onClick={() => handleIncrement("child")}
-                      >
-                        +
-                      </button>
-                    </div>
-                  </li>
-
-                  <li>
-                    <div className="number-left">
-                      <p>Trẻ sơ sinh</p>
-                    </div>
-                    <div className="number-right">
-                      <button
-                        className="decrement"
-                        onClick={() => handleDecrement("infant")}
-                      >
-                        -
-                      </button>
-                      <span>{infants}</span>
-                      <button
-                        className="increment"
-                        onClick={() => handleIncrement("infant")}
-                      >
-                        +
-                      </button>
-                    </div>
-                  </li>
-                </ul>
+            <div className="form-container p-4 bg-light rounded">
+              {/* Nhập điểm đến */}
+              <div className="row mb-3">
+                <div className="col-md-6 mb-3 mb-md-0 d-flex flex-column">
+                  <label htmlFor="current-city" className="form-label">
+                    Vị trí hiện tại
+                  </label>
+                  <input
+                    type="text"
+                    id="current-city"
+                    value={queryCurrentCity}
+                    onChange={handleInputChangeCurrentCity}
+                    placeholder="Nhập tỉnh hoặc thành phố nơi bạn sống"
+                    className="homepage-input"
+                  />
+                  {/* Hiển thị gợi ý */}
+                  {filteredCurrentCities.length > 0 && (
+                    <ul className="suggestions-list">
+                      {filteredCurrentCities.map((province) => (
+                        <li
+                          key={province.province_id}
+                          onClick={() =>
+                            handleCurrentCitySuggestionClick(
+                              province.province_name
+                            )
+                          }
+                        >
+                          {province.province_name}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+                <div className="col-md-6 d-flex flex-column">
+                  <label htmlFor="destination" className="form-label">
+                    Điểm đến
+                  </label>
+                  <input
+                    type="text"
+                    id="destination"
+                    value={queryDestination}
+                    onChange={handleInputChangeDestination}
+                    placeholder="Nhập thành phố hoặc địa điểm du lịch"
+                    className="homepage-input"
+                  />
+                  {/* Hiển thị gợi ý */}
+                  {filteredDestinations.length > 0 && (
+                    <ul className="suggestions-list">
+                      {filteredDestinations.map((province) => (
+                        <li
+                          key={province.province_id}
+                          onClick={() =>
+                            handleDestinationSuggestionClick(
+                              province.province_name
+                            )
+                          }
+                        >
+                          {province.province_name}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
               </div>
-            )}
+
+              {/* Ngày đi và Ngày về */}
+              <div className="row mb-3">
+                <div className="col-md-6 mb-3 mb-md-0 d-flex flex-column">
+                  <label htmlFor="ngay-di" className="form-label">
+                    Ngày đi
+                  </label>
+                  <input
+                    ref={ngayDiRef}
+                    id="ngay-di"
+                    className="homepage-input"
+                    placeholder="Chọn ngày, giờ đi"
+                  />
+                </div>
+                <div className="col-md-6 mb-3 mb-md-0 d-flex flex-column">
+                  <label htmlFor="ngay-ve" className="form-label">
+                    Ngày về
+                  </label>
+                  <input
+                    ref={ngayVeRef}
+                    id="ngay-ve"
+                    className="homepage-input"
+                    placeholder="Chọn ngày, giờ về"
+                  />
+                </div>
+              </div>
+
+              {/* Nhập ngân sách */}
+              <div className="row mb-3">
+                <div className="col-md-6 mb-3 d-flex flex-column">
+                  <label htmlFor="budget" className="form-label">
+                    Chi phí cho chuyến đi (VNĐ)
+                  </label>
+                  <input
+                    type="text"
+                    id="budget"
+                    className="homepage-input"
+                    placeholder="Ví dụ: 5,000,000₫"
+                    value={budget}
+                    onChange={handleBudgetChange}
+                  />
+                </div>
+                <div className="col-md-6 mb-3 d-flex flex-column">
+                  <label htmlFor="people" className="form-label">
+                    Số lượng người
+                  </label>
+                  <input
+                    type="text"
+                    id="people"
+                    className="homepage-input"
+                    value={`${adults} người lớn, ${children} trẻ em, ${infants} trẻ sơ sinh`}
+                    readOnly
+                    onClick={() => setShowNumberBox(!showNumberBox)}
+                  />
+                  {showNumberBox && (
+                    <div className="number-box">
+                      <ul>
+                        <li>
+                          <div className="number-left">
+                            <p>Người lớn</p>
+                          </div>
+                          <div className="number-right">
+                            <button
+                              className="decrement"
+                              onClick={() => handleDecrement("adult")}
+                            >
+                              -
+                            </button>
+                            <span>{adults}</span>
+                            <button
+                              className="increment"
+                              onClick={() => handleIncrement("adult")}
+                            >
+                              +
+                            </button>
+                          </div>
+                        </li>
+
+                        <li>
+                          <div className="number-left">
+                            <p>Trẻ em</p>
+                          </div>
+                          <div className="number-right">
+                            <button
+                              className="decrement"
+                              onClick={() => handleDecrement("child")}
+                            >
+                              -
+                            </button>
+                            <span>{children}</span>
+                            <button
+                              className="increment"
+                              onClick={() => handleIncrement("child")}
+                            >
+                              +
+                            </button>
+                          </div>
+                        </li>
+
+                        <li>
+                          <div className="number-left">
+                            <p>Trẻ sơ sinh</p>
+                          </div>
+                          <div className="number-right">
+                            <button
+                              className="decrement"
+                              onClick={() => handleDecrement("infant")}
+                            >
+                              -
+                            </button>
+                            <span>{infants}</span>
+                            <button
+                              className="increment"
+                              onClick={() => handleIncrement("infant")}
+                            >
+                              +
+                            </button>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </div>
+              {/* Nút lên kế hoạch */}
+              <button
+                type="button"
+                className="homepage-button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handlePlan();
+                }}
+              >
+                Lên kế hoạch
+              </button>
+            </div>
           </div>
-        </div>
-        {/* Nút lên kế hoạch */}
-        <button
-          type="button"
-          className="homepage-button"
-          onClick={(e) => {
-            e.preventDefault();
-            handlePlan();
-          }}
-        >
-          Lên kế hoạch
-        </button>
-      </div>
-    </div>
+        </>
+      )}
+    </>
   );
 }
 
