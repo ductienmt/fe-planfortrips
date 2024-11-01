@@ -6,12 +6,14 @@ import AttractionCard from "./AttractionCard";
 import "./TravelPlan.css";
 import { ScheduleService } from "../../../services/apis/ScheduleService";
 import { Link } from "react-router-dom";
+import { TicketService } from "../../../services/apis/TicketService";
 
 function TravelPlan() {
   const [selectedCard, setSelectedCard] = useState("transportation");
   const tripData = JSON.parse(localStorage.getItem("tripData"));
   const [summaryItems, setSummaryItems] = useState([]);
   const [accommodationItems, setAccommodationItems] = useState([]);
+
   const seats = tripData.transportation.departure.seatBook
     .map((seat) => seat.seat_number)
     .join(", ");
@@ -73,6 +75,19 @@ function TravelPlan() {
 
   const handleAttractionSelected = () => {
     setSelectedCard("attraction");
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await TicketService.create();
+      if (response.status === 201) {
+        alert("Tạo chuyến đi thành công!");
+      } else {
+        alert("Tạo chuyến đi thất bại!");
+      }
+    } catch (error) {
+      alert("Tạo chuyến đi thất bại!");
+    }
   };
 
   const newSummaryItems = tripData.userData
@@ -141,11 +156,7 @@ function TravelPlan() {
               : ""
           }
           onClick={() => handleCardClick("accommodation")}
-          name={tripData.accomodation.nameHotel}
-          room={tripData.accomodation.nameRoom}
-          roomtype={tripData.accomodation.roomType}
-          checkin={tripData.accomodation.checkin}
-          checkout={tripData.accomodation.checkout}
+          accomodation={tripData.accomodation}
         />
         <AttractionCard
           className={
@@ -158,8 +169,9 @@ function TravelPlan() {
           onClick={
             () => handleCardClick("attraction") // Gọi hàm này khi click vào AttractionCard
           }
-          onNext={handleAttractionSelected} // Truyền hàm này vào props
-          onBack={handleAttractionSelected} // Truyền hàm này vào props
+          onNext={handleAttractionSelected}
+          onBack={handleAttractionSelected}
+          checkin={tripData.checkins}
         />
       </section>
       <div
@@ -172,8 +184,11 @@ function TravelPlan() {
         }}
       >
         {/* <button className="travel-plan-footer-button">Edit</button> */}
-        <Link
-          to={"/booking/plan"}
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            handleSubmit();
+          }}
           className="travel-plan-footer-button btn"
           style={{
             width: "30%",
@@ -184,7 +199,7 @@ function TravelPlan() {
           }}
         >
           Xác nhận kế hoạch
-        </Link>
+        </button>
       </div>
     </main>
   );

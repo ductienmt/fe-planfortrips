@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./NearbyPlaces.css"; // Import file CSS
-import MapComponent from "../../../Components/MapComponent";
+import MapComponent from "../../../../Components/MapComponent";
 
 const NearbyPlaces = ({ hotel }) => {
   const places = [
@@ -34,14 +34,14 @@ const NearbyPlaces = ({ hotel }) => {
           if (!response.ok) {
             throw new Error("Network response was not ok");
           }
-          return response.json(); 
+          return response.json();
         })
         .then((data) => {
           console.log(data);
           if (data && data.length > 0) {
             setPosition({
-                lat: parseFloat(data[0].lat),
-                lon: parseFloat(data[0].lon), 
+              lat: parseFloat(data[0].lat),
+              lon: parseFloat(data[0].lon),
             });
             console.log(position);
           } else {
