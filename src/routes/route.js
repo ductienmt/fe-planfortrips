@@ -16,8 +16,7 @@ import HotelDetails from "../client/pages/HotelPage/HotelDetails/HotelDetails";
 import Profile from "../client/pages/Profile/Profile";
 import LoginAdmin from "../admin/pages/Auth/Login";
 import Exchange from "../admin/pages/Exchange/Exchange";
-import UserAdmin from "../admin/pages/User/User";
-import EnterpriseAdmin from "../admin/pages/Enterprise/Enterprise";
+import EnterpriseAdmin from "../admin/pages/Enterprise/EnterpriseManager";
 import CouponAdmin from "../admin/pages/Coupon/Coupon";
 import TravelAdmin from "../admin/pages/Travel/Travel";
 import LayoutAdmin from "../admin/pages/Layout/Layout";
@@ -25,6 +24,7 @@ import HomePage from "../admin/pages/Dashboard/HomePage";
 import TransportSelectionPage from "../client/pages/VehiclePage/BookingVehiclesFind/TransportSelectionPage";
 import SearchResults from "../client/pages/VehiclePage/BookingVehicles/SearchResults";
 import BookingSteps from "../client/pages/VehiclePage/BookingVehiclesDetails/BookingSteps";
+import UserManager from "../admin/pages/User/UserManager";
 
 const routeAdmin = () => [
   {
@@ -37,10 +37,10 @@ const routeAdmin = () => [
       },
       {
         path: "users",
-        Component: UserAdmin,
+        Component: UserManager,
       },
       {
-        path: "business",
+        path: "enterprise",
         Component: EnterpriseAdmin,
       },
       {

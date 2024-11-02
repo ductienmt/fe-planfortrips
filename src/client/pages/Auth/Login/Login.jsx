@@ -68,13 +68,16 @@ const Login = () => {
     localStorage.clear();
     document.title = "Đăng nhập";
     window.scrollTo(0, 200);
-    getAuthUrl().then((res) => {
-      setAuthUrl(res);
-    });
-    const code = queryParam.get("code");
-    if (code) {
-      handleLoginWithGoogle(code);
+    if (!queryParam != null) {
+      getAuthUrl().then((res) => {
+        setAuthUrl(res);
+      });
+      const code = queryParam.get("code");
+      if (code) {
+        handleLoginWithGoogle(code);
+      }
     }
+
   }, [queryParam]);
 
   const handleLoginWithGoogle = async (code) => {

@@ -78,13 +78,6 @@ function AdminList({ title }) {
                                     Thể loại: <span className="text-warning text-uppercase">{item.category}</span>
                                 </p>
                             </div>
-
-                            <div className="admin__list-item-operation admin__w-30">
-                                <div className="admin__list-item-operation-container">
-                                    <button className="btn btn-primary me-2">Thêm</button>
-                                    <button className="btn btn-danger">Xóa</button>
-                                </div>
-                            </div>
                         </div>
                     ))}
                 </div>
