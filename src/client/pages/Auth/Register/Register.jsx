@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import AuthService from "../../../../services/apis/AuthService";
+import { AuthService } from "../../../../services/apis/AuthService";
 import "./Register.css"; // Custom CSS
 import { useSnackbar } from "notistack";
 import background from "../../../../assets/image 37.png";

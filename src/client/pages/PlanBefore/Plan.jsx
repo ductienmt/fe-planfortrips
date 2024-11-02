@@ -480,4 +480,4 @@ function PlanBefore() {
   );
 }
 
-export default HomePage;
+export default PlanBefore;

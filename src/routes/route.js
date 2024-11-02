@@ -25,6 +25,7 @@ import HomePage from "../admin/pages/Dashboard/HomePage";
 import TransportSelectionPage from "../client/pages/VehiclePage/BookingVehiclesFind/TransportSelectionPage";
 import SearchResults from "../client/pages/VehiclePage/BookingVehicles/SearchResults";
 import BookingSteps from "../client/pages/VehiclePage/BookingVehiclesDetails/BookingSteps";
+import Sumbitenterprise from "../client/pages/Enterprise/Sumbitenterprise";
 
 const routeAdmin = () => [
   {
@@ -128,6 +129,11 @@ const routeClient = () => [
       {
         path: "/vehicle-details/:id",
         component: BookingSteps,
+      },
+
+      {
+        path: "/enterprise",
+        component: Sumbitenterprise,
       },
     ],
   },

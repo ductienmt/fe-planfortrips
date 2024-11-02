@@ -1,12 +1,10 @@
-import React from 'react';
-import SearchBar from './HotelComponent/SearchBar';
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
-import HotDealsNotification from './HotelComponent/HotDealsNotification';
-import ResultsSummary from './HotelComponent/ResultsSummary';
-import AccommodationCard from './HotelComponent/AccommodationCard';
+import React, { useEffect, useState } from 'react';
+import SearchBar from './HotelComponent/SearchBar'; // Nhập component SearchBar
+import HotDealsNotification from './HotelComponent/HotDealsNotification'; // Nhập component HotDealsNotification
+import ResultsSummary from './HotelComponent/ResultsSummary'; // Nhập component ResultsSummary
+import AccommodationCard from './HotelComponent/AccommodationCard'; // Nhập component AccommodationCard
 import SearchResults from './HotelComponent/SearchResults';
-
+import { HotelService } from '../../../../services/apis/HotelService';
 
 const Hotel = () => {
     const accommodations = [
@@ -36,21 +34,38 @@ const Hotel = () => {
 
         // Thêm các đối tượng accommodation khác nếu cần
     ];
-
+    const [pagePresent, setPagePresent] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    const [hotels, setHotels] = useState([]);
+    useEffect(() => {
+        const fetchHotel = async () => {
+            try {
+                const hotelData = await HotelService.getHotels(
+                    pagePresent,
+                    10,
+                );
+                setHotels(hotelData.hotelResponseList);
+                setTotalPages(hotelData.totalPage);
+            } catch (error) {
+                console.error("Error:", error);
+                const query = `[Javascript] fix error: ${error.message}`;
+                window.open(`https://chatgpt.com/?q=${encodeURIComponent(query)}`);
+            }
+        };
+        fetchHotel();
+    }, [pagePresent]);
     return (
         <main>
-            <SearchBar keyword={keyword} setKeyword={setKeyword} />
+
+            <SearchBar />
+
             <section>
                 <SearchResults />
                 <HotDealsNotification />
                 <ResultsSummary />
-                {isLoading ? (
-                    <GradientCircularProgress />
-                ) : (
-                    hotels.map((hotel) => (
-                        <AccommodationCard key={hotel.hotel_id} {...hotel} />
-                    ))
-                )}
+                {hotels.map(accommodation => (
+                    <AccommodationCard key={accommodation.id} {...accommodation} />
+                ))} *
             </section>
         </main>
     );
