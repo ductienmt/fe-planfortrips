@@ -13,15 +13,23 @@ export const CouponService = {
     return response.data;
   },
   createCoupon: async (data) => {
-    const response = await Http.post(`api/v1/coupons/create`, data);
-    return response.data;
+    try {
+      const response = await Http.post(`/api/v1/coupons/create`, data);
+      return response.data;
+    } catch (error) {
+      console.error("Error creating coupon:", error);
+      return null;
+    }
   },
-  updateCoupon: async (id,data) => {
-    const response = await Http.put(`api/v1/coupons/update?id=${id}`,data);
+  updateCoupon: async (id, couponData) => {
+    const response = await Http.put(
+      `api/v1/coupons/update/${id}`,
+      couponData
+    );
     return response.data;
   },
   deleteCoupon: async (id) => {
-    const response = await Http.put(`api/v1/coupons/delete?id=${id}`);
-    return response.data;
+    const response = await Http.delete(`api/v1/coupons/delete/${id}`);
+    return response;
   },
 };

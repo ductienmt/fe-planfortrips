@@ -2,14 +2,15 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import LandingPage from "../client/pages/Homepage/LandingPage";
 import LoginAdmin from "../admin/pages/Auth/Login";
-import Exchange from "../admin/pages/Exchange/Exchange";
 import UserAdmin from "../admin/pages/User/User";
 import EnterpriseAdmin from "../admin/pages/Enterprise/Enterprise";
-import CouponAdmin from "../admin/pages/Coupon/Coupon";
 import TravelAdmin from "../admin/pages/Travel/Travel";
 import LayoutAdmin from "../admin/pages/Layout/Layout";
 import HomePage from "../admin/pages/Dashboard/HomePage";
 import Hotel from "../client/pages/HotelPage/Hotel/Hotel";
+import CouponAdmin from "../admin/pages/Coupon/CouponPage";
+import OrderCarPage from "../admin/pages/Exchange/OrderCar/OrderCar";
+import BookingHotelPage from "../admin/pages/Exchange/BookingHotel/BookingHotel";
 
 const routeAdmin = () => [
   {
@@ -33,9 +34,14 @@ const routeAdmin = () => [
         Component: CouponAdmin,
       },
       {
-        path: "transactions",
-        Component: Exchange,
+        path: "transactions/hotels",
+        Component: BookingHotelPage,
       },
+      {
+        path: "transactions/vehicles",
+        Component: OrderCarPage,
+      },
+      
       {
         path: "travel",
         Component: TravelAdmin,
