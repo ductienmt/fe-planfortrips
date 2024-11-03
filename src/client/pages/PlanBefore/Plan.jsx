@@ -2,9 +2,9 @@ import { useState, useEffect, useRef, useContext } from "react";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { handleInputChange } from "../../../utils/FormatMoney"; // Đường dẫn tới file FormatMoney.js
-import provinces from "../../../utils/Provinces.json"; // Đường dẫn tới file Province.json
-import { useSnackbar } from "notistack"; // Thêm Notistack
+import { handleInputChange } from "../../../utils/FormatMoney";
+import provinces from "../../../utils/Provinces.json";
+import { useSnackbar } from "notistack";
 import "./Plan.css";
 import { flatpickrConfig } from "../../../utils/ConfigFlatpickr";
 import { DateFormatter } from "../../../utils/DateFormat";
@@ -12,7 +12,7 @@ import { PlanServiceApi } from "../../../services/apis/PlanServiceApi";
 import { generateTripPlan } from "../../../services/planService";
 
 function PlanBefore() {
-  const { enqueueSnackbar } = useSnackbar(); // Sử dụng Notistack
+  const { enqueueSnackbar } = useSnackbar();
   const [adults, setAdults] = useState(0);
   const [children, setChildren] = useState(0);
   const [infants, setInfants] = useState(0);
@@ -21,15 +21,13 @@ function PlanBefore() {
 
   const ngayDiRef = useRef(null);
   const ngayVeRef = useRef(null);
-  // const [loiNgay, setLoiNgay] = useState("");
 
-  const [budget, setBudget] = useState(""); // Trạng thái cho ngân sách
-  // const [error, setError] = useState(""); // Trạng thái cho thông báo lỗi
+  const [budget, setBudget] = useState("");
 
-  const [queryCurrentCity, setQueryCurrentCity] = useState(""); // Tỉnh, thành phố đang ở
-  const [queryDestination, setQueryDestination] = useState(""); // Điểm đến
-  const [filteredCurrentCities, setFilteredCurrentCities] = useState([]); // Gợi ý cho tỉnh, thành phố đang ở
-  const [filteredDestinations, setFilteredDestinations] = useState([]); // Gợi ý cho điểm đến
+  const [queryCurrentCity, setQueryCurrentCity] = useState("");
+  const [queryDestination, setQueryDestination] = useState("");
+  const [filteredCurrentCities, setFilteredCurrentCities] = useState([]);
+  const [filteredDestinations, setFilteredDestinations] = useState([]);
 
   const [formData, setFormData] = useState({
     location: "",
@@ -45,7 +43,7 @@ function PlanBefore() {
     destination: "Vũng Tàu",
     startDate: "25-10-2024 08:00:00",
     endDate: "28-10-2024 14:00:00",
-    numberPeople: 2,
+    numberPeople: 3,
     budget: 5000,
   });
 

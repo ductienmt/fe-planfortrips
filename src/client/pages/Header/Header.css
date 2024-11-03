@@ -13,6 +13,7 @@
     margin-left: 100px;
 }
 
+
 .custom-header h1 {
     font-size: 2rem;
     /* Kích thước chữ tiêu đề */
@@ -143,7 +144,7 @@
     /* Đặt lên trên header */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     /* Tạo hiệu ứng nổi */
-    min-width: 150px;
+    min-width: 250px;
     /* Đặt kích thước tối thiểu cho menu */
 }
 

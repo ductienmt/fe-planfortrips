@@ -34,7 +34,7 @@ const TransportationCard = ({
 
   const getImg = async (vehicleCode) => {
     const response = await VehiclesService.getVehicleById(vehicleCode);
-    console.log("response", response.data.car_company.images[0]);
+    // console.log("response", response.data.car_company.images[0]);
     setImg(response.data.car_company.images[0].url);
   };
 
@@ -42,7 +42,7 @@ const TransportationCard = ({
     if (scheduleId) {
       loadStation(scheduleId);
     }
-    console.log("vehicleCode", vehicleCode);
+    // console.log("vehicleCode", vehicleCode);
     if (vehicleCode) {
       getImg(vehicleCode);
     }

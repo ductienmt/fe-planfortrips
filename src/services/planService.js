@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { cleanedResponse } from "../utils/CleanedResponse";
 // import { PlanServiceApi } from "./apis/PlanServiceApi";
 
 const apiKey = "AIzaSyC--UPHZ3h05O7JyeDsA-MtAFCbN9YjVkI";
@@ -72,14 +73,18 @@ export const generateTripPlan = async (data) => {
     const result = await chatSession.sendMessage(
       `bạn dựa vào dữ liệu tôi cung cấp chọn ra kế hoạch tốt nhất dựa vào userData của tôi để ý số người, 
       userData chứa dữ liệu của người dùng để ý số người trong chuyến đi để tính toán phù hợp, nếu từ 2 người trở lên hãy tính toán vé xe, 
-      tại vé xe tôi cung cấp chỉ là 1 vé 1 người, tính toán thêm vé tham quan ở các nơi check in dựa vào số người,  các dữ liệu khác là tôi cung cấp, 
-      nếu là hotel trả về luôn phòng và id, nam, price phòng đó, trả về cho tôi theo định dạng json, không thêm bất cứ điều gì khác. Bạn hãy chọn ghế trong 
+      tại vé xe tôi cung cấp chỉ là 1 vé 1 người, tính toán thêm vé tham quan ở các nơi check in dựa vào số người, 
+      nếu là hotel thì dựa nào numberPeople tùe userData mà chọn phòng dựa vào maxPeople của room tôi gửi lên, nếu số người nhiều hơn maxPeople của phòng bạn có thể chọn thêm 1 phòng nữa,
+      nếu numberPeople bằng với maxPeople của phòng thì chỉ chọn 1 phòng,
+      trả về luôn phòng và id, name, price phòng đó,  các dữ liệu khác là tôi cung cấp, trả về cho tôi theo định dạng json, không thêm bất cứ điều gì khác. Bạn hãy chọn ghế trong 
       transportation tôi có để một mảng là seatAvailable chọn ghế từ đây. Trả về theo cú pháp tôi cung cấp như sau.
-      userData, transportation(departure[departureTime, arrivalTime,vehicleCode,scheduleId,carName, seatBook, routeId], return[departureTime, arrivalTime,vehicleCode,scheduleId,carName, seatBook, routeId]),
-      accomodation(nameHotel, hotelId, price_per_night, total, nameRoom, checkin, checkout, roomType, roomId), 
+      userData, transportation(departure[departureTime, arrivalTime,vehicleCode,scheduleId,carName, seatBook, routeId, totalPrice(numberPeople*priceForOnTicket)], 
+      return[departureTime, arrivalTime,vehicleCode,scheduleId,carName, seatBook, routeId, totalPrice(numberPeople*priceForOnTicket)]),
+      accomodation(nameHotel, hotelId, price_per_night, total, (mảng chứa room đã book) rooms[nameRoom, checkin, checkout, roomType, roomId, roomSize(maxPeople)](dựa vào numberPeople chỉ đặt vừa đủ không được dư phòng)), 
       checkins(dựa vào những nơi tôi cung cấp, ít nhất 5 nơi), estimatedCost, itinerary(trả theo ngày, day1, day2,... đi đâu vào ngày làm gì,...), 
       để ý số người mà tính toán cho đúng\n\n${JSON.stringify(data)}`
     );
+    // const expected = cleanedResponse(result.response.text());
     // console.log(result.response.text());
     let cleanedResponse = result.response
       .text()
@@ -92,8 +97,9 @@ export const generateTripPlan = async (data) => {
     if (lastCurlyBraceIndex !== -1) {
       cleanedResponse = cleanedResponse.slice(0, lastCurlyBraceIndex + 1);
     }
-    console.log(cleanedResponse);
-    console.log(JSON.parse(cleanedResponse));
+    // console.log(cleanedResponse);
+    // console.log(JSON.parse(cleanedResponse));
+
     return JSON.parse(cleanedResponse);
   } catch (error) {
     console.error("An error occurred while sending the message:", error);

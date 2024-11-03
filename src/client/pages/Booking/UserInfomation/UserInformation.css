@@ -30,7 +30,7 @@
     border-color: #41A5E8;
 }
 
-.user-information-container .user-information-header .user-information-form .name,
+.user-information-container .user-information-header .user-information-form .name-booking,
 .user-information-container .user-information-header .user-information-form .contact,
 .user-information-container .user-information-header .user-information-form .gender-note {
     display: flex;
@@ -39,7 +39,7 @@
     gap: 10px;
 }
 
-.user-information-container .user-information-header .user-information-form .name .name-input-1 {
+/* .user-information-container .user-information-header .user-information-form .name .name-input-1 {
     width: 30%;
 }
 
@@ -62,7 +62,7 @@
 
 .user-information-container .user-information-header .user-information-form .gender-note .note-input {
     width: 80%;
-}
+} */
 
 .componentButtonNext {
     display: flex;

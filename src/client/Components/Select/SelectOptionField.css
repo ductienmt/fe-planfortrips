@@ -1,0 +1,18 @@
+.select-option-field {
+    position: relative;
+    margin: 1em 0;
+}
+
+.select-option-field label {
+    display: block;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+}
+
+.select-option-field select {
+    width: 100%;
+    padding: 0.5em;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
