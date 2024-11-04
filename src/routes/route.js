@@ -15,13 +15,15 @@ import HotelDetails from "../client/pages/HotelPage/HotelDetails/HotelDetails";
 // import { EnterpriseLayout } from "../layout/EnterpriseLayout";
 import Profile from "../client/pages/Profile/Profile";
 import LoginAdmin from "../admin/pages/Auth/Login";
-import Exchange from "../admin/pages/Exchange/Exchange";
 import UserAdmin from "../admin/pages/User/User";
 import EnterpriseAdmin from "../admin/pages/Enterprise/Enterprise";
-import CouponAdmin from "../admin/pages/Coupon/Coupon";
 import TravelAdmin from "../admin/pages/Travel/Travel";
 import LayoutAdmin from "../admin/pages/Layout/Layout";
 import HomePage from "../admin/pages/Dashboard/HomePage";
+import Hotel from "../client/pages/HotelPage/Hotel/Hotel";
+import CouponAdmin from "../admin/pages/Coupon/CouponPage";
+import OrderCarPage from "../admin/pages/Exchange/OrderCar/OrderCar";
+import BookingHotelPage from "../admin/pages/Exchange/BookingHotel/BookingHotel";
 import TransportSelectionPage from "../client/pages/VehiclePage/BookingVehiclesFind/TransportSelectionPage";
 import SearchResults from "../client/pages/VehiclePage/BookingVehicles/SearchResults";
 import BookingSteps from "../client/pages/VehiclePage/BookingVehiclesDetails/BookingSteps";
@@ -29,6 +31,7 @@ import ProfileDetail from "../client/pages/Profile/ProfileDetail/ProfileDetail";
 import ChangePassword from "../client/pages/Profile/ChangePass/ChangePassword";
 import InfoDetails from "../client/pages/Profile/InfoDetails/InfoDetails";
 import YourTripsQuery from "../client/pages/Profile/YourTripQuery/YourTripsQuery";
+
 
 const routeAdmin = () => [
   {
@@ -52,9 +55,14 @@ const routeAdmin = () => [
         Component: CouponAdmin,
       },
       {
-        path: "transactions",
-        Component: Exchange,
+        path: "transactions/hotels",
+        Component: BookingHotelPage,
       },
+      {
+        path: "transactions/vehicles",
+        Component: OrderCarPage,
+      },
+      
       {
         path: "travel",
         Component: TravelAdmin,
