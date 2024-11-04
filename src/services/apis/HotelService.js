@@ -3,7 +3,7 @@ import Http from "../Http";
 export const HotelService = {
   getHotels: async (page, limit, keyword) => {
     const response = await Http.get(
-      `api/v1/hotels?page=${page}&limit=${limit}&keyword=${keyword}`
+      `api/v1/hotels/all?page=${page}&limit=${limit}&keyword=${keyword}`
     );
     console.log(response);
     return response.data;

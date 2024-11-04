@@ -1,9 +1,11 @@
-function Success() {
-    return ( 
-        <>
-        <h2 className="text-center">Thanh toán thành công! Chào bạn HỒ THỊ NGỌC ÁNH</h2>
-        </>
-     );
-}
+import React from "react";
+
+const Success = () => {
+  return (
+    <>
+      <div className="success-container">THÀNH CÔNG</div>
+    </>
+  );
+};
 
 export default Success;

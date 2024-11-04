@@ -1,31 +1,39 @@
 .search-header-container-wrapper {
     width: 100%;
     max-width: 964px;
+    margin: auto;
+    padding: 20px;
 }
 
 .search-header-step-indicator {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 21px;
+    margin-bottom: 24px;
+    gap: 10px;
 }
 
 .search-header-step-indicator-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: #afafaf;
-    font: 700 23px/30px Roboto, sans-serif;
+    color: #b0b0b0;
+    font: 700 18px/1 Roboto, sans-serif;
+    transition: color 0.3s ease;
+}
+
+.search-header-step-indicator-item:hover {
+    color: #005293;
 }
 
 .search-header-step-indicator-number {
-    background-color: #d9d9d9;
+    background-color: #e0e0e0;
     border-radius: 50%;
-    width: 65px;
-    height: 65px;
+    width: 50px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: inherit;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .search-header-step-indicator-number.active {
@@ -34,52 +42,66 @@
 }
 
 .search-header-step-indicator-text {
-    margin-top: 13px;
+    margin-top: 8px;
+    font-size: 14px;
 }
 
 .search-header-form-container {
-    border-radius: 20px;
-    background-color: #f4f7fa;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-    padding: 22px 80px;
+    border-radius: 15px;
+    background-color: #f8fafc;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    padding: 30px 40px;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
 }
 
 @media (max-width: 991px) {
     .search-header-form-container {
-        padding: 22px 20px;
+        padding: 20px;
     }
 }
 
 .search-header-title {
     color: #005293;
-    font-size: 23px;
+    font-size: 24px;
     font-weight: 700;
-    line-height: 30px;
-    margin-bottom: 8px;
+    margin-bottom: 16px;
+    text-align: center;
 }
 
 .search-header-input-field {
-    border-radius: 3px;
+    border-radius: 8px;
     background-color: #fff;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 100%;
-    height: 56px;
-    border: 2px solid #e2e7eb;
-    margin-bottom: 8px;
+    height: 48px;
+    border: 1px solid #dcdcdc;
+    padding: 0 15px;
+    font-size: 16px;
+    margin-bottom: 12px;
+    transition: border-color 0.3s ease;
+}
+
+.search-header-input-field:focus {
+    border-color: #41a5e8;
+    outline: none;
 }
 
 .search-header-date-selector {
-    border-radius: 3px;
+    border-radius: 8px;
     background-color: #fff;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
     width: 100%;
-    padding: 4px 15px;
-    border: 2px solid #e2e7eb;
+    padding: 8px 12px;
+    border: 1px solid #dcdcdc;
+    margin-bottom: 12px;
+}
+
+.search-header-date-selector:hover {
+    border-color: #41a5e8;
 }
 
 .search-header-date-info {
@@ -91,12 +113,23 @@
 .search-header-date-label {
     color: #27648c;
     font-size: 12px;
+    margin-bottom: 4px;
 }
 
 .search-header-selected-date {
     color: #1e252b;
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 500;
+    width: 100%;
+    /* Đảm bảo chiếm toàn bộ chiều rộng */
+}
+
+.seach-header-text-location {
+    color: #1e252b;
+    font-size: 14px;
+    font-weight: 500;
+    width: 100%;
+    /* Đảm bảo chiếm toàn bộ chiều rộng */
 }
 
 .search-header-submit-button {
@@ -104,10 +137,42 @@
     background-color: #41a5e8;
     color: #fff;
     font-weight: 600;
-    font-size: 16px;
-    padding: 19px;
+    font-size: 18px;
+    padding: 14px;
     width: 100%;
     border: none;
-    margin-top: 19px;
+    margin-top: 16px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-header-submit-button:hover {
+    background-color: #3693c9;
+}
+
+.search-header-text-location {
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #dcdcdc;
+    margin-bottom: 12px;
+}
+
+.search-header-text-location .MuiBox-root {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
+.search-header-text-location .MuiTextField-root {
+    flex-grow: 1;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #dcdcdc;
+    transition: border-color 0.3s ease;
 }

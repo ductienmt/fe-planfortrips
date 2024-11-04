@@ -1,5 +1,5 @@
 import React from 'react';
-import './BookingSteps.css'; // Nhập tệp CSS mới
+import './BookingSteps.css';
 import StepIndicator from './BKVehiclesDeatilsComponent/StepIndicator';
 import SeatSelector from './BKVehiclesDeatilsComponent/SeatSelector';
 import BusInfo from './BKVehiclesDeatilsComponent/BusInfo';
@@ -43,9 +43,11 @@ const BookingSteps = () => {
                         </div>
                     </div>
 
-                    <button className="continue-button-action">
-                        Tiếp tục
-                    </button>
+                    <div className="button-wrapper">
+                        <button className="continue-button-action">
+                            Tiếp tục
+                        </button>
+                    </div>
                 </section>
             </center>
         </main>
