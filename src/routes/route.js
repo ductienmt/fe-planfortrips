@@ -25,6 +25,10 @@ import HomePage from "../admin/pages/Dashboard/HomePage";
 import TransportSelectionPage from "../client/pages/VehiclePage/BookingVehiclesFind/TransportSelectionPage";
 import SearchResults from "../client/pages/VehiclePage/BookingVehicles/SearchResults";
 import BookingSteps from "../client/pages/VehiclePage/BookingVehiclesDetails/BookingSteps";
+import ProfileDetail from "../client/pages/Profile/ProfileDetail/ProfileDetail";
+import ChangePassword from "../client/pages/Profile/ChangePass/ChangePassword";
+import InfoDetails from "../client/pages/Profile/InfoDetails/InfoDetails";
+import YourTripsQuery from "../client/pages/Profile/YourTripQuery/YourTripsQuery";
 
 const routeAdmin = () => [
   {
@@ -116,6 +120,28 @@ const routeClient = () => [
       {
         path: "/profile",
         Component: Profile,
+        children: [
+          {
+            path: "",
+            Component: ProfileDetail,
+          },
+          {
+            path: "change-password",
+            Component: ChangePassword,
+          },
+          {
+            path: "detail",
+            Component: InfoDetails,
+          },
+          {
+            path: "trip",
+            Component: YourTripsQuery,
+          },
+          // {
+          //   path: "trip-save",
+          //   Component: YourSavedTrips, // Ensure you have this component
+          // },
+        ],
       },
       {
         path: "/vehicle",
@@ -123,11 +149,11 @@ const routeClient = () => [
       },
       {
         path: "/booking-vehicle",
-        component: SearchResults,
+        Component: SearchResults,
       },
       {
-        path: "/vehicle-details/:id",
-        component: BookingSteps,
+        path: "/vehicle-details",
+        Component: BookingSteps,
       },
     ],
   },
