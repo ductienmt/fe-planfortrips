@@ -13,4 +13,18 @@ export const UserService = {
   updateImage: async (file) => {
     return await Http.post("/api/v1/users/upload", file);
   },
+  changePassword: async (data) => {
+    return await Http.patch("/api/v1/users/changePassword", data);
+  },
+  sendOTP: async (email, content) => {
+    return await Http.post(
+      `/api/v1/email/send?email=${email}&content=${content}`
+    );
+  },
+  verifyOTP: async (email, otp) => {
+    return await Http.post(`/api/v1/email/validate?email=${email}&otp=${otp}`);
+  },
+  verifyPassword: async (password) => {
+    return await Http.get(`/api/v1/users/verify-password?password=${password}`);
+  },
 };
