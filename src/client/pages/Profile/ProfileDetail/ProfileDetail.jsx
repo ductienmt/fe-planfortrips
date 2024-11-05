@@ -7,7 +7,7 @@ import { InputFlied } from "../../../Components/Input/InputFlied";
 import { UserService } from "../../../../services/apis/UserService";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../../../context/AuthProvider";
+import { useAuth } from "../../../../context/AuthContext/AuthProvider";
 import Cropper from "react-easy-crop";
 import { getCroppedImg } from "../../../../utils/getCroppedImg";
 import Loading from "../../../Components/Loading";
