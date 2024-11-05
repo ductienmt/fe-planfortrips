@@ -9,7 +9,7 @@ import { useSnackbar } from "notistack";
 import handleToken from "../../../../services/HandleToken";
 import { InputFlied } from "../../../Components/Input/InputFlied";
 import { AuthService } from "../../../../services/apis/AuthService";
-import { useAuth } from "../../../../context/AuthProvider";
+import { useAuth } from "../../../../context/AuthContext/AuthProvider";
 
 const Login = () => {
   const { login } = useAuth();

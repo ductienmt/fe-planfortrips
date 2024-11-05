@@ -31,6 +31,9 @@ import ProfileDetail from "../client/pages/Profile/ProfileDetail/ProfileDetail";
 import ChangePassword from "../client/pages/Profile/ChangePass/ChangePassword";
 import InfoDetails from "../client/pages/Profile/InfoDetails/InfoDetails";
 import YourTripsQuery from "../client/pages/Profile/YourTripQuery/YourTripsQuery";
+import { EnterpriseLayout } from "../layout/EnterpriseLayout";
+import EnterpriseLogin from "../enterprise/auth/login/EnterpriseLogin";
+import EnterpriseDashboard from "../enterprise/dashboard/EnterpriseDashboard";
 
 
 const routeAdmin = () => [
@@ -72,6 +75,23 @@ const routeAdmin = () => [
   {
     path: "/admin/login",
     Component: LoginAdmin,
+  },
+];
+
+const routeEnterprise = () => [
+  {
+    path: "/enterprise",
+    Component: EnterpriseLayout,
+    children: [
+      {
+        path: "login",
+        Component: EnterpriseLogin,
+      },
+      {
+        path: "dashboard",
+        Component: EnterpriseDashboard,
+      },
+    ],
   },
 ];
 
@@ -170,6 +190,6 @@ const routeClient = () => [
 export const router = createBrowserRouter([
   {
     Component: App,
-    children: [...routeAdmin(), ...routeClient()],
+    children: [...routeAdmin(), ...routeClient(), ...routeEnterprise()],
   },
 ]);
