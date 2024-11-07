@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import { Link } from "react-router-dom";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import LuggageIcon from "@mui/icons-material/Luggage";
 
 const getBackgroundColor = (gender) => {
   if (gender === "Nam") {
@@ -22,6 +23,8 @@ const UserAvatarWithDropdown = ({
   showDropdown,
   handleLogout,
   onClick,
+  handleMoveYourTrip,
+  size,
 }) => {
   const initials = fullname
     ? fullname
@@ -32,6 +35,7 @@ const UserAvatarWithDropdown = ({
         .toUpperCase()
     : "";
 
+  const avatarSize = size || 40;
   const backgroundColor = useMemo(() => getBackgroundColor(gender), [gender]);
 
   return (
@@ -39,8 +43,8 @@ const UserAvatarWithDropdown = ({
       <Avatar
         sx={{
           bgcolor: imageUrl ? "transparent" : backgroundColor,
-          width: 40,
-          height: 40,
+          width: avatarSize,
+          height: avatarSize,
           fontSize: 20,
           fontWeight: "bold",
           cursor: "pointer",
@@ -79,7 +83,7 @@ const UserAvatarWithDropdown = ({
               >
                 <Avatar
                   sx={{
-                    bgcolor: backgroundColor,
+                    bgcolor: imageUrl ? "transparent" : backgroundColor,
                     width: 40,
                     height: 40,
                     fontSize: 18,
@@ -92,11 +96,38 @@ const UserAvatarWithDropdown = ({
                 <p style={{ margin: 0 }}>{fullname}</p>
               </Link>
             </li>
+            <hr className="mt-1 mb-0" />
+            <li
+              onClick={handleMoveYourTrip}
+              style={{
+                cursor: "pointer",
+                // marginTop: "10px",
+                color: "black",
+                // textAlign: "center",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <div
+                style={{
+                  backgroundColor: "#c9c9c9",
+                  padding: "5px",
+                  alignItems: "center",
+                  borderRadius: "40%",
+                  opacity: "70%",
+                }}
+              >
+                <LuggageIcon />
+              </div>
+
+              <span className="ms-3">Chuyến đi của bạn</span>
+            </li>
+            <hr className="m-0" />
             <li
               onClick={handleLogout}
               style={{
                 cursor: "pointer",
-                marginTop: "10px",
+                // marginTop: "10px",
                 color: "black",
                 // textAlign: "center",
                 display: "flex",

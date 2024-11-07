@@ -3,17 +3,17 @@ import './BusResultItem.css';
 import StarIcon from '@mui/icons-material/Star';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-const BusResultItem = ({ departureTime, arrivalTime, company, rating, type, price, seatsAvailable }) => {
+const BusResultItem = ({ departureTime, arrivalTime, carCompanyName, carCompanyRating, type, price, countSeatsEmpty }) => {
   return (
     <article className="bus-result-item-container-wrapper">
       <div className="bus-result-trip-info-container">
         <div className="bus-result-time-info-container">
           <span className="bus-result-departure-time">{departureTime}</span>
           <div className="bus-result-company-info-container">
-            <span className="bus-result-company-name">{company}</span>
+            <span className="bus-result-company-name">{carCompanyName}</span>
             <div className="bus-result-rating-container">
               <StarIcon style={{ color: '#ffb400' }} />
-              <span>{rating}/5</span>
+              <span>{carCompanyRating}/5</span>
             </div>
           </div>
           <span className="bus-result-type">{type}</span>
@@ -29,7 +29,7 @@ const BusResultItem = ({ departureTime, arrivalTime, company, rating, type, pric
       <div className="bus-result-booking-info-container">
         <div className="bus-result-price-info-container">
           <span className="bus-result-price">{price}</span>
-          <span className="bus-result-seats-available">Còn {seatsAvailable} chỗ</span>
+          <span className="bus-result-seats-available">Còn {countSeatsEmpty} chỗ</span>
           <div className="bus-result-select-seat-button" tabIndex="0" role="button" aria-label="Select seat" />
         </div>
         <button className="bus-result-book-button">Đặt vé ngay</button>
