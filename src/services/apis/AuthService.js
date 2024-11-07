@@ -1,4 +1,4 @@
-// import Http from "../Http";
+import Http from "../Http";
 
 // // các phương thức liên quan tới auth
 // const AuthService = {
@@ -18,7 +18,10 @@
 // };
 const AuthService = {
   login: async (data) => {
+    console.log(data);
     const response = await Http.post("/api/v1/auth/login", data);
+    console.log(response.data);
+    
     return response;
   },
   register: async (data) => {
@@ -26,4 +29,4 @@ const AuthService = {
     return response;
   },
 };
-// export default AuthService;
+export default AuthService;

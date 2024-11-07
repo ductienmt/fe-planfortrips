@@ -1,9 +1,10 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
+import { BookingHotelService } from '../../../../services/apis/BookingHotelService';
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 90 },
+  { field: 'bookingHotelId', headerName: 'ID', width: 90 },
   {
     field: 'firstName',
     headerName: 'First name',
@@ -46,6 +47,18 @@ const rows = [
 ];
 
 export default function BookingHotelPage() {
+  const [bookingData,setBookingData] = React.useState([]);
+  React.useEffect(()=>{
+    const fetchData = async () =>{
+      const data = await BookingHotelService.getAllBookings();
+      if(data){
+        setBookingData(data);
+      }
+    };
+    fetchData();
+  },[])
+  console.log(bookingData);
+  
   return (
     <Box sx={{ height: 400, width: '100%' }}>
       <DataGrid

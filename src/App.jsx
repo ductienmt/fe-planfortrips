@@ -22,7 +22,7 @@ import Booking from "./client/pages/Booking/Booking";
 import Payment from "./client/pages/Payment/Payment";
 import Success from "./client/pages/Payment/Status/Success";
 import { ClientLayout } from "./layout/ClientLayout";
-import DashboardLayoutBasic from "./admin/dashboard/DashboardLayoutBasic";
+import DashboardLayoutBasic from "./admin/pages/Layout/DashboardLayoutBasic";
 
 function App() {
   const location = useLocation();
@@ -60,32 +60,6 @@ function App() {
     //   </Routes>
     //   {shouldShowFooter && <Footer />}
     // </SnackbarProvider>
-  return (
-    <SnackbarProvider
-      maxSnack={3}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-    >
-      <Routes>
-        <Route path="/" element={<ClientLayout />}>
-          <Route index element={<LandingPage />} />
-          <Route path="/plan" element={<PlanBefore />} />
-          <Route path="/plan/trip" element={<TravelPlan />} />
-          <Route path="/hotel" element={<Hotel />} />
-          <Route path="/booking-hotel" element={<BookingHotel />} />
-          <Route path="/hotel-details" element={<HotelDetails />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/booking/:type" element={<Booking />} />
-          <Route path="/payment" element={<Payment />} />
-          <Route path="/success" element={<Success />} />
-        </Route>
-        {/* <Route path="/planfortrip-admin" element={AdminLayout}>
-        </Route> */}
-      </Routes>
-    </SnackbarProvider>
     // admin 
     <DashboardLayoutBasic/>
   );

@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import LandingPage from "../client/pages/Homepage/LandingPage";
-import LoginAdmin from "../admin/pages/Auth/Login";
 import UserAdmin from "../admin/pages/User/User";
 import EnterpriseAdmin from "../admin/pages/Enterprise/Enterprise";
 import TravelAdmin from "../admin/pages/Travel/Travel";
@@ -11,6 +10,8 @@ import Hotel from "../client/pages/HotelPage/Hotel/Hotel";
 import CouponAdmin from "../admin/pages/Coupon/CouponPage";
 import OrderCarPage from "../admin/pages/Exchange/OrderCar/OrderCar";
 import BookingHotelPage from "../admin/pages/Exchange/BookingHotel/BookingHotel";
+import LoginAdmin from "../admin/pages/Auth/Login/Login";
+import FeedbackPage from "../admin/pages/Feedback/Feedback";
 
 const routeAdmin = () => [
   {
@@ -45,6 +46,10 @@ const routeAdmin = () => [
       {
         path: "travel",
         Component: TravelAdmin,
+      },
+      {
+        path: "feedbacks",
+        Component: FeedbackPage,
       },
     ],
   },
