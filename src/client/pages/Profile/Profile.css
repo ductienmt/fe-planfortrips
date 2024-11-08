@@ -27,10 +27,11 @@
 .profile-container .left .sidebar ul a {
     text-decoration: none;
     color: #444;
+    padding: 15px;
+
 }
 
 .profile-container .left .sidebar ul li {
-    padding: 15px;
     cursor: pointer;
     border-radius: 13px;
     transition: background-color 0.3s, color 0.3s;

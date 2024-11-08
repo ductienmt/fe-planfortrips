@@ -63,7 +63,7 @@
     color: #e0e0e0;
 }
 
-.modal-profile-custom .modal-content .modal-body .custom-button-submit {
+/* .modal-profile-custom .modal-content .modal-body .custom-button-submit {
     background-color: #2e2e2e;
     color: #e0e0e0;
     border: none;
@@ -71,7 +71,7 @@
     border-radius: 13px;
     cursor: pointer;
     width: 100%;
-}
+} */
 
 .modal-profile-custom .Documents-btn {
     display: flex;
@@ -148,6 +148,10 @@
     transform: rotateX(30deg);
 }
 
+.modal-profile-custom .modal-footer {
+    padding: 0;
+}
+
 .modal-profile-custom .modal-footer .custome-button-footer {
     padding: 15px 25px;
     border: unset;
@@ -161,6 +165,7 @@
     box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
     transition: all 250ms;
     overflow: hidden;
+    border-radius: 0 0 0.5rem 0.5rem;
 }
 
 .modal-profile-custom .modal-footer .custome-button-footer::before {

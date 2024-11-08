@@ -10,6 +10,7 @@ import {
 import { InputFlied } from "../../../Components/Input/InputFlied";
 import { FlatpickrComponent } from "../../../Components/Flatpickr";
 import { SelectOptionField } from "../../../Components/Select/SelectOptionField";
+import { AuthService } from "../../../../services/apis/AuthService";
 
 const Register = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -122,12 +123,10 @@ const Register = () => {
       });
     else
       enqueueSnackbar("Chào mừng bạn quay trở lại!", {
-
         variant: "success",
         autoHideDuration: 1000,
         onExit: () => navigate("/"),
-      }
-    );
+      });
   };
 
   useEffect(() => {

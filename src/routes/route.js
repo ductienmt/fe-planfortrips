@@ -12,19 +12,26 @@ import Payment from "../client/pages/Payment/Payment";
 import Success from "../client/pages/Payment/Status/Success";
 import BookingHotel from "../client/pages/HotelPage/BookingHotel/BookingHotel";
 import HotelDetails from "../client/pages/HotelPage/HotelDetails/HotelDetails";
-// import { EnterpriseLayout } from "../layout/EnterpriseLayout";
 import Profile from "../client/pages/Profile/Profile";
-import LoginAdmin from "../admin/pages/Auth/Login";
-import Exchange from "../admin/pages/Exchange/Exchange";
-import EnterpriseAdmin from "../admin/pages/Enterprise/EnterpriseManager";
-import CouponAdmin from "../admin/pages/Coupon/Coupon";
-import TravelAdmin from "../admin/pages/Travel/Travel";
+// import LoginAdmin from "../admin/pages/Auth/Login";
+import UserAdmin from "../admin/pages/User/User";
+import EnterpriseAdmin from "../admin/pages/Enterprise/Enterprise";
 import LayoutAdmin from "../admin/pages/Layout/Layout";
 import HomePage from "../admin/pages/Dashboard/HomePage";
+import CouponAdmin from "../admin/pages/Coupon/CouponPage";
+import OrderCarPage from "../admin/pages/Exchange/OrderCar/OrderCar";
+import BookingHotelPage from "../admin/pages/Exchange/BookingHotel/BookingHotel";
+import LoginAdmin from "../admin/pages/Auth/Login/Login";
+import FeedbackPage from "../admin/pages/Feedback/Feedback";
 import TransportSelectionPage from "../client/pages/VehiclePage/BookingVehiclesFind/TransportSelectionPage";
 import SearchResults from "../client/pages/VehiclePage/BookingVehicles/SearchResults";
 import BookingSteps from "../client/pages/VehiclePage/BookingVehiclesDetails/BookingSteps";
-import UserManager from "../admin/pages/User/UserManager";
+import ProfileDetail from "../client/pages/Profile/ProfileDetail/ProfileDetail";
+import ChangePassword from "../client/pages/Profile/ChangePass/ChangePassword";
+import InfoDetails from "../client/pages/Profile/InfoDetails/InfoDetails";
+import YourTripsQuery from "../client/pages/Profile/YourTripQuery/YourTripsQuery";
+import PlacePageAdmin from "../admin/pages/Travel/PlacePage";
+
 
 const routeAdmin = () => [
   {
@@ -37,10 +44,10 @@ const routeAdmin = () => [
       },
       {
         path: "users",
-        Component: UserManager,
+        Component: UserAdmin,
       },
       {
-        path: "enterprise",
+        path: "business",
         Component: EnterpriseAdmin,
       },
       {
@@ -48,12 +55,21 @@ const routeAdmin = () => [
         Component: CouponAdmin,
       },
       {
-        path: "transactions",
-        Component: Exchange,
+        path: "transactions/hotels",
+        Component: BookingHotelPage,
       },
       {
+        path: "transactions/vehicles",
+        Component: OrderCarPage,
+      },
+      
+      {
         path: "travel",
-        Component: TravelAdmin,
+        Component: PlacePageAdmin,
+      },
+      {
+        path: "feedbacks",
+        Component: FeedbackPage,
       },
     ],
   },
@@ -116,6 +132,28 @@ const routeClient = () => [
       {
         path: "/profile",
         Component: Profile,
+        children: [
+          {
+            path: "",
+            Component: ProfileDetail,
+          },
+          {
+            path: "change-password",
+            Component: ChangePassword,
+          },
+          {
+            path: "detail",
+            Component: InfoDetails,
+          },
+          {
+            path: "trip",
+            Component: YourTripsQuery,
+          },
+          // {
+          //   path: "trip-save",
+          //   Component: YourSavedTrips, // Ensure you have this component
+          // },
+        ],
       },
       {
         path: "/vehicle",
@@ -123,11 +161,11 @@ const routeClient = () => [
       },
       {
         path: "/booking-vehicle",
-        component: SearchResults,
+        Component: SearchResults,
       },
       {
-        path: "/vehicle-details/:id",
-        component: BookingSteps,
+        path: "/vehicle-details",
+        Component: BookingSteps,
       },
     ],
   },

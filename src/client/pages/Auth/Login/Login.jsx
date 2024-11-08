@@ -61,23 +61,20 @@ const Login = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    console.log(formData);
+    // console.log(formData);
   };
 
   useEffect(() => {
     localStorage.clear();
     document.title = "Đăng nhập";
     window.scrollTo(0, 200);
-    if (!queryParam != null) {
-      getAuthUrl().then((res) => {
-        setAuthUrl(res);
-      });
-      const code = queryParam.get("code");
-      if (code) {
-        handleLoginWithGoogle(code);
-      }
+    getAuthUrl().then((res) => {
+      setAuthUrl(res);
+    });
+    const code = queryParam.get("code");
+    if (code) {
+      handleLoginWithGoogle(code);
     }
-
   }, [queryParam]);
 
   const handleLoginWithGoogle = async (code) => {

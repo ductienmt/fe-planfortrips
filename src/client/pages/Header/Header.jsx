@@ -47,7 +47,7 @@ const Header = () => {
 
   const handleMoveYourTrip = (event) => {
     event.preventDefault();
-    navigate(`/profile/your-trip`);
+    navigate(`/profile/trip`);
   };
 
   const loadUser = async () => {
@@ -163,7 +163,11 @@ const Header = () => {
                   Lập kế hoạch
                 </Link>
                 <span className="me-2 ms-2">|</span>
-                <Link className="nav-link" to="#" style={{ fontSize: "18px" }}>
+                <Link
+                  className="nav-link"
+                  to="/vehicle"
+                  style={{ fontSize: "18px" }}
+                >
                   Phương tiện
                 </Link>
                 <span className="me-2 ms-2">|</span>
