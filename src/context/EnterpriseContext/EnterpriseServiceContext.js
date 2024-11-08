@@ -1,4 +1,4 @@
-class TypeEnterprise {
+class Enterprise {
   addTypeEnterprise(typeEnterprise) {
     sessionStorage.setItem("typeEnterprise", typeEnterprise);
   }
