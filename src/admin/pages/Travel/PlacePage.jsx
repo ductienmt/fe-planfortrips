@@ -2,17 +2,15 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar, GridToolbarContainer } from "@mui/x-data-grid";
 import { Button, Switch } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import { Delete, Edit, RemoveRedEye } from "@mui/icons-material";
 import { CouponService } from "../../../services/apis/CouponService";
 import AddIcon from "@mui/icons-material/Add";
 import { toast } from "react-toastify";
-import CouponDialog from "./CouponDialog";
-import IOSSwitch from "./IOSSwitch";
+import PlaceDialog from "./PlaceDialog";
 
 const paginationModel = { page: 0, pageSize: 20 };
 
-export default function CouponAdmin() {
+export default function PlacePageAdmin() {
   const [rows, setRows] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const [editMode, setEditMode] = React.useState(false);
@@ -149,19 +147,6 @@ export default function CouponAdmin() {
     },
     { field: "use_count", headerName: "Lượt dùng", type: "number", width: 90 },
     {
-      field: "is_active",
-      headerName: "Trạng thái",
-      editable: true,
-      renderCell: (params) => (
-        <IOSSwitch
-          name="active"
-          checked={formData.active}
-          onChange={handleInputChange}
-        />
-      ),
-      width: 90,
-    },
-    {
       field: "actions",
       type: "actions",
       headerName: "Hành động",
@@ -216,7 +201,7 @@ export default function CouponAdmin() {
         disableRowSelectionOnClick
         slots={{ toolbar: EditToolbar }}
       />
-      <CouponDialog
+      <PlaceDialog
         open={open}
         setOpen={setOpen}
         editMode={editMode}

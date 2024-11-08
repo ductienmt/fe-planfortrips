@@ -38,17 +38,17 @@ function App() {
     // </SnackbarProvider>
     // admin 
     <DashboardLayoutBasic/>
-    <>
-      <SnackbarProvider
-        maxSnack={3}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-      >
-        <DashboardLayoutBasic />
-      </SnackbarProvider>
-    </>
+    // <>
+    //   <SnackbarProvider
+    //     maxSnack={3}
+    //     anchorOrigin={{
+    //       vertical: "top",
+    //       horizontal: "right",
+    //     }}
+    //   >
+    //     <DashboardLayoutBasic />
+    //   </SnackbarProvider>
+    // </>
   );
 }
 

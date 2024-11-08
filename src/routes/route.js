@@ -13,10 +13,9 @@ import Success from "../client/pages/Payment/Status/Success";
 import BookingHotel from "../client/pages/HotelPage/BookingHotel/BookingHotel";
 import HotelDetails from "../client/pages/HotelPage/HotelDetails/HotelDetails";
 import Profile from "../client/pages/Profile/Profile";
-import LoginAdmin from "../admin/pages/Auth/Login";
+// import LoginAdmin from "../admin/pages/Auth/Login";
 import UserAdmin from "../admin/pages/User/User";
 import EnterpriseAdmin from "../admin/pages/Enterprise/Enterprise";
-import TravelAdmin from "../admin/pages/Travel/Travel";
 import LayoutAdmin from "../admin/pages/Layout/Layout";
 import HomePage from "../admin/pages/Dashboard/HomePage";
 import CouponAdmin from "../admin/pages/Coupon/CouponPage";
@@ -31,6 +30,7 @@ import ProfileDetail from "../client/pages/Profile/ProfileDetail/ProfileDetail";
 import ChangePassword from "../client/pages/Profile/ChangePass/ChangePassword";
 import InfoDetails from "../client/pages/Profile/InfoDetails/InfoDetails";
 import YourTripsQuery from "../client/pages/Profile/YourTripQuery/YourTripsQuery";
+import PlacePageAdmin from "../admin/pages/Travel/PlacePage";
 
 
 const routeAdmin = () => [
@@ -65,7 +65,7 @@ const routeAdmin = () => [
       
       {
         path: "travel",
-        Component: TravelAdmin,
+        Component: PlacePageAdmin,
       },
       {
         path: "feedbacks",

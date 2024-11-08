@@ -13,10 +13,9 @@ import {
   Button,
 } from "@mui/material";
 import { toast } from "react-toastify";
-import IOSSwitch from "./IOSSwitch";
 import { CouponService } from "../../../services/apis/CouponService";
 
-export default function CouponDialog({
+export default function PlaceDialog({
   open,
   setOpen,
   editMode,
@@ -227,16 +226,6 @@ export default function CouponDialog({
           }}
           error={!!errors.use_limit}
           helperText={errors.use_limit}
-        />
-        <FormControlLabel
-          control={
-            <IOSSwitch
-              name="is_active"
-              checked={formData.is_active}
-              onChange={handleInputChange}
-            />
-          }
-          label="Trạng thái kích hoạt"
         />
       </DialogContent>
       <DialogActions>

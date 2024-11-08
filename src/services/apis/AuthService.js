@@ -13,7 +13,4 @@ export const AuthService = {
     return response;
   },
 };
-<<<<<<< HEAD
 export default AuthService;
-=======
->>>>>>> 76db1c8a218942b2c80fc8277cebdf515e1c39f9
