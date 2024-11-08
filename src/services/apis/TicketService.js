@@ -7,4 +7,6 @@ export const TicketService = {
   getById: async (id) => {
     return await Http.get(`/api/v1/tickets/getById/${id}`);
   },
+
+
 };

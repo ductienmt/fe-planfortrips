@@ -124,16 +124,16 @@ const routeClient = () => [
       },
       {
         path: "/booking-vehicle",
-        component: SearchResults,
+        Component: SearchResults,
       },
       {
         path: "/vehicle-details/:id",
-        component: BookingSteps,
+        Component: BookingSteps,
       },
 
       {
         path: "/enterprise",
-        component: Sumbitenterprise,
+        Component: Sumbitenterprise,
       },
     ],
   },

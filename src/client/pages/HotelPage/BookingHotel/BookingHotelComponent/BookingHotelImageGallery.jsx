@@ -1,5 +1,5 @@
 import React from 'react';
-import './BookingHotelImageGallery.css'; // Import file CSS riêng
+import './BookingHotelImageGallery.css'; //
 
 function BookingHotelImageGallery() {
   const images = [

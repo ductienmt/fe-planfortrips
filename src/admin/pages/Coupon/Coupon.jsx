@@ -5,7 +5,7 @@ import { TextField, Grid, Switch, IconButton } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import EditIưcon from "@mui/icons-material/Edit";
 import { CouponService } from "../../../services/apis/CouponService";
 const columns = [
   { field: "code", headerName: "Mã", width: 70 },
@@ -27,7 +27,7 @@ const columns = [
     renderCell: (params) => (
       <span className="d-flex">
         <IconButton aria-label="view">
-         <VisibilityIcon />
+          <VisibilityIcon />
         </IconButton>
         <IconButton aria-label="edit">
           <DeleteIcon />
@@ -105,7 +105,7 @@ const paginationModel = { page: 0, pageSize: 5 };
 export default function CouponAdmin() {
   const [startDate, setStartDate] = React.useState("");
   const [endDate, setEndDate] = React.useState("");
-  const [coupons,setConpons] = React.useState([
+  const [coupons, setConpons] = React.useState([
     {
       id: "",
       code: "",
@@ -128,11 +128,11 @@ export default function CouponAdmin() {
     if (endDate && rowEndDate > filterEndDate) return false;
     return true;
   });
-  useEffect(()=>{
+  useEffect(() => {
     const fetchHotel = async () => {
       try {
         const hotelData = await CouponService.getCoupons(
-          paginationModel.page ,paginationModel.pageSize,null
+          paginationModel.page, paginationModel.pageSize, null
         );
         setConpons(hotelData.hotelResponseList);
       } catch (error) {
@@ -142,7 +142,7 @@ export default function CouponAdmin() {
       }
     };
     fetchHotel();
-  },[])
+  }, [])
   return (
     <Paper sx={{ height: 500, width: "100%", padding: 2 }}>
       <Grid container spacing={2} sx={{ marginBottom: 2 }}>

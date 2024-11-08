@@ -1,6 +1,6 @@
 import React from 'react';
 import BookingHotelStarRating from './BookingHotelStarRating';
-import './BookingHotelHotelInfo.css'; // Import file CSS riêng
+import './BookingHotelHotelInfo.css'; //
 
 function BookingHotelHotelInfo() {
   return (
