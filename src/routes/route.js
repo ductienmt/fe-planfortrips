@@ -34,6 +34,10 @@ import PlacePageAdmin from "../admin/pages/Travel/PlacePage";
 import { EnterpriseLayout } from "../layout/EnterpriseLayout";
 import EnterpriseLogin from "../enterprise/auth/login/EnterpriseLogin";
 import EnterpriseDashboard from "../enterprise/dashboard/EnterpriseDashboard";
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0fc7330d425d1c2e9e9ac51ec16f4dcb324a4fa4
 
 
 const routeAdmin = () => [
