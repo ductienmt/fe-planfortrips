@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
-import BookingHotelImageGallery from './BookingHotelImageGallery';
-import BookingHotelHotelInfo from './BookingHotelHotelInfo';
-import BookingHotelRoomOptions from './BookingHotelRoomOptions';
-import BookingHotelLocationMap from './BookingHotelLocationMap';
-import BookingHotelReviewSection from './BookingHotelReviewSection';
-import BookingHotelAmenityItem from './BookingHotelAmenityItem';
+import BookingHotelImageGallery from '../../HotelPage/BookingHotel/BookingHotelComponent/BookingHotelImageGallery';
+import BookingHotelHotelInfo from '../../HotelPage/BookingHotel/BookingHotelComponent/BookingHotelHotelInfo';
+import BookingHotelAmenityItem from '../../HotelPage/BookingHotel/BookingHotelComponent/BookingHotelAmenityItem';
+import BookingHotelRoomOptions from '../../HotelPage/BookingHotel/BookingHotelComponent/BookingHotelRoomOptions';
+import BookingHotelLocationMap from '../../HotelPage/BookingHotel/BookingHotelComponent/BookingHotelLocationMap';
+import BookingHotelReviewSection from '../../HotelPage/BookingHotel/BookingHotelComponent/BookingHotelReviewSection';
+
 
 function BookingHotel() {
     const amenities = [

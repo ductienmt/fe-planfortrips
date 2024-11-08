@@ -8,9 +8,8 @@ import { CouponService } from "../../../services/apis/CouponService";
 import AddIcon from "@mui/icons-material/Add";
 import { toast } from "react-toastify";
 import CouponDialog from "./CouponDialog";
-import IOSSwitch from "./IOSSwitch";
 
-const paginationModel = { page: 0, pageSize: 20 };
+const paginationModel = { page: 0, pageSize: 100 };
 
 export default function CouponAdmin() {
   const [rows, setRows] = React.useState([]);
@@ -30,6 +29,8 @@ export default function CouponAdmin() {
   });
 
   const handleClick = (coupon = null) => {
+    console.log(coupon);
+    
     setEditMode(!!coupon);
     setSelectedCouponId(coupon ? coupon.coupon_id : null);
     setFormData(
@@ -152,13 +153,12 @@ export default function CouponAdmin() {
       field: "is_active",
       headerName: "Trạng thái",
       editable: true,
-      renderCell: (params) => (
-        <IOSSwitch
-          name="active"
-          checked={formData.active}
-          onChange={handleInputChange}
-        />
-      ),
+      valueGetter: (params) => {
+        if(params){
+          return("Còn hạn");
+        }return("Hết hạn");
+        
+      },
       width: 90,
     },
     {
@@ -166,14 +166,14 @@ export default function CouponAdmin() {
       type: "actions",
       headerName: "Hành động",
       width: 100,
-      getActions: (params) => [
-        <RemoveRedEye
-          key="view"
-          onClick={() => {
-            handleClick(params.row);
-            setViewMode(true);
-          }}
-        />,
+      getActions: (params) => [        
+        // <RemoveRedEye
+        //   key="view"
+        //   onClick={() => {
+        //     handleClick(params.row);
+        //     setViewMode(true);
+        //   }}
+        // />,
         <Edit
           key="edit"
           onClick={() => {
