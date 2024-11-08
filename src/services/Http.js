@@ -1,6 +1,6 @@
 import axios from "axios";
 import { BASE_API } from "../shared/base_api";
-import AuthService from "../context/AuthService";
+import AuthService from "../context/AuthServiceContext";
 
 const Http = axios.create({
   baseURL: BASE_API,

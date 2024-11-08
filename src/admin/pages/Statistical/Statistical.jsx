@@ -1,7 +1,7 @@
-import './Statistical.css'
+// import './Statistical.css';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ListIcon from '@mui/icons-material/List';
-import CardStatistical from '../../CardStatistical/CardStatistical';
+import CardStatistical from '../CardStatistical/CardStatistical';
 function Statitical() {
     return (<>
         <div className="admin-statitiscal mt-3">

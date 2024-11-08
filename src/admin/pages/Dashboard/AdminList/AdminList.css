@@ -7,33 +7,19 @@
 }
 .admin__list {
     overflow: hidden;
-    height: 45vh;
+}
+
+.admin__list-item:hover {
+    background-color: #e0e0e0;
+    color: #222; 
+    border-bottom: 1px solid red; 
+    box-shadow: 0px 6px 12px rgba(52, 1, 1, 0.15); 
 }
 
 .admin__list-container {
     max-height: 48vh;
     overflow: auto;
 }
-
-.admin__list-container::-webkit-scrollbar {
-    width: 6px;
-    height: 3px; 
-  }
-  
-  .admin__list-container::-webkit-scrollbar-track {
-    background: gainsboro;
-    border-radius: 10px;
-  }
-  
-  .admin__list-container::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 10px; 
-  }
-  
-  .admin__list-container::-webkit-scrollbar-thumb:hover {
-    background: red;;
-  }
-
 .admin__list-data {
    flex: 0.5;
 }
