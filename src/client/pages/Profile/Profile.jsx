@@ -46,7 +46,6 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
-    // Cập nhật `activeItem` dựa vào phần cuối của `pathname`
     const pathSegments = location.pathname.split("/").filter(Boolean);
     const lastSegment = pathSegments[pathSegments.length - 1] || "profile";
     setActiveItem(lastSegment);

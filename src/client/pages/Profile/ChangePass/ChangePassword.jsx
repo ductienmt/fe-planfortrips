@@ -5,7 +5,7 @@ import { InputFlied } from "../../../Components/Input/InputFlied";
 import { useSnackbar } from "notistack";
 import { UserService } from "../../../../services/apis/UserService";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../../../context/AuthProvider";
+import { useAuth } from "../../../../context/AuthContext/AuthProvider";
 import Loader from "../../../Components/Loading";
 
 const ChangePassword = ({ email }) => {
