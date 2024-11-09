@@ -22,31 +22,30 @@ const Hotel = () => {
       } catch (error) {
         console.error("Error:", error);
         const query = `[Javascript] fix error: ${error.message}`;
-        window.open(`https://chatgpt.com/?q=${encodeURIComponent(query)}`);
       }
     };
 
     fetchProduct();
   }, [limit, page, keyword]);
-  function GradientCircularProgress() {
-    return (
+  // function GradientCircularProgress() {
+  //   return (
 
-        <main className='Hotel-container-page'>
-            <SearchBar />
-            <section>
-                <SearchResults />
-                <HotDealsNotification />
-                <ResultsSummary />
-                {accommodations.map(accommodation => (
-                    <AccommodationCard key={accommodation.id} {...accommodation} />
-                ))} *
-            </section>
+  //       <main className='Hotel-container-page'>
+  //           <SearchBar />
+  //           <section>
+  //               <SearchResults />
+  //               <HotDealsNotification />
+  //               <ResultsSummary />
+  //               {accommodations.map(accommodation => (
+  //                   <AccommodationCard key={accommodation.id} {...accommodation} />
+  //               ))} *
+  //           </section>
 
 
 
-        </main>
-    );
-  }
+  //       </main>
+  //   );
+  // }
   return (
     <main>
       <SearchBar keyword={keyword} setKeyword={setKeyword} />
@@ -55,7 +54,7 @@ const Hotel = () => {
         <HotDealsNotification />
         <ResultsSummary />
         {isLoading ? (
-          <GradientCircularProgress />
+          <></>
         ) : (
           hotels.map((hotel) => (
             <AccommodationCard key={hotel.hotel_id} {...hotel} />

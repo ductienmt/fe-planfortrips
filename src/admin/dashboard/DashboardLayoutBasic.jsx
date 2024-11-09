@@ -137,7 +137,7 @@ function DashboardLayoutBasic(props) {
       theme={demoTheme}
       window={demoWindow}
       branding={{
-        logo: <img src="src/assets/momo.png" alt="MUI logo" />,
+        logo: <img src="src/assets/momo.png" alt="plan for trips" />,
         title: "Plan for trips",
       }}
     >
