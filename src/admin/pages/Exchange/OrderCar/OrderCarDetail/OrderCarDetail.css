@@ -1,5 +1,5 @@
 .timeline-containerTicket {
-    width: 80%;
+    width: 100%;
     margin: auto;
     background: #fff;
     padding: 20px;
@@ -86,4 +86,49 @@
     border: none;
     padding: 0;
   }
-  
+.product-infoTicket {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #fdfdfd;
+}
+
+.priceTicket {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1a73e8;
+  margin-bottom: 12px;
+}
+
+.priceTicket span {
+  color: #e53935;
+}
+
+.payment-methodsTicket {
+  margin-top: 16px;
+}
+
+.payment-methodsTicket p {
+  font-size: 16px;
+  font-weight: 500;
+  color: #555;
+}
+
+.payment-methodsTicket ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.payment-methodsTicket ul li {
+  font-size: 14px;
+  color: #333;
+  padding: 6px 0;
+  position: relative;
+}
+
+.payment-methodsTicket ul li::before {
+  content: "✓";
+  color: #1a73e8;
+  margin-right: 8px;
+  font-weight: bold;
+}

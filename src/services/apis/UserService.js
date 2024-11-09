@@ -31,4 +31,12 @@ export const UserService = {
   verifyPassword: async (password) => {
     return await Http.get(`/api/v1/users/verify-password?password=${password}`);
   },
+  findUserByUsername:async(userName)=>{
+    const response = await Http.get(`api/v1/users/findByUsername?username=${userName}`);
+    return response.data;
+  },
+  findUserById: async (id) => {
+    const response = await Http.get(`api/v1/users/getDetail?id=${id}`);
+    return response.data;
+  }
 };
