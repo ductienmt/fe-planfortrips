@@ -152,13 +152,22 @@ export default function CouponAdmin() {
       field: "is_active",
       headerName: "Trạng thái",
       editable: true,
-      renderCell: (params) => (
-        <IOSSwitch
-          name="active"
-          checked={formData.active}
-          onChange={handleInputChange}
-        />
-      ),
+
+      // renderCell: (params) => (
+      //   <IOSSwitch
+      //     name="active"
+      //     checked={formData.active}
+      //     onChange={handleInputChange}
+      //   />
+      // ),
+
+      valueGetter: (params) => {
+        if (params) {
+          return "Còn hạn";
+        }
+        return "Hết hạn";
+      },
+
       width: 90,
     },
     {
@@ -166,14 +175,25 @@ export default function CouponAdmin() {
       type: "actions",
       headerName: "Hành động",
       width: 100,
+
+      // getActions: (params) => [
+      //   <RemoveRedEye
+      //     key="view"
+      //     onClick={() => {
+      //       handleClick(params.row);
+      //       setViewMode(true);
+      //     }}
+      //   />,
+
       getActions: (params) => [
-        <RemoveRedEye
-          key="view"
-          onClick={() => {
-            handleClick(params.row);
-            setViewMode(true);
-          }}
-        />,
+        // <RemoveRedEye
+        //   key="view"
+        //   onClick={() => {
+        //     handleClick(params.row);
+        //     setViewMode(true);
+        //   }}
+        // />,
+
         <Edit
           key="edit"
           onClick={() => {

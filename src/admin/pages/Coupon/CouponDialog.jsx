@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogActions,
@@ -58,31 +58,41 @@ export default function CouponDialog({
   };
   const validateCouponData = () => {
     const newErrors = {};
-    const { code, discount_type, discount_value, start_date, end_date, use_limit } = formData;
-  
+    const {
+      code,
+      discount_type,
+      discount_value,
+      start_date,
+      end_date,
+      use_limit,
+    } = formData;
+
     if (!code) newErrors.code = "Mã không được để trống.";
-    if (!discount_type) newErrors.discount_type = "Vui lòng chọn thể loại giảm giá.";
-    if (!discount_value || isNaN(discount_value) || Number(discount_value) <= 0) 
-      newErrors.discount_value = "Giá trị giảm phải là một số hợp lệ và lớn hơn 0.";
-  
+    if (!discount_type)
+      newErrors.discount_type = "Vui lòng chọn thể loại giảm giá.";
+    if (!discount_value || isNaN(discount_value) || Number(discount_value) <= 0)
+      newErrors.discount_value =
+        "Giá trị giảm phải là một số hợp lệ và lớn hơn 0.";
+
     const startYear = new Date(start_date).getFullYear().toString();
     const endYear = new Date(end_date).getFullYear().toString();
-  
-    if (startYear.length > 4) 
+
+    if (startYear.length > 4)
       newErrors.start_date = "Năm của ngày bắt đầu không được quá 4 chữ số.";
-    if (endYear.length > 4) 
+    if (endYear.length > 4)
       newErrors.end_date = "Năm của ngày kết thúc không được quá 4 chữ số.";
-  
-    if (new Date(start_date) < new Date()) 
+
+    if (new Date(start_date) < new Date())
       newErrors.start_date = "Ngày bắt đầu không được ở quá khứ.";
-    if (new Date(end_date) < new Date(start_date)) 
+    if (new Date(end_date) < new Date(start_date))
       newErrors.end_date = "Ngày kết thúc phải sau ngày bắt đầu.";
-    if (!use_limit || isNaN(use_limit) || Number(use_limit) < 0) 
-      newErrors.use_limit = "Giới hạn sử dụng phải là một số hợp lệ và không âm.";
-  
+    if (!use_limit || isNaN(use_limit) || Number(use_limit) < 0)
+      newErrors.use_limit =
+        "Giới hạn sử dụng phải là một số hợp lệ và không âm.";
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };  
+  };
   const handleSave = async (formData) => {
     if (!validateCouponData()) return;
     try {

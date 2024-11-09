@@ -9,10 +9,10 @@ import { useSnackbar } from "notistack";
 import handleToken from "../../../../services/HandleToken";
 import { InputFlied } from "../../../Components/Input/InputFlied";
 import { AuthService } from "../../../../services/apis/AuthService";
-import { useAuth } from "../../../../context/AuthProvider";
+import { useAuth } from "../../../../context/AuthContext/AuthProvider";
 
 const Login = () => {
-  const { login } = useAuth();
+  const { login, logout } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const queryParam = new URLSearchParams(window.location.search);
   const navigate = useNavigate();
@@ -20,7 +20,6 @@ const Login = () => {
   const [formData, setFormData] = useState({
     userName: "",
     password: "",
-    role: "ROLE_USER",
   });
 
   const handleLogin = async (e) => {
@@ -32,7 +31,7 @@ const Login = () => {
           autoHideDuration: 1000,
         });
       }
-      const response = await AuthService.login(formData);
+      const response = await AuthService.loginUser(formData);
       console.log("Đăng nhập thành công:", response.data);
       login(
         response.data.data.token,
@@ -43,7 +42,8 @@ const Login = () => {
         variant: "success",
         autoHideDuration: 1000,
         onExit: () => {
-          navigate("/");
+          const previousUrl = sessionStorage.getItem("previousUrl") || "/";
+          navigate(previousUrl); // Quay lại URL trước khi đăng nhập
         },
       });
     } catch (error) {
@@ -65,7 +65,6 @@ const Login = () => {
   };
 
   useEffect(() => {
-    localStorage.clear();
     document.title = "Đăng nhập";
     window.scrollTo(0, 200);
     getAuthUrl().then((res) => {

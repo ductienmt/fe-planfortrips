@@ -1,0 +1,67 @@
+.enterprise-room-container {
+    margin: 10px;
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+}
+
+.enterprise-room-container .content .nav-filter {
+    display: flex;
+    justify-content: space-between;
+}
+
+.enterprise-room-container .content .nav-filter .filter-room {
+    display: flex;
+    gap: 20px;
+}
+
+.enterprise-room-container .content .nav-filter .filter-room button {
+    padding: 8px 20px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    outline: none;
+    background-color: transparent;
+    color: #ADADAD;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.enterprise-room-container .content .nav-filter .nav-add-room {
+    display: flex;
+    gap: 20px;
+}
+
+.enterprise-room-container .content .nav-filter .nav-add-room button {
+    padding: 8px 20px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background-color: rgb(50, 129, 181);
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.enterprise-room-container .content .nav-filter .filter-room button.isActive {
+    background-color: rgb(237, 248, 255);
+    color: rgb(65, 165, 232);
+    border-color: rgb(132, 205, 255);
+}
+
+
+.enterprise-room-container .content .nav-filter .nav-add-room button:hover {
+    background-color: rgb(39, 100, 140);
+}
+
+.enterprise-room-container .content .nav-filter .nav-add-room select {
+    padding: 8px 20px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    outline: none;
+    background-color: transparent;
+    color: #ADADAD;
+    font-size: 16px;
+    cursor: pointer;
+}

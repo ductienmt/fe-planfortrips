@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Avatar from "../../Components/Avatar";
 import { InputFlied } from "../../Components/Input/InputFlied";
 import { UserService } from "../../../services/apis/UserService";
-import { useAuth } from "../../../context/AuthProvider";
+import { useAuth } from "../../../context/AuthContext/AuthProvider";
 
 const Header = () => {
   const { username, logout } = useAuth();
