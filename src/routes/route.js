@@ -13,6 +13,7 @@ import Success from "../client/pages/Payment/Status/Success";
 import BookingHotel from "../client/pages/HotelPage/BookingHotel/BookingHotel";
 import HotelDetails from "../client/pages/HotelPage/HotelDetails/HotelDetails";
 import Profile from "../client/pages/Profile/Profile";
+
 // import LoginAdmin from "../admin/pages/Auth/Login";
 import UserAdmin from "../admin/pages/User/User";
 import EnterpriseAdmin from "../admin/pages/Enterprise/Enterprise";
@@ -23,6 +24,16 @@ import OrderCarPage from "../admin/pages/Exchange/OrderCar/OrderCar";
 import BookingHotelPage from "../admin/pages/Exchange/BookingHotel/BookingHotel";
 import LoginAdmin from "../admin/pages/Auth/Login/Login";
 import FeedbackPage from "../admin/pages/Feedback/Feedback";
+
+import LoginAdmin from "../admin/pages/Auth/Login";
+// import Exchange from "../admin/pages/Exchange/Exchange";
+import UserAdmin from "../admin/pages/User/User";
+import EnterpriseAdmin from "../admin/pages/Enterprise/Enterprise";
+// import CouponAdmin from "../admin/pages/Coupon/Coupon";
+import TravelAdmin from "../admin/pages/Travel/Travel";
+import LayoutAdmin from "../admin/pages/Layout/Layout";
+import HomePage from "../admin/pages/Dashboard/HomePage";
+
 import TransportSelectionPage from "../client/pages/VehiclePage/BookingVehiclesFind/TransportSelectionPage";
 import SearchResults from "../client/pages/VehiclePage/BookingVehicles/SearchResults";
 import BookingSteps from "../client/pages/VehiclePage/BookingVehiclesDetails/BookingSteps";
@@ -34,10 +45,14 @@ import PlacePageAdmin from "../admin/pages/Travel/PlacePage";
 import { EnterpriseLayout } from "../layout/EnterpriseLayout";
 import EnterpriseLogin from "../enterprise/auth/login/EnterpriseLogin";
 import EnterpriseDashboard from "../enterprise/dashboard/EnterpriseDashboard";
-<<<<<<< HEAD
-=======
 
->>>>>>> 0fc7330d425d1c2e9e9ac51ec16f4dcb324a4fa4
+import Voucher from "../enterprise/voucher/Voucher";
+import Vehicle from "../enterprise/transportation/vehicleManagement/Vehicle";
+import Schedule from "../enterprise/transportation/schedule/Schedule";
+import Route from "../enterprise/transportation/route/Route";
+import RoomHistory from "../enterprise/accomodation/roomHistory/RoomHistory";
+import Room from "../enterprise/accomodation/roomManagement/Room";
+import HotelManagement from "../enterprise/accomodation/manager/HotelManagement";
 
 
 const routeAdmin = () => [
@@ -57,19 +72,14 @@ const routeAdmin = () => [
         path: "business",
         Component: EnterpriseAdmin,
       },
-      {
-        path: "vouchers",
-        Component: CouponAdmin,
-      },
-      {
-        path: "transactions/hotels",
-        Component: BookingHotelPage,
-      },
-      {
-        path: "transactions/vehicles",
-        Component: OrderCarPage,
-      },
-      
+      // {
+      //   path: "vouchers",
+      //   Component: CouponAdmin,
+      // },
+      // {
+      //   path: "transactions",
+      //   Component: Exchange,
+      // },
       {
         path: "travel",
         Component: PlacePageAdmin,
@@ -96,8 +106,36 @@ const routeEnterprise = () => [
         Component: EnterpriseLogin,
       },
       {
-        path: "dashboard",
+        path: ":type/dashboard",
         Component: EnterpriseDashboard,
+      },
+      {
+        path: ":type/vouchers",
+        Component: Voucher,
+      },
+      {
+        path: "transportation/vehicle-management",
+        Component: Vehicle,
+      },
+      {
+        path: "transportation/schedule",
+        Component: Schedule,
+      },
+      {
+        path: "transportation/routes",
+        Component: Route,
+      },
+      {
+        path: "accomodation/room-history",
+        Component: RoomHistory,
+      },
+      {
+        path: "accomodation/room-management",
+        Component: Room,
+      },
+      {
+        path: "accomodation/accomodation-manager",
+        Component: HotelManagement,
       },
     ],
   },

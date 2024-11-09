@@ -11,6 +11,7 @@ import { DateFormatter } from "../../../utils/DateFormat";
 import { PlanServiceApi } from "../../../services/apis/PlanServiceApi";
 import { generateTripPlan } from "../../../services/planService";
 import Loading from "../../Components/Loading";
+import { useNavigate } from "react-router-dom";
 
 function PlanBefore() {
   const [loading, setLoading] = useState(false);
@@ -18,6 +19,7 @@ function PlanBefore() {
   const [adults, setAdults] = useState(0);
   const [children, setChildren] = useState(0);
   const [infants, setInfants] = useState(0);
+  const nagigate = useNavigate();
 
   const [showNumberBox, setShowNumberBox] = useState(false);
 
@@ -49,40 +51,46 @@ function PlanBefore() {
     budget: 5000,
   });
 
+  const parseBudget = (budget) => {
+    const budgetNumber = parseFloat(budget.replace(/,/g, ""));
+    return budgetNumber / 1000;
+  };
+
   const handlePlan = async () => {
-    // if (validatePlan()) {
-    //   setFormData({
-    //     ...formData,
-    //     location: queryCurrentCity,
-    //     destination: queryDestination,
-    //     startDate: DateFormatter(ngayDiRef.current.value),
-    //     endDate: DateFormatter(ngayDiRef.current.value),
-    //     numberPeople: adults + children + infants,
-    //     budget: budget,
-    //   });
-    //   console.log(formData);
-    try {
-      const response = await PlanServiceApi.getData(planData);
+    if (validatePlan()) {
       setLoading(true);
-      console.log(response.data);
-      const tripPlan = await generateTripPlan(response.data);
-      console.log(tripPlan);
-      if (tripPlan) {
-        console.log("Setting trip plan:", tripPlan);
-        sessionStorage.setItem("tripData", JSON.stringify(tripPlan));
-        // Chuyển hướng sau khi đã cập nhật tripPlan
-        window.location.href = "/plan/trip";
-      }
-    } catch (error) {
-      console.error(error);
-      enqueueSnackbar("Lỗi khi lên kế hoạch!", {
-        variant: "error",
-        autoHideDuration: 2000,
+      setFormData({
+        ...formData,
+        location: queryCurrentCity,
+        destination: queryDestination,
+        startDate: DateFormatter(ngayDiRef.current.value),
+        endDate: DateFormatter(ngayDiRef.current.value),
+        numberPeople: adults + children + infants,
+        budget: parseBudget(budget),
       });
-    } finally {
-      setLoading(false);
+      console.log(formData);
+      try {
+        const response = await PlanServiceApi.getData(formData);
+
+        console.log(response.data);
+        const tripPlan = await generateTripPlan(response.data);
+        console.log(tripPlan);
+        if (tripPlan) {
+          console.log("Setting trip plan:", tripPlan);
+          sessionStorage.setItem("tripData", JSON.stringify(tripPlan));
+          nagigate("/plan/trip");
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error(error);
+        enqueueSnackbar("Lỗi khi lên kế hoạch!", {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      } finally {
+        setLoading(false);
+      }
     }
-    // }
   };
 
   const validatePlan = () => {
@@ -101,14 +109,12 @@ function PlanBefore() {
         children === 0 &&
         infants === 0 &&
         "Vui lòng chọn ít nhất một người!",
-    ].filter(Boolean); // Remove undefined values
+    ].filter(Boolean);
 
-    // Show the first error message if any
     if (errorMessages.length > 0) {
       enqueueSnackbar(errorMessages[0], { variant: "error" });
       return false;
     }
-
     return true;
   };
 
@@ -116,7 +122,6 @@ function PlanBefore() {
     handleInputChange(event, setBudget, (errorMessage) => {
       if (errorMessage) {
         enqueueSnackbar(errorMessage, {
-          // Sử dụng notistack để hiện thông báo lỗi
           variant: "error",
           autoHideDuration: 3000,
         });

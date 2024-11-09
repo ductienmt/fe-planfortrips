@@ -5,16 +5,25 @@ import AccommodationCard from "./AccommodationCard";
 import AttractionCard from "./AttractionCard";
 import "./TravelPlan.css";
 import { ScheduleService } from "../../../services/apis/ScheduleService";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { TicketService } from "../../../services/apis/TicketService";
+import { useAuth } from "../../../context/AuthContext/AuthProvider";
+import { useSnackbar } from "notistack";
 
 function TravelPlan() {
   const [selectedCard, setSelectedCard] = useState("transportation");
   const tripData = JSON.parse(sessionStorage.getItem("tripData"));
   const [summaryItems, setSummaryItems] = useState([]);
   const [accommodationItems, setAccommodationItems] = useState([]);
+  const { enqueueSnackbar } = useSnackbar();
+  const { role, username } = useAuth();
+  const navigate = useNavigate();
 
-  const seats = tripData.transportation.departure.seatBook
+  const seatsDe = tripData.transportation.departure.seatBook
+    .map((seat) => seat.seat_number)
+    .join(", ");
+
+  const seatsRe = tripData.transportation.return.seatBook
     .map((seat) => seat.seat_number)
     .join(", ");
 
@@ -79,13 +88,68 @@ function TravelPlan() {
 
   const handleSubmit = async () => {
     try {
-      const response = await TicketService.create();
-      if (response.status === 201) {
-        alert("Tạo chuyến đi thành công!");
+      if (!role) {
+        sessionStorage.setItem("previousUrl", window.location.pathname);
+        enqueueSnackbar("Vui lòng đăng nhập để tiếp tục", {
+          variant: "error",
+          autoHideDuration: 1000,
+          onExit: () => {
+            navigate("/login");
+          },
+        });
+        return;
       } else {
-        alert("Tạo chuyến đi thất bại!");
+        const dataTransportationDeparture = {
+          schedule_id: tripData.transportation.departure.scheduleId,
+          user_name: username,
+          total_price: tripData.transportation.departure.totalPrice,
+          status: "Pending",
+        };
+        const seatDe = tripData.transportation.departure.seatBook
+          .map((seat) => seat.seat_id)
+          .join(",");
+        console.log(seatDe);
+
+        const resDe = await TicketService.create(
+          dataTransportationDeparture,
+          seatDe
+        );
+
+        const dataTransportationArrival = {
+          schedule_id: tripData.transportation.return.scheduleId,
+          user_name: username,
+          total_price: tripData.transportation.return.totalPrice,
+          status: "Pending",
+        };
+        const seatRe = tripData.transportation.return.seatBook
+          .map((seat) => seat.seat_id)
+          .join(",");
+
+        const resRe = await TicketService.create(
+          dataTransportationArrival,
+          seatRe
+        );
+
+        // const dataBookHotel = {
+        //   {
+        //     "bookingHotelDetailDto": [
+        //       {
+        //         "roomId": 0,
+        //         "checkInTime": "2024-11-08 02:58:11",
+        //         "checkOutTime": "2024-11-08 02:58:11",
+        //         "createAt": "2024-11-08 02:58:11",
+        //         "updateAt": "2024-11-08 02:58:11",
+        //         "price": 0.00,
+        //         "status": "Pending"
+        //       }
+        //     ],
+        //     "userId": 0,
+        //     "paymentId": 0
+        //   }
+        // }
       }
     } catch (error) {
+      console.error(error);
       alert("Tạo chuyến đi thất bại!");
     }
   };
@@ -140,7 +204,7 @@ function TravelPlan() {
             tripData.transportation.departure.arrivalTime
           )}
           nameVehicle={tripData.transportation.departure.carName}
-          seatCode={seats}
+          seatCode={seatsDe}
           scheduleId={tripData.transportation.departure.scheduleId}
           timeCommunicate={calculateDuration(
             formatTime(tripData.transportation.departure.departureTime),

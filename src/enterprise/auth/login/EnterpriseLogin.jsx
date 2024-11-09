@@ -7,18 +7,21 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthService } from "../../../services/apis/AuthService";
 import { useAuth } from "../../../context/AuthContext/AuthProvider";
 import { useSnackbar } from "notistack";
+import { useEnterprise } from "../../../context/EnterpriseContext/EnterpriseProvider";
 
 const EnterpriseLogin = () => {
-  const { login } = useAuth();
+  const { login, logout } = useAuth();
+  const { addTypeEnterprise } = useEnterprise();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+
   const [serviceTypes, setServiceTypes] = useState([]);
+  const [serviceName, setServiceName] = useState("");
+  const [selectedType, setSelectedType] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [loginForm, setLoginForm] = useState({
-    typeDe: null,
     userName: "",
     password: "",
-    role: "ROLE_ENTERPRISE",
   });
 
   const loadServiceType = async () => {
@@ -32,6 +35,7 @@ const EnterpriseLogin = () => {
 
   useEffect(() => {
     document.title = "Doanh nghiệp - Đăng nhập";
+    logout();
     loadServiceType();
   }, []);
 
@@ -42,23 +46,35 @@ const EnterpriseLogin = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setLoginForm((prevState) => ({
-      ...prevState,
-      [name]: name === "typeDe" ? parseInt(value) || null : value,
-    }));
+    if (name === "typeDe") {
+      setSelectedType(parseInt(value));
+      const selectedService = serviceTypes.find(
+        (service) => service.id === parseInt(value)
+      );
+      setServiceName(selectedService ? selectedService.name : "");
+    } else {
+      setLoginForm((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
   };
 
   const handleLogin = async () => {
     try {
-      console.log(loginForm);
-
-      const res = await AuthService.login(loginForm);
+      const res = await AuthService.loginEnterprise(loginForm, selectedType);
       login(res.data.data.token, res.data.data.role, res.data.data.userName);
       enqueueSnackbar(res.data.message, {
         variant: "success",
         autoHideDuration: 1000,
         onExit: () => {
-          navigate("/enerprise/dashboard");
+          addTypeEnterprise(serviceName);
+          if (["Homestay", "Resort", "Khách sạn"].includes(serviceName)) {
+            navigate("/enterprise/accomodation/dashboard");
+          }
+          if (serviceName === "Xe khách") {
+            navigate("/enterprise/transportation/dashboard");
+          }
         },
       });
     } catch (error) {
@@ -83,7 +99,7 @@ const EnterpriseLogin = () => {
               <select
                 name="typeDe"
                 id="serviceType"
-                value={loginForm.typeDe}
+                value={selectedType || ""}
                 onChange={handleChange}
                 required
               >
