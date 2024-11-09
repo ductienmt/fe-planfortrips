@@ -45,7 +45,6 @@ import PlacePageAdmin from "../admin/pages/Travel/PlacePage";
 import { EnterpriseLayout } from "../layout/EnterpriseLayout";
 import EnterpriseLogin from "../enterprise/auth/login/EnterpriseLogin";
 import EnterpriseDashboard from "../enterprise/dashboard/EnterpriseDashboard";
-
 import Voucher from "../enterprise/voucher/Voucher";
 import Vehicle from "../enterprise/transportation/vehicleManagement/Vehicle";
 import Schedule from "../enterprise/transportation/schedule/Schedule";
@@ -53,7 +52,6 @@ import Route from "../enterprise/transportation/route/Route";
 import RoomHistory from "../enterprise/accomodation/roomHistory/RoomHistory";
 import Room from "../enterprise/accomodation/roomManagement/Room";
 import HotelManagement from "../enterprise/accomodation/manager/HotelManagement";
-
 
 const routeAdmin = () => [
   {
@@ -72,14 +70,19 @@ const routeAdmin = () => [
         path: "business",
         Component: EnterpriseAdmin,
       },
-      // {
-      //   path: "vouchers",
-      //   Component: CouponAdmin,
-      // },
-      // {
-      //   path: "transactions",
-      //   Component: Exchange,
-      // },
+      {
+        path: "vouchers",
+        Component: CouponAdmin,
+      },
+      {
+        path: "transactions/hotels",
+        Component: BookingHotelPage,
+      },
+      {
+        path: "transactions/vehicles",
+        Component: OrderCarPage,
+      },
+
       {
         path: "travel",
         Component: PlacePageAdmin,
