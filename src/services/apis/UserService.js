@@ -1,6 +1,21 @@
 import Http from "../Http";
 
 export const UserService = {
+  getAll: async () => {
+    return await Http.get("/api/v1/users/all");
+  },
+  changeStageUser: async (userId, state) => {
+    try {
+      const response = await Http.patch(
+        `/api/v1/users/setStage?id=${userId}&stage=${state}`
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Cập nhật trạng thái không thành công:", error);
+      throw error;
+    }
+  },
+
   findUserById: async (id) => {
     const response = await Http.get(`api/v1/users/getDetail?id=${id}`);
     return response.data;
@@ -31,12 +46,14 @@ export const UserService = {
   verifyPassword: async (password) => {
     return await Http.get(`/api/v1/users/verify-password?password=${password}`);
   },
-  findUserByUsername:async(userName)=>{
-    const response = await Http.get(`api/v1/users/findByUsername?username=${userName}`);
+  findUserByUsername: async (userName) => {
+    const response = await Http.get(
+      `api/v1/users/findByUsername?username=${userName}`
+    );
     return response.data;
   },
   findUserById: async (id) => {
     const response = await Http.get(`api/v1/users/getDetail?id=${id}`);
     return response.data;
-  }
+  },
 };

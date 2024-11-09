@@ -45,7 +45,6 @@ import PlacePageAdmin from "../admin/pages/Travel/PlacePage";
 import { EnterpriseLayout } from "../layout/EnterpriseLayout";
 import EnterpriseLogin from "../enterprise/auth/login/EnterpriseLogin";
 import EnterpriseDashboard from "../enterprise/dashboard/EnterpriseDashboard";
-
 import Voucher from "../enterprise/voucher/Voucher";
 import Vehicle from "../enterprise/transportation/vehicleManagement/Vehicle";
 import Schedule from "../enterprise/transportation/schedule/Schedule";
@@ -73,14 +72,19 @@ const routeAdmin = () => [
         path: "business",
         Component: EnterpriseAdmin,
       },
-      // {
-      //   path: "vouchers",
-      //   Component: CouponAdmin,
-      // },
-      // {
-      //   path: "transactions",
-      //   Component: Exchange,
-      // },
+      {
+        path: "vouchers",
+        Component: CouponAdmin,
+      },
+      {
+        path: "transactions/hotels",
+        Component: BookingHotelPage,
+      },
+      {
+        path: "transactions/vehicles",
+        Component: OrderCarPage,
+      },
+
       {
         path: "travel",
         Component: PlacePageAdmin,
