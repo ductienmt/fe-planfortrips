@@ -60,7 +60,6 @@ function PlanBefore() {
 
   const handlePlan = async () => {
     if (validatePlan()) {
-      setLoading(true);
       setFormData({
         ...formData,
         location: queryCurrentCity,
@@ -73,7 +72,7 @@ function PlanBefore() {
       console.log(formData);
       try {
         const response = await PlanServiceApi.getData(formData);
-
+        setLoading(true);
         console.log(response.data);
         const tripPlan = await generateTripPlan(response.data);
         console.log(tripPlan);
@@ -81,7 +80,6 @@ function PlanBefore() {
           console.log("Setting trip plan:", tripPlan);
           sessionStorage.setItem("tripData", JSON.stringify(tripPlan));
           nagigate("/plan/trip");
-          setLoading(false);
         }
       } catch (error) {
         console.error(error);
