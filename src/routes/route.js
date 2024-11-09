@@ -54,6 +54,7 @@ import RoomHistory from "../enterprise/accomodation/roomHistory/RoomHistory";
 import Room from "../enterprise/accomodation/roomManagement/Room";
 import HotelManagement from "../enterprise/accomodation/manager/HotelManagement";
 
+import Sumbitenterprise from "../client/pages/Enterprise/Sumbitenterprise";
 
 const routeAdmin = () => [
   {
@@ -226,8 +227,13 @@ const routeClient = () => [
         Component: SearchResults,
       },
       {
-        path: "/vehicle-details",
+        path: "/vehicle-details/:id",
         Component: BookingSteps,
+      },
+
+      {
+        path: "/enterprise",
+        Component: Sumbitenterprise,
       },
     ],
   },
