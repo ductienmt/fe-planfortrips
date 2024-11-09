@@ -78,6 +78,7 @@
 .image-gallery {
   display: flex;
   flex-wrap: wrap;
+  gap: 7px;
 }
 
 .gallery-image {
@@ -100,10 +101,11 @@
   width: calc(50% - 3.5px);
   aspect-ratio: 2.28;
   object-fit: cover;
+  /* border-radius:  20px; */
 }
 
 .full-width {
-  width: 99%;
+  width: 100%;
 }
 
 .accommodation-details {

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { AuthService } from "../../../../services/apis/AuthService";
 import "./Register.css"; // Custom CSS
 import { useSnackbar } from "notistack";
 import background from "../../../../assets/image 37.png";
@@ -7,20 +8,16 @@ import {
   callBackUrlGoogle,
   getAuthUrl,
 } from "../../../../services/apis/Oauth2Service";
-import { InputFlied } from "../../../Components/Input/InputFlied";
-import { FlatpickrComponent } from "../../../Components/Flatpickr";
-import { SelectOptionField } from "../../../Components/Select/SelectOptionField";
-import { AuthService } from "../../../../services/apis/AuthService";
 
 const Register = () => {
   const { enqueueSnackbar } = useSnackbar();
   const queryParam = new URLSearchParams(window.location.search);
   const navigate = useNavigate();
   const [authUrl, setAuthUrl] = useState("");
+  // const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState({
     userName: "",
     password: "",
-    confirmPassword: "", // Added for validation
     phoneNumber: "",
     gender: "",
     fullName: "",
@@ -28,25 +25,9 @@ const Register = () => {
     birthdate: "",
   });
 
-  const optionsGender = [
-    { value: "Nam", label: "Nam" },
-    { value: "Nữ", label: "Nữ" },
-    { value: "Khác", label: "Khác" },
-  ];
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    // console.log({ ...formData, [e.target.name]: e.target.value });
-    // console.log(formData.birthdate.target.value);
-  };
-
-  const handleDateChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-    console.log(formData.birthdate);
+    console.log("Thay đổi giá trị: ", e.target.name, e.target.value);
   };
 
   const handleRegister = async () => {
@@ -57,16 +38,12 @@ const Register = () => {
           autoHideDuration: 1000,
         });
       }
-
-      if (!validatePassword(formData.password, formData.confirmPassword)) {
-        return;
-      }
-
       const formDataCopy = {
         ...formData,
-        birthdate: new Date(formData.birthdate).toISOString(), // Ensure the date format is correct
+        birthdate: new Date(formData.birthdate),
       };
       const response = await AuthService.register(formDataCopy);
+      console.log("Đăng ký thành công:", response.data);
       enqueueSnackbar(response.data.message, {
         variant: "success",
         autoHideDuration: 1000,
@@ -84,6 +61,7 @@ const Register = () => {
   };
 
   const validateForm = () => {
+    console.log(formData);
     return Object.values(formData).every((value) => value.trim() !== "");
   };
 
@@ -91,7 +69,6 @@ const Register = () => {
     setFormData({
       userName: "",
       password: "",
-      confirmPassword: "",
       phoneNumber: "",
       gender: "",
       fullName: "",
@@ -121,11 +98,15 @@ const Register = () => {
           navigate("/");
         },
       });
+    // Đi đâu sau khi đăng nhập thành công thì bỏ vào
     else
       enqueueSnackbar("Chào mừng bạn quay trở lại!", {
         variant: "success",
         autoHideDuration: 1000,
-        onExit: () => navigate("/"),
+
+        onExit: () => {
+          navigate("/");
+        },
       });
   };
 
@@ -133,7 +114,6 @@ const Register = () => {
     document.title = "Đăng ký";
     window.scrollTo(0, 200);
     localStorage.clear();
-
     getAuthUrl().then((res) => {
       setAuthUrl(res);
     });
@@ -154,12 +134,16 @@ const Register = () => {
               alt="Background"
               className="register-custom-image"
             />
+
+            {/* Đặt thông báo và nút Đăng Nhập bên trái */}
             <div className="position-absolute custom-left-container">
               <div className="register-divider d-flex ">
                 <p className="">Hoặc đăng nhập bằng</p>
               </div>
+
+              {/* Nút Đăng Nhập bằng Google và Facebook */}
               <div className="d-flex flex-column align-items-center">
-                <Link to={authUrl} className="btn register-google">
+                <Link to={authUrl} className="btn register-google  ">
                   <div className="text-decoration-none ">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -189,7 +173,7 @@ const Register = () => {
                     <span className="icon-text">Google</span>
                   </div>
                 </Link>
-                <button className="btn register-facebook">
+                <button className="btn register-facebook  ">
                   <a href="#" className="text-decoration-none ">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -210,134 +194,148 @@ const Register = () => {
               </div>
             </div>
           </div>
-          <div className="col-md-5 text-center">
+          <div className=" col-md-5 text-center ">
             <form className="registration">
               <div className="text-center mt-4">
-                <h2 className="title-registration">Đăng ký</h2>
+                <h2 className="title-registration ">Đăng ký</h2>
               </div>
 
-              <div
-                className="register-input form-outline mb-4"
-                style={{ width: "100%" }}
-              >
-                <InputFlied
-                  typeInput={"text"}
-                  content={"Username"}
-                  nameInput={"userName"}
-                  onChange={handleChange}
+              <div className="register-input form-outline mb-4">
+                <input
+                  type="text"
+                  name="userName"
+                  className="form-control  "
+                  placeholder=" "
                   value={formData.userName}
+                  onChange={(e) => handleChange(e)}
                 />
+                <label className="form-label" htmlFor="username">
+                  Tên tài khoản
+                </label>
               </div>
 
-              <div
-                className="register-input form-outline mb-4"
-                style={{ width: "100%" }}
-              >
-                <InputFlied
-                  typeInput={"password"}
-                  content={"Mật khẩu"}
-                  nameInput={"password"}
-                  onChange={handleChange}
+              {/* Mật khẩu input */}
+              <div className="register-input form-outline mb-4">
+                <input
+                  type="password"
+                  name="password"
+                  className="form-control " // Sử dụng lớp mới
+                  placeholder=" "
                   value={formData.password}
+                  onChange={(e) => handleChange(e)}
+                  // required
                 />
+                <label className="form-label" htmlFor="password">
+                  Mật khẩu
+                </label>
               </div>
 
-              <div
-                className="register-input form-outline mb-4"
-                style={{ width: "100%" }}
-              >
-                <InputFlied
-                  content={"Xác nhận mật khẩu"}
-                  nameInput={"confirmPassword"}
-                  typeInput={"password"}
-                  onChange={handleChange}
-                  onBlur={() =>
-                    validatePassword(
-                      formData.password,
-                      formData.confirmPassword
-                    )
+              {/* Xác nhận mật khẩu input */}
+              <div className=" register-input form-outline mb-4">
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  className="form-control " // Sử dụng lớp mới
+                  placeholder=" "
+                  onBlur={(e) =>
+                    validatePassword(formData.password, e.target.value)
                   }
+                  // required
                 />
+                <label className="form-label" htmlFor="confirmPassword">
+                  Xác nhận mật khẩu
+                </label>
               </div>
 
-              <div
-                className="register-input form-outline mb-4"
-                style={{ width: "100%" }}
-              >
-                <InputFlied
-                  typeInput={"text"}
-                  content={"Họ tên"}
-                  nameInput={"fullName"}
-                  onChange={handleChange}
+              {/* Họ và Tên input */}
+              <div className=" register-input form-outline mb-4">
+                <input
+                  type="text"
+                  name="fullName"
+                  className="form-control " // Sử dụng lớp mới
+                  placeholder=" "
                   value={formData.fullName}
+                  onChange={(e) => handleChange(e)}
+                  // required
                 />
+                <label className="form-label" htmlFor="fullName">
+                  Họ và Tên
+                </label>
               </div>
 
-              <div
-                className="register-input form-outline mb-4"
-                style={{ width: "100%" }}
-              >
-                <InputFlied
-                  typeInput={"email"}
-                  content={"Email"}
-                  nameInput={"email"}
-                  onChange={handleChange}
+              {/* Email input */}
+              <div className="register-input form-outline mb-4">
+                <input
+                  type="email"
+                  name="email"
+                  className="form-control " // Sử dụng lớp mới
+                  placeholder=" "
                   value={formData.email}
+                  onChange={(e) => handleChange(e)}
                 />
+                <label className="form-label" htmlFor="email">
+                  Email
+                </label>
               </div>
 
-              <div
-                className="register-input form-outline mb-4"
-                style={{ width: "100%" }}
-              >
-                <InputFlied
-                  typeInput={"text"}
-                  content={"Số điện thoại"}
-                  nameInput={"phoneNumber"}
-                  onChange={handleChange}
+              {/* Số điện thoại input */}
+              <div className="register-input form-outline mb-4">
+                <input
+                  type="tel"
+                  name="phoneNumber"
+                  className="form-control " // Sử dụng lớp mới
+                  placeholder=" "
                   value={formData.phoneNumber}
+                  onChange={(e) => handleChange(e)}
+                  // required
                 />
+                <label className="form-label" htmlFor="phone">
+                  Số điện thoại
+                </label>
               </div>
 
-              <div
-                className="register-input form-outline"
-                style={{ width: "100%" }}
-              >
-                <FlatpickrComponent
-                  name={"birthdate"}
+              {/* Ngày sinh input */}
+              <div className="custom-input form-outline mb-4">
+                <input
+                  type="date"
+                  name="birthdate"
+                  className="form-control"
                   value={formData.birthdate}
-                  onChange={handleDateChange}
-                ></FlatpickrComponent>
-              </div>
-
-              <div className="gender-selection" style={{ width: "100%" }}>
-                <SelectOptionField
-                  nameInput="gender"
-                  content="Chọn giới tính"
-                  options={optionsGender}
-                  value={formData.gender}
-                  onChange={handleChange}
-                  dai={"100%"}
+                  onChange={(e) => handleChange(e)}
                 />
               </div>
 
-              <div className="text-center" style={{ width: "100%" }}>
+              {/* Giới tính input */}
+              <div className="custom-input form-outline mb-4">
+                <select
+                  name="gender"
+                  className="form-control"
+                  value={formData.gender}
+                  onChange={(e) => handleChange(e)}
+                >
+                  <option value="Nam">Nam</option>
+                  <option value="Nữ">Nữ</option>
+                  <option value="Khác">Khác</option>
+                </select>
+              </div>
+
+              <div className="text-center">
                 <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={handleRegister}
-                  style={{ width: "100%", height: "50px", fontSize: "20px" }}
+                  type="submit"
+                  className="btn registration-button mb-4"
+                  onClick={(e) => {
+                    e.preventDefault(); // Thêm hàm này để ngăn hành vi mặc định của form
+                    handleRegister();
+                  }}
                 >
                   Đăng ký
                 </button>
+                <p className="small fw-bold">
+                  Bạn đã có tài khoản? <a href="/login">Đăng nhập ngay!</a>
+                </p>
               </div>
 
-              <div className="d-flex justify-content-center align-items-center mt-3">
-                <p className="mb-0">Bạn đã có tài khoản?</p>
-                <Link to="/login" className="text-decoration-none mx-2">
-                  Đăng nhập
-                </Link>
-              </div>
+              {/* {errorMessage && <p className="text-danger">{errorMessage}</p>} */}
             </form>
           </div>
         </div>

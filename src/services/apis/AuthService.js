@@ -17,4 +17,3 @@ export const AuthService = {
     return response;
   },
 };
-export default AuthService;

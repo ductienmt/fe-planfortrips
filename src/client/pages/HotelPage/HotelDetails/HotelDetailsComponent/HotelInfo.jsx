@@ -5,11 +5,11 @@ import HotelAmenities from './HotelAmenities';
 import HotelPolicies from './HotelPolicies';
 import "./HotelInfo.css"
 
-const HotelInfo = ({hotel}) => {
+const HotelInfo = () => {
     return (
         <center>
             <div className="hotel-info-content-container">
-                <HotelDescription hotel={hotel}/>
+                <HotelDescription />
                 <HotelHighlights />
                 <HotelAmenities />
                 <HotelPolicies />

@@ -1,0 +1,268 @@
+/* .hotel-booking-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.hotel-booking-header {
+    display: flex;
+    gap: 10px;
+    background-color: #AADDFF;
+ 
+    padding: 15px 20px;
+
+    border-radius: 8px;
+ 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    width: 100%;
+    max-width: 1400px;
+    margin-bottom: 20px;
+    align-items: center;
+
+}
+
+.hotel-booking-input {
+    flex: 1;
+    border-radius: 4px;
+
+    border: 1px solid #ccc;
+   
+}
+
+.hotel-booking-button {
+    padding: 8px 20px;
+
+    background-color: #0288d1;
+ 
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+}
+
+.hotel-booking-button:hover {
+    background-color: #0277bd;
+  
+}
+
+
+.hotel-booking-content {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+ 
+    gap: 20px;
+}
+
+.hotel-booking-sidebar {
+    flex: 1;
+    max-width: 300px;
+}
+
+.hotel-booking-main {
+    flex: 2;
+}
+
+.hotel-booking-alert {
+    background-color: #ffcc80;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.hotel-booking-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.hotel-card {
+    margin: 10px 0;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    display: flex;
+    gap: 15px;
+}
+
+.hotel-card-content {
+    display: flex;
+    width: 100%;
+}
+
+.hotel-image-container {
+    flex: 1;
+}
+
+.hotel-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.hotel-details {
+    flex: 2;
+    padding: 15px;
+}
+
+.hotel-title {
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.hotel-address {
+    color: #555;
+}
+
+.badge {
+    background-color: #f0f0f0;
+    border-radius: 12px;
+    padding: 5px 10px;
+    margin-right: 5px;
+}
+
+.hotel-partnership {
+    margin: 10px 0;
+}
+
+.hotel-rating-price {
+    margin-top: 10px;
+}
+
+.hotel-rating {
+    display: flex;
+    align-items: center;
+}
+
+.star,
+.star-half {
+    color: #ffcc00;
+}
+
+.reviews {
+    margin-left: 10px;
+    color: #888;
+}
+
+.hotel-pricing {
+    display: flex;
+    align-items: center;
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: #999;
+    margin-right: 10px;
+}
+
+.new-price {
+    color: #d32f2f;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.additional-info {
+    margin-top: 5px;
+    color: #666;
+}
+
+.price-range-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+
+  
+}
+
+.price-value {
+    text-align: center;
+} */
+
+.hotel-booking-filter {
+    /* background-color: #f8f9fa; */
+    /* Màu nền nhẹ nhàng */
+    /* border: 1px solid #dee2e6; */
+    /* Đường viền mỏng */
+    /* border-radius: 10px; */
+    /* Bo tròn góc */
+    /* padding: 20px; */
+    /* Khoảng cách bên trong */
+    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+    /* Bóng đổ nhẹ */
+    font-family: 'Roboto', sans-serif;
+    /* Font chữ */
+    /* margin: 20px 0; */
+    margin-left: 10%;
+    margin-right: 0%;
+    margin-top: -2%;
+    /* Khoảng cách giữa các thẻ */
+    max-width: 250px;
+    /* margin-left: 80px; */
+}
+
+.hotel-booking-filter h6 {
+    color: #343a40;
+    /* Màu tiêu đề */
+    font-size: 1.2rem;
+    /* Kích thước chữ tiêu đề */
+    margin-bottom: 10px;
+    /* Khoảng cách dưới tiêu đề */
+}
+
+.price-range-container {
+    display: flex;
+    /* Sử dụng flex để căn chỉnh */
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+    margin-bottom: 20px;
+    /* Khoảng cách dưới khung giá */
+}
+
+.price-value {
+    margin-right: 10px;
+    /* Khoảng cách giữa giá và thanh trượt */
+    font-weight: bold;
+    /* Chữ đậm cho giá */
+}
+
+input[type="range"] {
+    flex-grow: 1;
+    /* Chiếm toàn bộ chiều rộng có thể */
+}
+
+ul {
+    padding: 0;
+    /* Xóa padding */
+    list-style-type: none;
+    /* Không sử dụng dấu đầu dòng */
+    margin-bottom: 20px;
+    /* Khoảng cách dưới danh sách */
+}
+
+label {
+    display: flex;
+    /* Hiển thị flex để căn chỉnh checkbox và nhãn */
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+    cursor: pointer;
+    /* Thay đổi con trỏ khi hover */
+    padding: 5px;
+    /* Khoảng cách bên trong mỗi mục */
+    border-radius: 5px;
+    /* Bo tròn góc cho mỗi mục */
+    transition: background-color 0.2s;
+    /* Hiệu ứng chuyển động */
+}
+
+
+input[type="checkbox"] {
+    margin-right: 10px;
+    /* Khoảng cách giữa checkbox và nhãn */
+}
