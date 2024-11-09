@@ -1,0 +1,30 @@
+.booking-container {
+    width: 100%;
+}
+
+.booking-header {
+    width: 60%;
+    height: 10%;
+    margin: 20px auto;
+}
+
+.booking-container .booking-body {
+    width: 80%;
+    display: flex;
+    justify-content: stretch;
+    margin: 0 auto;
+}
+
+.booking-container .booking-body .booking-body-left {
+    flex-grow: 1;
+    flex-basis: 30%;
+    height: 100%;
+
+}
+
+.booking-container .booking-body .booking-body-right {
+    flex-grow: 5;
+    flex-basis: 7%;
+    height: 100%;
+
+}

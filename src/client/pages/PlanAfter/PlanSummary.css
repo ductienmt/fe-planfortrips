@@ -19,27 +19,32 @@
   padding: 18px 6px;
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
-.summary-item {
+
+.plan-summary .summary-item {
   display: flex;
   flex-direction: column;
   flex: 1;
 }
-.summary-label {
+
+.plan-summary.summary-label {
   font-size: 10px;
   align-self: center;
   z-index: 10;
 }
-.summary-value {
+
+.plan-summary .summary-value {
   border-radius: 20px;
   background-color: rgba(236, 236, 236, 0.5);
   font-size: 20px;
   padding: 17px;
 }
+
 @media (max-width: 991px) {
   .plan-summary {
     max-width: 100%;
   }
-  .summary-value {
+
+  .plan-summary .summary-value {
     padding: 17px 20px;
   }
 }

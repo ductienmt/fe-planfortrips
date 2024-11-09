@@ -1,0 +1,191 @@
+.profile-detail-container .profile-card {
+    background-color: #eeeeee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    border-radius: 13px;
+}
+
+.profile-detail-container .profile-card:hover {
+    background-color: #f3f3f3;
+}
+
+.profile-detail-container .profile-card .next-button button {
+    background-color: transparent;
+    color: #4e4e4e;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+}
+
+.profile-detail-container .profile-card .next-button button:hover {
+    background-color: #c4c4c4;
+}
+
+
+.modal-profile-custom .modal-header {
+    border-bottom: none;
+}
+
+.modal-profile-custom .modal-content {
+    border: none;
+}
+
+.modal-profile-custom .modal-content .modal-body .content ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.modal-profile-custom .modal-content .modal-body .content ul li {
+    padding: 10px 0;
+    background-color: #2e2e2e;
+}
+
+.modal-profile-custom .modal-content .modal-body .content ul li span {
+    color: #e0e0e0;
+}
+
+.modal-profile-custom .modal-content .modal-body .content ul li:hover {
+    background-color: #555555;
+}
+
+.modal-profile-custom .modal-content .modal-body .content ul li button {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    border: none;
+}
+
+.modal-profile-custom .modal-content .modal-body .content ul li button svg {
+    color: #e0e0e0;
+}
+
+/* .modal-profile-custom .modal-content .modal-body .custom-button-submit {
+    background-color: #2e2e2e;
+    color: #e0e0e0;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 13px;
+    cursor: pointer;
+    width: 100%;
+} */
+
+.modal-profile-custom .Documents-btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: fit-content;
+    height: 45px;
+    border: none;
+    padding: 0px 15px;
+    border-radius: 5px;
+    background-color: rgb(49, 49, 83);
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin: 0 auto;
+}
+
+.modal-profile-custom .folderContainer {
+    width: 40px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+}
+
+.modal-profile-custom .fileBack {
+    z-index: 1;
+    width: 80%;
+    height: auto;
+}
+
+.modal-profile-custom .filePage {
+    width: 50%;
+    height: auto;
+    position: absolute;
+    z-index: 2;
+    transition: all 0.3s ease-out;
+}
+
+.modal-profile-custom .fileFront {
+    width: 85%;
+    height: auto;
+    position: absolute;
+    z-index: 3;
+    opacity: 0.95;
+    transform-origin: bottom;
+    transition: all 0.3s ease-out;
+}
+
+.modal-profile-custom .text {
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease-out;
+    margin-top: 10px;
+}
+
+.modal-profile-custom .Documents-btn:hover .filePage {
+    transform: translateY(-5px);
+}
+
+.modal-profile-custom .Documents-btn:hover {
+    background-color: rgb(58, 58, 94);
+}
+
+.modal-profile-custom .Documents-btn:active {
+    transform: scale(0.95);
+}
+
+.modal-profile-custom .Documents-btn:hover .fileFront {
+    transform: rotateX(30deg);
+}
+
+.modal-profile-custom .modal-footer {
+    padding: 0;
+}
+
+.modal-profile-custom .modal-footer .custome-button-footer {
+    padding: 15px 25px;
+    border: unset;
+    color: #212121;
+    z-index: 1;
+    background: #e8e8e8;
+    position: relative;
+    font-weight: 700;
+    font-size: 17px;
+    -webkit-box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+    box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+    transition: all 250ms;
+    overflow: hidden;
+    border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.modal-profile-custom .modal-footer .custome-button-footer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0;
+    background-color: #212121;
+    z-index: -1;
+    -webkit-box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+    box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+    transition: all 250ms
+}
+
+.modal-profile-custom .modal-footer .custome-button-footer:hover::before {
+    width: 100%;
+}
+
+.modal-profile-custom .modal-footer .custome-button-footer:hover {
+    color: #e8e8e8;
+}

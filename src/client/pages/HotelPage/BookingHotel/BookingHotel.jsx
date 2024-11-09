@@ -1,11 +1,13 @@
-import React from 'react';
-import './BookingHotel.css'; // Nhập tệp CSS
+import React, { useEffect, useState } from 'react';
+import './BookingHotel.css'; 
 import BookingHotelImageGallery from './BookingHotelComponent/BookingHotelImageGallery';
 import BookingHotelHotelInfo from './BookingHotelComponent/BookingHotelHotelInfo';
 import BookingHotelRoomOptions from './BookingHotelComponent/BookingHotelRoomOptions';
 import BookingHotelLocationMap from './BookingHotelComponent/BookingHotelLocationMap';
 import BookingHotelReviewSection from './BookingHotelComponent/BookingHotelReviewSection';
 import BookingHotelAmenityItem from './BookingHotelComponent/BookingHotelAmenityItem';
+import { useParams } from 'react-router-dom';
+import { HotelService } from '../../../../services/apis/HotelService';
 
 function BookingHotel() {
   const amenities = [
@@ -19,21 +21,48 @@ function BookingHotel() {
     { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/a8555031c2c2aa5b8f15bc3bab3d75413b8aa9a39b59c21959403b718e19b050?placeholderIfAbsent=true&apiKey=c589bfd2cd264978bf52e7f54b2517b8", name: "Tủ lạnh" },
     { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/5cec712bafe3b7a20bb123c9e728de18e6eb21da262427c3f198fdcf93618d82?placeholderIfAbsent=true&apiKey=c589bfd2cd264978bf52e7f54b2517b8", name: "Vật dụng tắm rửa" }
   ];
+  const { hotel_id } = useParams();
+  const [hotel, setHotel] = useState({});
+  const [isLoading,setIsLoading] = useState(true);
+  const [room,setRoom] = useState({});
 
+  useEffect(() => {
+    const findById = async () => {
+      try {
+        const data = await HotelService.findHotelById(hotel_id);
+        setHotel(data);
+        setRoom(data.rooms[0])
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error:", error);
+        const query = `[Javascript] fix error: ${error.message}`;
+        window.open(`https://chatgpt.com/?q=${encodeURIComponent(query)}`);
+      }
+    };
+    findById();
+  }, [hotel_id]);
+    
+  if(isLoading){
+    return "loading"
+  }
   return (
-    <div className="booking-hotel-container"> {/* Thêm container */}
+    <div className="booking-hotel-container">
       <main className="booking-hotel">
-        <BookingHotelImageGallery />
-        <BookingHotelHotelInfo />
+        <BookingHotelImageGallery images={hotel.images}/>
+        <BookingHotelHotelInfo hotelInfo={room}/>
         <section className="booking-hotel-amenities">
           <h2 className="booking-hotel-section-title">Tiện ích</h2>
           <div className="booking-hotel-amenities-grid">
             {amenities.map((amenity, index) => (
-              <BookingHotelAmenityItem key={index} icon={amenity.icon} name={amenity.name} />
+              <BookingHotelAmenityItem
+                key={index}
+                icon={amenity.icon}
+                name={amenity.name}
+              />
             ))}
           </div>
         </section>
-        <BookingHotelRoomOptions />
+        <BookingHotelRoomOptions rooms={hotel.rooms} setRoom={setRoom}/>
         <BookingHotelLocationMap />
         <BookingHotelReviewSection />
       </main>

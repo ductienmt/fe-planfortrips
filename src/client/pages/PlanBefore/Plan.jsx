@@ -2,34 +2,36 @@ import { useState, useEffect, useRef, useContext } from "react";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { handleInputChange } from "../../../utils/FormatMoney"; // Đường dẫn tới file FormatMoney.js
-import provinces from "../../../utils/Provinces.json"; // Đường dẫn tới file Province.json
-import { useSnackbar } from "notistack"; // Thêm Notistack
+import { handleInputChange } from "../../../utils/FormatMoney";
+import provinces from "../../../utils/Provinces.json";
+import { useSnackbar } from "notistack";
 import "./Plan.css";
 import { flatpickrConfig } from "../../../utils/ConfigFlatpickr";
 import { DateFormatter } from "../../../utils/DateFormat";
 import { PlanServiceApi } from "../../../services/apis/PlanServiceApi";
 import { generateTripPlan } from "../../../services/planService";
+import Loading from "../../Components/Loading";
+import { useNavigate } from "react-router-dom";
 
-function HomePage() {
-  const { enqueueSnackbar } = useSnackbar(); // Sử dụng Notistack
+function PlanBefore() {
+  const [loading, setLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
   const [adults, setAdults] = useState(0);
   const [children, setChildren] = useState(0);
   const [infants, setInfants] = useState(0);
+  const nagigate = useNavigate();
 
   const [showNumberBox, setShowNumberBox] = useState(false);
 
   const ngayDiRef = useRef(null);
   const ngayVeRef = useRef(null);
-  // const [loiNgay, setLoiNgay] = useState("");
 
-  const [budget, setBudget] = useState(""); // Trạng thái cho ngân sách
-  // const [error, setError] = useState(""); // Trạng thái cho thông báo lỗi
+  const [budget, setBudget] = useState("");
 
-  const [queryCurrentCity, setQueryCurrentCity] = useState(""); // Tỉnh, thành phố đang ở
-  const [queryDestination, setQueryDestination] = useState(""); // Điểm đến
-  const [filteredCurrentCities, setFilteredCurrentCities] = useState([]); // Gợi ý cho tỉnh, thành phố đang ở
-  const [filteredDestinations, setFilteredDestinations] = useState([]); // Gợi ý cho điểm đến
+  const [queryCurrentCity, setQueryCurrentCity] = useState("");
+  const [queryDestination, setQueryDestination] = useState("");
+  const [filteredCurrentCities, setFilteredCurrentCities] = useState([]);
+  const [filteredDestinations, setFilteredDestinations] = useState([]);
 
   const [formData, setFormData] = useState({
     location: "",
@@ -43,36 +45,51 @@ function HomePage() {
   const [planData, setPlanData] = useState({
     location: "Hồ Chí Minh",
     destination: "Vũng Tàu",
-    startDate: "10-10-2024 08:00:00",
-    endDate: "13-10-2024 14:00:00",
-    numberPeople: 2,
+    startDate: "25-10-2024 08:00:00",
+    endDate: "28-10-2024 14:00:00",
+    numberPeople: 3,
     budget: 5000,
   });
 
+  const parseBudget = (budget) => {
+    const budgetNumber = parseFloat(budget.replace(/,/g, ""));
+    return budgetNumber / 1000;
+  };
+
   const handlePlan = async () => {
-    // if (validatePlan()) {
-    // setFormData({
-    //   ...formData,
-    //   location: queryCurrentCity,
-    //   destination: queryDestination,
-    //   startDate: DateFormatter(ngayDiRef.current.value),
-    //   endDate: DateFormatter(ngayDiRef.current.value),
-    //   numberPeople: adults + children + infants,
-    //   budget: budget,
-    // });
-    try {
-      const response = await PlanServiceApi.getData(planData);
-      console.log(response.data);
-      const tripPlan = await generateTripPlan(response.data);
-      console.log(tripPlan);
-      if (tripPlan) {
-        console.log("Setting trip plan:", tripPlan);
-        localStorage.setItem("tripData", JSON.stringify(tripPlan));
-        // Chuyển hướng sau khi đã cập nhật tripPlan
-        // window.location.href = "/plan/trip";
+    if (validatePlan()) {
+      setLoading(true);
+      setFormData({
+        ...formData,
+        location: queryCurrentCity,
+        destination: queryDestination,
+        startDate: DateFormatter(ngayDiRef.current.value),
+        endDate: DateFormatter(ngayDiRef.current.value),
+        numberPeople: adults + children + infants,
+        budget: parseBudget(budget),
+      });
+      console.log(formData);
+      try {
+        const response = await PlanServiceApi.getData(formData);
+
+        console.log(response.data);
+        const tripPlan = await generateTripPlan(response.data);
+        console.log(tripPlan);
+        if (tripPlan) {
+          console.log("Setting trip plan:", tripPlan);
+          sessionStorage.setItem("tripData", JSON.stringify(tripPlan));
+          nagigate("/plan/trip");
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error(error);
+        enqueueSnackbar("Lỗi khi lên kế hoạch!", {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -92,14 +109,12 @@ function HomePage() {
         children === 0 &&
         infants === 0 &&
         "Vui lòng chọn ít nhất một người!",
-    ].filter(Boolean); // Remove undefined values
+    ].filter(Boolean);
 
-    // Show the first error message if any
     if (errorMessages.length > 0) {
       enqueueSnackbar(errorMessages[0], { variant: "error" });
       return false;
     }
-
     return true;
   };
 
@@ -107,7 +122,6 @@ function HomePage() {
     handleInputChange(event, setBudget, (errorMessage) => {
       if (errorMessage) {
         enqueueSnackbar(errorMessage, {
-          // Sử dụng notistack để hiện thông báo lỗi
           variant: "error",
           autoHideDuration: 3000,
         });
@@ -245,214 +259,226 @@ function HomePage() {
   };
 
   return (
-    <div className="plan-container">
-      <div className="overlay"></div>
+    <>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <div className="plan-container">
+            <div className="overlay"></div>
 
-      <>
-        <h1 className="text-white">Nhập điểm đến của bạn</h1>
-        <h3 className="text-white">
-          Plan for Trips, Nơi những chuyến đi tạo nên những ký ức đẹp.
-        </h3>
-      </>
+            <>
+              <h1 className="text-white">Nhập điểm đến của bạn</h1>
+              <h3 className="text-white">
+                Plan for Trips, Nơi những chuyến đi tạo nên những ký ức đẹp.
+              </h3>
+            </>
 
-      <div className="form-container p-4 bg-light rounded">
-        {/* Nhập điểm đến */}
-        <div className="row mb-3">
-          <div className="col-md-6 mb-3 mb-md-0 d-flex flex-column">
-            <label htmlFor="current-city" className="form-label">
-              Vị trí hiện tại
-            </label>
-            <input
-              type="text"
-              id="current-city"
-              value={queryCurrentCity}
-              onChange={handleInputChangeCurrentCity}
-              placeholder="Nhập tỉnh hoặc thành phố nơi bạn sống"
-              className="homepage-input"
-            />
-            {/* Hiển thị gợi ý */}
-            {filteredCurrentCities.length > 0 && (
-              <ul className="suggestions-list">
-                {filteredCurrentCities.map((province) => (
-                  <li
-                    key={province.province_id}
-                    onClick={() =>
-                      handleCurrentCitySuggestionClick(province.province_name)
-                    }
-                  >
-                    {province.province_name}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-          <div className="col-md-6 d-flex flex-column">
-            <label htmlFor="destination" className="form-label">
-              Điểm đến
-            </label>
-            <input
-              type="text"
-              id="destination"
-              value={queryDestination}
-              onChange={handleInputChangeDestination}
-              placeholder="Nhập thành phố hoặc địa điểm du lịch"
-              className="homepage-input"
-            />
-            {/* Hiển thị gợi ý */}
-            {filteredDestinations.length > 0 && (
-              <ul className="suggestions-list">
-                {filteredDestinations.map((province) => (
-                  <li
-                    key={province.province_id}
-                    onClick={() =>
-                      handleDestinationSuggestionClick(province.province_name)
-                    }
-                  >
-                    {province.province_name}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </div>
-
-        {/* Ngày đi và Ngày về */}
-        <div className="row mb-3">
-          <div className="col-md-6 mb-3 mb-md-0 d-flex flex-column">
-            <label htmlFor="ngay-di" className="form-label">
-              Ngày đi
-            </label>
-            <input
-              ref={ngayDiRef}
-              id="ngay-di"
-              className="homepage-input"
-              placeholder="Chọn ngày, giờ đi"
-            />
-          </div>
-          <div className="col-md-6 mb-3 mb-md-0 d-flex flex-column">
-            <label htmlFor="ngay-ve" className="form-label">
-              Ngày về
-            </label>
-            <input
-              ref={ngayVeRef}
-              id="ngay-ve"
-              className="homepage-input"
-              placeholder="Chọn ngày, giờ về"
-            />
-          </div>
-        </div>
-
-        {/* Nhập ngân sách */}
-        <div className="row mb-3">
-          <div className="col-md-6 mb-3 d-flex flex-column">
-            <label htmlFor="budget" className="form-label">
-              Chi phí cho chuyến đi (VNĐ)
-            </label>
-            <input
-              type="text"
-              id="budget"
-              className="homepage-input"
-              placeholder="Ví dụ: 5,000,000₫"
-              value={budget}
-              onChange={handleBudgetChange}
-            />
-          </div>
-          <div className="col-md-6 mb-3 d-flex flex-column">
-            <label htmlFor="people" className="form-label">
-              Số lượng người
-            </label>
-            <input
-              type="text"
-              id="people"
-              className="homepage-input"
-              value={`${adults} người lớn, ${children} trẻ em, ${infants} trẻ sơ sinh`}
-              readOnly
-              onClick={() => setShowNumberBox(!showNumberBox)}
-            />
-            {showNumberBox && (
-              <div className="number-box">
-                <ul>
-                  <li>
-                    <div className="number-left">
-                      <p>Người lớn</p>
-                    </div>
-                    <div className="number-right">
-                      <button
-                        className="decrement"
-                        onClick={() => handleDecrement("adult")}
-                      >
-                        -
-                      </button>
-                      <span>{adults}</span>
-                      <button
-                        className="increment"
-                        onClick={() => handleIncrement("adult")}
-                      >
-                        +
-                      </button>
-                    </div>
-                  </li>
-
-                  <li>
-                    <div className="number-left">
-                      <p>Trẻ em</p>
-                    </div>
-                    <div className="number-right">
-                      <button
-                        className="decrement"
-                        onClick={() => handleDecrement("child")}
-                      >
-                        -
-                      </button>
-                      <span>{children}</span>
-                      <button
-                        className="increment"
-                        onClick={() => handleIncrement("child")}
-                      >
-                        +
-                      </button>
-                    </div>
-                  </li>
-
-                  <li>
-                    <div className="number-left">
-                      <p>Trẻ sơ sinh</p>
-                    </div>
-                    <div className="number-right">
-                      <button
-                        className="decrement"
-                        onClick={() => handleDecrement("infant")}
-                      >
-                        -
-                      </button>
-                      <span>{infants}</span>
-                      <button
-                        className="increment"
-                        onClick={() => handleIncrement("infant")}
-                      >
-                        +
-                      </button>
-                    </div>
-                  </li>
-                </ul>
+            <div className="form-container p-4 bg-light rounded">
+              {/* Nhập điểm đến */}
+              <div className="row mb-3">
+                <div className="col-md-6 mb-3 mb-md-0 d-flex flex-column">
+                  <label htmlFor="current-city" className="form-label">
+                    Vị trí hiện tại
+                  </label>
+                  <input
+                    type="text"
+                    id="current-city"
+                    value={queryCurrentCity}
+                    onChange={handleInputChangeCurrentCity}
+                    placeholder="Nhập tỉnh hoặc thành phố nơi bạn sống"
+                    className="homepage-input"
+                  />
+                  {/* Hiển thị gợi ý */}
+                  {filteredCurrentCities.length > 0 && (
+                    <ul className="suggestions-list">
+                      {filteredCurrentCities.map((province) => (
+                        <li
+                          key={province.province_id}
+                          onClick={() =>
+                            handleCurrentCitySuggestionClick(
+                              province.province_name
+                            )
+                          }
+                        >
+                          {province.province_name}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+                <div className="col-md-6 d-flex flex-column">
+                  <label htmlFor="destination" className="form-label">
+                    Điểm đến
+                  </label>
+                  <input
+                    type="text"
+                    id="destination"
+                    value={queryDestination}
+                    onChange={handleInputChangeDestination}
+                    placeholder="Nhập thành phố hoặc địa điểm du lịch"
+                    className="homepage-input"
+                  />
+                  {/* Hiển thị gợi ý */}
+                  {filteredDestinations.length > 0 && (
+                    <ul className="suggestions-list">
+                      {filteredDestinations.map((province) => (
+                        <li
+                          key={province.province_id}
+                          onClick={() =>
+                            handleDestinationSuggestionClick(
+                              province.province_name
+                            )
+                          }
+                        >
+                          {province.province_name}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
               </div>
-            )}
+
+              {/* Ngày đi và Ngày về */}
+              <div className="row mb-3">
+                <div className="col-md-6 mb-3 mb-md-0 d-flex flex-column">
+                  <label htmlFor="ngay-di" className="form-label">
+                    Ngày đi
+                  </label>
+                  <input
+                    ref={ngayDiRef}
+                    id="ngay-di"
+                    className="homepage-input"
+                    placeholder="Chọn ngày, giờ đi"
+                  />
+                </div>
+                <div className="col-md-6 mb-3 mb-md-0 d-flex flex-column">
+                  <label htmlFor="ngay-ve" className="form-label">
+                    Ngày về
+                  </label>
+                  <input
+                    ref={ngayVeRef}
+                    id="ngay-ve"
+                    className="homepage-input"
+                    placeholder="Chọn ngày, giờ về"
+                  />
+                </div>
+              </div>
+
+              {/* Nhập ngân sách */}
+              <div className="row mb-3">
+                <div className="col-md-6 mb-3 d-flex flex-column">
+                  <label htmlFor="budget" className="form-label">
+                    Chi phí cho chuyến đi (VNĐ)
+                  </label>
+                  <input
+                    type="text"
+                    id="budget"
+                    className="homepage-input"
+                    placeholder="Ví dụ: 5,000,000₫"
+                    value={budget}
+                    onChange={handleBudgetChange}
+                  />
+                </div>
+                <div className="col-md-6 mb-3 d-flex flex-column">
+                  <label htmlFor="people" className="form-label">
+                    Số lượng người
+                  </label>
+                  <input
+                    type="text"
+                    id="people"
+                    className="homepage-input"
+                    value={`${adults} người lớn, ${children} trẻ em, ${infants} trẻ sơ sinh`}
+                    readOnly
+                    onClick={() => setShowNumberBox(!showNumberBox)}
+                  />
+                  {showNumberBox && (
+                    <div className="number-box">
+                      <ul>
+                        <li>
+                          <div className="number-left">
+                            <p>Người lớn</p>
+                          </div>
+                          <div className="number-right">
+                            <button
+                              className="decrement"
+                              onClick={() => handleDecrement("adult")}
+                            >
+                              -
+                            </button>
+                            <span>{adults}</span>
+                            <button
+                              className="increment"
+                              onClick={() => handleIncrement("adult")}
+                            >
+                              +
+                            </button>
+                          </div>
+                        </li>
+
+                        <li>
+                          <div className="number-left">
+                            <p>Trẻ em</p>
+                          </div>
+                          <div className="number-right">
+                            <button
+                              className="decrement"
+                              onClick={() => handleDecrement("child")}
+                            >
+                              -
+                            </button>
+                            <span>{children}</span>
+                            <button
+                              className="increment"
+                              onClick={() => handleIncrement("child")}
+                            >
+                              +
+                            </button>
+                          </div>
+                        </li>
+
+                        <li>
+                          <div className="number-left">
+                            <p>Trẻ sơ sinh</p>
+                          </div>
+                          <div className="number-right">
+                            <button
+                              className="decrement"
+                              onClick={() => handleDecrement("infant")}
+                            >
+                              -
+                            </button>
+                            <span>{infants}</span>
+                            <button
+                              className="increment"
+                              onClick={() => handleIncrement("infant")}
+                            >
+                              +
+                            </button>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </div>
+              {/* Nút lên kế hoạch */}
+              <button
+                type="button"
+                className="homepage-button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handlePlan();
+                }}
+              >
+                Lên kế hoạch
+              </button>
+            </div>
           </div>
-        </div>
-        {/* Nút lên kế hoạch */}
-        <button
-          type="button"
-          className="homepage-button"
-          onClick={(e) => {
-            e.preventDefault();
-            handlePlan();
-          }}
-        >
-          Lên kế hoạch
-        </button>
-      </div>
-    </div>
+        </>
+      )}
+    </>
   );
 }
 
-export default HomePage;
+export default PlanBefore;

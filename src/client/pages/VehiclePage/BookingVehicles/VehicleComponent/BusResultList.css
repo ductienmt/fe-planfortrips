@@ -1,0 +1,12 @@
+.result-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+    width: 67%;
+}
+
+@media (max-width: 991px) {
+    .bus-result-list-wrapper {
+        width: 100%;
+    }
+}

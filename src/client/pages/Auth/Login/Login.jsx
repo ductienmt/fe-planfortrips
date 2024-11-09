@@ -1,4 +1,3 @@
-// src/components/Auth/Login.jsx
 import { useEffect, useState } from "react";
 import "./Login.css";
 import {
@@ -6,11 +5,14 @@ import {
   getAuthUrl,
 } from "../../../../services/apis/Oauth2Service";
 import { Link, useNavigate } from "react-router-dom";
-import AuthService from "../../../../services/apis/AuthService";
 import { useSnackbar } from "notistack";
 import handleToken from "../../../../services/HandleToken";
+import { InputFlied } from "../../../Components/Input/InputFlied";
+import { AuthService } from "../../../../services/apis/AuthService";
+import { useAuth } from "../../../../context/AuthContext/AuthProvider";
 
 const Login = () => {
+  const { login, logout } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const queryParam = new URLSearchParams(window.location.search);
   const navigate = useNavigate();
@@ -29,21 +31,23 @@ const Login = () => {
           autoHideDuration: 1000,
         });
       }
-      const response = await AuthService.login(formData);
+      const response = await AuthService.loginUser(formData);
       console.log("Đăng nhập thành công:", response.data);
-      handleToken.save(
+      login(
         response.data.data.token,
-        response.data.data.userName,
-        response.data.data.role
+        response.data.data.role,
+        response.data.data.userName
       );
       enqueueSnackbar(response.data.message, {
         variant: "success",
         autoHideDuration: 1000,
         onExit: () => {
-          navigate("/");
+          const previousUrl = sessionStorage.getItem("previousUrl") || "/";
+          navigate(previousUrl); // Quay lại URL trước khi đăng nhập
         },
       });
     } catch (error) {
+      console.error(error);
       enqueueSnackbar(error.response?.data?.message || "Đăng nhập thất bại", {
         variant: "error",
         autoHideDuration: 1000,
@@ -57,12 +61,10 @@ const Login = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    // console.log(formData);
   };
 
-  useEffect(() => {}, []);
-
   useEffect(() => {
-    localStorage.clear();
     document.title = "Đăng nhập";
     window.scrollTo(0, 200);
     getAuthUrl().then((res) => {
@@ -113,40 +115,36 @@ const Login = () => {
                 <h2 className="login-title">Đăng nhập</h2>
               </div>
 
-              <div className="input-grup">
-                {/* Tên tài khoản input */}
+              <div className="input-grup" style={{ width: "100%" }}>
                 <div className="custom-input form-outline mb-4">
-                  <input
-                    type="text"
-                    name="userName"
-                    className="form-control"
-                    placeholder=" "
+                  <InputFlied
+                    typeInput={"text"}
+                    nameInput={"userName"}
                     value={formData.userName}
                     onChange={(e) => handleChange(e)}
-                  />
-                  <label className="form-label">Tên tài khoản</label>
+                    content={"Username"}
+                  ></InputFlied>
                 </div>
                 <div className="custom-input form-outline mb-4">
-                  <input
-                    type="password"
-                    name="password"
-                    className="form-control"
-                    placeholder=" "
+                  <InputFlied
+                    content={"Mật khẩu"}
+                    typeInput={"password"}
+                    nameInput={"password"}
                     value={formData.password}
                     onChange={(e) => handleChange(e)}
                   />
-                  <label className="form-label" htmlFor="password">
-                    Mật khẩu
-                  </label>
                 </div>
-                <div className="forgot-password text-body mb-2">
-                  <a href="#!" className="text-body">
+                <div className="register-forgot-password text-body mb-2">
+                  <a href="#!" className="register-text-body">
                     Quên mật khẩu?
                   </a>
                 </div>
               </div>
 
-              <div className="auth-action text-center">
+              <div
+                className="auth-action text-center"
+                style={{ width: "100%" }}
+              >
                 <button type="submit" className="btn login-btn btn-lg mb-1">
                   Đăng nhập
                 </button>

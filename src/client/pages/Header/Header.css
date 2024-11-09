@@ -4,14 +4,11 @@
     color: white;
     /* Màu sắc chữ nếu bạn muốn */
     background-color: black;
-    margin-right: 50px;
     border-radius: 28px;
 
 }
 
-.custom-header .input-group {
-    margin-left: 100px;
-}
+
 
 .custom-header h1 {
     font-size: 2rem;
@@ -115,54 +112,50 @@
 }
 
 
-/**/
 
-.custom-header.user-avatar {
+.custom-header .user-avatar {
     width: 40px;
-    /* Set the width of the avatar */
     height: 40px;
-    /* Set the height of the avatar */
     border-radius: 50%;
-    /* Make the avatar circular */
     cursor: pointer;
-    /* Change cursor to pointer on hover */
-    margin-right: 10px;
-    /* Add some space to the right */
+    position: relative;
+    object-fit: cover;
 }
 
-.custom-header.avatar-menu {
+.custom-header .user-menu {
+    position: relative;
+}
+
+.custom-header .user-dropdown {
     position: absolute;
-    /* Position the menu absolutely */
     top: 50px;
-    /* Adjust the position below the avatar */
+    /* Đặt ngay dưới avatar */
     right: 0;
-    /* Align to the right */
+    /* Căn phải theo avatar */
     background-color: white;
-    /* Background color of the menu */
-    border: 1px solid #ccc;
-    /* Border for the menu */
+    border: 1px solid #ddd;
     border-radius: 5px;
-    /* Rounded corners */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    /* Add shadow for depth */
-    z-index: 1000;
-    /* Ensure the menu appears above other elements */
     padding: 10px;
-    /* Padding inside the menu */
+    z-index: 1000;
+    /* Đặt lên trên header */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    /* Tạo hiệu ứng nổi */
+    min-width: 250px;
+    /* Đặt kích thước tối thiểu cho menu */
 }
 
-.custom-header .avatar-menu a {
-    display: block;
-    /* Make links block elements */
-    padding: 8px 12px;
-    /* Padding for links */
-    color: black;
-    /* Text color */
-    text-decoration: none;
-    /* Remove underline */
+.custom-header .user-dropdown ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
-.custom-header .avatar-menu a:hover {
+.custom-header .user-dropdown ul li {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.custom-header .user-dropdown ul li:hover {
     background-color: #f0f0f0;
-    /* Change background on hover */
 }

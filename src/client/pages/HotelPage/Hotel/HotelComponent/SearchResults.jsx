@@ -1,7 +1,29 @@
 import React from 'react';
 import './SearchResults.css';
+import Box from '@mui/material/Box';
+import Slider from '@mui/material/Slider';
+import Typography from '@mui/material/Typography';
+
+const MAX = 1000;
+const MIN = 0;
+const marks = [
+    {
+        value: MIN,
+        label: '',
+    },
+    {
+        value: MAX,
+        label: '',
+    },
+];
 
 const SearchResults = () => {
+
+    const [val, setVal] = React.useState(MIN);
+    const handleChange = (_, newValue) => {
+        setVal(newValue);
+    };
+
     return (
         <div className="search-results-full-container">
             <iframe
@@ -16,7 +38,34 @@ const SearchResults = () => {
             <h6 className="search-results-price-title">Khoảng giá</h6>
             <div className="search-results-price-range-container">
                 <span className="search-results-price-value">3,300,000 VND</span>
-                <input type="range" min="0" max="5000" className="search-results-price-range-input" />
+                <Box sx={{ width: 150 }}>
+                    <Slider
+                        marks={marks}
+                        step={10}
+                        value={val}
+                        valueLabelDisplay="auto"
+                        min={MIN}
+                        max={MAX}
+                        onChange={handleChange}
+                    />
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography
+                            variant="body2"
+                            onClick={() => setVal(MIN)}
+                            sx={{ cursor: 'pointer' }}
+                        >
+                            {MIN} min
+                        </Typography>
+                        <Typography
+                            variant="body2"
+                            onClick={() => setVal(MAX)}
+                            sx={{ cursor: 'pointer' }}
+                        >
+                            {MAX} max
+                        </Typography>
+                    </Box>
+                </Box>
+
             </div>
             <h6 className="search-results-services-title">Dịch vụ có sẵn</h6>
             <ul className="search-results-services-checkbox-list">

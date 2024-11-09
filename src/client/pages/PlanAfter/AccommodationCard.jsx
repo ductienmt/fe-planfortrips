@@ -1,21 +1,59 @@
+import { useEffect, useState } from "react";
 import "./AccommodationCard.css";
+import { HotelService } from "../../../services/apis/HotelService";
 
-function AccommodationCard({ className, onClick  }) {
+function AccommodationCard({ className, onClick, accomodation }) {
+  const [hotelImage1, setHotelImage1] = useState("");
+  const [hotelImage2, setHotelImage2] = useState("");
+  const [hotelImage3, setHotelImage3] = useState("");
+
+  const loadHotelImages = async () => {
+    try {
+      const response = await HotelService.findHotelById(accomodation.hotelId);
+      const images = response.images;
+
+      if (images.length > 0) {
+        const selectedIndices = new Set();
+
+        while (
+          selectedIndices.size < 3 &&
+          selectedIndices.size < images.length
+        ) {
+          const randomIndex = Math.floor(Math.random() * images.length);
+          selectedIndices.add(randomIndex);
+        }
+
+        const indicesArray = Array.from(selectedIndices);
+
+        setHotelImage1(images[indicesArray[0]]?.url);
+        setHotelImage2(images[indicesArray[1]]?.url);
+        setHotelImage3(images[indicesArray[2]]?.url);
+      }
+    } catch (error) {
+      console.error("Error fetching hotel images:", error);
+    }
+  };
+
+  useEffect(() => {
+    console.log(accomodation.hotelId);
+    loadHotelImages();
+  }, [accomodation.hotelId]);
+
   return (
     <article className={`accommodation-card ${className}`} onClick={onClick}>
       <div className="image-gallery">
         <img
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/123da57d529830a1b364e51ef52ec5042745a8993200541eebb9c40a62954b20?placeholderIfAbsent=true&apiKey=75fde3af215540558ff19397203996a6"
+          src={hotelImage1}
           alt="Accommodation view 1"
           className="gallery-image"
         />
         <img
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/37694338de2e0fadd4645f1bd407db4bf37d504e6099b95a4754955851a9ef26?placeholderIfAbsent=true&apiKey=75fde3af215540558ff19397203996a6"
+          src={hotelImage2}
           alt="Accommodation view 2"
           className="gallery-image1"
         />
         <img
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/feddeeaa032abccd457849a982a1ca9cf32b40b8d691e4d2856dc52a439ca399?placeholderIfAbsent=true&apiKey=75fde3af215540558ff19397203996a6"
+          src={hotelImage3}
           alt="Accommodation view 3"
           className="gallery-image2 full-width"
         />
@@ -23,9 +61,18 @@ function AccommodationCard({ className, onClick  }) {
       <div className="accommodation-details">
         <div className="details-header">
           <div className="accommodation-info">
-            <h3 className="accommodation-name">Babyboo Homestay</h3>
-            <p className="room-type">A906 - Phòng đôi 2 người</p>
-            <CheckInOut checkIn="T4, 26 thg 9" checkOut="T5, 27 thg 9" />
+            <h3 className="accommodation-name" style={{ fontSize: "25px" }}>
+              {accomodation.nameHotel}
+            </h3>
+
+            {accomodation.rooms?.map((room, index) => (
+              <div key={index}>
+                <p className="room-type" style={{ fontSize: "15px" }}>
+                  {room.nameRoom} - {room.roomType}
+                </p>
+                <CheckInOut checkIn={room.checkin} checkOut={room.checkout} />
+              </div>
+            ))}
           </div>
           <img
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/8312b6c1afbf8ba2407ea61d3c83d5228f569367fc22cfce1fef9201d811a2c5?placeholderIfAbsent=true&apiKey=75fde3af215540558ff19397203996a6"
@@ -60,13 +107,21 @@ function CheckInOut({ checkIn, checkOut }) {
   return (
     <div className="check-in-out">
       <div className="check-item">
-        <span className="check-label">Check-in</span>
-        <span className="check-date">{checkIn} · 14:00 - 00:00</span>
+        <span className="check-label" style={{ fontSize: "15px" }}>
+          Check-in
+        </span>
+        <span className="check-date" style={{ fontSize: "15px" }}>
+          {checkIn} · 14:00 - 00:00
+        </span>
         {/* <span className="check-time">14:00 - 00:00</span> */}
       </div>
       <div className="check-item">
-        <span className="check-label">Check-out</span>
-        <span className="check-date">{checkOut} · until 12:00</span>
+        <span className="check-label" style={{ fontSize: "15px" }}>
+          Check-out
+        </span>
+        <span className="check-date" style={{ fontSize: "15px" }}>
+          {checkOut} · until 12:00
+        </span>
         {/* <span className="check-time">until 12:00</span> */}
       </div>
     </div>

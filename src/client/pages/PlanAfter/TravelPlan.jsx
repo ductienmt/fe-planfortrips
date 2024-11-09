@@ -4,14 +4,53 @@ import TransportationCard from "./TransportationCard";
 import AccommodationCard from "./AccommodationCard";
 import AttractionCard from "./AttractionCard";
 import "./TravelPlan.css";
+import { ScheduleService } from "../../../services/apis/ScheduleService";
+import { Link, useNavigate } from "react-router-dom";
+import { TicketService } from "../../../services/apis/TicketService";
+import { useAuth } from "../../../context/AuthContext/AuthProvider";
+import { useSnackbar } from "notistack";
 
 function TravelPlan() {
   const [selectedCard, setSelectedCard] = useState("transportation");
-
-  const tripData = JSON.parse(localStorage.getItem("tripData"));
-  const [tripPlan, setTripPlan] = useState({});
+  const tripData = JSON.parse(sessionStorage.getItem("tripData"));
   const [summaryItems, setSummaryItems] = useState([]);
   const [accommodationItems, setAccommodationItems] = useState([]);
+  const { enqueueSnackbar } = useSnackbar();
+  const { role, username } = useAuth();
+  const navigate = useNavigate();
+
+  const seatsDe = tripData.transportation.departure.seatBook
+    .map((seat) => seat.seat_number)
+    .join(", ");
+
+  const seatsRe = tripData.transportation.return.seatBook
+    .map((seat) => seat.seat_number)
+    .join(", ");
+
+  const calculateDuration = (departureTime, arrivalTime) => {
+    const [departureHours, departureMinutes] = departureTime
+      .split(":")
+      .map(Number);
+    const [arrivalHours, arrivalMinutes] = arrivalTime.split(":").map(Number);
+
+    const departureDate = new Date();
+    const arrivalDate = new Date();
+
+    departureDate.setHours(departureHours, departureMinutes);
+    arrivalDate.setHours(arrivalHours, arrivalMinutes);
+
+    let diffInMs = arrivalDate.getTime() - departureDate.getTime();
+
+    if (diffInMs < 0) {
+      diffInMs += 24 * 60 * 60 * 1000;
+    }
+
+    const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+    const hours = Math.floor(diffInMinutes / 60);
+    const minutes = diffInMinutes % 60;
+
+    return `${hours}h ${minutes}m`;
+  };
 
   const formatTime = (dateTime) => {
     if (typeof dateTime !== "string") {
@@ -43,40 +82,105 @@ function TravelPlan() {
     if (card == "attraction") handleAttractionSelected();
   };
 
-  // Hàm này chỉ được gọi khi nhấn next hoặc back trong AttractionCard
   const handleAttractionSelected = () => {
-    setSelectedCard("attraction"); // Luôn chọn AttractionCard khi nhấn next hoặc back
+    setSelectedCard("attraction");
   };
 
-  const newSummaryItems = tripData.data.userData
+  const handleSubmit = async () => {
+    try {
+      if (!role) {
+        sessionStorage.setItem("previousUrl", window.location.pathname);
+        enqueueSnackbar("Vui lòng đăng nhập để tiếp tục", {
+          variant: "error",
+          autoHideDuration: 1000,
+          onExit: () => {
+            navigate("/login");
+          },
+        });
+        return;
+      } else {
+        const dataTransportationDeparture = {
+          schedule_id: tripData.transportation.departure.scheduleId,
+          user_name: username,
+          total_price: tripData.transportation.departure.totalPrice,
+          status: "Pending",
+        };
+        const seatDe = tripData.transportation.departure.seatBook
+          .map((seat) => seat.seat_id)
+          .join(",");
+        console.log(seatDe);
+
+        const resDe = await TicketService.create(
+          dataTransportationDeparture,
+          seatDe
+        );
+
+        const dataTransportationArrival = {
+          schedule_id: tripData.transportation.return.scheduleId,
+          user_name: username,
+          total_price: tripData.transportation.return.totalPrice,
+          status: "Pending",
+        };
+        const seatRe = tripData.transportation.return.seatBook
+          .map((seat) => seat.seat_id)
+          .join(",");
+
+        const resRe = await TicketService.create(
+          dataTransportationArrival,
+          seatRe
+        );
+
+        // const dataBookHotel = {
+        //   {
+        //     "bookingHotelDetailDto": [
+        //       {
+        //         "roomId": 0,
+        //         "checkInTime": "2024-11-08 02:58:11",
+        //         "checkOutTime": "2024-11-08 02:58:11",
+        //         "createAt": "2024-11-08 02:58:11",
+        //         "updateAt": "2024-11-08 02:58:11",
+        //         "price": 0.00,
+        //         "status": "Pending"
+        //       }
+        //     ],
+        //     "userId": 0,
+        //     "paymentId": 0
+        //   }
+        // }
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Tạo chuyến đi thất bại!");
+    }
+  };
+
+  const newSummaryItems = tripData.userData
     ? [
-        { label: "Location", value: tripData.data.userData.location },
-        { label: "Destination", value: tripData.data.userData.destination },
+        { label: "Location", value: tripData.userData.location },
+        { label: "Destination", value: tripData.userData.destination },
         {
           label: "Start Date",
-          value: formatDate(tripData.data.userData.startDate),
+          value: formatDate(tripData.userData.startDate),
         },
         {
           label: "End Date",
-          value: formatDate(tripData.data.userData.endDate),
+          value: formatDate(tripData.userData.endDate),
         },
         {
           label: "Number of People",
-          value: tripData.data.userData.numberPeople,
+          value: tripData.userData.numberPeople,
         },
         {
           label: "Budget",
-          value: convertToVND(tripData.data.userData.budget),
+          value: convertToVND(tripData.userData.budget),
         },
       ]
     : [];
 
   useEffect(() => {
     if (tripData) {
-      setTripPlan(tripData);
-
       setSummaryItems(newSummaryItems);
-    } // Cập nhật summaryItems ở đây
+    }
   }, []);
 
   return (
@@ -88,40 +192,79 @@ function TravelPlan() {
             selectedCard === "transportation"
               ? "active"
               : selectedCard
-              ? "inactive"
-              : ""
+                ? "inactive"
+                : ""
           }
           onClick={() => handleCardClick("transportation")}
+          vehicleCode={tripData.transportation.departure.vehicleCode}
+          departureTime={formatTime(
+            tripData.transportation.departure.departureTime
+          )}
+          arrivalTime={formatTime(
+            tripData.transportation.departure.arrivalTime
+          )}
+          nameVehicle={tripData.transportation.departure.carName}
+          seatCode={seatsDe}
+          scheduleId={tripData.transportation.departure.scheduleId}
+          timeCommunicate={calculateDuration(
+            formatTime(tripData.transportation.departure.departureTime),
+            formatTime(tripData.transportation.departure.arrivalTime)
+          )}
         />
         <AccommodationCard
           className={
             selectedCard === "accommodation"
               ? "active"
               : selectedCard
-              ? "inactive"
-              : ""
+                ? "inactive"
+                : ""
           }
           onClick={() => handleCardClick("accommodation")}
-          img="https://cdn.builder.io/api/v1/image/assets/TEMP/2d3c33d736aad4abccd8a47609cc0bf5d6d61ec0ca67ffba42062bcd29757826?placeholderIfAbsent=true&apiKey=75fde3af215540558ff19397203996a6"
-          departureTime={formatTime(tripData.data.transportation.departureTime)}
-          arrivalTime={formatTime(tripData.data.transportation.arrivalTime)}
-          nameVehicle={tripData.data.transportation.carCompanyName}
+          accomodation={tripData.accomodation}
         />
         <AttractionCard
           className={
             selectedCard === "attraction"
               ? "active"
               : selectedCard
-              ? "inactive"
-              : ""
+                ? "inactive"
+                : ""
           }
           onClick={
             () => handleCardClick("attraction") // Gọi hàm này khi click vào AttractionCard
           }
-          onNext={handleAttractionSelected} // Truyền hàm này vào props
-          onBack={handleAttractionSelected} // Truyền hàm này vào props
+          onNext={handleAttractionSelected}
+          onBack={handleAttractionSelected}
+          checkin={tripData.checkins}
         />
       </section>
+      <div
+        className="travel-plan-footer"
+        style={{
+          display: "flex",
+          width: "100%",
+          justifyContent: "center",
+          marginTop: "20px",
+        }}
+      >
+        {/* <button className="travel-plan-footer-button">Edit</button> */}
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            handleSubmit();
+          }}
+          className="travel-plan-footer-button btn"
+          style={{
+            width: "30%",
+            backgroundColor: "#0976CF",
+            color: "white",
+            height: "50px",
+            fontSize: "20px",
+          }}
+        >
+          Xác nhận kế hoạch
+        </button>
+      </div>
     </main>
   );
 }
