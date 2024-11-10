@@ -1,3 +1,4 @@
+// src/components/Auth/Login.jsx
 import { useEffect, useState } from "react";
 import "./Login.css";
 import {
@@ -5,14 +6,17 @@ import {
   getAuthUrl,
 } from "../../../../services/apis/Oauth2Service";
 import { Link, useNavigate } from "react-router-dom";
+
 import { useSnackbar } from "notistack";
 import handleToken from "../../../../services/HandleToken";
+
+
 import { InputFlied } from "../../../Components/Input/InputFlied";
 import { AuthService } from "../../../../services/apis/AuthService";
 import { useAuth } from "../../../../context/AuthContext/AuthProvider";
 
 const Login = () => {
-  const { login } = useAuth();
+  const { login, logout } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const queryParam = new URLSearchParams(window.location.search);
   const navigate = useNavigate();
@@ -20,7 +24,6 @@ const Login = () => {
   const [formData, setFormData] = useState({
     userName: "",
     password: "",
-    role: "ROLE_USER",
   });
 
   const handleLogin = async (e) => {
@@ -32,7 +35,7 @@ const Login = () => {
           autoHideDuration: 1000,
         });
       }
-      const response = await AuthService.login(formData);
+      const response = await AuthService.loginUser(formData);
       console.log("Đăng nhập thành công:", response.data);
       login(
         response.data.data.token,
@@ -43,7 +46,8 @@ const Login = () => {
         variant: "success",
         autoHideDuration: 1000,
         onExit: () => {
-          navigate("/");
+          const previousUrl = sessionStorage.getItem("previousUrl") || "/";
+          navigate(previousUrl); // Quay lại URL trước khi đăng nhập
         },
       });
     } catch (error) {
@@ -64,8 +68,9 @@ const Login = () => {
     // console.log(formData);
   };
 
+
+
   useEffect(() => {
-    localStorage.clear();
     document.title = "Đăng nhập";
     window.scrollTo(0, 200);
     getAuthUrl().then((res) => {
@@ -116,24 +121,31 @@ const Login = () => {
                 <h2 className="login-title">Đăng nhập</h2>
               </div>
 
-              <div className="input-grup" style={{ width: "100%" }}>
+              <div className="input-grup">
+                {/* Tên tài khoản input */}
                 <div className="custom-input form-outline mb-4">
-                  <InputFlied
-                    typeInput={"text"}
-                    nameInput={"userName"}
+                  <input
+                    type="text"
+                    name="userName"
+                    className="form-control"
+                    placeholder=" "
                     value={formData.userName}
                     onChange={(e) => handleChange(e)}
-                    content={"Username"}
-                  ></InputFlied>
+                  />
+                  <label className="form-label">Tên tài khoản</label>
                 </div>
                 <div className="custom-input form-outline mb-4">
-                  <InputFlied
-                    content={"Mật khẩu"}
-                    typeInput={"password"}
-                    nameInput={"password"}
+                  <input
+                    type="password"
+                    name="password"
+                    className="form-control"
+                    placeholder=" "
                     value={formData.password}
                     onChange={(e) => handleChange(e)}
                   />
+                  <label className="form-label" htmlFor="password">
+                    Mật khẩu
+                  </label>
                 </div>
                 <div className="register-forgot-password text-body mb-2">
                   <a href="#!" className="register-text-body">
@@ -142,10 +154,7 @@ const Login = () => {
                 </div>
               </div>
 
-              <div
-                className="auth-action text-center"
-                style={{ width: "100%" }}
-              >
+              <div className="auth-action text-center">
                 <button type="submit" className="btn login-btn btn-lg mb-1">
                   Đăng nhập
                 </button>

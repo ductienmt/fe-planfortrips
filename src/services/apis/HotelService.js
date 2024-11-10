@@ -1,5 +1,6 @@
 import Http from "../Http";
 
+
 export const HotelService = {
   getHotels: async (page, limit, keyword) => {
     const response = await Http.get(
@@ -13,11 +14,12 @@ export const HotelService = {
     return response.data;
   },
   update: async (hotelId, data) => {
-    const response = await Http.put(`api/v1/hotels/${hotelId}`, data);
+    const response = await Http.put(`api/v1/hotels/update/${hotelId}`, data);
     return response.data;
   },
   delete: async (id) => {
-    const response = await Http.delete(`api/v1/users/delete?id=${id}`);
+    const response = await Http.delete(`api/v1/users/delete/${id}`);
     return response.data;
   },
 };
+

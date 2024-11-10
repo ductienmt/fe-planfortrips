@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
-import SearchBar from "./HotelComponent/SearchBar";
-import HotDealsNotification from "./HotelComponent/HotDealsNotification";
-import ResultsSummary from "./HotelComponent/ResultsSummary";
-import AccommodationCard from "./HotelComponent/AccommodationCard";
-import SearchResults from "./HotelComponent/SearchResults";
-import { HotelService } from "../../../../services/apis/HotelService";
-import { CircularProgress } from "@mui/material";
+import React, { useEffect, useState } from 'react';
+import SearchBar from './HotelComponent/SearchBar'; // Nhập component SearchBar
+import HotDealsNotification from './HotelComponent/HotDealsNotification'; // Nhập component HotDealsNotification
+import ResultsSummary from './HotelComponent/ResultsSummary'; // Nhập component ResultsSummary
+import AccommodationCard from './HotelComponent/AccommodationCard'; // Nhập component AccommodationCard
+import SearchResults from './HotelComponent/SearchResults';
+import { HotelService } from '../../../../services/apis/HotelService';
 
 const Hotel = () => {
   const [hotels, setHotels] = useState([]);
@@ -64,4 +63,5 @@ const Hotel = () => {
     </main>
   );
 };
+
 export default Hotel;

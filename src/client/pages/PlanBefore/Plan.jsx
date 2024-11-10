@@ -2,15 +2,16 @@ import { useState, useEffect, useRef, useContext } from "react";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { handleInputChange } from "../../../utils/FormatMoney";
-import provinces from "../../../utils/Provinces.json";
-import { useSnackbar } from "notistack";
+import { handleInputChange } from "../../../utils/FormatMoney"; // Đường dẫn tới file FormatMoney.js
+import provinces from "../../../utils/Provinces.json"; // Đường dẫn tới file Province.json
+import { useSnackbar } from "notistack"; // Thêm Notistack
 import "./Plan.css";
 import { flatpickrConfig } from "../../../utils/ConfigFlatpickr";
 import { DateFormatter } from "../../../utils/DateFormat";
 import { PlanServiceApi } from "../../../services/apis/PlanServiceApi";
 import { generateTripPlan } from "../../../services/planService";
 import Loading from "../../Components/Loading";
+import { useNavigate } from "react-router-dom";
 
 function PlanBefore() {
   const [loading, setLoading] = useState(false);
@@ -18,18 +19,21 @@ function PlanBefore() {
   const [adults, setAdults] = useState(0);
   const [children, setChildren] = useState(0);
   const [infants, setInfants] = useState(0);
+  const nagigate = useNavigate();
 
   const [showNumberBox, setShowNumberBox] = useState(false);
 
   const ngayDiRef = useRef(null);
   const ngayVeRef = useRef(null);
+  // const [loiNgay, setLoiNgay] = useState("");
 
-  const [budget, setBudget] = useState("");
+  const [budget, setBudget] = useState(""); // Trạng thái cho ngân sách
+  // const [error, setError] = useState(""); // Trạng thái cho thông báo lỗi
 
-  const [queryCurrentCity, setQueryCurrentCity] = useState("");
-  const [queryDestination, setQueryDestination] = useState("");
-  const [filteredCurrentCities, setFilteredCurrentCities] = useState([]);
-  const [filteredDestinations, setFilteredDestinations] = useState([]);
+  const [queryCurrentCity, setQueryCurrentCity] = useState(""); // Tỉnh, thành phố đang ở
+  const [queryDestination, setQueryDestination] = useState(""); // Điểm đến
+  const [filteredCurrentCities, setFilteredCurrentCities] = useState([]); // Gợi ý cho tỉnh, thành phố đang ở
+  const [filteredDestinations, setFilteredDestinations] = useState([]); // Gợi ý cho điểm đến
 
   const [formData, setFormData] = useState({
     location: "",
@@ -43,46 +47,50 @@ function PlanBefore() {
   const [planData, setPlanData] = useState({
     location: "Hồ Chí Minh",
     destination: "Vũng Tàu",
-    startDate: "25-10-2024 08:00:00",
-    endDate: "28-10-2024 14:00:00",
-    numberPeople: 3,
+    startDate: "10-10-2024 08:00:00",
+    endDate: "13-10-2024 14:00:00",
+    numberPeople: 2,
     budget: 5000,
   });
 
+  const parseBudget = (budget) => {
+    const budgetNumber = parseFloat(budget.replace(/,/g, ""));
+    return budgetNumber / 1000;
+  };
+
   const handlePlan = async () => {
-    // if (validatePlan()) {
-    //   setFormData({
-    //     ...formData,
-    //     location: queryCurrentCity,
-    //     destination: queryDestination,
-    //     startDate: DateFormatter(ngayDiRef.current.value),
-    //     endDate: DateFormatter(ngayDiRef.current.value),
-    //     numberPeople: adults + children + infants,
-    //     budget: budget,
-    //   });
-    //   console.log(formData);
-    try {
-      const response = await PlanServiceApi.getData(planData);
-      setLoading(true);
-      console.log(response.data);
-      const tripPlan = await generateTripPlan(response.data);
-      console.log(tripPlan);
-      if (tripPlan) {
-        console.log("Setting trip plan:", tripPlan);
-        sessionStorage.setItem("tripData", JSON.stringify(tripPlan));
-        // Chuyển hướng sau khi đã cập nhật tripPlan
-        window.location.href = "/plan/trip";
-      }
-    } catch (error) {
-      console.error(error);
-      enqueueSnackbar("Lỗi khi lên kế hoạch!", {
-        variant: "error",
-        autoHideDuration: 2000,
+    if (validatePlan()) {
+      setFormData({
+        ...formData,
+        location: queryCurrentCity,
+        destination: queryDestination,
+        startDate: DateFormatter(ngayDiRef.current.value),
+        endDate: DateFormatter(ngayDiRef.current.value),
+        numberPeople: adults + children + infants,
+        budget: parseBudget(budget),
       });
-    } finally {
-      setLoading(false);
+      console.log(formData);
+      try {
+        const response = await PlanServiceApi.getData(formData);
+        setLoading(true);
+        console.log(response.data);
+        const tripPlan = await generateTripPlan(response.data);
+        console.log(tripPlan);
+        if (tripPlan) {
+          console.log("Setting trip plan:", tripPlan);
+          sessionStorage.setItem("tripData", JSON.stringify(tripPlan));
+          nagigate("/plan/trip");
+        }
+      } catch (error) {
+        console.error(error);
+        enqueueSnackbar("Lỗi khi lên kế hoạch!", {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      } finally {
+        setLoading(false);
+      }
     }
-    // }
   };
 
   const validatePlan = () => {
@@ -101,14 +109,12 @@ function PlanBefore() {
         children === 0 &&
         infants === 0 &&
         "Vui lòng chọn ít nhất một người!",
-    ].filter(Boolean); // Remove undefined values
+    ].filter(Boolean);
 
-    // Show the first error message if any
     if (errorMessages.length > 0) {
       enqueueSnackbar(errorMessages[0], { variant: "error" });
       return false;
     }
-
     return true;
   };
 
@@ -116,7 +122,6 @@ function PlanBefore() {
     handleInputChange(event, setBudget, (errorMessage) => {
       if (errorMessage) {
         enqueueSnackbar(errorMessage, {
-          // Sử dụng notistack để hiện thông báo lỗi
           variant: "error",
           autoHideDuration: 3000,
         });
@@ -168,7 +173,6 @@ function PlanBefore() {
   useEffect(() => {
     document.title = "Lên kế hoạch";
     window.scrollTo(0, 200);
-
     if (ngayDiRef.current && ngayVeRef.current) {
       const ngayDiPicker = flatpickr(ngayDiRef.current, {
         altInput: true,

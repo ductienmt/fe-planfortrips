@@ -12,6 +12,7 @@ import Success from "../client/pages/Payment/Status/Success";
 import BookingHotel from "../client/pages/HotelPage/BookingHotel/BookingHotel";
 import HotelDetails from "../client/pages/HotelPage/HotelDetails/HotelDetails";
 import Profile from "../client/pages/Profile/Profile";
+
 // import LoginAdmin from "../admin/pages/Auth/Login";
 import UserAdmin from "../admin/pages/User/User";
 import EnterpriseAdmin from "../admin/pages/Enterprise/Enterprise";
@@ -34,7 +35,15 @@ import { EnterpriseLayout } from "../layout/EnterpriseLayout";
 import EnterpriseLogin from "../enterprise/auth/login/EnterpriseLogin";
 import EnterpriseDashboard from "../enterprise/dashboard/EnterpriseDashboard";
 import Hotel from "../client/pages/HotelPage/Hotel/Hotel";
+import Voucher from "../enterprise/voucher/Voucher";
+import Vehicle from "../enterprise/transportation/vehicleManagement/Vehicle";
+import Schedule from "../enterprise/transportation/schedule/Schedule";
+import Route from "../enterprise/transportation/route/Route";
+import RoomHistory from "../enterprise/accomodation/roomHistory/RoomHistory";
+import Room from "../enterprise/accomodation/roomManagement/Room";
+import HotelManagement from "../enterprise/accomodation/manager/HotelManagement";
 
+import Sumbitenterprise from "../client/pages/Enterprise/Sumbitenterprise";
 
 const routeAdmin = () => [
   {
@@ -65,7 +74,7 @@ const routeAdmin = () => [
         path: "transactions/vehicles",
         Component: OrderCarPage,
       },
-      
+
       {
         path: "travel",
         Component: PlacePageAdmin,
@@ -92,8 +101,36 @@ const routeEnterprise = () => [
         Component: EnterpriseLogin,
       },
       {
-        path: "dashboard",
+        path: ":type/dashboard",
         Component: EnterpriseDashboard,
+      },
+      {
+        path: ":type/vouchers",
+        Component: Voucher,
+      },
+      {
+        path: "transportation/vehicle-management",
+        Component: Vehicle,
+      },
+      {
+        path: "transportation/schedule",
+        Component: Schedule,
+      },
+      {
+        path: "transportation/routes",
+        Component: Route,
+      },
+      {
+        path: "accomodation/room-history",
+        Component: RoomHistory,
+      },
+      {
+        path: "accomodation/room-management",
+        Component: Room,
+      },
+      {
+        path: "accomodation/accomodation-manager",
+        Component: HotelManagement,
       },
     ],
   },
@@ -184,8 +221,13 @@ const routeClient = () => [
         Component: SearchResults,
       },
       {
-        path: "/vehicle-details",
+        path: "/vehicle-details/:id",
         Component: BookingSteps,
+      },
+
+      {
+        path: "/enterprise",
+        Component: Sumbitenterprise,
       },
     ],
   },

@@ -29,7 +29,7 @@ export default function PlacePageAdmin() {
 
   const handleClick = (coupon = null) => {
     console.log(coupon);
-    
+
     setEditMode(!!coupon);
     setSelectedCouponId(coupon ? coupon.id : null);
     setFormData(
@@ -53,7 +53,6 @@ export default function PlacePageAdmin() {
           paginationModel.pageSize,
           ""
         );
-
         if (couponData && couponData.checkinResponses) {
           setRows(couponData.checkinResponses);
           setIsLoading(false);

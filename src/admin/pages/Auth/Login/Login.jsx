@@ -7,7 +7,7 @@ import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import handleToken from "../../../../services/HandleToken";
-import AuthService from "../../../../services/apis/AuthService";
+import { AuthService } from "../../../../services/apis/AuthService";
 
 const providers = [{ id: "credentials", name: "Người dùng và Mật khẩu" }];
 

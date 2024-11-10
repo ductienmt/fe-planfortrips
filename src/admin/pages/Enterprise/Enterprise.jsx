@@ -1,77 +1,139 @@
-import * as React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
-import Paper from '@mui/material/Paper';
-import { TextField, Grid } from '@mui/material';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Typography, CircularProgress, Button, Snackbar, Pagination } from '@mui/material';
+import AccountEtpService from '../../../services/apis/AccountEnterprise';
 
-const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'firstName', headerName: 'First name', width: 130 },
-  { field: 'lastName', headerName: 'Last name', width: 130 },
-  { field: 'age', headerName: 'Age', type: 'number', width: 90 },
-  {
-    field: 'fullName',
-    headerName: 'Full name',
-    description: 'This column has a value getter and is not sortable.',
-    sortable: false,
-    width: 160,
-  },
-];
-const rows = [
-  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35, date: '2023-01-15' },
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42, date: '2023-02-20' },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45, date: '2023-03-25' },
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16, date: '2023-04-10' },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null, date: '2023-05-30' },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150, date: '2023-06-05' },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44, date: '2023-07-15' },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36, date: '2023-08-20' },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65, date: '2023-09-25' },
-];
+function Enterprise() {
+  const [enterprises, setEnterprises] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  
+  // Pagination states
+  const [page, setPage] = useState(1);
+  const [itemsPerPage] = useState(5); 
 
-const paginationModel = { page: 0, pageSize: 5 };
+  const fetchEnterprises = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await AccountEtpService.getAll();
+      setEnterprises(response.data);
+      console.log(response);
+      
+    } catch (err) {
+      setError('Failed to load enterprises');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-export default function EnterpriseAdmin() {
-  const [startDate, setStartDate] = React.useState('');
-  const [endDate, setEndDate] = React.useState('');
+  useEffect(() => {
+    fetchEnterprises();
+  }, [fetchEnterprises]);
 
-  const filteredRows = rows.filter((row) => {
-    if (startDate && row.date < startDate) return false;
-    if (endDate && row.date > endDate) return false;
-    return true;
-  });
+  const toggleEnterpriseStatus = async (id) => {
+    setLoading(true);
+    try {
+      const res = await AccountEtpService.toggleStage(id);
+      console.log(res);
+      
+      if (res.status) {
+        setSnackbarMessage(res.data ? 'Tắt trạng thái tài khoản Enterprise.' : 'Mở trạng thái tài khoản thành công');
+        setSnackbarOpen(true);
+        fetchEnterprises();
+      } else {
+        setSnackbarMessage('Failed to change status.');
+        setSnackbarOpen(true);
+      }
+    } catch (error) {
+      console.log(error);
+      
+      setSnackbarMessage('Error occurred while updating status.');
+      setSnackbarOpen(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const paginatedEnterprises = enterprises.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
   return (
-    <Paper sx={{ height: 500, width: '100%', padding: 2 }}>
-      <Grid container spacing={2} sx={{ marginBottom: 2 }}>
-        <Grid item xs={6} md={3}>
-          <TextField
-            label="Start Date"
-            type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            InputLabelProps={{ shrink: true }}
-            fullWidth
+    <div className="container pb-3">
+      {/* Header */}
+      <div className="row my-4">
+        <div className="col">
+          <Typography variant="h4" gutterBottom>
+            Quản lý Doanh nghiệp
+          </Typography>
+        </div>
+      </div>
+
+      {loading ? (
+        <div className="d-flex justify-content-center">
+          <CircularProgress />
+        </div>
+      ) : error ? (
+        <Typography color="error" variant="body1" align="center">
+          {error}
+        </Typography>
+      ) : (
+        <>
+          <table className="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>City</th>
+                <th>Email</th>
+                <th>Enterprise Name</th>
+                <th>Phone Number</th>
+                <th>Tax Code</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {paginatedEnterprises?.map((enterprise) => (
+                <tr key={enterprise.accountEnterpriseId}>
+                  <td>{enterprise.cityName}</td>
+                  <td>{enterprise.email}</td>
+                  <td>{enterprise.enterpriseName}</td>
+                  <td>{enterprise.phoneNumber}</td>
+                  <td>{enterprise.taxCode}</td>
+                  <td>{enterprise.status ? 'Active' : 'Inactive'}</td>
+                  <td>
+                    <Button
+                      variant="contained"
+                      color={enterprise.status ? 'secondary' : 'primary'}
+                      onClick={() => toggleEnterpriseStatus(enterprise.accountEnterpriseId)}
+                      disabled={loading} 
+                    >
+                      {enterprise.status ? 'Deactivate' : 'Activate'}
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <Pagination
+            count={Math.ceil(enterprises.length / itemsPerPage)}
+            page={page}
+            onChange={(event, value) => setPage(value)}
+            color="primary"
+            size="large"
           />
-        </Grid>
-        <Grid item xs={6} md={3}>
-          <TextField
-            label="End Date"
-            type="date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            InputLabelProps={{ shrink: true }}
-            fullWidth
-          />
-        </Grid>
-      </Grid>
-      <DataGrid
-        rows={filteredRows}
-        columns={columns}
-        initialState={{ pagination: { paginationModel } }}
-        pageSizeOptions={[5, 10]}
-        checkboxSelection
-        sx={{ border: 0 }}
+        </>
+      )}
+
+      {/* Snackbar for feedback */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        message={snackbarMessage}
       />
-    </Paper>
+    </div>
   );
 }
+
+export default Enterprise;

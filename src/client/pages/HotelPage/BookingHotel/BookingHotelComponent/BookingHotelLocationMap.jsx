@@ -1,5 +1,5 @@
 import React from 'react';
-import './BookingHotelLocationMap.css'; // Import file CSS riêng
+import './BookingHotelLocationMap.css'; //
 
 function BookingHotelLocationMap() {
   return (

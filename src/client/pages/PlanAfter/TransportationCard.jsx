@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 import { ScheduleService } from "../../../services/apis/ScheduleService";
 import "./TransportationCard.css";
 import "feather-icons/dist/feather";
-import { VehiclesService } from "../../../services/apis/Vehicles";
 
 const TransportationCard = ({
   className,
   onClick,
-  vehicleCode,
+  img,
   nameVehicle,
   departureDate,
   arrivalDate,
@@ -30,21 +29,10 @@ const TransportationCard = ({
       console.error("Error fetching accommodation data", error);
     }
   };
-  const [img, setImg] = useState("");
-
-  const getImg = async (vehicleCode) => {
-    const response = await VehiclesService.getVehicleById(vehicleCode);
-    // console.log("response", response.data.car_company.images[0]);
-    setImg(response.data.car_company.images[0].url);
-  };
 
   useEffect(() => {
     if (scheduleId) {
       loadStation(scheduleId);
-    }
-    // console.log("vehicleCode", vehicleCode);
-    if (vehicleCode) {
-      getImg(vehicleCode);
     }
   }, [scheduleId]);
   return (

@@ -1,24 +1,22 @@
 import React from 'react';
 import BookingHotelStarRating from './BookingHotelStarRating';
-import './BookingHotelHotelInfo.css'; // Import file CSS riêng
-import { Link } from 'react-router-dom';
+import './BookingHotelHotelInfo.css'; //
 
-function BookingHotelHotelInfo({hotelInfo}) {
+function BookingHotelHotelInfo() {
   return (
     <section className="booking-hotel-hotel-info-container">
       <div className="booking-hotel-hotel-details">
-        <h1 className="booking-hotel-name">{hotelInfo.roomName}</h1>
-        {/* <p className="booking-hotel-address">Địa chỉ: {hotelInfo.hotel.address}</p> */}
-        <BookingHotelStarRating rating={hotelInfo.rating} reviewCount={1000} />
+        <h1 className="booking-hotel-name">Khách sạn Mường Thanh</h1>
+        <p className="booking-hotel-address">Địa chỉ: 086, Đường Thanh Niên, thành phố Lào Cai, Việt Nam</p>
+        <BookingHotelStarRating rating={5} reviewCount={1000} />
       </div>
       <div className="booking-hotel-info">
         <div className="booking-hotel-price-info">
-          <p className="booking-hotel-discounted-price">Giá : <span>{hotelInfo.price}</span></p>
+          <p className="booking-hotel-original-price">Giá gốc: <span>3,690,000đ</span></p>
+          <p className="booking-hotel-discounted-price">Giá sau giảm: <span>1,750,000đ</span></p>
           <p className="booking-hotel-tax-info">( Đã bao gồm thuế, phí )</p>
         </div>
-        <Link to={`/hotel-info/${hotelInfo.id}`}>
-       <button className="booking-hotel-book-button">Đặt phòng</button>
-       </Link>
+        <button className="booking-hotel-book-button">Đặt phòng</button>
       </div>
     </section>
   );
