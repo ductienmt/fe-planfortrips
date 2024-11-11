@@ -5,7 +5,6 @@ import {
   DialogContent,
   DialogTitle,
   Button,
-  Card,
   TextField,
 } from "@mui/material";
 import "./OrderCarDetail.css";
@@ -14,17 +13,19 @@ export default function OrderCarDetail({ open, setOpen, selectedTicket }) {
   const [user, setUser] = useState({});
   useEffect(() => {
     const fetch = async () => {
-      const userData = await UserService.findUserById(selectedTicket.user_id);
+      const userId = selectedTicket&&selectedTicket.user_id ? selectedTicket.user_id : null;
+      console.log(userId);
+      
+      const userData = await UserService.findUserById(userId);
       if (userData) {
         setUser(userData.data);
       }
     };
     fetch();
-  }, []);
+  }, [selectedTicket]);
   const handleClose = () => {
     setOpen(false);
   };
-  console.log(selectedTicket);
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>Thông tin vé xe</DialogTitle>
@@ -60,12 +61,12 @@ export default function OrderCarDetail({ open, setOpen, selectedTicket }) {
             />
             <div className="product-infoTicket">
               <div className="priceTicket">
-                Giá sản phẩm: <span>{selectedTicket && payment.total_price ? selectedTicket.total_price : ""}</span>
+                Giá sản phẩm: <span>{selectedTicket && selectedTicket.payment?.total_price ? selectedTicket?.payment.total_price : 0} VNĐ</span>
               </div>
               <div className="payment-methodsTicket">
                 <p>Phương thức thanh toán:</p>
                 <ul>
-                  <li>{selectedTicket && selectedTicket.payment.paymentMethod ? selectedTicket.payment.paymentMethod : ""}</li>
+                  <li>{selectedTicket && selectedTicket.payment?.paymentMethod ? selectedTicket.payment?.paymentMethod : "Chưa chọn phương thức thanh toán"}</li>
                 </ul>
               </div>
             </div>

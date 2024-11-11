@@ -8,8 +8,7 @@ import { CouponService } from "../../../services/apis/CouponService";
 import AddIcon from "@mui/icons-material/Add";
 import { toast } from "react-toastify";
 import CouponDialog from "./CouponDialog";
-import IOSSwitch from "./IOSSwitch";
-
+import ViewColumnIcon from "@mui/icons-material/ViewColumn";
 const paginationModel = { page: 0, pageSize: 20 };
 
 export default function CouponAdmin() {
@@ -26,6 +25,7 @@ export default function CouponAdmin() {
     start_date: "",
     end_date: "",
     use_limit: "",
+    use_count: 0,
     is_active: true,
   });
 
@@ -74,7 +74,7 @@ export default function CouponAdmin() {
     try {
       const response = await CouponService.deleteCoupon(id);
       if (response) {
-        toast("Cập nhật thành công");        
+        toast("Cập nhật thành công");
         setRows((prevRows) => prevRows.filter((row) => row.coupon_id !== id));
       }
     } catch (error) {
@@ -82,17 +82,37 @@ export default function CouponAdmin() {
       console.log(error.message);
     }
   };
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
 
   function EditToolbar() {
+    React.useEffect(() => {
+      setTimeout(() => {
+        const buttonCol = document.querySelector(
+          "button[aria-label='Select columns']"
+        );
+        const buttonFilter = document.querySelector(
+          "button[aria-label='Show filters']"
+        );
+        const buttonExport = document.querySelector(
+          "button[aria-label='Export']"
+        )
+        if (buttonCol) {
+          buttonCol.innerHTML = "<i class='fas fa-table-columns me-2'></i> Các Cột";
+        }
+        if(buttonFilter){
+          buttonFilter.innerHTML = "<i class='fas fa-filter me-2'></i> Lọc"
+        }
+        if(buttonExport){
+          buttonExport.innerHTML = "<i class='fas fa-download me-2'></i> Xuất"
+        }
+      }, 100);
+    }, []);
     return (
-      <GridToolbarContainer>
+      <GridToolbarContainer
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
         <Button
           color="primary"
           style={{ fontSize: "13px", padding: "4px 5px" }}
@@ -110,11 +130,15 @@ export default function CouponAdmin() {
   }
 
   const columns = [
-    { field: "code", headerName: "Mã", width: 150 },
+    { field: "code", headerName: "Mã voucher", width: 90 },
     {
       field: "discount_type",
       headerName: "Thể loại giảm giá",
       width: 150,
+      valueGetter: (params) => {
+        const discount_type = params;
+        return discount_type == "PERCENT" ? "Phần trăm (%) " : "Giá trị (VNĐ) ";
+      },
     },
     {
       field: "discount_value",
@@ -151,24 +175,37 @@ export default function CouponAdmin() {
     {
       field: "is_active",
       headerName: "Trạng thái",
-      editable: true,
-
-      // renderCell: (params) => (
-      //   <IOSSwitch
-      //     name="active"
-      //     checked={formData.active}
-      //     onChange={handleInputChange}
-      //   />
-      // ),
-
-      valueGetter: (params) => {
-        if (params) {
-          return "Còn hạn";
+      renderCell: (params) => {
+        if (params.value) {
+          return (
+            <span
+              style={{
+                padding: "4px 8px",
+                backgroundColor: "rgb(202 222 207)",
+                color: "rgb(31 159 60)",
+                border: "2px solid rgb(71 180 96)",
+                borderRadius: "4px",
+              }}
+            >
+              Còn hạn
+            </span>
+          );
         }
-        return "Hết hạn";
+        return (
+          <span
+            style={{
+              padding: "4px 8px",
+              backgroundColor: "rgb(222 202 202)",
+              color: "rgb(159 31 31)",
+              border: "2px solid rgb(180 71 71)",
+              borderRadius: "4px",
+            }}
+          >
+            Hết hạn
+          </span>
+        );
       },
-
-      width: 90,
+      width: 100,
     },
     {
       field: "actions",
@@ -176,26 +213,10 @@ export default function CouponAdmin() {
       headerName: "Hành động",
       width: 100,
 
-      // getActions: (params) => [
-      //   <RemoveRedEye
-      //     key="view"
-      //     onClick={() => {
-      //       handleClick(params.row);
-      //       setViewMode(true);
-      //     }}
-      //   />,
-
       getActions: (params) => [
-        // <RemoveRedEye
-        //   key="view"
-        //   onClick={() => {
-        //     handleClick(params.row);
-        //     setViewMode(true);
-        //   }}
-        // />,
-
         <Edit
           key="edit"
+          style={{ cursor:"pointer" }}
           onClick={() => {
             handleClick(params.row);
             setViewMode(false);
@@ -203,6 +224,7 @@ export default function CouponAdmin() {
         />,
         <Delete
           key="delete"
+          style={{ cursor:"pointer" }}
           onClick={() => {
             handleDelete(params.row.coupon_id);
           }}
@@ -212,7 +234,16 @@ export default function CouponAdmin() {
   ];
 
   return (
-    <Box sx={{ height: 400, width: "100%" }}>
+    <Box
+      sx={{
+        height: "auto",
+        width: "100%",
+        backgroundColor: "#f5f5f5",
+        padding: "40px",
+        borderRadius: 2,
+        overflow: "hidden",
+      }}
+    >
       <DataGrid
         loading={isLoading}
         slotProps={{
@@ -221,6 +252,7 @@ export default function CouponAdmin() {
             noRowsVariant: "skeleton",
           },
         }}
+        checkboxSelection={false}
         rows={rows}
         columns={columns}
         initialState={{
@@ -231,10 +263,15 @@ export default function CouponAdmin() {
           },
         }}
         getRowId={(row) => row.coupon_id}
-        pageSizeOptions={[5]}
-        checkboxSelection
+        pageSizeOptions={[10, 25, 50, 100]}
         disableRowSelectionOnClick
         slots={{ toolbar: EditToolbar }}
+        sx={{
+          borderRadius: 2,
+          border: "1px solid #ddd",
+          background: "#FFF",
+          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+        }}
       />
       <CouponDialog
         open={open}

@@ -6,5 +6,13 @@ export const AdminService = {
     console.log(response);
     
     return response.data;
+  },
+  login : async (username, password) => {
+    const response = await Http.post('api/v1/auth/admin/login',{
+      userName : username,
+      password : password
+    });
+    console.log(response);
+    return response.data;
   }
 };

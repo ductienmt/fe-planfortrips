@@ -2,7 +2,6 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import { createTheme } from "@mui/material/styles";
 import { AppProvider } from "@toolpad/core/AppProvider";
-import { styled } from "@mui/material/styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHouse,
@@ -20,8 +19,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { router } from "../../../routes/route";
-import { Switch } from "@mui/material";
-import handleToken from "../../../services/HandleToken";
 import { AdminService } from "../../../services/apis/AdminService";
 import { parseJwt } from "../../../utils/Jwt";
 const NAVIGATION = [
@@ -31,60 +28,60 @@ const NAVIGATION = [
   },
   {
     title: (
-      <NavLink to="" style={{ textDecoration: "none" }} >
+      <NavLink to="" className="nav-link">
         Trang chủ
       </NavLink>
     ),
     icon: (
-      <NavLink to="">
+      <NavLink to="" className="nav-link">
         <FontAwesomeIcon icon={faHouse} />
       </NavLink>
     ),
   },
   {
     title: (
-      <NavLink to="users" style={{ textDecoration: "none" }}>
+      <NavLink to="users" className="nav-link">
         Người dùng
       </NavLink>
     ),
     icon: (
-      <NavLink to="users" style={{ textDecoration: "none" }}>
+      <NavLink to="users" className="nav-link">
         <FontAwesomeIcon icon={faUser} />
       </NavLink>
     ),
   },
   {
     title: (
-      <NavLink to="business" style={{ textDecoration: "none" }}>
+      <NavLink to="business" className="nav-link">
         Doanh nghiệp
       </NavLink>
     ),
     icon: (
-      <NavLink to="business" style={{ textDecoration: "none" }}>
+      <NavLink to="business" className="nav-link">
         <FontAwesomeIcon icon={faBriefcase} />
       </NavLink>
     ),
   },
   {
     title: (
-      <NavLink to="vouchers" style={{ textDecoration: "none" }}>
+      <NavLink to="vouchers" className="nav-link">
         Mã giảm giá
       </NavLink>
     ),
     icon: (
-      <NavLink to="vouchers" style={{ textDecoration: "none" }}>
+      <NavLink to="vouchers" className="nav-link">
         <FontAwesomeIcon icon={faTicket} />
       </NavLink>
     ),
   },
   {
     title: (
-      <NavLink to="statistics" style={{ textDecoration: "none" }}>
+      <NavLink to="statistics" className="nav-link">
         Thống kê
       </NavLink>
     ),
     icon: (
-      <NavLink to="statistics" style={{ textDecoration: "none" }}>
+      <NavLink to="statistics" className="nav-link">
         <FontAwesomeIcon icon={faChartPie} />
       </NavLink>
     ),
@@ -95,30 +92,24 @@ const NAVIGATION = [
     children: [
       {
         title: (
-          <NavLink to="transactions/hotels" style={{ textDecoration: "none" }}>
+          <NavLink to="transactions/hotels" className="nav-link">
             Đơn đặt phòng
           </NavLink>
         ),
         icon: (
-          <NavLink to="transactions/hotels" style={{ textDecoration: "none" }}>
+          <NavLink to="transactions/hotels" className="nav-link">
             <FontAwesomeIcon icon={faHotel} />
           </NavLink>
         ),
       },
       {
         title: (
-          <NavLink
-            to="transactions/vehicles"
-            style={{ textDecoration: "none" }}
-          >
+          <NavLink to="transactions/vehicles" className="nav-link">
             Đơn đặt xe
           </NavLink>
         ),
         icon: (
-          <NavLink
-            to="transactions/vehicles"
-            style={{ textDecoration: "none" }}
-          >
+          <NavLink to="transactions/vehicles" className="nav-link">
             <FontAwesomeIcon icon={faCableCar} />
           </NavLink>
         ),
@@ -127,24 +118,24 @@ const NAVIGATION = [
   },
   {
     title: (
-      <NavLink to="feedbacks" style={{ textDecoration: "none" }}>
+      <NavLink to="feedbacks" className="nav-link">
         Đánh giá
       </NavLink>
     ),
     icon: (
-      <NavLink to="resources" style={{ textDecoration: "none" }}>
+      <NavLink to="feedbacks" className="nav-link">
         <FontAwesomeIcon icon={faDatabase} />
       </NavLink>
     ),
   },
   {
     title: (
-      <NavLink to="travel" style={{ textDecoration: "none" }}>
+      <NavLink to="travel" className="nav-link">
         Điểm du lịch
       </NavLink>
     ),
     icon: (
-      <NavLink to="travel" style={{ textDecoration: "none" }}>
+      <NavLink to="travel" className="nav-link">
         <FontAwesomeIcon icon={faUmbrellaBeach} />
       </NavLink>
     ),
@@ -158,24 +149,24 @@ const NAVIGATION = [
   },
   {
     title: (
-      <NavLink to="settings" style={{ textDecoration: "none" }}>
+      <NavLink to="settings" className="nav-link">
         Cài đặt
       </NavLink>
     ),
     icon: (
-      <NavLink to="settings" style={{ textDecoration: "none" }}>
+      <NavLink to="settings" className="nav-link">
         <FontAwesomeIcon icon={faGear} />
       </NavLink>
     ),
   },
   {
     title: (
-      <NavLink to="tools" style={{ textDecoration: "none" }}>
+      <NavLink to="tools" className="nav-link">
         Công cụ
       </NavLink>
     ),
     icon: (
-      <NavLink to="tools" style={{ textDecoration: "none" }}>
+      <NavLink to="tools" className="nav-link">
         <FontAwesomeIcon icon={faScrewdriverWrench} />
       </NavLink>
     ),
@@ -199,7 +190,7 @@ const demoTheme = createTheme({
 
 function DashboardLayoutBasic({ window }) {
   const [admin, setAdmin] = React.useState({});
-  const token = localStorage.getItem("accessToken");
+  const token = sessionStorage.getItem("token");
   const userName = token ? parseJwt(token).sub : "";
   React.useEffect(() => {
     const fetch = async () => {

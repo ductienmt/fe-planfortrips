@@ -15,7 +15,7 @@ export default function FeedbackPage() {
 
   const handleClick = (ticket) => {
     console.log(ticket);
-    
+
     setSelectedTicket(ticket);
     setOpen(true);
   };
@@ -36,7 +36,38 @@ export default function FeedbackPage() {
     };
     fetchFeedbacks();
   }, []);
-
+  const ToolBar = ()=>{
+    React.useEffect(() => {
+      setTimeout(() => {
+        const buttonCol = document.querySelector(
+          "button[aria-label='Select columns']"
+        );
+        const buttonFilter = document.querySelector(
+          "button[aria-label='Show filters']"
+        );
+        const buttonExport = document.querySelector(
+          "button[aria-label='Export']"
+        )
+        if (buttonCol) {
+          buttonCol.innerHTML = "<i class='fas fa-table-columns me-2'></i> Các Cột";
+        }
+        if(buttonFilter){
+          buttonFilter.innerHTML = "<i class='fas fa-filter me-2'></i> Lọc"
+        }
+        if(buttonExport){
+          buttonExport.innerHTML = "<i class='fas fa-download me-2'></i> Xuất"
+        }
+      }, 100);
+    }, []);
+    return (
+      <Box sx={{
+        display: "flex",
+        justifyContent: "flex-end",
+      }}>
+        <GridToolbar />
+      </Box>
+    );
+  }
   const columns = [
     { field: "id", headerName: "ID", width: 270 },
     {
@@ -99,7 +130,16 @@ export default function FeedbackPage() {
   ];
 
   return (
-    <Box sx={{ height: 400, width: "100%" }}>
+    <Box
+      sx={{
+        height: "auto",
+        width: "100%",
+        backgroundColor: "#f5f5f5",
+        padding: "40px",
+        borderRadius: 2,
+        overflow: "hidden",
+      }}
+    >
       <DataGrid
         loading={isLoading}
         rows={feedbacks}
@@ -113,11 +153,21 @@ export default function FeedbackPage() {
           },
         }}
         pageSizeOptions={[5]}
-        checkboxSelection
-        slots={{ toolbar: GridToolbar }}
+        checkboxSelection={false}
+        slots={{ toolbar: ToolBar }}
         disableRowSelectionOnClick
+        sx={{
+          borderRadius: 2,
+          border: "1px solid #ddd",
+          background: "#FFF",
+          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+        }}
       />
-      <FeedbackDetail  open={open} setOpen={setOpen} selectedTicket={selectedTicket}/>
+      <FeedbackDetail
+        open={open}
+        setOpen={setOpen}
+        selectedTicket={selectedTicket}
+      />
     </Box>
   );
 }

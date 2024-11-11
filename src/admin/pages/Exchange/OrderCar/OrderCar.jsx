@@ -10,7 +10,7 @@ export default function OrderCarPage() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [selectedTicket, setSelectedTicket] = React.useState(null);
   const [open, setOpen] = React.useState(false);
-  const handleClick = (ticket) => {
+  const handleClick = (ticket) => {    
     setSelectedTicket(ticket);
     setOpen(true);
   };
@@ -34,6 +34,38 @@ export default function OrderCarPage() {
     };
     fetchCoupons();
   }, []);
+  const ToolBar = ()=>{
+    React.useEffect(() => {
+      setTimeout(() => {
+        const buttonCol = document.querySelector(
+          "button[aria-label='Select columns']"
+        );
+        const buttonFilter = document.querySelector(
+          "button[aria-label='Show filters']"
+        );
+        const buttonExport = document.querySelector(
+          "button[aria-label='Export']"
+        )
+        if (buttonCol) {
+          buttonCol.innerHTML = "<i class='fas fa-table-columns me-2'></i> Các Cột";
+        }
+        if(buttonFilter){
+          buttonFilter.innerHTML = "<i class='fas fa-filter me-2'></i> Lọc"
+        }
+        if(buttonExport){
+          buttonExport.innerHTML = "<i class='fas fa-download me-2'></i> Xuất"
+        }
+      }, 100);
+    }, []);
+    return (
+      <Box sx={{
+        display: "flex",
+        justifyContent: "flex-end",
+      }}>
+        <GridToolbar />
+      </Box>
+    );
+  }
   const columns = [
     { field: "ticket_id", headerName: "ID", width: 90 },
     {
@@ -42,7 +74,6 @@ export default function OrderCarPage() {
       width: 150,
       renderCell: (params) => {
         const [userName, setUserName] = React.useState("");
-
         React.useEffect(() => {
           const fetchUser = async () => {
             try {
@@ -84,61 +115,49 @@ export default function OrderCarPage() {
     {
       field: "status",
       headerName: "Trạng thái",
-      width: 90,
+      width: 110,
       renderCell: (params) => {
         if (params.value === "Cancelled") {
           return (
-            <div
+            <span
               style={{
-                border: "1px solid #DF0404",
-                background: "#FFC5C5",
-                color: "#DF0404",
-                margin: "6px 0px 8px 0px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                padding: "4px 8px",
+                backgroundColor: "rgb(222 202 202)",
+                color: "rgb(159 31 31)",
+                border: "2px solid rgb(180 71 71)",
                 borderRadius: "4px",
-                fontWeight: "bold",
               }}
             >
               {params.value}
-            </div>
+            </span>
           );
         } else if (params.value === "Complete") {
           return (
-            <div
+            <span
               style={{
-                border: "1px solid #00B087",
-                background: "#16C098",
-                color: "#fff",
-                margin: "6px 0px 8px 0px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                padding: "4px 8px",
+                backgroundColor: "rgb(222 202 202)",
+                color: "rgb(159 31 31)",
+                border: "2px solid rgb(180 71 71)",
                 borderRadius: "4px",
-                fontWeight: "bold",
               }}
             >
               {params.value}
-            </div>
+            </span>
           );
         } else if (params.value === "Pending") {
           return (
-            <div
+            <span
               style={{
-                border: "1px solid #FFCF00",
-                background: "#FFF9C5",
-                color: "#FFCF00",
-                margin: "6px 0px 8px 0px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                padding: "4px 8px",
+                backgroundColor: "rgb(208 202 222)",
+                color: "rgb(31 60 159)",
+                border: "2px solid rgb(71 101 180)",
                 borderRadius: "4px",
-                fontWeight: "bold",
               }}
             >
               {params.value}
-            </div>
+            </span>
           );
         }
       },
@@ -169,7 +188,16 @@ export default function OrderCarPage() {
     },
   ];
   return (
-    <Box sx={{ height: 400, width: "100%" }}>
+    <Box
+      sx={{
+        height: "auto",
+        width: "100%",
+        backgroundColor: "#f5f5f5",
+        padding: "40px",
+        borderRadius: 2,
+        overflow: "hidden",
+      }}
+    >
       <DataGrid
         loading={isLoading}
         rows={orderCar}
@@ -183,11 +211,21 @@ export default function OrderCarPage() {
           },
         }}
         pageSizeOptions={[5]}
-        checkboxSelection
-        slots={{ toolbar: GridToolbar }}
+        checkboxSelection={false}
+        slots={{ toolbar: ToolBar }}
         disableRowSelectionOnClick
+        sx={{
+          borderRadius: 2,
+          border: "1px solid #ddd",
+          background: "#FFF",
+          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+        }}
       />
-      <OrderCarDetail open={open} setOpen={setOpen} selectedTicket={selectedTicket}/>
+      <OrderCarDetail
+        open={open}
+        setOpen={setOpen}
+        selectedTicket={selectedTicket}
+      />
     </Box>
   );
 }
