@@ -6,7 +6,6 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Link, useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
-import { InputFlied } from "../../../Components/Input/InputFlied";
 
 const UserInformation = ({ totalPrice, type }) => {
   const navigate = useNavigate();
@@ -50,7 +49,7 @@ const UserInformation = ({ totalPrice, type }) => {
       } else {
         // TODO: Call API to create ticket
 
-        navigate(`/payment?ticketid=1&bookingid=1`);
+        navigate("/payment");
       }
     } else {
       enqueueSnackbar("Vui lòng điền đẩy đủ thông tin.", {
@@ -107,8 +106,8 @@ const UserInformation = ({ totalPrice, type }) => {
         <div style={{ padding: "10px 20px" }}>
           <div className="user-information-header">
             <form action="" className="user-information-form">
-              <div className="name-booking mb-3">
-                {/* <TextField
+              <div className="name">
+                <TextField
                   id="outlined-basic"
                   label="Họ"
                   variant="outlined"
@@ -116,15 +115,8 @@ const UserInformation = ({ totalPrice, type }) => {
                   name="firstName"
                   value={form.firstName}
                   onChange={handleChange}
-                /> */}
-                <InputFlied
-                  content={"Họ"}
-                  nameInput={"firstName"}
-                  value={form.firstName}
-                  onChange={handleChange}
-                  dai={"30%"}
                 />
-                {/* <TextField
+                <TextField
                   id="outlined-basic"
                   label="Tên đệm và tên"
                   variant="outlined"
@@ -132,17 +124,10 @@ const UserInformation = ({ totalPrice, type }) => {
                   name="lastName"
                   value={form.lastName}
                   onChange={handleChange}
-                /> */}
-                <InputFlied
-                  content={"Tên"}
-                  nameInput={"lastName"}
-                  value={form.lastName}
-                  onChange={handleChange}
-                  dai={"70%"}
-                ></InputFlied>
+                />
               </div>
-              <div className="contact mb-3">
-                {/* <TextField
+              <div className="contact">
+                <TextField
                   id="outlined-basic"
                   label="Email"
                   variant="outlined"
@@ -150,15 +135,8 @@ const UserInformation = ({ totalPrice, type }) => {
                   name="email"
                   value={form.email}
                   onChange={handleChange}
-                /> */}
-                <InputFlied
-                  content={"Email"}
-                  nameInput={"email"}
-                  value={form.email}
-                  onChange={handleChange}
-                  dai={"45%"}
-                ></InputFlied>
-                {/* <TextField
+                />
+                <TextField
                   id="outlined-basic"
                   label="Số điện thoại"
                   variant="outlined"
@@ -166,17 +144,10 @@ const UserInformation = ({ totalPrice, type }) => {
                   name="phone"
                   value={form.phone}
                   onChange={handleChange}
-                /> */}
-                <InputFlied
-                  content={"Số điện thoại"}
-                  nameInput={"phone"}
-                  value={form.phone}
-                  onChange={handleChange}
-                  dai={"55%"}
                 />
               </div>
               <div className="gender-note">
-                {/* <TextField
+                <TextField
                   id="outlined-basic"
                   label="Giới tính"
                   variant="outlined"
@@ -184,15 +155,8 @@ const UserInformation = ({ totalPrice, type }) => {
                   name="gender"
                   value={form.gender}
                   onChange={handleChange}
-                /> */}
-                <InputFlied
-                  content={"Giới tính"}
-                  nameInput={"gender"}
-                  value={form.gender}
-                  onChange={handleChange}
-                  dai={"20%"}
                 />
-                {/* <TextField
+                <TextField
                   id="outlined-basic"
                   label="Ghi chú"
                   variant="outlined"
@@ -200,14 +164,7 @@ const UserInformation = ({ totalPrice, type }) => {
                   name="note"
                   value={form.note}
                   onChange={handleChange}
-                /> */}
-                <InputFlied
-                  content={"Ghi chú"}
-                  nameInput={"note"}
-                  value={form.note}
-                  onChange={handleChange}
-                  dai={"80%"}
-                ></InputFlied>
+                />
               </div>
             </form>
           </div>
@@ -240,7 +197,7 @@ const UserInformation = ({ totalPrice, type }) => {
                       className="price-icon"
                       style={{ display: "flex", flexDirection: "row" }}
                     >
-                      <p>{convertToVND(1000)}</p>
+                      <p>{convertToVND(totalPrice)}</p>
                       <button
                         onClick={() =>
                           setShowDetailPriceTransportation(
@@ -277,7 +234,7 @@ const UserInformation = ({ totalPrice, type }) => {
                       }}
                     >
                       <p>Giá cho 1 vé</p>
-                      <p>{convertToVND(250)}</p>
+                      <p>{convertToVND(totalPrice)}</p>
                     </div>
                     <div
                       style={{
@@ -287,7 +244,7 @@ const UserInformation = ({ totalPrice, type }) => {
                       }}
                     >
                       <p>Tổng số vé đã đặt</p>
-                      <p>4 (cả đi và về)</p>
+                      <p>1</p>
                     </div>
                   </div>
                 </div>
@@ -298,7 +255,7 @@ const UserInformation = ({ totalPrice, type }) => {
                       className="price-icon"
                       style={{ display: "flex", flexDirection: "row" }}
                     >
-                      <p>{convertToVND(800)}</p>
+                      <p>{convertToVND(totalPrice)}</p>
                       <button
                         onClick={() =>
                           setShowDetailPriceAccommodation(
@@ -335,7 +292,7 @@ const UserInformation = ({ totalPrice, type }) => {
                         }}
                       >
                         <p>Giá cho 1 phòng</p>
-                        <p>{convertToVND(400)}/1 đêm</p>
+                        <p>{convertToVND(totalPrice)}</p>
                       </div>
                       <div
                         style={{
@@ -345,7 +302,7 @@ const UserInformation = ({ totalPrice, type }) => {
                         }}
                       >
                         <p>Tổng số phòng đã đặt</p>
-                        <p>1 (2 đêm)</p>
+                        <p>1</p>
                       </div>
                     </div>
                   </div>
@@ -490,7 +447,7 @@ const UserInformation = ({ totalPrice, type }) => {
               Tổng thanh toán
             </p>
             <p style={{ fontSize: "24px", fontWeight: "500" }}>
-              {convertToVND(1800)}
+              {convertToVND(totalPrice)}
             </p>
           </div>
         </div>

@@ -1,18 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   Button,
-  Card,
+  TextField,
 } from "@mui/material";
 import "./OrderCarDetail.css";
+import { UserService } from "../../../../../services/apis/UserService";
 export default function OrderCarDetail({ open, setOpen, selectedTicket }) {
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    const fetch = async () => {
+      const userId = selectedTicket&&selectedTicket.user_id ? selectedTicket.user_id : null;
+      console.log(userId);
+      
+      const userData = await UserService.findUserById(userId);
+      if (userData) {
+        setUser(userData.data);
+      }
+    };
+    fetch();
+  }, [selectedTicket]);
   const handleClose = () => {
     setOpen(false);
   };
-  console.log(selectedTicket);
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>Thông tin vé xe</DialogTitle>
@@ -25,7 +38,38 @@ export default function OrderCarDetail({ open, setOpen, selectedTicket }) {
               : ""}
           </h1>
           <div className="col-6">
-            <p></p>
+            <TextField
+              disabled
+              id="outlined-disabled"
+              label="Tên khách hàng"
+              value={user && user.userName ? user.userName : ""}
+              className="mb-3"
+            />
+            <TextField
+              disabled
+              id="outlined-disabled"
+              label="Số điện thoại"
+              value={user && user.phoneNumber ? user.phoneNumber : ""}
+              className="mb-3"
+            />
+            <TextField
+              disabled
+              id="outlined-disabled"
+              label="Email"
+              value={user && user.email ? user.email : ""}
+              className="mb-3"
+            />
+            <div className="product-infoTicket">
+              <div className="priceTicket">
+                Giá sản phẩm: <span>{selectedTicket && selectedTicket.payment?.total_price ? selectedTicket?.payment.total_price : 0} VNĐ</span>
+              </div>
+              <div className="payment-methodsTicket">
+                <p>Phương thức thanh toán:</p>
+                <ul>
+                  <li>{selectedTicket && selectedTicket.payment?.paymentMethod ? selectedTicket.payment?.paymentMethod : "Chưa chọn phương thức thanh toán"}</li>
+                </ul>
+              </div>
+            </div>
           </div>
           <div className="col-6">
             <div className="timeline-itemTicket" data-align="left">
@@ -115,7 +159,17 @@ export default function OrderCarDetail({ open, setOpen, selectedTicket }) {
                     ? selectedTicket.schedule.route.originStation.city
                     : ""}
                 </p>
-                <p className="descriptionTicket">handcrafted with &lt;3</p>
+                <p className="descriptionTicket">
+                  {selectedTicket && selectedTicket.seats ? (
+                    selectedTicket.seats.map((seat) => (
+                      <span key={seat.seatNumber} className="seat-number">
+                        Số ghế: {seat.seatNumber}
+                      </span>
+                    ))
+                  ) : (
+                    <span>No seats selected.</span>
+                  )}
+                </p>
                 <div className="timestampTicket">
                   <time>
                     Từ{" "}

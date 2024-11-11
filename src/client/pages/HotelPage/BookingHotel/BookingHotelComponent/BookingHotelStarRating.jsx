@@ -1,5 +1,5 @@
 import React from 'react';
-import './BookingHotelStarRating.css'; // Đảm bảo rằng bạn đã tạo file CSS này
+import './BookingHotelStarRating.css'; //
 
 function BookingHotelStarRating({ rating, reviewCount }) {
   return (

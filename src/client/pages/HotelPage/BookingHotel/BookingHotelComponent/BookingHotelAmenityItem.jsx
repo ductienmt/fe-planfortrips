@@ -1,5 +1,5 @@
 import React from 'react';
-import './BookingHotelAmenityItem.css'; // Import file CSS riêng
+import './BookingHotelAmenityItem.css'; //
 
 function BookingHotelAmenityItem({ icon, name }) {
   return (

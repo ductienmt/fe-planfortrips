@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogActions,
@@ -32,9 +32,10 @@ export default function CouponDialog({
     start_date: "",
     end_date: "",
     use_limit: "",
+    use_count: 0,
     is_active: true,
   });
-
+  const [errors, setErrors] = useState({});
   const handleClose = () => {
     setOpen(false);
     setFormData({
@@ -56,6 +57,7 @@ export default function CouponDialog({
     }));
   };
   const validateCouponData = () => {
+    const newErrors = {};
     const {
       code,
       discount_type,
@@ -64,33 +66,42 @@ export default function CouponDialog({
       end_date,
       use_limit,
     } = formData;
-    const errors = [];
 
-    if (!code) errors.push("Mã không được để trống.");
-    if (!discount_type) errors.push("Vui lòng chọn thể loại giảm giá.");
+    if (!code) newErrors.code = "Mã không được để trống.";
+    if (!discount_type)
+      newErrors.discount_type = "Vui lòng chọn thể loại giảm giá.";
     if (!discount_value || isNaN(discount_value) || Number(discount_value) <= 0)
-      errors.push("Giá trị giảm phải là một số hợp lệ và lớn hơn 0.");
-    if (new Date(start_date) < new Date())
-      errors.push("Ngày bắt đầu không được ở quá khứ.");
-    if (new Date(end_date) < new Date(start_date))
-      errors.push("Ngày kết thúc phải sau ngày bắt đầu.");
-    if (!use_limit || isNaN(use_limit) || Number(use_limit) < 0)
-      errors.push("Giới hạn sử dụng phải là một số hợp lệ và không âm.");
+      newErrors.discount_value =
+        "Giá trị giảm phải là một số hợp lệ và lớn hơn 0.";
 
-    return errors;
+    const startYear = new Date(start_date).getFullYear().toString();
+    const endYear = new Date(end_date).getFullYear().toString();
+
+    if (startYear.length > 4)
+      newErrors.start_date = "Năm của ngày bắt đầu không được quá 4 chữ số.";
+    if (endYear.length > 4)
+      newErrors.end_date = "Năm của ngày kết thúc không được quá 4 chữ số.";
+
+    if (new Date(start_date) < new Date())
+      newErrors.start_date = "Ngày bắt đầu không được ở quá khứ.";
+    if (new Date(end_date) < new Date(start_date))
+      newErrors.end_date = "Ngày kết thúc phải sau ngày bắt đầu.";
+    if (!use_limit || isNaN(use_limit) || Number(use_limit) < 0)
+      newErrors.use_limit =
+        "Giới hạn sử dụng phải là một số hợp lệ và không âm.";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
   const handleSave = async (formData) => {
-    const validationErrors = validateCouponData();
-    if (validationErrors.length > 0) {
-      toast(validationErrors.join(" "));
-      return;
-    }
+    if (!validateCouponData()) return;
     try {
       const response = await CouponService.createCoupon(formData);
       if (response) {
         const newFormData = { ...formData, coupon_id: response.coupon_id };
         toast("Tạo mới thành công");
         setRows((prevRows) => [...prevRows, newFormData]);
+        handleClose();
       }
     } catch (error) {
       toast("Lỗi");
@@ -99,11 +110,7 @@ export default function CouponDialog({
   };
 
   const handleUpdate = async (formData, id) => {
-    const validationErrors = validateCouponData();
-    if (validationErrors.length > 0) {
-      toast(validationErrors.join(" "));
-      return;
-    }
+    if (!validateCouponData()) return;
     try {
       const response = await CouponService.updateCoupon(id, formData);
       if (response) {
@@ -113,6 +120,7 @@ export default function CouponDialog({
             row.coupon_id === response.coupon_id ? { ...row, ...formData } : row
           )
         );
+        handleClose();
       }
     } catch (error) {
       toast("Lỗi");
@@ -138,6 +146,8 @@ export default function CouponDialog({
           InputProps={{
             readOnly: viewMode,
           }}
+          error={!!errors.code}
+          helperText={errors.code}
         />
         <FormControl fullWidth margin="normal">
           <InputLabel id="discount-type-label">Thể loại giảm</InputLabel>
@@ -148,6 +158,8 @@ export default function CouponDialog({
             value={formData.discount_type}
             onChange={handleInputChange}
             disabled={viewMode}
+            error={!!errors.discount_type}
+            helperText={errors.discount_type}
           >
             <MenuItem value={"PERCENT"}>Phần trăm</MenuItem>
             <MenuItem value={"FIXED_AMOUNT"}>Giá trị</MenuItem>
@@ -165,6 +177,8 @@ export default function CouponDialog({
           InputProps={{
             readOnly: viewMode,
           }}
+          error={!!errors.discount_value}
+          helperText={errors.discount_value}
         />
         <TextField
           id="start-date"
@@ -181,7 +195,11 @@ export default function CouponDialog({
           }}
           InputProps={{
             readOnly: viewMode,
+            min: "1900-01-01",
+            max: "9999-12-31",
           }}
+          error={!!errors.start_date}
+          helperText={errors.start_date}
         />
         <TextField
           id="end-date"
@@ -198,7 +216,11 @@ export default function CouponDialog({
           }}
           InputProps={{
             readOnly: viewMode,
+            min: "1900-01-01",
+            max: "9999-12-31",
           }}
+          error={!!errors.end_date}
+          helperText={errors.end_date}
         />
         <TextField
           id="use-limit"
@@ -213,6 +235,8 @@ export default function CouponDialog({
           InputProps={{
             readOnly: viewMode,
           }}
+          error={!!errors.use_limit}
+          helperText={errors.use_limit}
         />
         <FormControlLabel
           control={
@@ -234,7 +258,6 @@ export default function CouponDialog({
             editMode
               ? handleUpdate(formData, selectedCouponId)
               : handleSave(formData);
-            handleClose();
           }}
           color="primary"
         >

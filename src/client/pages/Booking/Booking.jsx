@@ -45,51 +45,51 @@ const Booking = () => {
       setTransportationData({
         name: "Phương Trang",
         type: "VIP",
-        seat: "A1, B1",
-        numberSeat: 2,
-        departureLocation: "Hồ Chí Minh",
-        arrivalLocation: "Vũng Tàu",
-        departureTime: "08:00",
-        arrivalTime: "09:00",
-        departureDate: "2024-10-25",
-        arrivalDate: "2024-10-25",
-        departureStation: "Bến xe Miền Đông",
-        arrivalStation: "Bến xe Vũng Tàu",
-        pickupLocation: "Bến xe Miền Đông",
-        dropoffLocation: "Bến xe Vũng Tàu",
+        seat: "A1",
+        numberSeat: 1,
+        departureLocation: "Hà Nội",
+        arrivalLocation: "Hải Phòng",
+        departureTime: "10:00",
+        arrivalTime: "12:00",
+        departureDate: "2024-10-22",
+        arrivalDate: "2024-10-22",
+        departureStation: "Bến xe Hà Nội",
+        arrivalStation: "Bến xe Hải Phòng",
+        pickupLocation: "Bến xe Hà Nội",
+        dropoffLocation: "Bến xe Hải Phòng",
       });
 
       setAccommodationData({
-        name: "Khách sạn B",
-        room: "Phòng A2",
-        checkIn: "2024-10-25",
-        checkOut: "2024-10-28",
+        name: "The Grand Haiphong",
+        room: "101",
+        checkIn: "2024-10-22",
+        checkOut: "2024-12-22",
         type: "hotel",
       });
     } else if (type === "hotel") {
       setAccommodationData({
-        name: "Khách sạn B",
-        room: "Phòng A2",
-        checkIn: "2024-10-25",
-        checkOut: "2024-10-28",
+        name: "The Grand Haiphong",
+        room: "101",
+        checkIn: "2024-10-22",
+        checkOut: "2024-12-22",
         type: "hotel",
       });
     } else if (type === "transportation") {
       setTransportationData({
         name: "Phương Trang",
         type: "VIP",
-        seat: "A1, B1",
-        numberSeat: 2,
-        departureLocation: "Hồ Chí Minh",
-        arrivalLocation: "Vũng Tàu",
-        departureTime: "08:00",
-        arrivalTime: "09:00",
-        departureDate: "2024-10-25",
-        arrivalDate: "2024-10-25",
-        departureStation: "Bến xe Miền Đông",
-        arrivalStation: "Bến xe Vũng Tàu",
-        pickupLocation: "Bến xe Miền Đông",
-        dropoffLocation: "Bến xe Vũng Tàu",
+        seat: "A1",
+        numberSeat: 1,
+        departureLocation: "Hà Nội",
+        arrivalLocation: "Hải Phòng",
+        departureTime: "10:00",
+        arrivalTime: "12:00",
+        departureDate: "2024-10-22",
+        arrivalDate: "2024-10-22",
+        departureStation: "Bến xe Hà Nội",
+        arrivalStation: "Bến xe Hải Phòng",
+        pickupLocation: "Bến xe Hà Nội",
+        dropoffLocation: "Bến xe Hải Phòng",
       });
     }
   }, [type]);
@@ -121,7 +121,7 @@ const Booking = () => {
           )}
         </div>
         <div className="booking-body-right">
-          <UserInformation totalPrice={1800} type={type} />
+          <UserInformation totalPrice={100000} type={type} />
         </div>
       </div>
     </div>

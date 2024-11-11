@@ -1,18 +1,14 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar, GridToolbarContainer } from "@mui/x-data-grid";
-import {
-  Button,
-  Switch,
-} from "@mui/material";
+import { Button, Switch } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Delete, Edit, RemoveRedEye } from "@mui/icons-material";
 import { CouponService } from "../../../services/apis/CouponService";
 import AddIcon from "@mui/icons-material/Add";
 import { toast } from "react-toastify";
 import CouponDialog from "./CouponDialog";
-import IOSSwitch from "./IOSSwitch";
-
+import ViewColumnIcon from "@mui/icons-material/ViewColumn";
 const paginationModel = { page: 0, pageSize: 20 };
 
 export default function CouponAdmin() {
@@ -29,6 +25,7 @@ export default function CouponAdmin() {
     start_date: "",
     end_date: "",
     use_limit: "",
+    use_count: 0,
     is_active: true,
   });
 
@@ -47,19 +44,6 @@ export default function CouponAdmin() {
       }
     );
     setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    setFormData({
-      code: "",
-      discountType: 1,
-      discountValue: "",
-      startDate: "",
-      endDate: "",
-      useLimit: "",
-      is_active: true,
-    });
   };
 
   React.useEffect(() => {
@@ -86,71 +70,6 @@ export default function CouponAdmin() {
     };
     fetchCoupons();
   }, []);
-  const validateCouponData = () => {
-    const {
-      code,
-      discount_type,
-      discount_value,
-      start_date,
-      end_date,
-      use_limit,
-    } = formData;
-    const errors = [];
-
-    if (!code) errors.push("Mã không được để trống.");
-    if (!discount_type) errors.push("Vui lòng chọn thể loại giảm giá.");
-    if (!discount_value || isNaN(discount_value) || Number(discount_value) <= 0)
-      errors.push("Giá trị giảm phải là một số hợp lệ và lớn hơn 0.");
-    if (new Date(start_date) < new Date())
-      errors.push("Ngày bắt đầu không được ở quá khứ.");
-    if (new Date(end_date) < new Date(start_date))
-      errors.push("Ngày kết thúc phải sau ngày bắt đầu.");
-    if (!use_limit || isNaN(use_limit) || Number(use_limit) < 0)
-      errors.push("Giới hạn sử dụng phải là một số hợp lệ và không âm.");
-
-    return errors;
-  };
-
-  const handleSave = async (formData) => {
-    const validationErrors = validateCouponData();
-    if (validationErrors.length > 0) {
-      toast(validationErrors.join(" "));
-      return;
-    }
-    try {
-      const response = await CouponService.createCoupon(formData);
-      if (response) {
-        const newFormData = { ...formData, coupon_id: response.coupon_id };
-        toast("Tạo mới thành công");
-        setRows((prevRows) => [...prevRows, newFormData]);
-      }
-    } catch (error) {
-      toast("Lỗi");
-      console.log(error.message);
-    }
-  };
-
-  const handleUpdate = async (formData, id) => {
-    const validationErrors = validateCouponData();
-    if (validationErrors.length > 0) {
-      toast(validationErrors.join(" "));
-      return;
-    }
-    try {
-      const response = await CouponService.updateCoupon(id, formData);
-      if (response) {
-        toast("Cập nhật thành công");
-        setRows((prevRows) =>
-          prevRows.map((row) =>
-            row.coupon_id === response.coupon_id ? { ...row, ...formData } : row
-          )
-        );
-      }
-    } catch (error) {
-      toast("Lỗi");
-      console.log(error.message);
-    }
-  };
   const handleDelete = async (id) => {
     try {
       const response = await CouponService.deleteCoupon(id);
@@ -163,17 +82,37 @@ export default function CouponAdmin() {
       console.log(error.message);
     }
   };
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
 
   function EditToolbar() {
+    React.useEffect(() => {
+      setTimeout(() => {
+        const buttonCol = document.querySelector(
+          "button[aria-label='Select columns']"
+        );
+        const buttonFilter = document.querySelector(
+          "button[aria-label='Show filters']"
+        );
+        const buttonExport = document.querySelector(
+          "button[aria-label='Export']"
+        )
+        if (buttonCol) {
+          buttonCol.innerHTML = "<i class='fas fa-table-columns me-2'></i> Các Cột";
+        }
+        if(buttonFilter){
+          buttonFilter.innerHTML = "<i class='fas fa-filter me-2'></i> Lọc"
+        }
+        if(buttonExport){
+          buttonExport.innerHTML = "<i class='fas fa-download me-2'></i> Xuất"
+        }
+      }, 100);
+    }, []);
     return (
-      <GridToolbarContainer>
+      <GridToolbarContainer
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
         <Button
           color="primary"
           style={{ fontSize: "13px", padding: "4px 5px" }}
@@ -191,11 +130,15 @@ export default function CouponAdmin() {
   }
 
   const columns = [
-    { field: "code", headerName: "Mã", width: 150 },
+    { field: "code", headerName: "Mã voucher", width: 90 },
     {
       field: "discount_type",
       headerName: "Thể loại giảm giá",
       width: 150,
+      valueGetter: (params) => {
+        const discount_type = params;
+        return discount_type == "PERCENT" ? "Phần trăm (%) " : "Giá trị (VNĐ) ";
+      },
     },
     {
       field: "discount_value",
@@ -232,31 +175,48 @@ export default function CouponAdmin() {
     {
       field: "is_active",
       headerName: "Trạng thái",
-      editable: true,
-      renderCell: (params) => (
-        <IOSSwitch
-          name="active"
-          checked={formData.active}
-          onChange={handleInputChange}
-        />
-      ),
-      width: 90,
+      renderCell: (params) => {
+        if (params.value) {
+          return (
+            <span
+              style={{
+                padding: "4px 8px",
+                backgroundColor: "rgb(202 222 207)",
+                color: "rgb(31 159 60)",
+                border: "2px solid rgb(71 180 96)",
+                borderRadius: "4px",
+              }}
+            >
+              Còn hạn
+            </span>
+          );
+        }
+        return (
+          <span
+            style={{
+              padding: "4px 8px",
+              backgroundColor: "rgb(222 202 202)",
+              color: "rgb(159 31 31)",
+              border: "2px solid rgb(180 71 71)",
+              borderRadius: "4px",
+            }}
+          >
+            Hết hạn
+          </span>
+        );
+      },
+      width: 100,
     },
     {
       field: "actions",
       type: "actions",
       headerName: "Hành động",
       width: 100,
+
       getActions: (params) => [
-        <RemoveRedEye
-          key="view"
-          onClick={() => {
-            handleClick(params.row);
-            setViewMode(true);
-          }}
-        />,
         <Edit
           key="edit"
+          style={{ cursor:"pointer" }}
           onClick={() => {
             handleClick(params.row);
             setViewMode(false);
@@ -264,6 +224,7 @@ export default function CouponAdmin() {
         />,
         <Delete
           key="delete"
+          style={{ cursor:"pointer" }}
           onClick={() => {
             handleDelete(params.row.coupon_id);
           }}
@@ -273,7 +234,16 @@ export default function CouponAdmin() {
   ];
 
   return (
-    <Box sx={{ height: 400, width: "100%" }}>
+    <Box
+      sx={{
+        height: "auto",
+        width: "100%",
+        backgroundColor: "#f5f5f5",
+        padding: "40px",
+        borderRadius: 2,
+        overflow: "hidden",
+      }}
+    >
       <DataGrid
         loading={isLoading}
         slotProps={{
@@ -282,6 +252,7 @@ export default function CouponAdmin() {
             noRowsVariant: "skeleton",
           },
         }}
+        checkboxSelection={false}
         rows={rows}
         columns={columns}
         initialState={{
@@ -292,10 +263,15 @@ export default function CouponAdmin() {
           },
         }}
         getRowId={(row) => row.coupon_id}
-        pageSizeOptions={[5]}
-        checkboxSelection
+        pageSizeOptions={[10, 25, 50, 100]}
         disableRowSelectionOnClick
         slots={{ toolbar: EditToolbar }}
+        sx={{
+          borderRadius: 2,
+          border: "1px solid #ddd",
+          background: "#FFF",
+          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+        }}
       />
       <CouponDialog
         open={open}

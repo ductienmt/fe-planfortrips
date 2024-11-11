@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
-import SearchBar from "./HotelComponent/SearchBar";
-import HotDealsNotification from "./HotelComponent/HotDealsNotification";
-import ResultsSummary from "./HotelComponent/ResultsSummary";
-import AccommodationCard from "./HotelComponent/AccommodationCard";
-import SearchResults from "./HotelComponent/SearchResults";
-import { HotelService } from "../../../../services/apis/HotelService";
-import { CircularProgress } from "@mui/material";
+import React, { useEffect, useState } from 'react';
+import SearchBar from './HotelComponent/SearchBar'; // Nhập component SearchBar
+import HotDealsNotification from './HotelComponent/HotDealsNotification'; // Nhập component HotDealsNotification
+import ResultsSummary from './HotelComponent/ResultsSummary'; // Nhập component ResultsSummary
+import AccommodationCard from './HotelComponent/AccommodationCard'; // Nhập component AccommodationCard
+import SearchResults from './HotelComponent/SearchResults';
+import { HotelService } from '../../../../services/apis/HotelService';
 
 const Hotel = () => {
   const [hotels, setHotels] = useState([]);
@@ -22,31 +21,30 @@ const Hotel = () => {
       } catch (error) {
         console.error("Error:", error);
         const query = `[Javascript] fix error: ${error.message}`;
-        window.open(`https://chatgpt.com/?q=${encodeURIComponent(query)}`);
       }
     };
 
     fetchProduct();
   }, [limit, page, keyword]);
-  function GradientCircularProgress() {
-    return (
+  // function GradientCircularProgress() {
+  //   return (
 
-        <main className='Hotel-container-page'>
-            <SearchBar />
-            <section>
-                <SearchResults />
-                <HotDealsNotification />
-                <ResultsSummary />
-                {accommodations.map(accommodation => (
-                    <AccommodationCard key={accommodation.id} {...accommodation} />
-                ))} *
-            </section>
+  //       <main className='Hotel-container-page'>
+  //           <SearchBar />
+  //           <section>
+  //               <SearchResults />
+  //               <HotDealsNotification />
+  //               <ResultsSummary />
+  //               {accommodations.map(accommodation => (
+  //                   <AccommodationCard key={accommodation.id} {...accommodation} />
+  //               ))} *
+  //           </section>
 
 
 
-        </main>
-    );
-  }
+  //       </main>
+  //   );
+  // }
   return (
     <main>
       <SearchBar keyword={keyword} setKeyword={setKeyword} />
@@ -55,7 +53,7 @@ const Hotel = () => {
         <HotDealsNotification />
         <ResultsSummary />
         {isLoading ? (
-          <GradientCircularProgress />
+          <></>
         ) : (
           hotels.map((hotel) => (
             <AccommodationCard key={hotel.hotel_id} {...hotel} />
@@ -65,4 +63,5 @@ const Hotel = () => {
     </main>
   );
 };
+
 export default Hotel;

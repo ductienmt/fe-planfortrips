@@ -1,14 +1,14 @@
 import React from 'react';
 import "./HotelDescription.css";
 
-const HotelDescription = ({hotel}) => {
+const HotelDescription = () => {
     return (
         <div className="hotel-description-container-wrapper">
             <div className="hotel-description-container-content">
                 <div className="hotel-name-and-star-rating-container">
-                    <h2 className="hotel-name-title">{hotel.name}</h2>
+                    <h2 className="hotel-name-title">Khách sạn Mường Thanh</h2>
                     <div className="hotel-star-rating-container">
-                        {[...Array(hotel.rating)].map((star) => (
+                        {[1, 2, 3, 4, 5].map((star) => (
                             <img
                                 key={star}
                                 loading="lazy"
@@ -20,11 +20,11 @@ const HotelDescription = ({hotel}) => {
                     </div>
                 </div>
                 <p className="hotel-address-location-description">
-                    Địa chỉ: {hotel.address}
+                    Địa chỉ: 086, Đường Thanh Niên, thành phố Lào Cai, Việt Nam
                 </p>
                 <div className="hotel-description-separator-line" />
                 <p className="hotel-full-description-text">
-                    {hotel.description}
+                    Được xây dựng vào năm 2015, Khách sạn Mường Thanh Grand Lào Cai là một trong những cơ sở lưu trú lớn nhất Lào Cai và là sự lựa chọn tuyệt vời dành cho khách du lịch. Từ đây, khách có thể dễ dàng tiếp cận được nét đẹp sống động của thành phố ở mọi góc cạnh. Với vị trí thuận lợi, khách sạn dễ dàng tiếp cận những điểm tham quan du lịch nổi tiếng của thành phố. Khách sạn Mường Thanh Grand Lào Cai là một sự lựa chọn thông minh cho du khách khi đến Lào Cai, nơi mang lại cho họ một kì nghỉ thư giãn và thoải mái.
                 </p>
             </div>
         </div>

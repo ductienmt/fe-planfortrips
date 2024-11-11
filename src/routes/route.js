@@ -6,21 +6,23 @@ import { ClientLayout } from "../layout/ClientLayout";
 import Register from "../client/pages/Auth/Register/Register";
 import PlanBefore from "../client/pages/PlanBefore/Plan";
 import TravelPlan from "../client/pages/PlanAfter/TravelPlan";
-import Hotel from "../client/pages/HotelPage/Hotel/Hotel";
 import Booking from "../client/pages/Booking/Booking";
 import Payment from "../client/pages/Payment/Payment";
 import Success from "../client/pages/Payment/Status/Success";
 import BookingHotel from "../client/pages/HotelPage/BookingHotel/BookingHotel";
 import HotelDetails from "../client/pages/HotelPage/HotelDetails/HotelDetails";
 import Profile from "../client/pages/Profile/Profile";
-import LoginAdmin from "../admin/pages/Auth/Login";
-// import Exchange from "../admin/pages/Exchange/Exchange";
+
+// import LoginAdmin from "../admin/pages/Auth/Login";
 import UserAdmin from "../admin/pages/User/User";
 import EnterpriseAdmin from "../admin/pages/Enterprise/Enterprise";
-// import CouponAdmin from "../admin/pages/Coupon/Coupon";
-import TravelAdmin from "../admin/pages/Travel/Travel";
 import LayoutAdmin from "../admin/pages/Layout/Layout";
 import HomePage from "../admin/pages/Dashboard/HomePage";
+import CouponAdmin from "../admin/pages/Coupon/CouponPage";
+import OrderCarPage from "../admin/pages/Exchange/OrderCar/OrderCar";
+import BookingHotelPage from "../admin/pages/Exchange/BookingHotel/BookingHotel";
+import LoginAdmin from "../admin/pages/Auth/Login/Login";
+import FeedbackPage from "../admin/pages/Feedback/Feedback";
 import TransportSelectionPage from "../client/pages/VehiclePage/BookingVehiclesFind/TransportSelectionPage";
 import SearchResults from "../client/pages/VehiclePage/BookingVehicles/SearchResults";
 import BookingSteps from "../client/pages/VehiclePage/BookingVehiclesDetails/BookingSteps";
@@ -28,9 +30,11 @@ import ProfileDetail from "../client/pages/Profile/ProfileDetail/ProfileDetail";
 import ChangePassword from "../client/pages/Profile/ChangePass/ChangePassword";
 import InfoDetails from "../client/pages/Profile/InfoDetails/InfoDetails";
 import YourTripsQuery from "../client/pages/Profile/YourTripQuery/YourTripsQuery";
+import PlacePageAdmin from "../admin/pages/Travel/PlacePage";
 import { EnterpriseLayout } from "../layout/EnterpriseLayout";
 import EnterpriseLogin from "../enterprise/auth/login/EnterpriseLogin";
 import EnterpriseDashboard from "../enterprise/dashboard/EnterpriseDashboard";
+import Hotel from "../client/pages/HotelPage/Hotel/Hotel";
 import Voucher from "../enterprise/voucher/Voucher";
 import Vehicle from "../enterprise/transportation/vehicleManagement/Vehicle";
 import Schedule from "../enterprise/transportation/schedule/Schedule";
@@ -38,6 +42,8 @@ import Route from "../enterprise/transportation/route/Route";
 import RoomHistory from "../enterprise/accomodation/roomHistory/RoomHistory";
 import Room from "../enterprise/accomodation/roomManagement/Room";
 import HotelManagement from "../enterprise/accomodation/manager/HotelManagement";
+
+import Sumbitenterprise from "../client/pages/Enterprise/Sumbitenterprise";
 
 const routeAdmin = () => [
   {
@@ -56,17 +62,26 @@ const routeAdmin = () => [
         path: "business",
         Component: EnterpriseAdmin,
       },
-      // {
-      //   path: "vouchers",
-      //   Component: CouponAdmin,
-      // },
-      // {
-      //   path: "transactions",
-      //   Component: Exchange,
-      // },
+      {
+        path: "vouchers",
+        Component: CouponAdmin,
+      },
+      {
+        path: "transactions/hotels",
+        Component: BookingHotelPage,
+      },
+      {
+        path: "transactions/vehicles",
+        Component: OrderCarPage,
+      },
+
       {
         path: "travel",
-        Component: TravelAdmin,
+        Component: PlacePageAdmin,
+      },
+      {
+        path: "feedbacks",
+        Component: FeedbackPage,
       },
     ],
   },
@@ -206,8 +221,13 @@ const routeClient = () => [
         Component: SearchResults,
       },
       {
-        path: "/vehicle-details",
+        path: "/vehicle-details/:id",
         Component: BookingSteps,
+      },
+
+      {
+        path: "/enterprise",
+        Component: Sumbitenterprise,
       },
     ],
   },

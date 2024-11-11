@@ -7,8 +7,12 @@
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
+/* .hoverable:hover {
+  transform: scale(1.05);
+  opacity: 1; /* Khi hover, card này sẽ nổi bật hơn */
+}
 
-.active {
+*/ .active {
   transform: scale(1.05);
   opacity: 1;
   /* Card được click sẽ nổi bật */
