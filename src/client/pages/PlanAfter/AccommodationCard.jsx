@@ -46,16 +46,19 @@ function AccommodationCard({ className, onClick, accomodation }) {
           src={hotelImage1}
           alt="Accommodation view 1"
           className="gallery-image"
+          loading="lazy"
         />
         <img
           src={hotelImage2}
           alt="Accommodation view 2"
           className="gallery-image1"
+          loading="lazy"
         />
         <img
           src={hotelImage3}
           alt="Accommodation view 3"
           className="gallery-image2 full-width"
+          loading="lazy"
         />
       </div>
       <div className="accommodation-details">

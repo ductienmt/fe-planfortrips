@@ -5,6 +5,7 @@ import Transportation from "./TransportationCard/Transportation";
 import { useParams } from "react-router-dom";
 import Accomodation from "./AccomodationCard/Accomodation";
 import UserInformation from "./UserInfomation/UserInformation";
+import { ScheduleService } from "../../../services/apis/ScheduleService";
 
 const Booking = () => {
   window.scrollTo(0, 0);
@@ -40,23 +41,60 @@ const Booking = () => {
   const [transportationData, setTransportationData] = useState(null);
   const [accommodationData, setAccommodationData] = useState(null);
 
+  const [stationData, setStationData] = useState([]);
+
+  const loadStation = async (id) => {
+    try {
+      const response = await ScheduleService.getStation(id);
+      console.log("station", response.data);
+
+      setStationData(response.data.data);
+    } catch (error) {
+      console.error("Error fetching accommodation data", error);
+    }
+  };
+
   useEffect(() => {
     if (type === "plan") {
+      const tripData = JSON.parse(sessionStorage.getItem("tripData"));
+      console.log(tripData);
+
+      const seatsDe = tripData?.transportation?.departure?.seatBook
+        ? tripData.transportation.departure.seatBook
+            .map((seat) => seat.seat_number)
+            .join(", ")
+        : "Chưa có dữ liệu chỗ ngồi";
+
+      const loadCities = async () => {
+        try {
+          const response = await ScheduleService.getCity(
+            tripData.transportation?.departure?.routeId
+          );
+          console.log("city", response.data);
+        } catch (error) {
+          console.error("Error fetching accommodation data", error);
+        }
+      };
+
+      if (tripData?.transportation?.departure?.scheduleId) {
+        loadStation(tripData?.transportation?.departure?.scheduleId);
+      }
+
       setTransportationData({
-        name: "Phương Trang",
+        name: tripData.transportation?.departure?.carName,
         type: "VIP",
-        seat: "A1, B1",
-        numberSeat: 2,
+        seat: seatsDe,
+        numberSeat: tripData.transportation?.departure?.seatBook.length || 0,
         departureLocation: "Hồ Chí Minh",
         arrivalLocation: "Vũng Tàu",
         departureTime: "08:00",
         arrivalTime: "09:00",
         departureDate: "2024-10-25",
         arrivalDate: "2024-10-25",
-        departureStation: "Bến xe Miền Đông",
-        arrivalStation: "Bến xe Vũng Tàu",
-        pickupLocation: "Bến xe Miền Đông",
-        dropoffLocation: "Bến xe Vũng Tàu",
+        departureStation: stationData.departureStation,
+        arrivalStation: stationData.arrivalStation,
+        pickupLocation: stationData.departureStation,
+        dropoffLocation: stationData.arrivalStation,
       });
 
       setAccommodationData({

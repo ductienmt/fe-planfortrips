@@ -30,21 +30,18 @@ const Hotel = () => {
   }, [limit, page, keyword]);
   function GradientCircularProgress() {
     return (
-
-        <main className='Hotel-container-page'>
-            <SearchBar />
-            <section>
-                <SearchResults />
-                <HotDealsNotification />
-                <ResultsSummary />
-                {accommodations.map(accommodation => (
-                    <AccommodationCard key={accommodation.id} {...accommodation} />
-                ))} *
-            </section>
-
-
-
-        </main>
+      <main className="Hotel-container-page">
+        <SearchBar />
+        <section>
+          <SearchResults />
+          <HotDealsNotification />
+          <ResultsSummary />
+          {hotels.map((accommodation) => (
+            <AccommodationCard key={accommodation.id} {...accommodation} />
+          ))}{" "}
+          *
+        </section>
+      </main>
     );
   }
   return (

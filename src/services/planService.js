@@ -71,18 +71,18 @@ export const generateTripPlan = async (data) => {
 
   try {
     const result = await chatSession.sendMessage(
-      `bạn dựa vào dữ liệu tôi cung cấp chọn ra kế hoạch tốt nhất dựa vào userData của tôi để ý số người, 
-      userData chứa dữ liệu của người dùng để ý số người trong chuyến đi để tính toán phù hợp, nếu từ 2 người trở lên hãy tính toán vé xe, 
+      `bạn dựa vào dữ liệu tôi cung cấp chọn ra kế hoạch tốt nhất dựa vào userData của tôi để ý số người từ userData, nếu số tiền nhỏ quả thì trả ra json notification: "Không đủ ngân sách để lên kế hoạch", có thể gợi ý có thể giảm cái gì để đủ trong ngân sách đó 
+      userData chứa dữ liệu của người dùng (budget là số ngân sách tôi đang để theo dạng phải *1000 nữa mới đúng giá trị thực) ,để ý số người trong chuyến đi để tính toán phù hợp, nếu từ 2 người trở lên hãy tính toán vé xe, 
       tại vé xe tôi cung cấp chỉ là 1 vé 1 người, tính toán thêm vé tham quan ở các nơi check in dựa vào số người, 
       nếu là hotel thì dựa nào numberPeople tùe userData mà chọn phòng dựa vào maxPeople của room tôi gửi lên, nếu số người nhiều hơn maxPeople của phòng bạn có thể chọn thêm 1 phòng nữa,
-      nếu numberPeople bằng với maxPeople của phòng thì chỉ chọn 1 phòng,
+      nếu numberPeople bằng với roomSize của phòng thì chỉ chọn 1 phòng,
       trả về luôn phòng và id, name, price phòng đó,  các dữ liệu khác là tôi cung cấp, trả về cho tôi theo định dạng json, không thêm bất cứ điều gì khác. Bạn hãy chọn ghế trong 
       transportation tôi có để một mảng là seatAvailable chọn ghế từ đây. Trả về theo cú pháp tôi cung cấp như sau.
       userData, transportation(departure[departureTime, arrivalTime,vehicleCode,scheduleId,carName, seatBook, routeId, totalPrice(numberPeople*priceForOnTicket)], 
-      return[departureTime, arrivalTime,vehicleCode,scheduleId,carName, seatBook, routeId, totalPrice(numberPeople*priceForOnTicket)]),
-      accomodation(nameHotel, hotelId, price_per_night, total, (mảng chứa room đã book) rooms[nameRoom, checkin, checkout, roomType, roomId, roomSize(maxPeople)](dựa vào numberPeople chỉ đặt vừa đủ không được dư phòng)), 
+      return[departureTime, arrivalTime,vehicleCode,scheduleId,carName, seatBook(seat_id, seat_number), routeId, totalPrice(numberPeople*priceForOnTicket)]),
+      accomodation(nameHotel, hotelId, price_per_night, total, (mảng chứa room đã book) rooms[nameRoom, checkin, checkout, roomType, roomId, roomSize(maxPeople)](dựa vào numberPeople chỉ đặt vừa đủ không được dư phòng)) , 
       checkins(dựa vào những nơi tôi cung cấp, ít nhất 5 nơi), estimatedCost, itinerary(trả theo ngày, day1, day2,... đi đâu vào ngày làm gì,...), 
-      để ý số người mà tính toán cho đúng\n\n${JSON.stringify(data)}`
+      để ý số người mà tính toán cho đúng, nếu không đủ số tiền có thể chọn một nơi ở khác giá rẻ hơn, sau đó nếu vẫn chưa đủ thì chọn chuyến xe khác sẽ hơn, làm sao cho 1 kế hoạch tối ưu chi phí nhất\n\n${JSON.stringify(data)}`
     );
     // const expected = cleanedResponse(result.response.text());
     // console.log(result.response.text());

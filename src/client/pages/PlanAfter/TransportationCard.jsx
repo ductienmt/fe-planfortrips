@@ -36,6 +36,7 @@ const TransportationCard = ({
     const response = await VehiclesService.getVehicleById(vehicleCode);
     // console.log("response", response.data.car_company.images[0]);
     setImg(response.data.car_company.images[0].url);
+    console.log("vehicleCode", response.data.car_company.images[0].url);
   };
 
   useEffect(() => {
@@ -102,7 +103,7 @@ const TransportationCard = ({
               icon="https://cdn.builder.io/api/v1/image/assets/TEMP/2f2cda72d26f1c67915563e9cacfcc3716d8d5d11d87c08952c0484a418a3102?placeholderIfAbsent=true&apiKey=75fde3af215540558ff19397203996a6"
               city="Vũng Tàu"
               station={arrivalStationData}
-              extraInfo="Trả tại quốc lộ 1A - Bãi tắm sau"
+              extraInfo="Trả tại bến"
             />
           </div>
         </div>

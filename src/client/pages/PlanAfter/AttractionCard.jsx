@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./AttractionCard.css";
 import { CheckinService } from "../../../services/apis/CheckinService";
+import { convertToVND } from "../../../utils/FormatMoney";
 
 function AttractionCard({ className, onClick, onNext, onBack, checkin }) {
   const [attractions, setAttractions] = useState(checkin || []);
@@ -22,13 +23,6 @@ function AttractionCard({ className, onClick, onNext, onBack, checkin }) {
       setCurrentIndex(attractions.length - 1);
     }
     onBack();
-  };
-
-  const convertToVND = (amount) => {
-    const formattedAmount = amount
-      .toString()
-      .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return `${formattedAmount}.000VNĐ`;
   };
 
   useEffect(() => {
@@ -59,7 +53,7 @@ function AttractionCard({ className, onClick, onNext, onBack, checkin }) {
       );
 
       setAttractions(updatedAttractions);
-      console.log(updatedAttractions);
+      // console.log(updatedAttractions);
     };
 
     fetchImages();

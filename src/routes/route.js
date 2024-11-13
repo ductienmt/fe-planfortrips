@@ -38,6 +38,7 @@ import Route from "../enterprise/transportation/route/Route";
 import RoomHistory from "../enterprise/accomodation/roomHistory/RoomHistory";
 import Room from "../enterprise/accomodation/roomManagement/Room";
 import HotelManagement from "../enterprise/accomodation/manager/HotelManagement";
+import Sumbitenterprise from "../client/pages/Enterprise/Sumbitenterprise";
 
 const routeAdmin = () => [
   {
@@ -208,6 +209,10 @@ const routeClient = () => [
       {
         path: "/vehicle-details",
         Component: BookingSteps,
+      },
+      {
+        path: "/submit-enterprise",
+        Component: Sumbitenterprise,
       },
     ],
   },
