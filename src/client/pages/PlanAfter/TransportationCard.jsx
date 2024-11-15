@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { ScheduleService } from "../../../services/apis/ScheduleService";
 import "./TransportationCard.css";
 import "feather-icons/dist/feather";
+import { VehiclesService } from "../../../services/apis/Vehicles";
 
 const TransportationCard = ({
   className,
   onClick,
-  img,
+  vehicleCode,
   nameVehicle,
   departureDate,
   arrivalDate,
@@ -41,6 +42,10 @@ const TransportationCard = ({
   useEffect(() => {
     if (scheduleId) {
       loadStation(scheduleId);
+    }
+    // console.log("vehicleCode", vehicleCode);
+    if (vehicleCode) {
+      getImg(vehicleCode);
     }
   }, [scheduleId]);
   return (
