@@ -494,9 +494,9 @@ import { useState, useEffect, useRef, useReducer, useCallback } from "react";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { handleInputChange } from "../../../utils/FormatMoney";
-import provinces from "../../../utils/Provinces.json";
-import { useSnackbar } from "notistack";
+import { handleInputChange } from "../../../utils/FormatMoney"; // Đường dẫn tới file FormatMoney.js
+import provinces from "../../../utils/Provinces.json"; // Đường dẫn tới file Province.json
+import { useSnackbar } from "notistack"; // Thêm Notistack
 import "./Plan.css";
 import { flatpickrConfig } from "../../../utils/ConfigFlatpickr";
 import { DateFormatter } from "../../../utils/DateFormat";
@@ -728,7 +728,6 @@ function PlanBefore() {
   useEffect(() => {
     document.title = "Lên kế hoạch";
     window.scrollTo(0, 200);
-
     if (ngayDiRef.current && ngayVeRef.current) {
       const ngayDiPicker = flatpickr(ngayDiRef.current, {
         altInput: true,

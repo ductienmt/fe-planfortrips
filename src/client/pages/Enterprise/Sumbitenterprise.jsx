@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   TextField,
@@ -26,14 +26,10 @@ const Sumbitenterprise = () => {
   const handleChange = (event) => {
     setType(event.target.value);
   };
-  useEffect(() => {
-    window.scrollTo(0, 138);
-    document.title = "Đăng ký doanh nghiệp";
-  }, []);
 
   return (
-    <main className="signInFormMainContainer">
-      <section className="signInFormContentContainer">
+    <main className="signInFormContainer">
+      <section className="formContainer">
         <Box
           component="form"
           sx={{
@@ -44,11 +40,11 @@ const Sumbitenterprise = () => {
           noValidate
           autoComplete="off"
         >
-          <h2 className="signInFormTitle">PlanForTrips</h2>
+          <h2 className="formTitle">PlanForTrips</h2>
 
           <TextField
             id="input-login"
-            label="Tên người dùng *"
+            label="Tên người dùng"
             variant="outlined"
             placeholder="Email hoặc số điện thoại"
             fullWidth
@@ -141,7 +137,7 @@ const Sumbitenterprise = () => {
           </FormControl>
 
           <Button
-            className="customButton"
+            className="Sumbitform"
             variant="contained"
             color="primary"
             sx={{ mt: 2 }}
@@ -150,9 +146,9 @@ const Sumbitenterprise = () => {
           </Button>
         </Box>
 
-        <hr className="signInSeparator" />
+        <hr className="separator" />
       </section>
-      <div className="signInBrandName">PlanForTrips</div>
+      <div className="brandName">PlanForTrips</div>
     </main>
   );
 };

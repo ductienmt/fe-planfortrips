@@ -1,77 +1,120 @@
-import * as React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
-import Paper from '@mui/material/Paper';
-import { TextField, Grid } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { TextField, Typography, CircularProgress } from '@mui/material';
+import { UserService } from '../../../services/apis/UserService';
 
-const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'firstName', headerName: 'First name', width: 130 },
-  { field: 'lastName', headerName: 'Last name', width: 130 },
-  { field: 'age', headerName: 'Age', type: 'number', width: 90 },
-  {
-    field: 'fullName',
-    headerName: 'Full name',
-    description: 'This column has a value getter and is not sortable.',
-    sortable: false,
-    width: 160,
-  },
-];
-const rows = [
-  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35, date: '2023-01-15' },
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42, date: '2023-02-20' },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45, date: '2023-03-25' },
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16, date: '2023-04-10' },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null, date: '2023-05-30' },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150, date: '2023-06-05' },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44, date: '2023-07-15' },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36, date: '2023-08-20' },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65, date: '2023-09-25' },
-];
+function User() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false); // Thêm state loading
 
-const paginationModel = { page: 0, pageSize: 5 };
+  // useEffect để tải dữ liệu khi component render lần đầu
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
-export default function UserAdmin() {
-  const [startDate, setStartDate] = React.useState('');
-  const [endDate, setEndDate] = React.useState('');
+  // Hàm fetchUsers để gọi API và lấy danh sách người dùng
+  const fetchUsers = async () => {
+    setLoading(true); // Bắt đầu tải
+    try {
+      const response = await UserService.getAll();
+      setUsers(response.data.data.userResponses); // Cập nhật danh sách người dùng
+    } catch (error) {
+      alert("Có lỗi xảy ra khi tải người dùng");
+    } finally {
+      setLoading(false); // Kết thúc tải sau khi có kết quả
+    }
+  };
 
-  const filteredRows = rows.filter((row) => {
-    if (startDate && row.date < startDate) return false;
-    if (endDate && row.date > endDate) return false;
-    return true;
-  });
+  // Hàm thay đổi trạng thái người dùng
+  const changeStage = async (userId, stageId) => {
+    setLoading(true); // Bắt đầu tải khi thay đổi trạng thái
+    try {
+      const res = await UserService.changeStageUser(userId, stageId);
+      if (res.code === 200) {
+        alert("Cập nhật trạng thái thành công");
+        fetchUsers(); // Tải lại danh sách người dùng sau khi thay đổi
+      } else {
+        alert("Thất bại");
+      }
+    } catch (error) {
+      alert("Có lỗi xảy ra khi cập nhật trạng thái");
+    } finally {
+      setLoading(false); // Kết thúc tải
+    }
+  };
 
   return (
-    <Paper sx={{ height: 500, width: '100%', padding: 2 }}>
-      <Grid container spacing={2} sx={{ marginBottom: 2 }}>
-        <Grid item xs={6} md={3}>
-          <TextField
-            label="Start Date"
-            type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            InputLabelProps={{ shrink: true }}
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={6} md={3}>
-          <TextField
-            label="End Date"
-            type="date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            InputLabelProps={{ shrink: true }}
-            fullWidth
-          />
-        </Grid>
-      </Grid>
-      <DataGrid
-        rows={filteredRows}
-        columns={columns}
-        initialState={{ pagination: { paginationModel } }}
-        pageSizeOptions={[5, 10]}
-        checkboxSelection
-        sx={{ border: 0 }}
-      />
-    </Paper>
+    <div className="container pb-3">
+      {/* Header */}
+      <div className="row my-4">
+        <div className="col">
+          <Typography variant="h4" gutterBottom>
+            Quản lý người dùng
+          </Typography>
+        </div>
+        <div className="col d-flex justify-content-end">
+          <TextField label="Tìm kiếm" variant="outlined" size="small" />
+        </div>
+      </div>
+
+      {/* User Table */}
+      <table className="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Tên người dùng</th>
+            <th>Số điện thoại</th>
+            <th>Giới tính</th>
+            <th>Họ và tên</th>
+            <th>Email</th>
+            <th>Thao tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          {loading ? (
+            <tr>
+              <td colSpan="7" className="text-center">
+                <CircularProgress /> {/* Hiển thị spinner khi đang tải */}
+              </td>
+            </tr>
+          ) : (
+            users.length === 0 ? (
+              <tr>
+                <td colSpan="7" className="text-center">Không có người dùng nào</td>
+              </tr>
+            ) : (
+              users.map((user) => (
+                <tr key={user.id}>
+                  <td>{user.id}</td>
+                  <td>{user.userName}</td>
+                  <td>{user.phoneNumber}</td>
+                  <td>{user.gender}</td>
+                  <td>{user.fullName}</td>
+                  <td>{user.email}</td>
+                  <td>
+                    {user.active ? (
+                      <button
+                        className="btn btn-success"
+                        onClick={() => changeStage(user.id, 0)} 
+                      >
+                        Active
+                      </button>
+                    ) : (
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => changeStage(user.id, 1)} 
+                      >
+                        Disable
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))
+            )
+          )}
+        </tbody>
+      </table>
+    </div>
   );
 }
+
+export default User;

@@ -1,5 +1,4 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { cleanedResponse } from "../utils/CleanedResponse";
 // import { PlanServiceApi } from "./apis/PlanServiceApi";
 
 const apiKey = "AIzaSyC--UPHZ3h05O7JyeDsA-MtAFCbN9YjVkI";
@@ -16,7 +15,6 @@ const generationConfig = {
   maxOutputTokens: 8192,
   responseMimeType: "text/plain",
 };
-
 export const generateTripPlan = async (data) => {
   // const tripData = await PlanServiceApi.getData();
   const chatSession = model.startChat({
@@ -114,9 +112,8 @@ export const generateTripPlan = async (data) => {
     if (lastCurlyBraceIndex !== -1) {
       cleanedResponse = cleanedResponse.slice(0, lastCurlyBraceIndex + 1);
     }
-    // console.log(cleanedResponse);
-    // console.log(JSON.parse(cleanedResponse));
-
+    console.log(cleanedResponse);
+    console.log(JSON.parse(cleanedResponse));
     return JSON.parse(cleanedResponse);
   } catch (error) {
     console.error("An error occurred while sending the message:", error);

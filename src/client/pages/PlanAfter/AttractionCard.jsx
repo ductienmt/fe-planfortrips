@@ -1,19 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./AttractionCard.css";
 import { CheckinService } from "../../../services/apis/CheckinService";
 import { convertToVND } from "../../../utils/FormatMoney";
 
-function AttractionCard({ className, onClick, onNext, onBack, checkin }) {
-  const [attractions, setAttractions] = useState(checkin || []);
-  const [currentIndex, setCurrentIndex] = useState(0);
+function AttractionCard({ className, onNext, onBack, onClick }) {
+  const images = [
+    "https://cdn.builder.io/api/v1/image/assets/TEMP/ad64cd8877d82df9d182b44b1c469d495e43884e6e543062377d970ae7cff60b?placeholderIfAbsent=true&apiKey=75fde3af215540558ff19397203996a6",
+    "https://images.pexels.com/photos/25852241/pexels-photo-25852241/free-photo-of-bi-n-b-u-tr-i-hoang-hon-c-nh-bi-n.jpeg?auto=compress&cs=tinysrgb&w=600",
+    "https://images.pexels.com/photos/25865286/pexels-photo-25865286/free-photo-of-danh-b-t-ca-bi-n-b-bi-n-cat.jpeg?auto=compress&cs=tinysrgb&w=600",
+    "https://images.pexels.com/photos/23973693/pexels-photo-23973693/free-photo-of-bi-n-vung-tau.jpeg?auto=compress&cs=tinysrgb&w=600",
+    "https://images.pexels.com/photos/27941529/pexels-photo-27941529/free-photo-of-bi-n-d-ng-b-bi-n-ngay-l.jpeg?auto=compress&cs=tinysrgb&w=600",
+  ];
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const handleNext = () => {
-    if (currentIndex < attractions.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    } else {
-      setCurrentIndex(0);
-    }
-    onNext();
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    onNext(); // Gọi hàm onNext để đảm bảo AttractionCard luôn selected khi nhấn next
   };
 
   const handleBack = () => {
@@ -62,11 +65,8 @@ function AttractionCard({ className, onClick, onNext, onBack, checkin }) {
   return (
     <article className={`attraction-card ${className}`} onClick={onClick}>
       <img
-        src={
-          attractions[currentIndex].images ||
-          "https://www.vietfuntravel.com.vn/image/data/dia-diem-vung-tau/diem-du-lich-vung-tau/check-in-top-37-dia-diem-du-lich-o-vung-tau-dep-khong-goc-chet-h26.jpg"
-        }
-        alt={attractions[currentIndex].name}
+        src={images[currentImageIndex]}
+        alt="Attraction view"
         className="attraction-image"
       />
       <div className="attraction-overlay">
@@ -85,13 +85,8 @@ function AttractionCard({ className, onClick, onNext, onBack, checkin }) {
           />
         </div>
         <div className="attraction-info">
-          <h3 className="attraction-name">{attractions[currentIndex].name}</h3>
-          <p className="attraction-entry">
-            Vé vào cổng:{" "}
-            {attractions[currentIndex].payFee === 0
-              ? "Miễn phí"
-              : convertToVND(attractions[currentIndex].payFee)}
-          </p>
+          <h3 className="attraction-name">Bãi sau Vũng Tàu</h3>
+          <p className="attraction-entry">Vé vào cổng: Miễn phí</p>
         </div>
       </div>
     </article>
