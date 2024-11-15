@@ -1,73 +1,44 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar, GridToolbarContainer } from "@mui/x-data-grid";
-import { Button, Switch } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import { Delete, Edit, RemoveRedEye } from "@mui/icons-material";
 import { CouponService } from "../../../services/apis/CouponService";
-import AddIcon from "@mui/icons-material/Add";
 import { toast } from "react-toastify";
-import CouponDialog from "./CouponDialog";
-const paginationModel = { page: 0, pageSize: 20 };
+import { TourService } from "../../../services/apis/TourService";
+import TourForm from "./Tour";
+const paginationModel = { page: 0, pageSize: 100 };
 
-export default function CouponAdmin() {
+export default function TourAdmin() {
   const [rows, setRows] = React.useState([]);
-  const [open, setOpen] = React.useState(false);
-  const [editMode, setEditMode] = React.useState(false);
   const [selectedCouponId, setSelectedCouponId] = React.useState(null);
-  const [viewMode, setViewMode] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [formData, setFormData] = React.useState({
-    code: "",
-    discount_type: 1, // default value
-    discount_value: "",
-    start_date: "",
-    end_date: "",
-    use_limit: "",
-    use_count: 0,
-    is_active: true,
-  });
 
   const handleClick = (coupon = null) => {
-    setEditMode(!!coupon);
     setSelectedCouponId(coupon ? coupon.coupon_id : null);
-    setFormData(
-      coupon || {
-        code: "",
-        discount_type: 1,
-        discount_value: "",
-        start_date: "",
-        end_date: "",
-        use_limit: "",
-        is_active: true,
-      }
-    );
-    setOpen(true);
   };
 
   React.useEffect(() => {
-    const fetchCoupons = async () => {
+    const fetchTourData = async () => {
       try {
-        const couponData = await CouponService.getCoupons(
+        const tourData = await TourService.getTours(
           paginationModel.page,
-          paginationModel.pageSize,
-          ""
+          paginationModel.pageSize
         );
 
-        if (couponData && couponData.listResponse) {
-          setRows(couponData.listResponse);
+        if (tourData && tourData.listResponse) {
+          setRows(tourData.listResponse);
           setIsLoading(false);
         } else {
           console.warn(
             "Expected 'listResponse' in response data but received:",
-            couponData
+            tourData
           );
         }
       } catch (error) {
         console.error("Error fetching coupons:", error);
       }
     };
-    fetchCoupons();
+    fetchTourData();
   }, []);
   const handleDelete = async (id) => {
     try {
@@ -93,15 +64,16 @@ export default function CouponAdmin() {
         );
         const buttonExport = document.querySelector(
           "button[aria-label='Export']"
-        )
+        );
         if (buttonCol) {
-          buttonCol.innerHTML = "<i class='fas fa-table-columns me-2'></i> Các Cột";
+          buttonCol.innerHTML =
+            "<i class='fas fa-table-columns me-2'></i> Các Cột";
         }
-        if(buttonFilter){
-          buttonFilter.innerHTML = "<i class='fas fa-filter me-2'></i> Lọc"
+        if (buttonFilter) {
+          buttonFilter.innerHTML = "<i class='fas fa-filter me-2'></i> Lọc";
         }
-        if(buttonExport){
-          buttonExport.innerHTML = "<i class='fas fa-download me-2'></i> Xuất"
+        if (buttonExport) {
+          buttonExport.innerHTML = "<i class='fas fa-download me-2'></i> Xuất";
         }
       }, 100);
     }, []);
@@ -112,65 +84,59 @@ export default function CouponAdmin() {
           justifyContent: "flex-end",
         }}
       >
-        <Button
-          color="primary"
-          style={{ fontSize: "13px", padding: "4px 5px" }}
-          startIcon={<AddIcon />}
-          onClick={() => {
-            setEditMode(false);
-            setOpen(true);
-          }}
-        >
-          Thêm mã giảm
-        </Button>
+        <TourForm setRows={setRows}/>
         <GridToolbar />
       </GridToolbarContainer>
     );
   }
 
   const columns = [
-    { field: "code", headerName: "Mã voucher", width: 90 },
+    { field: "title", headerName: "Tiêu đề", width: 120 },
     {
-      field: "discount_type",
-      headerName: "Thể loại giảm giá",
+      field: "number_people",
+      headerName: "Số người tham gia",
+      width: 90,
+    },
+    {
+      field: "total_price",
+      headerName: "Tổng số tiền",
+      width: 90,
+    },
+    {
+      field: "day",
+      headerName: "Số ngày",
+      width: 90,
+    },
+    {
+      field: "night",
+      headerName: "Số đêm",
+      width: 90,
+    },
+    {
+      field: "tags",
+      headerName: "Tags",
       width: 150,
-      valueGetter: (params) => {
-        const discount_type = params;
-        return discount_type == "PERCENT" ? "Phần trăm (%) " : "Giá trị (VNĐ) ";
+      renderCell: (params) => {
+        const tags = params.value;
+        return (
+          <div>
+            {tags.map((tag, index) => (
+              <span
+                key={index}
+                style={{
+                  marginRight: "5px",
+                  background: "#f0f0f0",
+                  padding: "2px 5px",
+                  borderRadius: "3px",
+                }}
+              >
+                {tag.name}
+              </span>
+            ))}
+          </div>
+        );
       },
     },
-    {
-      field: "discount_value",
-      headerName: "Giá trị giảm",
-      width: 90,
-    },
-    {
-      field: "start_date",
-      headerName: "Ngày bắt đầu",
-      type: "date",
-      width: 130,
-      valueGetter: (params) => {
-        const dateStr = params;
-        return dateStr ? new Date(dateStr) : new Date();
-      },
-    },
-    {
-      field: "end_date",
-      headerName: "Ngày kết thúc",
-      type: "date",
-      width: 130,
-      valueGetter: (params) => {
-        const dateStr = params;
-        return dateStr ? new Date(dateStr) : new Date();
-      },
-    },
-    {
-      field: "use_limit",
-      headerName: "Giới hạn",
-      type: "number",
-      width: 90,
-    },
-    { field: "use_count", headerName: "Lượt dùng", type: "number", width: 90 },
     {
       field: "is_active",
       headerName: "Trạng thái",
@@ -186,7 +152,7 @@ export default function CouponAdmin() {
                 borderRadius: "4px",
               }}
             >
-              Còn hạn
+              Hoạt động
             </span>
           );
         }
@@ -215,17 +181,23 @@ export default function CouponAdmin() {
       getActions: (params) => [
         <Edit
           key="edit"
-          style={{ cursor:"pointer" }}
+          style={{ cursor: "pointer" }}
           onClick={() => {
             handleClick(params.row);
-            setViewMode(false);
           }}
         />,
         <Delete
           key="delete"
-          style={{ cursor:"pointer" }}
+          style={{ cursor: "pointer" }}
           onClick={() => {
-            handleDelete(params.row.coupon_id);
+            handleDelete(params.row.tour_id);
+          }}
+        />,
+        <RemoveRedEye
+          key="detail"
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            handleClick(params.row);
           }}
         />,
       ],
@@ -251,6 +223,13 @@ export default function CouponAdmin() {
             noRowsVariant: "skeleton",
           },
         }}
+        getRowHeight={(params) => {
+          const baseHeight = 52; // Chiều cao tối thiểu
+          if (params.model.tags && params.model.tags.length > 1) {
+            return baseHeight + (params.model.tags.length * 10); 
+          }
+          return baseHeight;
+        }}
         checkboxSelection={false}
         rows={rows}
         columns={columns}
@@ -261,7 +240,7 @@ export default function CouponAdmin() {
             },
           },
         }}
-        getRowId={(row) => row.coupon_id}
+        getRowId={(row) => row.tour_id}
         pageSizeOptions={[10, 25, 50, 100]}
         disableRowSelectionOnClick
         slots={{ toolbar: EditToolbar }}
@@ -271,15 +250,6 @@ export default function CouponAdmin() {
           background: "#FFF",
           boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
         }}
-      />
-      <CouponDialog
-        open={open}
-        setOpen={setOpen}
-        editMode={editMode}
-        setEditMode={setEditMode}
-        setRows={setRows}
-        selectedCouponId={selectedCouponId}
-        viewMode={viewMode}
       />
     </Box>
   );

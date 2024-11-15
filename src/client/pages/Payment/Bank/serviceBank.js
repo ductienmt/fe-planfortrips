@@ -1,4 +1,5 @@
 
+import { PaymentService } from "../../../../services/apis/PaymentService";
 import { mbBank } from "./InfoBank";
 
 
@@ -43,14 +44,13 @@ const ServiceBank = {
     },
 
     VNPay: async (ticket_id, bookingid,amount) => {
-
         // Thanh toán VnPayment
-    const vnpay = {
-    ticket_id: ticket_id,
-    bank_code: "NCB",
-    booking_id: bookingid,
-    amount: amount
-}
+        const vnpay = {
+        ticket_id: ticket_id,
+        bank_code: "NCB",
+        booking_id: bookingid,
+        amount: amount
+    }
         try {
             const response = await PaymentService.createPayment(vnpay);
             if (response) {

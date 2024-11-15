@@ -16,6 +16,7 @@ import {
   faScrewdriverWrench,
   faHotel,
   faCableCar,
+  faEarthAsia,
 } from "@fortawesome/free-solid-svg-icons";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { router } from "../../../routes/route";
@@ -59,6 +60,18 @@ const NAVIGATION = [
     icon: (
       <NavLink to="business" className="nav-link">
         <FontAwesomeIcon icon={faBriefcase} />
+      </NavLink>
+    ),
+  },
+  {
+    title: (
+      <NavLink to="tours" className="nav-link">
+        Tour
+      </NavLink>
+    ),
+    icon: (
+      <NavLink to="tours" className="nav-link">
+        <FontAwesomeIcon icon={faEarthAsia} />
       </NavLink>
     ),
   },
@@ -217,7 +230,8 @@ function DashboardLayoutBasic({ window }) {
         user: {
           name: admin.fullName || "",
           email: admin.email || "",
-          image: "https://i.pinimg.com/736x/0a/ab/67/0aab67dce992f37b5a22f681f043574f.jpg",
+          image:
+            "https://i.pinimg.com/736x/0a/ab/67/0aab67dce992f37b5a22f681f043574f.jpg",
         },
       });
     }

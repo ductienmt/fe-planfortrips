@@ -45,6 +45,7 @@ import HotelManagement from "../enterprise/accomodation/manager/HotelManagement"
 
 import Sumbitenterprise from "../client/pages/Enterprise/Sumbitenterprise";
 import Tour from "../admin/pages/Tour/Tour";
+import TourAdmin from "../admin/pages/Tour/TourPage";
 
 const routeAdmin = () => [
   {
@@ -62,6 +63,10 @@ const routeAdmin = () => [
       {
         path: "business",
         Component: EnterpriseAdmin,
+      },
+      {
+        path: "tours",
+        Component: TourAdmin,
       },
       {
         path: "vouchers",
