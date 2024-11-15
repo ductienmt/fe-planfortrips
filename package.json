@@ -42,11 +42,8 @@
     "react-rating-stars-component": "^2.2.0",
     "react-router-dom": "^6.27.0",
     "react-toastify": "^10.0.6",
-<<<<<<< Updated upstream
     "react-widgets": "^5.8.4",
-=======
     "recharts": "^2.13.3",
->>>>>>> Stashed changes
     "styled-components": "^6.1.13"
   },
   "devDependencies": {
