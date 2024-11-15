@@ -1,5 +1,5 @@
 import "./Transportation.css";
-import { format, getDay } from "date-fns";
+import { parse, format as formatDateFns, isValid, getDay } from "date-fns";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import TripOriginIcon from "@mui/icons-material/TripOrigin";
 import ShareLocationIcon from "@mui/icons-material/ShareLocation";
@@ -27,12 +27,20 @@ const Transportation = ({
   cityData,
 }) => {
   const formatDate = (dateString) => {
-    const parsedDate = new Date(dateString);
-    const dayOfWeek = getDay(parsedDate);
+    if (!dateString) {
+      return "Không xác định";
+    }
+
+    const parsedDate = parse(dateString, "dd/MM/yyyy", new Date());
+
+    if (!isValid(parsedDate)) {
+      return "Ngày không hợp lệ";
+    }
 
     const daysOfWeek = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
+    const dayOfWeek = getDay(parsedDate);
 
-    return `${daysOfWeek[dayOfWeek]}, ${format(parsedDate, "dd-MM-yyyy")}`;
+    return `${daysOfWeek[dayOfWeek]}, ${formatDateFns(parsedDate, "dd-MM-yyyy")}`;
   };
 
   const calculateDuration = (departureTime, arrivalTime) => {
