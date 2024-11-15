@@ -6,12 +6,9 @@ import { ClientLayout } from "../layout/ClientLayout";
 import Register from "../client/pages/Auth/Register/Register";
 import PlanBefore from "../client/pages/PlanBefore/Plan";
 import TravelPlan from "../client/pages/PlanAfter/TravelPlan";
-import Hotel from "../client/pages/HotelPage/Hotel/Hotel";
 import Booking from "../client/pages/Booking/Booking";
 import Payment from "../client/pages/Payment/Payment";
 import Success from "../client/pages/Payment/Status/Success";
-import BookingHotel from "../client/pages/HotelPage/BookingHotel/BookingHotel";
-import HotelDetails from "../client/pages/HotelPage/HotelDetails/HotelDetails";
 import Profile from "../client/pages/Profile/Profile";
 import LoginAdmin from "../admin/pages/Auth/Login";
 // import Exchange from "../admin/pages/Exchange/Exchange";
@@ -38,6 +35,9 @@ import Route from "../enterprise/transportation/route/Route";
 import RoomHistory from "../enterprise/accomodation/roomHistory/RoomHistory";
 import Room from "../enterprise/accomodation/roomManagement/Room";
 import HotelManagement from "../enterprise/accomodation/manager/HotelManagement";
+import Sumbitenterprise from "../client/pages/Enterprise/Sumbitenterprise";
+import Hotelpage from "../client/pages/HotelPage/Hotelpage";
+import { BookingHotel } from "../client/pages/HotelPage/BookingHotel";
 
 const routeAdmin = () => [
   {
@@ -139,16 +139,20 @@ const routeClient = () => [
         Component: Register,
       },
       {
+        path: "/hotel",
+        Component: Hotelpage,
+      },
+      {
+        path: "/booking-hotel",
+        Component: BookingHotel,
+      },
+      {
         path: "/plan",
         Component: PlanBefore,
       },
       {
         path: "/plan/trip",
         Component: TravelPlan,
-      },
-      {
-        path: "/hotel",
-        Component: Hotel,
       },
       {
         path: "/booking/:type",
@@ -162,14 +166,6 @@ const routeClient = () => [
         path: "/success",
         Component: Success,
         exact: true,
-      },
-      {
-        path: "/booking-hotel",
-        Component: BookingHotel,
-      },
-      {
-        path: "/hotel-details",
-        Component: HotelDetails,
       },
       {
         path: "/profile",
@@ -208,6 +204,10 @@ const routeClient = () => [
       {
         path: "/vehicle-details",
         Component: BookingSteps,
+      },
+      {
+        path: "/submit-enterprise",
+        Component: Sumbitenterprise,
       },
     ],
   },

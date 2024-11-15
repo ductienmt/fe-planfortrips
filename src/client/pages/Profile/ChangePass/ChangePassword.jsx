@@ -204,7 +204,7 @@ const ChangePassword = ({ email }) => {
   return (
     <>
       {loading ? (
-        <Loader />
+        <Loader rong={"80vh"} />
       ) : (
         <>
           <div className="change-pass-container">

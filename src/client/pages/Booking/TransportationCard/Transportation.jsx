@@ -6,6 +6,7 @@ import ShareLocationIcon from "@mui/icons-material/ShareLocation";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useState } from "react";
+import Loader from "../../../Components/Loading";
 
 const Transportation = ({
   name,
@@ -18,10 +19,12 @@ const Transportation = ({
   arrivalTime,
   departureDate,
   arrivalDate,
-  departureStation,
-  arrivalStation,
-  pickupLocation,
-  dropoffLocation,
+  scheduleId,
+  routeId,
+  loadStation,
+  stationData,
+  loadCities,
+  cityData,
 }) => {
   const formatDate = (dateString) => {
     const parsedDate = new Date(dateString);
@@ -58,6 +61,23 @@ const Transportation = ({
   };
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const toggleStation = async () => {
+    if (
+      !isOpen &&
+      !stationData.departureStation &&
+      !stationData.arrivalStation &&
+      !cityData.originalCity &&
+      !cityData.destination
+    ) {
+      setIsLoading(true);
+      await loadStation(scheduleId);
+      await loadCities(routeId);
+      setIsLoading(false);
+    }
+    setIsOpen(!isOpen);
+  };
 
   return (
     <>
@@ -87,70 +107,80 @@ const Transportation = ({
               <p>
                 Số ghế đã đặt: {numberSeat} (Mã: {seat})
               </p>
-              <button className="icon btn" onClick={() => setIsOpen(!isOpen)}>
+              <button className="icon btn" onClick={() => toggleStation()}>
                 {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
               </button>
             </div>
           </div>
-          <div className={`${isOpen ? "d-block" : "d-none"}`}>
-            <div className={`transportation-body`}>
-              <div className="departure">
-                <p style={{ fontSize: "20px" }}>{departureLocation}</p>
-                <p className="departure-time">Khởi hành</p>
-                <p style={{ fontWeight: "600" }}>{departureTime}</p>
-                <p style={{ fontSize: "18px" }}>{formatDate(departureDate)}</p>
+          {isLoading ? (
+            <Loader rong={"10vh"} />
+          ) : (
+            <div className={`${isOpen ? "d-block" : "d-none"}`}>
+              <div className={`transportation-body`}>
+                <div className="departure">
+                  <p style={{ fontSize: "20px" }}>{cityData.originalCity}</p>
+                  <p className="departure-time">Khởi hành</p>
+                  <p style={{ fontWeight: "600" }}>{departureTime}</p>
+                  <p style={{ fontSize: "18px" }}>
+                    {formatDate(departureDate)}
+                  </p>
+                </div>
+                <div className="line">
+                  <ArrowRightAltIcon />
+                </div>
+                <div className="arrival">
+                  <p style={{ fontSize: "20px" }}>{cityData.destination}</p>
+                  <p className="arrival-time">Đến nơi</p>
+                  <p style={{ fontWeight: "600" }}>{arrivalTime}</p>
+                  <p style={{ fontSize: "18px" }}>{formatDate(arrivalDate)}</p>
+                </div>
               </div>
-              <div className="line">
-                <ArrowRightAltIcon />
-              </div>
-              <div className="arrival">
-                <p style={{ fontSize: "20px" }}>{arrivalLocation}</p>
-                <p className="arrival-time">Đến nơi</p>
-                <p style={{ fontWeight: "600" }}>{arrivalTime}</p>
-                <p style={{ fontSize: "18px" }}>{formatDate(arrivalDate)}</p>
+              <div className={`transportation-footer`}>
+                <div className="footer-on">
+                  <div className="icon" style={{ alignItems: "center" }}>
+                    <TripOriginIcon />
+                  </div>
+                  <div className="infomation">
+                    <p className="pickup">Điểm đón</p>
+                    <p style={{ fontSize: "20px", fontWeight: "600" }}>
+                      {stationData.departureStation}
+                    </p>
+                    <p style={{ fontSize: "18px" }}>
+                      {stationData.departureStation}
+                    </p>
+                  </div>
+                </div>
+                <div
+                  className="line"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    width: "18%",
+                    flexDirection: "column",
+                    marginBottom: "10px",
+                  }}
+                >
+                  <span>|</span>
+                  <span>{calculateDuration(departureTime, arrivalTime)}</span>
+                  <span>|</span>
+                </div>
+                <div className="footer-behind">
+                  <div className="icon">
+                    <ShareLocationIcon />
+                  </div>
+                  <div className="infomation">
+                    <p className="dropoff">Điểm trả</p>
+                    <p style={{ fontSize: "20px", fontWeight: "600" }}>
+                      {stationData.arrivalStation}
+                    </p>
+                    <p style={{ fontSize: "18px" }}>
+                      {stationData.arrivalStation}
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className={`transportation-footer`}>
-              <div className="footer-on">
-                <div className="icon">
-                  <TripOriginIcon />
-                </div>
-                <div className="infomation">
-                  <p className="pickup">Điểm đón</p>
-                  <p style={{ fontSize: "20px", fontWeight: "600" }}>
-                    {departureStation}
-                  </p>
-                  <p style={{ fontSize: "18px" }}>{pickupLocation}</p>
-                </div>
-              </div>
-              <div
-                className="line"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  width: "18%",
-                  flexDirection: "column",
-                  marginBottom: "10px",
-                }}
-              >
-                <span>|</span>
-                <span>{calculateDuration(departureTime, arrivalTime)}</span>
-                <span>|</span>
-              </div>
-              <div className="footer-behind">
-                <div className="icon">
-                  <ShareLocationIcon />
-                </div>
-                <div className="infomation">
-                  <p className="dropoff">Điểm trả</p>
-                  <p style={{ fontSize: "20px", fontWeight: "600" }}>
-                    {arrivalStation}
-                  </p>
-                  <p style={{ fontSize: "18px" }}>{dropoffLocation}</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </>

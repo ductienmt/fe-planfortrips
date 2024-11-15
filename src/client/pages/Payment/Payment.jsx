@@ -4,141 +4,115 @@ import "./Payment.css";
 import momo from "../../../assets/momo.png";
 import vnpay from "../../../assets/vnpay.png";
 import vietqr from "../../../assets/vietqr.png";
-import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import BankService from './Bank/serviceBank'
-import { Description } from "@mui/icons-material";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
+import BankService from "./Bank/serviceBank";
+import { useSnackbar } from "notistack";
 
+// Hàm sinh mã ngẫu nhiên
 const generateRandomString = () => {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
-    const length = 6; // Độ dài chuỗi ngẫu nhiên
-  
-    for (let i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    console.log(result);
-    
-    return result;
-  };
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  const length = 6; // Độ dài chuỗi ngẫu nhiên
+
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+};
 
 const Payment = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const location = useLocation();
   const [searchParams] = useSearchParams();
-  const amount = searchParams.get('amount');  
-  const queryParams = new URLSearchParams(location.search);
-  const [ticketId, setTicketId] = useState(null);
-  const [randomCode,setRanDomCode] = useState("");
-  const [bookingId, setBookingId] = useState(null);
-  const [planId, setPlanId] = queryParams.get('planid');
+  const planData = JSON.parse(sessionStorage.getItem("planData")) ?? null;
+  const tranData = JSON.parse(sessionStorage.getItem("tranData")) ?? null;
+  const acoData = JSON.parse(sessionStorage.getItem("acoData")) ?? null;
+  const amount = sessionStorage.getItem("totalPrice");
+
+  const [randomCode, setRanDomCode] = useState("");
   const [activeMethod, setActiveMethod] = useState("");
-  const navi = useNavigate();
-
-  
-
-
   const [infoBank, setInfoBank] = useState({
     Amount: amount,
-    Description: `Thanh toan cho dich vu ${planId}`
+    Description: "Thanh toán cho dịch vụ",
   });
-
   const [qrCode, setQrCode] = useState("");
+  const navi = useNavigate();
 
+  // Lưu trữ phương thức thanh toán đã chọn
   const handleMethodClick = (method) => {
     setActiveMethod(method);
   };
 
-  
+  const handlePre = () => {
+    if (planData) {
+      navi(`/booking/plan`);
+    } else if (tranData) {
+      navi(`/booking/transportation`);
+    } else if (acoData) {
+      navi(`/booking/hotel`);
+    }
+  };
+
+  // Xử lý thanh toán
   const handlePayment = async () => {
     if (!activeMethod) {
-      alert("Chưa chọn phương thức thanh toán")
+      // alert("Chưa chọn phương thức thanh toán");
+      enqueueSnackbar("Chưa chọn phương thức thanh toán", {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
       return;
     }
+
     if (activeMethod === "VIETQR") {
-      // Thực hiện thanh toán VietQR
       const code = generateRandomString();
       setRanDomCode(code);
-      
-      const contentWithCode = infoBank.Description + " " + code;
-      
-      const qrCode = BankService.generateVietQR(infoBank.Amount, contentWithCode);
+      const contentWithCode = `${infoBank.Description} ${code}`;
+      const qrCode = BankService.generateVietQR(
+        infoBank.Amount,
+        contentWithCode
+      );
       setQrCode(qrCode);
-    }
-    if (activeMethod === "VNPAY") {
-      // Thực hiện thanh toán VNPay
+    } else if (activeMethod === "VNPAY") {
       await BankService.VNPay();
     }
   };
 
-
- 
-
-
-  // Check khi thanh toán VietQR
+  // Kiểm tra thanh toán VietQR
   useEffect(() => {
-     const params = new URLSearchParams(location.search);
-    const ticketIdParam = params.get("ticketid");
-    const bookingIdParam = params.get("bookingid");
-    if (ticketIdParam) setTicketId(ticketIdParam);
-    if (bookingIdParam) setBookingId(bookingIdParam);
-    console.log(ticketIdParam, bookingIdParam);
-    // Kiểm tra khi thanh toán bằng vietQR code
     if (qrCode) {
-      // Check đã thanh toán -> Chuyển trang
-      // Bắt đầu kiểm tra thanh toán nếu mã QR đã được tạo      
       const intervalId = setInterval(() => {
-        BankService.checkPaidVietQR(infoBank.Amount, infoBank.Description, randomCode).then((status) => {
+        BankService.checkPaidVietQR(
+          infoBank.Amount,
+          infoBank.Description,
+          randomCode
+        ).then((status) => {
           if (status) {
-            navi('/success')
+            navi("/success");
           }
         });
       }, 3000); // Kiểm tra mỗi 3 giây
-      // Xóa interval khi thanh toán thành công hoặc component bị unmount
+
       return () => clearInterval(intervalId);
     }
-  }, [qrCode, location.search]);
+  }, [qrCode]);
 
-  // Check thanh toán VnPay
+  // Chuyển đổi số tiền sang định dạng VND
   const convertToVND = (amount) => {
     const formattedAmount = amount
       .toString()
       .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return `${formattedAmount}VNĐ`;
+    return `${formattedAmount}.000VNĐ`;
   };
-
-  const checkPaid = async () => {
-    try {
-      console.log("Check 1 lần");
-      const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbypcs1V21R_GxdsvjQo0mUBeZDhhDr7bTHeIejfVsKkfvQ5npazvDMyAqu0_Hd_7nJA/exec"
-      );
-      const res = await response.json();
-
-      for (let record of res.data) {
-        console.log(record);
-        if (
-          record["Giá trị"] === infoBank.Amount &&
-          record["Mô tả"].includes(infoBank.Description)
-        ) {
-          navi("/success");
-        }
-      }
-    } catch (error) {
-      console.error("Lỗi khi kiểm tra thanh toán:", error);
-    }
-  };
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const ticketIdParam = params.get("ticketid");
-    const bookingIdParam = params.get("bookingid");
-    if (ticketIdParam) setTicketId(ticketIdParam);
-    if (bookingIdParam) setBookingId(bookingIdParam);
-    console.log(ticketIdParam, bookingIdParam);
-  }, [location.search]);
 
   return (
     <>
-      {/* Phần hiển thị mã QR */}
       {!qrCode ? (
         <div className="payment-container" style={{ margin: "0 200px" }}>
           <div className="payment-header">
@@ -170,6 +144,7 @@ const Payment = () => {
               />
             </div>
           </div>
+
           <h4>Chi tiết giao dịch</h4>
           <div className="payment-body">
             <div className="payment-body-left">
@@ -179,7 +154,7 @@ const Payment = () => {
                 </p>
               </div>
               <div className="content">
-                {ticketId && bookingId ? (
+                {planData ? (
                   <>
                     <div className="content-item">
                       <div className="content-item-left">Dịch vụ</div>
@@ -189,7 +164,7 @@ const Payment = () => {
                     <div className="content-item">
                       <div className="content-item-left">Tạm tính</div>
                       <div className="content-item-right">
-                        {convertToVND(1000000)}
+                        {convertToVND(sessionStorage.getItem("priceTr"))}
                       </div>
                     </div>
                     <hr />
@@ -203,13 +178,13 @@ const Payment = () => {
                     <div className="content-item">
                       <div className="content-item-left">Tạm tính</div>
                       <div className="content-item-right">
-                        {convertToVND(800000)}
+                        {convertToVND(sessionStorage.getItem("priceAc"))}
                       </div>
                     </div>
                   </>
                 ) : (
                   <>
-                    {ticketId && (
+                    {tranData && (
                       <>
                         <div className="content-item">
                           <div className="content-item-left">Dịch vụ</div>
@@ -226,7 +201,7 @@ const Payment = () => {
                         </div>
                       </>
                     )}
-                    {bookingId && (
+                    {acoData && (
                       <>
                         <div className="content-item">
                           <div className="content-item-left">Dịch vụ</div>
@@ -255,19 +230,16 @@ const Payment = () => {
               </div>
               <div className="content">
                 <div className="content-item">
-                  <div className="content-item-left">
+                  {/* <div className="content-item-left">
                     Dịch vụ bảo hiểm xe khách
                   </div>
-                  <div className="content-item-right">
-                    {convertToVND(40000)}
-                  </div>
+                  <div className="content-item-right">{convertToVND(20)}</div> */}
                 </div>
               </div>
             </div>
-
           </div>
+
           <div className="payment-footer">
-            {/* Footer cho tổng tiền và mã giảm giá */}
             <div className="payment-footer-right">
               <div className="componentButtonNext">
                 <div className="total-price">
@@ -280,9 +252,9 @@ const Payment = () => {
                   </div>
                 </div>
                 <div className="button-next">
-                  <Link to="/booking" className="prev btn">
+                  <button className="prev btn" onClick={handlePre}>
                     Quay lại
-                  </Link>
+                  </button>
                   <button className="next btn" onClick={handlePayment}>
                     Tiếp tục
                   </button>
@@ -294,8 +266,10 @@ const Payment = () => {
       ) : (
         <div className="payment__qr-code text-center">
           <h2>Vui lòng quét mã thanh toán</h2>
-          <h4 className="text-info">Thanh toán thành công sẽ tự động chuyển trang</h4>
-          <img src={qrCode} alt="Mã QR Thanh Toán" />
+          <h4 className="text-info">
+            Thanh toán thành công sẽ tự động cập nhật trạng thái giao dịch
+          </h4>
+          <img className="payment__qr-code-img" src={qrCode} alt="QR code" />
         </div>
       )}
     </>

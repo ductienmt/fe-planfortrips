@@ -8,7 +8,18 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { InputFlied } from "../../../Components/Input/InputFlied";
 
-const UserInformation = ({ totalPrice, type }) => {
+const UserInformation = ({
+  totalPrice,
+  type,
+  totalPriceTransportation,
+  totalPriceAccommodation,
+  priceOneSeatDe,
+  priceOneSeatRe,
+  totalSeat,
+  priceOneNight,
+  totalRoom,
+  nights,
+}) => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [form, setForm] = useState({
@@ -49,8 +60,11 @@ const UserInformation = ({ totalPrice, type }) => {
         });
       } else {
         // TODO: Call API to create ticket
-
-        navigate(`/payment?ticketid=1&bookingid=1`);
+        sessionStorage.setItem("userInformation", JSON.stringify(form));
+        sessionStorage.setItem("priceTr", totalPriceTransportation);
+        sessionStorage.setItem("priceAc", totalPriceAccommodation);
+        sessionStorage.setItem("totalPrice", totalPrice);
+        navigate(`/payment`);
       }
     } else {
       enqueueSnackbar("Vui lòng điền đẩy đủ thông tin.", {
@@ -92,9 +106,13 @@ const UserInformation = ({ totalPrice, type }) => {
   };
 
   const validatePhone = (phone) => {
-    const regex = /^(0[0-9]{9}|[0-9]{10,11})$/; // Ví dụ cho số điện thoại Việt Nam
+    const regex = /^(0[0-9]{9}|[0-9]{10,11})$/;
     return regex.test(phone);
   };
+
+  // const totalPriceTransportation = () => {
+  //   const departurePrice =
+  // };
 
   return (
     <>
@@ -240,7 +258,7 @@ const UserInformation = ({ totalPrice, type }) => {
                       className="price-icon"
                       style={{ display: "flex", flexDirection: "row" }}
                     >
-                      <p>{convertToVND(1000)}</p>
+                      <p>{convertToVND(totalPriceTransportation)}</p>
                       <button
                         onClick={() =>
                           setShowDetailPriceTransportation(
@@ -276,8 +294,18 @@ const UserInformation = ({ totalPrice, type }) => {
                         justifyContent: "space-between",
                       }}
                     >
-                      <p>Giá cho 1 vé</p>
-                      <p>{convertToVND(250)}</p>
+                      <p>Giá cho 1 vé chiều đi</p>
+                      <p>{convertToVND(priceOneSeatDe)}</p>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <p>Giá cho 1 vé chiều về</p>
+                      <p>{convertToVND(priceOneSeatRe)}</p>
                     </div>
                     <div
                       style={{
@@ -287,7 +315,9 @@ const UserInformation = ({ totalPrice, type }) => {
                       }}
                     >
                       <p>Tổng số vé đã đặt</p>
-                      <p>4 (cả đi và về)</p>
+                      <p>
+                        <span>{totalSeat}</span> (cả đi và về)
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -298,7 +328,7 @@ const UserInformation = ({ totalPrice, type }) => {
                       className="price-icon"
                       style={{ display: "flex", flexDirection: "row" }}
                     >
-                      <p>{convertToVND(800)}</p>
+                      <p>{convertToVND(totalPriceAccommodation)}</p>
                       <button
                         onClick={() =>
                           setShowDetailPriceAccommodation(
@@ -335,7 +365,7 @@ const UserInformation = ({ totalPrice, type }) => {
                         }}
                       >
                         <p>Giá cho 1 phòng</p>
-                        <p>{convertToVND(400)}/1 đêm</p>
+                        <p>{convertToVND(priceOneNight)}/1 đêm</p>
                       </div>
                       <div
                         style={{
@@ -345,7 +375,9 @@ const UserInformation = ({ totalPrice, type }) => {
                         }}
                       >
                         <p>Tổng số phòng đã đặt</p>
-                        <p>1 (2 đêm)</p>
+                        <p>
+                          {totalRoom} ({nights} đêm)
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -490,7 +522,7 @@ const UserInformation = ({ totalPrice, type }) => {
               Tổng thanh toán
             </p>
             <p style={{ fontSize: "24px", fontWeight: "500" }}>
-              {convertToVND(1800)}
+              {convertToVND(totalPrice)}
             </p>
           </div>
         </div>

@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
-const Loader = () => {
+const Loader = ({ rong }) => {
   return (
     <StyledWrapper>
-      <div className="loading-container">
+      <div className="loading-container" style={{ height: rong }}>
         <div className="loader" />
       </div>
     </StyledWrapper>
@@ -14,7 +14,6 @@ const Loader = () => {
 const StyledWrapper = styled.div`
   .loading-container {
     width: 100%;
-    height: 80vh;
     display: flex;
     justify-content: center;
     align-items: center;

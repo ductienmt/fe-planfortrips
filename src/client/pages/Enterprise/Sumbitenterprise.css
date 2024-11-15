@@ -1,0 +1,85 @@
+/* Container wrapping the entire sign-in form */
+.signInFormMainContainer {
+    display: flex;
+    background-image: url('https://4kwallpapers.com/images/walls/thumbs_3t/12252.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+}
+
+/* Inner container for form layout */
+.signInFormContentContainer {
+    position: relative;
+    background-color: rgba(247, 211, 211, 0.411);
+    backdrop-filter: blur(15px);
+    border-radius: 12px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+    padding: 60px;
+    width: 100%;
+    max-width: 600px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Form title */
+.signInFormTitle {
+    color: #2c3e50;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 1.4;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Separator line for visual spacing */
+.signInSeparator {
+    background-color: #bdc3c7;
+    height: 4px;
+    border: none;
+    margin: 40px 0;
+}
+
+/* Brand name text */
+.signInBrandName {
+    position: absolute;
+    top: 50%;
+    right: 150px;
+    transform: translateY(-50%);
+    font-size: 150px;
+    font-weight: bold;
+    color: #FFF;
+    font-family: 'Poppins', sans-serif;
+    text-align: right;
+}
+
+/* Input field and button customization */
+.customInputField {
+    font-size: 1.2rem;
+    padding: 12px;
+    margin: 10px 0;
+}
+
+.customButton {
+    font-size: 1.2rem;
+    padding: 12px 24px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .signInFormContentContainer {
+        padding: 20px;
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 640px) {
+    .signInFormContentContainer {
+        padding: 10px;
+    }
+
+    .customInputField,
+    .customButton {
+        font-size: 1rem;
+    }
+}

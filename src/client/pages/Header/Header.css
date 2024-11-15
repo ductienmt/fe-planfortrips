@@ -129,19 +129,14 @@
 .custom-header .user-dropdown {
     position: absolute;
     top: 50px;
-    /* Đặt ngay dưới avatar */
     right: 0;
-    /* Căn phải theo avatar */
     background-color: white;
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 10px;
     z-index: 1000;
-    /* Đặt lên trên header */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    /* Tạo hiệu ứng nổi */
     min-width: 250px;
-    /* Đặt kích thước tối thiểu cho menu */
 }
 
 .custom-header .user-dropdown ul {

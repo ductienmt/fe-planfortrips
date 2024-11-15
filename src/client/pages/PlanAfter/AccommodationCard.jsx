@@ -46,16 +46,19 @@ function AccommodationCard({ className, onClick, accomodation }) {
           src={hotelImage1}
           alt="Accommodation view 1"
           className="gallery-image"
+          loading="lazy"
         />
         <img
           src={hotelImage2}
           alt="Accommodation view 2"
           className="gallery-image1"
+          loading="lazy"
         />
         <img
           src={hotelImage3}
           alt="Accommodation view 3"
           className="gallery-image2 full-width"
+          loading="lazy"
         />
       </div>
       <div className="accommodation-details">
@@ -111,7 +114,7 @@ function CheckInOut({ checkIn, checkOut }) {
           Check-in
         </span>
         <span className="check-date" style={{ fontSize: "15px" }}>
-          {checkIn} · 14:00 - 00:00
+          {checkIn}
         </span>
         {/* <span className="check-time">14:00 - 00:00</span> */}
       </div>
@@ -120,7 +123,7 @@ function CheckInOut({ checkIn, checkOut }) {
           Check-out
         </span>
         <span className="check-date" style={{ fontSize: "15px" }}>
-          {checkOut} · until 12:00
+          {checkOut}
         </span>
         {/* <span className="check-time">until 12:00</span> */}
       </div>
