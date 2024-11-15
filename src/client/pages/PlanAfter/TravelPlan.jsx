@@ -5,7 +5,6 @@ import AccommodationCard from "./AccommodationCard";
 import AttractionCard from "./AttractionCard";
 import "./TravelPlan.css";
 import { ScheduleService } from "../../../services/apis/ScheduleService";
-
 import { Link, useNavigate } from "react-router-dom";
 import { TicketService } from "../../../services/apis/TicketService";
 import { useAuth } from "../../../context/AuthContext/AuthProvider";
@@ -88,7 +87,6 @@ function TravelPlan() {
     if (card == "attraction") handleAttractionSelected();
   };
 
-  // Hàm này chỉ được gọi khi nhấn next hoặc back trong AttractionCard
   const handleAttractionSelected = () => {
     setSelectedCard("attraction");
   };
