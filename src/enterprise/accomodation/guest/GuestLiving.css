@@ -1,0 +1,85 @@
+.enterprise-guest-container {
+  margin: 10px;
+  width: 100%;
+  border-radius: 20px;
+  box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
+
+.enterprise-guest-container .nav-filter-guest{
+  margin-bottom: 20px;
+}
+
+.enterprise-guest-container .guest-content .nav-filter-guest {
+  display: flex;
+  justify-content: space-between;
+}
+
+.enterprise-guest-container .guest-content .nav-filter-guest .filter-guest {
+  display: flex;
+  gap: 20px;
+}
+
+.enterprise-guest-container
+  .guest-content
+  .nav-filter-guest
+  .filter-guest
+  button {
+  padding: 8px 20px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+  background-color: transparent;
+  color: #adadad;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.enterprise-guest-container
+  .guest-content
+  .nav-filter-guest
+  .nav-filterCombobox-guest {
+  display: flex;
+  gap: 20px;
+}
+
+/* .enterprise-guest-container .guest-content .nav-filter-guest .nav-filterCombobox-guest button {
+    padding: 8px 20px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background-color: rgb(50, 129, 181);
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+} */
+
+.enterprise-guest-container
+  .guest-content
+  .nav-filter-guest
+  .filter-guest
+  button.isActive {
+  background-color: rgb(237, 248, 255);
+  color: rgb(65, 165, 232);
+  border-color: rgb(132, 205, 255);
+}
+
+/* .enterprise-guest-container .guest-content .nav-filter-guest .nav-filterCombobox-guest button:hover {
+    background-color: rgb(39, 100, 140);
+} */
+
+.enterprise-guest-container
+  .guest-content
+  .nav-filter-guest
+  .nav-filterCombobox-guest
+  select {
+  padding: 8px 20px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+  background-color: transparent;
+  color: #adadad;
+  font-size: 16px;
+  cursor: pointer;
+}
