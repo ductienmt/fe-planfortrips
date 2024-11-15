@@ -44,6 +44,7 @@ import Room from "../enterprise/accomodation/roomManagement/Room";
 import HotelManagement from "../enterprise/accomodation/manager/HotelManagement";
 
 import Sumbitenterprise from "../client/pages/Enterprise/Sumbitenterprise";
+import Tour from "../admin/pages/Tour/Tour";
 
 const routeAdmin = () => [
   {
@@ -56,7 +57,7 @@ const routeAdmin = () => [
       },
       {
         path: "users",
-        Component: UserAdmin,
+        Component: Tour,
       },
       {
         path: "business",
