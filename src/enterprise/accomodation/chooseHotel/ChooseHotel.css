@@ -1,0 +1,63 @@
+.enterprise-chooseHotel-container {
+  margin: 10px;
+  width: 100%;
+  border-radius: 20px;
+  box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
+
+.enterprise-chooseHotel-container
+  .nav-filterCombobox-chooseHotel {
+  display: flex;
+}
+
+.chooseHotel-selection {
+  background-color: #fff;
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  margin-top: 25px;
+  /* padding: 262px 70px; */
+}
+
+.chooseHotel-container {
+  border-radius: 20px;
+  background-color: #f3f3f3;
+  display: flex;
+  width: 100%;
+  gap: 40px 100px;
+  /* flex-wrap: wrap; */
+}
+
+.select-chooseHotel-btn {
+  border-radius: 0 20px 20px 0;
+  background-color: #3b90e0;
+  color: #fff;
+  padding: 64px 70px;
+  font-size: 36px;
+  line-height: 44px;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+}
+
+.select-chooseHotel-btn:hover{
+  background-color: #167ad7;
+}
+
+/* @media (max-width: 991px) {
+  .chooseHotel-selection {
+    padding: 100px 20px;
+  }
+
+  .chooseHotel-container {
+    max-width: 100%;
+  }
+
+  .select-chooseHotel-btn {
+    border-radius: 0 0 20px 20px;
+    padding: 32px;
+    font-size: 24px;
+    line-height: 32px;
+  }
+} */

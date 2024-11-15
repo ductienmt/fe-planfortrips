@@ -1,0 +1,97 @@
+.enterprise-transDashboard-container-t {
+  margin: 10px;
+  width: 100%;
+  height: max-content;
+  border-radius: 20px;
+  box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
+
+.oneTofive-section-t {
+  display: flex;
+  justify-content: stretch;
+  gap: 20px;
+}
+
+.card1Tocard4-section-t {
+  flex-grow: 2;
+  flex-basis: 70%;
+}
+
+.card5-container-t {
+  flex-grow: 1;
+  flex-basis: 30%;
+}
+
+/* card1-start */
+.room-status-dashboard-t {
+  background-color: #fff;
+  display: flex;
+  justify-content: stretch;
+  flex-direction: column;
+  overflow: hidden;
+  align-items: center;
+  margin-top: 20px;
+  /* padding: 126px 70px 198px; */
+}
+
+.room-status-dashboard__container-t {
+  width: 100%;
+}
+
+.room-status-dashboard__grid-t {
+  display: flex;
+  justify-content: space-between;
+  /* justify-content: center; */
+  gap: 30px;
+}
+/* card1-end */
+
+/* card2-start */
+.card-2-container-t {
+  margin-top: 20px;
+}
+/* card2-end */
+
+/* card4-start */
+.comment-dashboard-t {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  align-items: center;
+  letter-spacing: 0.5px;
+  justify-content: center;
+  /* padding: 47px 70px; */
+}
+.comment-content-t {
+  display: flex;
+  width: 100%;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+/* card4-end */
+/* @media (max-width: 991px) {
+    .comment-dashboard {
+      padding: 0 20px;
+    }
+  
+    .comment-content {
+      max-width: 100%;
+    }
+  
+    .room-status-dashboard {
+      padding: 100px 20px;
+    }
+  
+    .room-status-dashboard__container {
+      max-width: 100%;
+    }
+  
+    .room-status-dashboard__grid {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 40px;
+    }
+  } */

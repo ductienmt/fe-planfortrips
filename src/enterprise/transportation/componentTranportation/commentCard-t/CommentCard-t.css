@@ -1,0 +1,33 @@
+.comment-section {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+.comment-info {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.comment-count {
+  
+  color: #3f3f3f;
+}
+.view-report-btn {
+  background-color: #fbfcfe;
+  border-radius: 5px;
+  box-shadow: 0 2px 1px rgba(64, 72, 82, 0.05);
+  color: #5a6acf;
+  padding: 10px 32px;
+  border: 1px solid #dde4f0;
+  cursor: pointer;
+}
+
+.view-report-btn:hover {
+  background-color: #edeff0;
+}
+@media (max-width: 991px) {
+  .view-report-btn {
+    padding: 10px 20px;
+  }
+}
