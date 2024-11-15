@@ -130,9 +130,7 @@
     position: absolute;
     /* Position the menu absolutely */
     top: 50px;
-    /* Adjust the position below the avatar */
     right: 0;
-    /* Align to the right */
     background-color: white;
     /* Background color of the menu */
     border: 1px solid #ccc;
@@ -142,7 +140,17 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     /* Add shadow for depth */
     z-index: 1000;
-    /* Ensure the menu appears above other elements */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    min-width: 250px;
+}
+
+.custom-header .user-dropdown ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.custom-header .user-dropdown ul li {
     padding: 10px;
     /* Padding inside the menu */
 }

@@ -9,12 +9,10 @@ import TravelPlan from "../client/pages/PlanAfter/TravelPlan";
 import Booking from "../client/pages/Booking/Booking";
 import Payment from "../client/pages/Payment/Payment";
 import Success from "../client/pages/Payment/Status/Success";
-import BookingHotel from "../client/pages/HotelPage/BookingHotel/BookingHotel";
-import HotelDetails from "../client/pages/HotelPage/HotelDetails/HotelDetails";
 import Profile from "../client/pages/Profile/Profile";
 
 // import LoginAdmin from "../admin/pages/Auth/Login";
-import UserAdmin from "../admin/pages/User/User";
+// import UserAdmin from "../admin/pages/User/User";
 import EnterpriseAdmin from "../admin/pages/Enterprise/Enterprise";
 import LayoutAdmin from "../admin/pages/Layout/Layout";
 import HomePage from "../admin/pages/Dashboard/HomePage";
@@ -34,7 +32,7 @@ import PlacePageAdmin from "../admin/pages/Travel/PlacePage";
 import { EnterpriseLayout } from "../layout/EnterpriseLayout";
 import EnterpriseLogin from "../enterprise/auth/login/EnterpriseLogin";
 // import EnterpriseDashboard from "../enterprise/dashboard/EnterpriseDashboard";
-import Hotel from "../client/pages/HotelPage/Hotel/Hotel";
+// import Hotel from "../client/pages/HotelPage/Hotel/Hotel";
 import Voucher from "../enterprise/voucher/Voucher";
 import Vehicle from "../enterprise/transportation/vehicleManagement/Vehicle";
 import Schedule from "../enterprise/transportation/schedule/Schedule";
@@ -43,19 +41,14 @@ import Room from "../enterprise/accomodation/roomManagement/Room";
 import HotelManagement from "../enterprise/accomodation/manager/HotelManagement";
 
 import Sumbitenterprise from "../client/pages/Enterprise/Sumbitenterprise";
-<<<<<<< Updated upstream
 import Tour from "../admin/pages/Tour/Tour";
-=======
 import GuestLiving from "../enterprise/accomodation/guest/GuestLiving";
 import RoomVoucher from "../enterprise/accomodation/roomVoucher/roomVoucher";
 import ChooseHotel from "../enterprise/accomodation/chooseHotel/chooseHotel";
 import AccomodationDashboard from "../enterprise/dashboard/Accomodation/AccomodationDashboard";
 import TranportatinDashboard from "../enterprise/dashboard/tranportation/TranportatinDashboard";
-
-
-
-
->>>>>>> Stashed changes
+import Hotelpage from "../client/pages/HotelPage/Hotelpage";
+import { BookingHotel } from "../client/pages/HotelPage/BookingHotel";
 
 const routeAdmin = () => [
   {
@@ -155,7 +148,7 @@ const routeEnterprise = () => [
       {
         path: "accomodation/choose-hotel",
         Component: ChooseHotel,
-      }
+      },
     ],
   },
 ];
@@ -178,16 +171,20 @@ const routeClient = () => [
         Component: Register,
       },
       {
+        path: "/hotel",
+        Component: Hotelpage,
+      },
+      {
+        path: "/booking-hotel",
+        Component: BookingHotel,
+      },
+      {
         path: "/plan",
         Component: PlanBefore,
       },
       {
         path: "/plan/trip",
         Component: TravelPlan,
-      },
-      {
-        path: "/hotel",
-        Component: Hotel,
       },
       {
         path: "/booking/:type",
@@ -201,14 +198,6 @@ const routeClient = () => [
         path: "/success",
         Component: Success,
         exact: true,
-      },
-      {
-        path: "/booking-hotel",
-        Component: BookingHotel,
-      },
-      {
-        path: "/hotel-details",
-        Component: HotelDetails,
       },
       {
         path: "/profile",

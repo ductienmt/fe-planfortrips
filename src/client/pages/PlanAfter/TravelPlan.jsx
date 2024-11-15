@@ -10,6 +10,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { TicketService } from "../../../services/apis/TicketService";
 import { useAuth } from "../../../context/AuthContext/AuthProvider";
 import { useSnackbar } from "notistack";
+import { convertToVND } from "../../../utils/FormatMoney";
+import Loader from "../../Components/Loading";
 
 function TravelPlan() {
   const [selectedCard, setSelectedCard] = useState("transportation");
@@ -19,14 +21,24 @@ function TravelPlan() {
   const { enqueueSnackbar } = useSnackbar();
   const { role, username } = useAuth();
   const navigate = useNavigate();
+  const [isLoading, setLoading] = useState(false);
 
-  const seatsDe = tripData.transportation.departure.seatBook
-    .map((seat) => seat.seat_number)
-    .join(", ");
+  const getLastThreeWords = (text) => {
+    const words = text.split(" ");
+    return words.length <= 3 ? text : words.slice(-3).join(" ");
+  };
 
-  const seatsRe = tripData.transportation.departure.seatBook
-    .map((seat) => seat.seat_number)
-    .join(", ");
+  const seatsDe = tripData?.transportation?.departure?.seatBook
+    ? tripData.transportation.departure.seatBook
+        .map((seat) => seat.seat_number)
+        .join(", ")
+    : "Chưa có dữ liệu chỗ ngồi";
+
+  const seatsRe = tripData?.transportation?.return?.seatBook
+    ? tripData.transportation.departure.seatBook
+        .map((seat) => seat.seat_number)
+        .join(", ")
+    : "Chưa có dữ liệu chỗ ngồi";
 
   const calculateDuration = (departureTime, arrivalTime) => {
     const [departureHours, departureMinutes] = departureTime
@@ -65,13 +77,6 @@ function TravelPlan() {
     return timePart.split(":").slice(0, 2).join(":");
   };
 
-  const convertToVND = (amount) => {
-    const formattedAmount = amount
-      .toString()
-      .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return `${formattedAmount}.000VNĐ`;
-  };
-
   const formatDate = (dateTime) => {
     const datePart = dateTime.split(" ")[0];
     return datePart; // Trả về chỉ phần ngày
@@ -88,10 +93,87 @@ function TravelPlan() {
     setSelectedCard("attraction");
   };
 
+  const handleSubmit = async () => {
+    try {
+      if (!role) {
+        sessionStorage.setItem("previousUrl", window.location.pathname);
+        enqueueSnackbar("Vui lòng đăng nhập để tiếp tục", {
+          variant: "error",
+          autoHideDuration: 1000,
+          onExit: () => {
+            navigate("/login");
+          },
+        });
+        return;
+      } else {
+        const transportationDeparturePlanData = {
+          carId: tripData.transportation.departure.vehicleCode,
+          totalPrice: tripData.transportation.departure.totalPrice,
+          startDate: tripData.transportation.departure.departureTime.replace(
+            "T",
+            " "
+          ),
+          endDate: tripData.transportation.departure.arrivalTime.replace(
+            "T",
+            " "
+          ),
+          ticketId: null,
+        };
+        const transportationReturnPlanData = {
+          carId: tripData.transportation.return.vehicleCode,
+          totalPrice: tripData.transportation.return.totalPrice,
+          startDate: tripData.transportation.return.departureTime.replace(
+            "T",
+            " "
+          ),
+          endDate: tripData.transportation.return.arrivalTime.replace("T", " "),
+          ticketId: null,
+        };
+        const hotelPlanData = {
+          hotelId: tripData.accomodation.hotelId,
+          totalPrice: tripData.accomodation.total,
+          startDate: tripData.accomodation.rooms.checkin,
+          endDate: tripData.accomodation.rooms.checkout,
+          ticketId: null,
+        };
+        const planData = {
+          planName: `Khám phá ${tripData.userData.destination.toLowerCase()}`,
+          startDate: tripData.userData.startDate.replace("T", " "),
+          endDate: tripData.userData.endDate.replace("T", " "),
+          location: tripData.userData.location,
+          destination: tripData.userData.destination,
+          budget: tripData.userData.budget,
+          numberPeople: tripData.userData.numberPeople,
+          totalPrice: tripData.estimatedCost,
+          planDetails: [
+            transportationDeparturePlanData,
+            transportationReturnPlanData,
+            hotelPlanData,
+          ],
+        };
+        sessionStorage.setItem("planData", JSON.stringify(planData));
+        setLoading(true);
+        setTimeout(() => {
+          setLoading(false);
+          navigate("/booking/plan");
+        }, 3000);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Tạo chuyến đi thất bại!");
+    }
+  };
+
   const newSummaryItems = tripData.userData
     ? [
-        { label: "Location", value: tripData.userData.location },
-        { label: "Destination", value: tripData.userData.destination },
+        {
+          label: "Location",
+          value: getLastThreeWords(tripData.userData.location),
+        },
+        {
+          label: "Destination",
+          value: getLastThreeWords(tripData.userData.destination),
+        },
         {
           label: "Start Date",
           value: formatDate(tripData.userData.startDate),
@@ -113,65 +195,101 @@ function TravelPlan() {
 
   useEffect(() => {
     if (tripData) {
+      console.log(tripData.userData?.budget);
+
       setSummaryItems(newSummaryItems);
     }
   }, []);
 
   return (
-    <main className="travel-plan">
-      <PlanSummary summaryItems={summaryItems} />
-      <section className="travel-details">
-        <TransportationCard
-          className={
-            selectedCard === "transportation"
-              ? "active"
-              : selectedCard
-                ? "inactive"
-                : ""
-          }
-          onClick={() => handleCardClick("transportation")}
-          img="https://flane.vn/wp-content/uploads/2023/12/xe-phuong-trang-7.png"
-          departureTime={formatTime(
-            tripData.transportation.departure.departureTime
-          )}
-          arrivalTime={formatTime(
-            tripData.transportation.departure.arrivalTime
-          )}
-          nameVehicle={tripData.transportation.departure.carName}
-          seatCode={seatsDe}
-          scheduleId={tripData.transportation.departure.scheduleId}
-        />
-        <AccommodationCard
-          className={
-            selectedCard === "accommodation"
-              ? "active"
-              : selectedCard
-                ? "inactive"
-                : ""
-          }
-          onClick={() => handleCardClick("accommodation")}
-          name={tripData.accomodation.nameHotel}
-          room={tripData.accomodation.nameRoom}
-          roomtype={tripData.accomodation.roomType}
-          checkin={tripData.accomodation.checkin}
-          checkout={tripData.accomodation.checkout}
-        />
-        <AttractionCard
-          className={
-            selectedCard === "attraction"
-              ? "active"
-              : selectedCard
-                ? "inactive"
-                : ""
-          }
-          onClick={
-            () => handleCardClick("attraction") // Gọi hàm này khi click vào AttractionCard
-          }
-          onNext={handleAttractionSelected} // Truyền hàm này vào props
-          onBack={handleAttractionSelected} // Truyền hàm này vào props
-        />
-      </section>
-    </main>
+    <>
+      {isLoading ? (
+        <Loader rong={"80vh"} />
+      ) : (
+        <>
+          <main className="travel-plan">
+            <PlanSummary summaryItems={summaryItems} />
+            <section className="travel-details">
+              <TransportationCard
+                className={
+                  selectedCard === "transportation"
+                    ? "active"
+                    : selectedCard
+                      ? "inactive"
+                      : ""
+                }
+                onClick={() => handleCardClick("transportation")}
+                vehicleCode={tripData.transportation.departure.vehicleCode}
+                departureTime={formatTime(
+                  tripData.transportation.departure.departureTime
+                )}
+                arrivalTime={formatTime(
+                  tripData.transportation.departure.arrivalTime
+                )}
+                nameVehicle={tripData.transportation.departure.carName}
+                seatCode={seatsDe}
+                scheduleId={tripData.transportation.departure.scheduleId}
+                timeCommunicate={calculateDuration(
+                  formatTime(tripData.transportation.departure.departureTime),
+                  formatTime(tripData.transportation.departure.arrivalTime)
+                )}
+              />
+              <AccommodationCard
+                className={
+                  selectedCard === "accommodation"
+                    ? "active"
+                    : selectedCard
+                      ? "inactive"
+                      : ""
+                }
+                onClick={() => handleCardClick("accommodation")}
+                accomodation={tripData.accomodation}
+              />
+              <AttractionCard
+                className={
+                  selectedCard === "attraction"
+                    ? "active"
+                    : selectedCard
+                      ? "inactive"
+                      : ""
+                }
+                onClick={() => handleCardClick("attraction")}
+                onNext={handleAttractionSelected}
+                onBack={handleAttractionSelected}
+                checkin={tripData.checkins}
+              />
+            </section>
+            <div
+              className="travel-plan-footer"
+              style={{
+                display: "flex",
+                width: "100%",
+                justifyContent: "center",
+                marginTop: "20px",
+              }}
+            >
+              {/* <button className="travel-plan-footer-button">Edit</button> */}
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSubmit();
+                }}
+                className="travel-plan-footer-button btn"
+                style={{
+                  width: "30%",
+                  backgroundColor: "#0976CF",
+                  color: "white",
+                  height: "50px",
+                  fontSize: "20px",
+                }}
+              >
+                Xác nhận kế hoạch
+              </button>
+            </div>
+          </main>
+        </>
+      )}
+    </>
   );
 }
 

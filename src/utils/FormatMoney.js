@@ -47,3 +47,10 @@ export const handleInputChange = (event, setValue, setError) => {
   const formattedValue = formatMoney(inputValue);
   setValue(formattedValue); // Cập nhật giá trị trong trạng thái
 };
+
+export const convertToVND = (amount) => {
+  if (amount === undefined || amount === null) {
+    return "0 VND";
+  }
+  return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ".000 VND";
+};

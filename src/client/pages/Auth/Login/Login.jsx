@@ -48,6 +48,7 @@ const Login = () => {
         onExit: () => {
           const previousUrl = sessionStorage.getItem("previousUrl") || "/";
           navigate(previousUrl); // Quay lại URL trước khi đăng nhập
+          sessionStorage.removeItem("previousUrl");
         },
       });
     } catch (error) {

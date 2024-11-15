@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./AttractionCard.css";
+import { CheckinService } from "../../../services/apis/CheckinService";
+import { convertToVND } from "../../../utils/FormatMoney";
 
 function AttractionCard({ className, onNext, onBack, onClick }) {
   const images = [
@@ -18,14 +20,50 @@ function AttractionCard({ className, onNext, onBack, onClick }) {
   };
 
   const handleBack = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
-    );
-    onBack(); // Gọi hàm onBack để đảm bảo AttractionCard luôn selected khi nhấn back
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    } else {
+      setCurrentIndex(attractions.length - 1);
+    }
+    onBack();
   };
 
+  useEffect(() => {
+    const fetchImages = async () => {
+      const updatedAttractions = await Promise.all(
+        attractions.map(async (place) => {
+          if (!place.images) {
+            const id = place.id;
+            const imagesResponse = await CheckinService.getImageById(id);
+            console.log(imagesResponse);
+
+            // Kiểm tra dữ liệu có sẵn
+            if (
+              imagesResponse &&
+              imagesResponse.data &&
+              imagesResponse.data.length > 0
+            ) {
+              const randomImage =
+                imagesResponse.data[
+                  Math.floor(Math.random() * imagesResponse.data.length)
+                ];
+              console.log(randomImage.url);
+              return { ...place, images: randomImage.url };
+            }
+          }
+          return place;
+        })
+      );
+
+      setAttractions(updatedAttractions);
+      // console.log(updatedAttractions);
+    };
+
+    fetchImages();
+  }, [checkin]);
+
   return (
-    <article className={`attraction-card ${className}`} onClick={onClick} >
+    <article className={`attraction-card ${className}`} onClick={onClick}>
       <img
         src={images[currentImageIndex]}
         alt="Attraction view"
