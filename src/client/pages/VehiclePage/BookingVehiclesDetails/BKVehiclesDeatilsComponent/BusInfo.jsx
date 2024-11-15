@@ -1,45 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom'; // Import useParams để lấy id từ URL
 import './BusInfo.css';
 import StarIcon from '@mui/icons-material/Star';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { ScheduleService } from '../../../../../services/apis/ScheduleService';
 
 const BusInfo = () => {
-  const { id } = useParams(); // Lấy id từ URL
-  const [busInfo, setBusInfo] = useState();
+  const [formData, setFormData] = useState({
+
+  })
+
+  const [busInfo, setBusInfo] = useState(); // Sử dụng null để kiểm tra trạng thái dữ liệu dễ hơn
 
   useEffect(() => {
     const fetchBusInfo = async () => {
       try {
-        const response = await ScheduleService.getScheduleID(id); // Sử dụng id từ URL
-        setBusInfo(response.data);
-        console.log(response.data);
+
+        const response = await ScheduleService.getScheduleID(1);
+        setBusInfo(response.data); // Lưu dữ liệu vào state
+        console.log(response.data); // Ghi lại dữ liệu vào console để kiểm tra
       } catch (error) {
         console.error("Error:", error);
+
       }
     };
 
-    fetchBusInfo();
-  }, [id]); // Thêm id vào mảng phụ thuộc để lấy dữ liệu mới khi id thay đổi
+    fetchBusInfo(); // Gọi hàm này khi component được mount
+  }, []);
 
-  const formatTime = (timeString) => {
-    const date = new Date(timeString);
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
-  };
-
-  const formatDay = (timeString) => {
-    const date = new Date(timeString);
-    const daysOfWeek = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
-    const day = daysOfWeek[date.getDay()];
-    const dayMonthYear = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-    return `${day}, ${dayMonthYear}`;
-  };
-
+  // Kiểm tra xem dữ liệu đã được tải hay chưa
   if (!busInfo) {
-    return <p>Đang tải thông tin xe buýt...</p>;
+    return <p>Đang tải thông tin xe buýt...</p>; // Thông báo khi chưa có dữ liệu
   }
 
   return (
@@ -59,16 +49,9 @@ const BusInfo = () => {
         <a className="bus-info-link" href="#">Thông tin xe</a>
 
         <div className="bus-route-info-container">
-          <span>{busInfo.departureName}</span>
+          <span>{busInfo.departureTime}</span>
           <ArrowForwardIcon style={{ color: '#595959', fontSize: '15px' }} />
-          <span>{busInfo.arrivalName}</span>
-        </div>
-        <div className="bus-route-info-container">
-          <b>
-            <span>{formatTime(busInfo.departureTime)}</span>
-            <ArrowForwardIcon style={{ color: '#595959', fontSize: '15px' }} />
-            <span>{formatTime(busInfo.arrivalTime)}</span>, <span>{formatDay(busInfo.departureTime)}</span>
-          </b>
+          <span>{busInfo.arrivalTime}</span>
         </div>
 
         <p className="bus-schedule-info">{busInfo.countSeatsEmpty}</p>

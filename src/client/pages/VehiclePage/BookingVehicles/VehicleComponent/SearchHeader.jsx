@@ -5,12 +5,11 @@ import TextField from '@mui/material/TextField';
 import { ScheduleService } from '../../../../../services/apis/ScheduleService';
 import Flatpickr from 'react-flatpickr';
 
-const SearchHeader = ({ onSearch }) => {
+const SearchHeader = ({ onSearch }) => { // Thêm prop onSearch
     const [formData, setFormData] = useState({
         originalLocation: '',
         destination: '',
         startDate: '',
-        endDate: '', // Thêm trường endDate
     });
 
     const [schedules, setSchedules] = useState([]);
@@ -19,10 +18,11 @@ const SearchHeader = ({ onSearch }) => {
         try {
             const response = await ScheduleService.getSchedules(data);
             console.log(response.data);
-            const fetchedSchedules = response.data.data;
+            const fetchedSchedules = response.data.data; // Lấy dữ liệu từ response
             setSchedules(fetchedSchedules);
-            localStorage.setItem("schedules", JSON.stringify(fetchedSchedules));
-            onSearch();
+            localStorage.setItem("schedules", JSON.stringify(fetchedSchedules)); // Lưu trữ dữ liệu mới
+
+            onSearch(); // Gọi hàm này sau khi đã lưu trữ dữ liệu
         } catch (error) {
             console.error("Error:", error);
             const query = `[Javascript] fix error: ${error.message}`;
@@ -35,8 +35,8 @@ const SearchHeader = ({ onSearch }) => {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleDateChange = (name) => (date) => {
-        setFormData({ ...formData, [name]: date[0] });
+    const handleDateChange = (date) => {
+        setFormData({ ...formData, startDate: date[0] });
     };
 
     const handleSubmit = (e) => {
@@ -82,21 +82,7 @@ const SearchHeader = ({ onSearch }) => {
                         <Flatpickr
                             name='startDate'
                             value={formData.startDate}
-                            onChange={handleDateChange('startDate')} // Cập nhật cách gọi
-                            options={{
-                                dateFormat: 'Y-m-d',
-                                enableTime: true,
-                                time_24hr: true,
-                            }}
-                            className="search-header-input-field"
-                        />
-                    </div>
-                    <div className="search-header-date-info">
-                        <span className="search-header-date-label">Ngày kết thúc</span>
-                        <Flatpickr
-                            name='endDate'
-                            value={formData.endDate}
-                            onChange={handleDateChange('endDate')} // Cập nhật cách gọi
+                            onChange={handleDateChange}
                             options={{
                                 dateFormat: 'Y-m-d',
                                 enableTime: true,

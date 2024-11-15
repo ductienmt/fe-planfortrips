@@ -6,6 +6,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Link, useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
+import { InputFlied } from "../../../Components/Input/InputFlied";
 
 const UserInformation = ({
   totalPrice,
@@ -124,8 +125,8 @@ const UserInformation = ({
         <div style={{ padding: "10px 20px" }}>
           <div className="user-information-header">
             <form action="" className="user-information-form">
-              <div className="name">
-                <TextField
+              <div className="name-booking mb-3">
+                {/* <TextField
                   id="outlined-basic"
                   label="Họ"
                   variant="outlined"
@@ -133,8 +134,15 @@ const UserInformation = ({
                   name="firstName"
                   value={form.firstName}
                   onChange={handleChange}
+                /> */}
+                <InputFlied
+                  content={"Họ"}
+                  nameInput={"firstName"}
+                  value={form.firstName}
+                  onChange={handleChange}
+                  dai={"30%"}
                 />
-                <TextField
+                {/* <TextField
                   id="outlined-basic"
                   label="Tên đệm và tên"
                   variant="outlined"
@@ -142,10 +150,17 @@ const UserInformation = ({
                   name="lastName"
                   value={form.lastName}
                   onChange={handleChange}
-                />
+                /> */}
+                <InputFlied
+                  content={"Tên"}
+                  nameInput={"lastName"}
+                  value={form.lastName}
+                  onChange={handleChange}
+                  dai={"70%"}
+                ></InputFlied>
               </div>
-              <div className="contact">
-                <TextField
+              <div className="contact mb-3">
+                {/* <TextField
                   id="outlined-basic"
                   label="Email"
                   variant="outlined"
@@ -153,8 +168,15 @@ const UserInformation = ({
                   name="email"
                   value={form.email}
                   onChange={handleChange}
-                />
-                <TextField
+                /> */}
+                <InputFlied
+                  content={"Email"}
+                  nameInput={"email"}
+                  value={form.email}
+                  onChange={handleChange}
+                  dai={"45%"}
+                ></InputFlied>
+                {/* <TextField
                   id="outlined-basic"
                   label="Số điện thoại"
                   variant="outlined"
@@ -162,10 +184,17 @@ const UserInformation = ({
                   name="phone"
                   value={form.phone}
                   onChange={handleChange}
+                /> */}
+                <InputFlied
+                  content={"Số điện thoại"}
+                  nameInput={"phone"}
+                  value={form.phone}
+                  onChange={handleChange}
+                  dai={"55%"}
                 />
               </div>
               <div className="gender-note">
-                <TextField
+                {/* <TextField
                   id="outlined-basic"
                   label="Giới tính"
                   variant="outlined"
@@ -173,8 +202,15 @@ const UserInformation = ({
                   name="gender"
                   value={form.gender}
                   onChange={handleChange}
+                /> */}
+                <InputFlied
+                  content={"Giới tính"}
+                  nameInput={"gender"}
+                  value={form.gender}
+                  onChange={handleChange}
+                  dai={"20%"}
                 />
-                <TextField
+                {/* <TextField
                   id="outlined-basic"
                   label="Ghi chú"
                   variant="outlined"
@@ -182,7 +218,14 @@ const UserInformation = ({
                   name="note"
                   value={form.note}
                   onChange={handleChange}
-                />
+                /> */}
+                <InputFlied
+                  content={"Ghi chú"}
+                  nameInput={"note"}
+                  value={form.note}
+                  onChange={handleChange}
+                  dai={"80%"}
+                ></InputFlied>
               </div>
             </form>
           </div>

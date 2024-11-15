@@ -1,21 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './BookingSteps.css';
 import StepIndicator from './BKVehiclesDeatilsComponent/StepIndicator';
+import SeatSelector from './BKVehiclesDeatilsComponent/SeatSelector';
 import BusInfo from './BKVehiclesDeatilsComponent/BusInfo';
-import BusBooking from './BKVehiclesDeatilsComponent/BusBooking';
+import PickupPoints from './BKVehiclesDeatilsComponent/PickupPoints';
+import LegendStatus from './BKVehiclesDeatilsComponent/LegendStatus';
 
 const BookingSteps = () => {
-    const [priceForOneSeat, setpriceForOneSeat] = useState(0);
-    const [selectedSeats, setSelectedSeats] = useState([]);
-
     const steps = [
         { number: '1', label: 'Tìm chuyến xe', active: false },
         { number: '2', label: 'Đặt vé', active: true },
         { number: '3', label: 'Thanh toán', active: false }
     ];
-
-    // Tính tổng giá cho các ghế đã chọn
-    const totalPrice = selectedSeats.length * priceForOneSeat;
 
     return (
         <main className="booking-container-fullwidth">
@@ -34,14 +30,16 @@ const BookingSteps = () => {
                 <section className="booking-details-section-content">
                     <BusInfo />
                     <hr className="divider-line" />
-                    <BusBooking setpriceForOneSeat={setpriceForOneSeat} selectedSeats={selectedSeats} setSelectedSeats={setSelectedSeats} />
+                    <PickupPoints />
+                    <LegendStatus />
+                    <SeatSelector />
                     <hr className="divider-line" />
 
                     <div className="booking-summary-section">
-                        <span className="seat-code-label">Mã chỗ đã chọn: {selectedSeats.join(', ')}</span>
+                        <span className="seat-code-label">Mã chỗ</span>
                         <div className="price-display-wrapper">
                             <span className="price-label-text">Giá vé:</span>
-                            <span className="price-amount-value">{totalPrice}đ</span>
+                            <span className="price-amount-value">140.000đ</span>
                         </div>
                     </div>
 

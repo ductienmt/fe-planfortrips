@@ -1,0 +1,45 @@
+.pickup-points-wrapper {
+    padding: 0 27px;
+}
+
+@media (max-width: 991px) {
+    .pickup-points-wrapper {
+        padding: 0 20px;
+    }
+}
+
+.pickup-points-container {
+    display: flex;
+    gap: 77px;
+    width: 100%;
+}
+
+@media (max-width: 991px) {
+    .pickup-points-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+.pickup-point-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: #def0ff;
+    border-radius: 7px;
+    padding: 6px 8px;
+    color: #0c7fda;
+    font-size: 12px;
+    flex: 1;
+}
+
+.dropoff-point-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: #def0ff;
+    border-radius: 7px;
+    padding: 11px 8px;
+    color: #595959;
+    font-size: 12px;
+}

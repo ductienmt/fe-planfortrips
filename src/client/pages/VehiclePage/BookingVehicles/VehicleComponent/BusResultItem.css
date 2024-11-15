@@ -16,6 +16,7 @@
 
 .bus-result-trip-info-container {
     display: flex;
+    align-items: center;
     gap: 9px;
     font-family: Roboto, sans-serif;
 }
@@ -78,7 +79,6 @@
     font-size: 12px;
     color: #595959;
     width: 74px;
-    margin-top: -auto;
 }
 
 .bus-result-booking-info-container {
@@ -126,17 +126,4 @@
     border: none;
     margin-top: 22px;
     cursor: pointer;
-}
-
-.bus-result-select-seat-icon {
-    width: 40px;
-    height: 40px;
-    background-color: #f1eaea;
-    /* Màu nền đỏ cho ô tròn */
-    border-radius: 50%;
-    /* Tạo hình tròn */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
 }
