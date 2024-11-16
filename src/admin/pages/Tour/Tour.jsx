@@ -12,7 +12,7 @@ import { parseJwt } from "../../../utils/Jwt";
 function TourForm({ setRows }) {
   const token = sessionStorage.getItem("token");
   const userName = token ? parseJwt(token).sub : "";
-  const [hidden,setHidden] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedOption, setSelectedOption] = useState("option1");
   const [area, setArea] = useState([]);
@@ -35,74 +35,10 @@ function TourForm({ setRows }) {
     note: "",
     hotel_id: "",
     car_company_id: "",
-    schedule_id: 2,
+    schedule_id: 3,
     admin_username: userName,
   });
 
-  const validateCouponData = () => {
-    const newErrors = {};
-
-    const {
-      title,
-      description,
-      destination,
-      number_people,
-      total_price,
-      day,
-      night,
-      is_active,
-      tagNames,
-      note,
-      hotel_id,
-      car_company_id,
-      schedule_id,
-      admin_username,
-    } = formData;
-
-    if (!title) newErrors.title = "Tiêu đề không được để trống.";
-
-    if (!description) newErrors.description = "Mô tả không được để trống.";
-
-    if (!destination) newErrors.destination = "Địa điểm không được để trống.";
-
-    if (!number_people || isNaN(number_people) || Number(number_people) <= 0)
-      newErrors.number_people = "Số người phải là một số hợp lệ và lớn hơn 0.";
-
-    if (!total_price || isNaN(total_price) || Number(total_price) <= 0)
-      newErrors.total_price =
-        "Giá trị tổng phải là một số hợp lệ và lớn hơn 0.";
-
-    if (!day || isNaN(day) || Number(day) <= 0)
-      newErrors.day = "Số ngày phải là một số hợp lệ và lớn hơn 0.";
-
-    if (!night || isNaN(night) || Number(night) <= 0)
-      newErrors.night = "Số đêm phải là một số hợp lệ và lớn hơn 0.";
-
-    if (is_active === undefined)
-      newErrors.is_active = "Trạng thái hoạt động không được để trống.";
-
-    if (!tagNames || tagNames.length === 0)
-      newErrors.tagNames = "Vui lòng chọn ít nhất một tag.";
-
-    if (note && note.length > 500)
-      newErrors.note = "Ghi chú không được quá 500 ký tự.";
-
-    if (!hotel_id) newErrors.hotel_id = "ID khách sạn không được để trống.";
-
-    if (!car_company_id)
-      newErrors.car_company_id = "ID công ty xe không được để trống.";
-
-    if (!schedule_id)
-      newErrors.schedule_id = "ID lịch trình không được để trống.";
-
-    if (!admin_username)
-      newErrors.admin_username =
-        "Tên đăng nhập quản trị viên không được để trống.";
-
-    setErrors(newErrors);
-
-    return Object.keys(newErrors).length === 0;
-  };
   const handleSelectTags = (tagNames) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -124,7 +60,7 @@ function TourForm({ setRows }) {
       // Hotel
       const hotel = await HotelService.getHotels(0, 100, "");
       console.log(hotel.hotelResponseList);
-      
+
       setHotel(hotel.hotelResponseList);
       const car = await CarService.getcars(0, 100);
       setCar(car.listResponse);
@@ -154,11 +90,7 @@ function TourForm({ setRows }) {
     }));
   };
   const handleSave = async () => {
-    console.log(formData);
-
     const response = await TourService.createTour(formData);
-    console.log(response);
-
     if (response) {
       const newFormData = { ...formData, tour_id: response.tour_id };
       setHidden(false);
@@ -187,7 +119,7 @@ function TourForm({ setRows }) {
         className="btn btn-primary"
         data-bs-toggle="modal"
         data-bs-target="#exampleModal"
-        onClick={()=>setHidden(true)}
+        onClick={() => setHidden(true)}
       >
         Thêm Chuyến Tour Mới
       </button>
@@ -240,6 +172,7 @@ function TourForm({ setRows }) {
                   <select
                     id="startPoint"
                     className="form-select"
+                    name="destination"
                     defaultValue=""
                     onChange={(e) => {
                       handleAreaDepChange(e);
@@ -258,7 +191,7 @@ function TourForm({ setRows }) {
                 </div>
                 <div className="col-md-6">
                   <label htmlFor="endPoint" className="form-label"></label>
-                  <select id="endPoint" className="form-select" defaultValue="">
+                  <select id="endPoint" className="form-select">
                     <option value="" disabled>
                       Chọn thành phố
                     </option>
@@ -272,24 +205,23 @@ function TourForm({ setRows }) {
 
                 {/* Điểm bắt đầu + Điểm đến */}
                 <div className="col-md-6">
-                  <label htmlFor="endPoint" className="form-label">
+                  <label htmlFor="startPoint" className="form-label">
                     Điểm đến
                   </label>
                   <select
-                    id="endPoint"
-                    name="destination"
+                    id="startPoint"
                     className="form-select"
-                    value={formData.destination}
+                    name="destination"
                     onChange={(e) => {
                       handleAreaArriveChange(e);
-                      // handleChange();
+                      handleChange();
                     }}
                   >
                     <option value="" disabled>
                       Chọn khu vực
                     </option>
                     {area.map((a) => (
-                      <option key={a.id} value={a.name}>
+                      <option key={a.id} value={a.id}>
                         {a.name}
                       </option>
                     ))}
@@ -297,18 +229,7 @@ function TourForm({ setRows }) {
                 </div>
                 <div className="col-md-6">
                   <label htmlFor="endPoint" className="form-label"></label>
-                  <select
-                    id="endPoint"
-                    className="form-select"
-                    defaultValue=""
-                    onChange={(e) => {
-                      const { value } = e.target;
-                      setFormData((prevFormData) => ({
-                        ...prevFormData,
-                        destination: value,
-                      }));
-                    }}
-                  >
+                  <select id="endPoint" className="form-select" defaultValue="">
                     <option value="" disabled>
                       Chọn thành phố
                     </option>

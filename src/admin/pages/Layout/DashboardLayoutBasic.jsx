@@ -105,18 +105,18 @@ const NAVIGATION = [
     title: "Giao dịch",
     icon: <FontAwesomeIcon icon={faMoneyBillWave} />,
     children: [
-      {
-        title: (
-          <NavLink to="transactions/hotels" className="nav-linkAdmin">
-            Đơn đặt phòng
-          </NavLink>
-        ),
-        icon: (
-          <NavLink to="transactions/hotels" className="nav-linkAdmin">
-            <FontAwesomeIcon icon={faHotel} />
-          </NavLink>
-        ),
-      },
+      // {
+      //   title: (
+      //     <NavLink to="transactions/hotels" className="nav-linkAdmin">
+      //       Đơn đặt phòng
+      //     </NavLink>
+      //   ),
+      //   icon: (
+      //     <NavLink to="transactions/hotels" className="nav-linkAdmin">
+      //       <FontAwesomeIcon icon={faHotel} />
+      //     </NavLink>
+      //   ),
+      // },
       {
         title: (
           <NavLink to="transactions/vehicles" className="nav-linkAdmin">
