@@ -7,6 +7,7 @@ import Accomodation from "./AccomodationCard/Accomodation";
 import UserInformation from "./UserInfomation/UserInformation";
 import { ScheduleService } from "../../../services/apis/ScheduleService";
 import { RouteService } from "../../../services/apis/RouteService";
+import { formatDateTimeUtils } from "../../../utils/DateFormat";
 
 const Booking = () => {
   window.scrollTo(0, 0);
@@ -102,6 +103,9 @@ const Booking = () => {
 
   const priceAc = tripData?.accomodation?.total ?? 0;
 
+  const [checkinHours, setCheckinHours] = useState(null);
+  const [checkoutHours, setCheckoutHours] = useState(null);
+
   const loadTripData = useCallback(() => {
     const seatsDe = tripData?.transportation?.departure?.seatBook
       ? tripData.transportation.departure.seatBook
@@ -119,9 +123,16 @@ const Booking = () => {
     const { time: checkInTime, date: checkInDate } = formatDateTime(
       adjustCheckInTime(tripData.transportation?.departure?.arrivalTime)
     );
+
+    setCheckinHours(`${checkInDate}T${checkInTime}`);
+    // console.log(formatDateTimeUtils(checkinHours));
+
     const { time: checkOutTime, date: checkOutDate } = formatDateTime(
       adjustCheckInTime(tripData.transportation?.return?.departureTime)
     );
+
+    setCheckoutHours(`${checkOutDate}T${checkOutTime}`);
+    // console.log(formatDateTimeUtils(checkoutHours));
 
     setTransportationData({
       name: tripData.transportation?.departure?.carName,
@@ -228,6 +239,8 @@ const Booking = () => {
               tripData.transportation?.departure?.departureTime,
               tripData.transportation?.return?.departureTime
             )}
+            checkinHours={formatDateTimeUtils(checkinHours)}
+            checkoutHours={formatDateTimeUtils(checkoutHours)}
             type={type}
           />
         </div>

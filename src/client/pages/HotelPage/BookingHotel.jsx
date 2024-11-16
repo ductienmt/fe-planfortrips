@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './bookinghotel.css';
-import { EmojiPeople, Phone, Airplay, Tv, Storage, Wifi, Hotel, Shower, Icecream } from '@mui/icons-material';  // Material icons
+import { EmojiPeople, Phone, Airplay, Tv, Storage, Wifi, Hotel, Shower, Icecream } from '@mui/icons-material';
+import StarRatings from './StarRating';
 
 export const BookingHotel = () => {
 
@@ -78,19 +79,7 @@ export const BookingHotel = () => {
     }
     ]
 
-    const renderStars = (rating) => {
-        let stars = [];
-        for (let i = 1; i <= 5; i++) {
-            if (i <= rating) {
-                stars.push('★');
-            } else {
-                stars.push('☆');
-            }
-        }
-        return stars.join(' ');
-    };
 
-    const [selectedRoom, setSelectedRoom] = useState(null);
 
     const handleRoomSelection = (index) => {
         if (selectedRoom === index) {
@@ -124,11 +113,11 @@ export const BookingHotel = () => {
                 <div className='bookingpage-content-header-left'>
                     <h3> <b>{contentheader[0].namecontent}</b></h3>
                     <h6><span>{contentheader[0].addrescontent}</span></h6>
-                    <p>{renderStars(contentheader[0].reviewcontent)} ({contentheader[0].amoutreviewcontent} reviews)</p>
+                    <p>  <StarRatings rating={contentheader[0].reviewcontent} />({contentheader[0].amoutreviewcontent} reviews)</p>
                 </div>
                 <div className='bookingpage-content-header-center'>
-                    <label>Giá gốc: {contentheader[0].originalprice}</label>
-                    <label>Giá sau giảm: {contentheader[0].discountprice}</label>
+                    <label style={{ textDecoration: "line-through" }}>Giá gốc: {contentheader[0].originalprice}</label>
+                    <label style={{ color: "red", fontSize: "25px", fontWeight: "bold" }}>Giá sau giảm: {contentheader[0].discountprice}</label>
                     <span>(đã bao gồm thuế)</span>
                 </div>
                 <div className='bookingpage-content-header-right'>
@@ -159,25 +148,30 @@ export const BookingHotel = () => {
                             <img src={cardlist.image} alt="" />
                         </div>
                         <div className='booking-content-card-list-item-2'>
-                            <h2>{cardlist.typeroom}</h2>
-                            <span>Giới hạn: {cardlist.amount}</span> <br />
-                            <div className='booking-content-card-list-item-2-service'>
-                                <small>{cardlist.service}</small>
+                            <div>
+                                <h2>{cardlist.typeroom}</h2>
+                                <span>Giới hạn: {cardlist.amount}</span> <br />
+                                <div className='booking-content-card-list-item-2-service'>
+                                    <small>{cardlist.service}</small>
+                                </div>
                             </div>
+
                         </div>
                         <div className='booking-content-card-list-item-3'>
                             {/* <button
                                 className={`circle-button ${selectedRoom === index ? 'selected' : ''}`}
                                 onClick={() => handleRoomSelection(index)}
+
                             ></button> */}
                             <div className='booking-content-card-list-item-3-item'>
                                 <br />
-                                <h3><b>{cardlist.price}</b></h3>
-                                /đêm
+                                <div>
+                                    <span style={{ fontSize: "35px", color: "white" }}><b>{cardlist.price}</b></span><br />
+                                    <center style={{ color: "white" }}>/đêm</center>
+                                </div>
                                 <br />
                                 <button>Đặt ngay</button>
                             </div>
-
                         </div>
                     </div>
                 ))}
@@ -250,8 +244,11 @@ export const BookingHotel = () => {
                     <div key={index} className='booking-page-content-review-list-card-item'>
                         <img src={review.avatar} alt="" />
                         <div className='booking-page-content-review-list-card-item-1'>
-                            <h3>{review.name}</h3>
-                            <h6>{review.rating}/5⭐</h6>
+                            <div className='booking-page-content-review-list-card-item-1-rating'>
+                                <span style={{ fontSize: "20px" }}>{review.name}</span>
+                                <StarRatings rating={review.rating} />
+
+                            </div>
                             <span>{review.description}</span>
 
                         </div>

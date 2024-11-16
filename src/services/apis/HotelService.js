@@ -1,6 +1,5 @@
 import Http from "../Http";
 
-
 export const HotelService = {
   getHotels: async (page, limit, keyword) => {
     const response = await Http.get(
@@ -21,5 +20,8 @@ export const HotelService = {
     const response = await Http.delete(`api/v1/users/delete/${id}`);
     return response.data;
   },
+  detail: async () => {
+    const response = await Http.get(`api/v1/hotels/detail`);
+    return response.data;
+  },
 };
-
