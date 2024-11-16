@@ -133,13 +133,14 @@ const EnterpriseSidebar = () => {
                     {!collapsed && <span>Thống kê</span>}
                   </Link>
                 </li>
+            
                 <li
-                  className={selectedItem === "schedule" ? "isActive" : ""}
-                  onClick={() => handleSelect("schedule")}
+                  className={selectedItem === "Guest" ? "isActive" : ""}
+                  onClick={() => handleSelect("Guest")}
                 >
-                  <Link to="transportation/schedule">
+                  <Link to="transportation/Guest">
                     <i className="fa-solid fa-clipboard-list"></i>
-                    {!collapsed && <span>Lịch trình</span>}
+                    {!collapsed && <span>Khách hàng</span>}
                   </Link>
                 </li>
                 <li
@@ -154,14 +155,24 @@ const EnterpriseSidebar = () => {
                   </Link>
                 </li>
                 <li
-                  className={selectedItem === "routes" ? "isActive" : ""}
-                  onClick={() => handleSelect("routes")}
+                  className={selectedItem === "Seats" ? "isActive" : ""}
+                  onClick={() => handleSelect("Seats")}
                 >
-                  <Link to="transportation/routes">
+                  <Link to="transportation/Seats">
                     <i className="fa-solid fa-route"></i>{" "}
+                    {!collapsed && <span>Seats</span>}
+                  </Link>
+                </li>
+                <li
+                  className={selectedItem === "Route" ? "isActive" : ""}
+                  onClick={() => handleSelect("Route")}
+                >
+                  <Link to="transportation/Routehotel">
+                    <i className="fa-solid fa-Routehotel"></i>{" "}
                     {!collapsed && <span>Tuyến</span>}
                   </Link>
                 </li>
+                
                 <li
                   className={selectedItem === "vouchers" ? "isActive" : ""}
                   onClick={() => handleSelect("vouchers")}
@@ -169,6 +180,24 @@ const EnterpriseSidebar = () => {
                   <Link to="transportation/vouchers">
                     <i className="fa-solid fa-ticket"></i>{" "}
                     {!collapsed && <span>Mã giảm giá</span>}
+                  </Link>
+                </li>
+                  <li
+                    className={selectedItem === "schedules" ? "isActive" : ""}
+                    onClick={() => handleSelect("schedules")}
+                  >
+                    <Link to="transportation/vehicle-schedules">
+                      <i className="fa-solid fa-ticket"></i>{" "}
+                      {!collapsed && <span>Lịch trình</span>}
+                    </Link>
+                  </li>
+                <li
+                  className={selectedItem === "account" ? "isActive" : ""}
+                  onClick={() => handleSelect("account")}
+                >
+                  <Link to="transportation/vehicle-account">
+                    <i className="fa-solid fa-ticket"></i>{" "}
+                    {!collapsed && <span>Account</span>}
                   </Link>
                 </li>
               </>

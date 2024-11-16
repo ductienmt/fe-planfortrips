@@ -1,4 +1,4 @@
-.enterprise-vehicle-container {
+.enterprise-Route-container {
     margin: 10px;
     width: 100%;
     border-radius: 20px;
@@ -6,17 +6,17 @@
     padding: 20px;
 }
 
-.enterprise-vehicle-container .content .nav-filter {
+.enterprise-Route-container .content .nav-filter {
     display: flex;
     justify-content: space-between;
 }
 
-.enterprise-vehicle-container .content .nav-filter .filter-vehicle {
+.enterprise-Route-container .content .nav-filter .filter-Route {
     display: flex;
     gap: 20px;
 }
 
-.enterprise-vehicle-container .content .nav-filter .filter-vehicle button {
+.enterprise-Route-container .content .nav-filter .filter-Route button {
     padding: 8px 20px;
     border-radius: 10px;
     border: 1px solid #ccc;
@@ -27,12 +27,12 @@
     cursor: pointer;
 }
 
-.enterprise-vehicle-container .content .nav-filter .nav-add-vehicle {
+.enterprise-Route-container .content .nav-filter .nav-add-Route {
     display: flex;
     gap: 20px;
 }
 
-.enterprise-vehicle-container .content .nav-filter .nav-add-vehicle button {
+.enterprise-Route-container .content .nav-filter .nav-add-Route button {
     padding: 8px 20px;
     border-radius: 10px;
     border: none;
@@ -44,18 +44,18 @@
     transition: background-color 0.3s ease;
 }
 
-.enterprise-vehicle-container .content .nav-filter .filter-vehicle button.isActive {
+.enterprise-Route-container .content .nav-filter .filter-Route button.isActive {
     background-color: rgb(237, 248, 255);
     color: rgb(65, 165, 232);
     border-color: rgb(132, 205, 255);
 }
 
 
-.enterprise-vehicle-container .content .nav-filter .nav-add-vehicle button:hover {
+.enterprise-Route-container .content .nav-filter .nav-add-Route button:hover {
     background-color: rgb(39, 100, 140);
 }
 
-.enterprise-vehicle-container .content .nav-filter .nav-add-vehicle select {
+.enterprise-Route-container .content .nav-filter .nav-add-Route select {
     padding: 8px 20px;
     border-radius: 10px;
     border: 1px solid #ccc;
@@ -66,22 +66,22 @@
     cursor: pointer;
 }
 
-.enterprise-vehicle-container .modal3-footer {
+.enterprise-Route-container .modal3-footer {
     display: flex;
     justify-content: center;
     align-items: center; 
     padding: 20px;
   }
-.enterprise-vehicle-container .modal-dialog{
+.enterprise-Route-container .modal-dialog{
  max-width: 40%; 
   max-height: 40%;
   }
-
-.enterprise-vehicle-container .footer-btn{
-    background-color:dodgerblue ;
+.enterprise-Route-container .modal3-footer .footer-btn{
+    background-color: #0C7FDA;
+    height:50px;
     width: 800px;
-    height: 50px;
 }
+
 
   
  

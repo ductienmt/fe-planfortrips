@@ -1,4 +1,4 @@
-.enterprise-vehicle-container {
+.enterprise-TransportationVouchers-container {
     margin: 10px;
     width: 100%;
     border-radius: 20px;
@@ -6,17 +6,17 @@
     padding: 20px;
 }
 
-.enterprise-vehicle-container .content .nav-filter {
+.enterprise-TransportationVouchers-container .content .nav-filter {
     display: flex;
     justify-content: space-between;
 }
 
-.enterprise-vehicle-container .content .nav-filter .filter-vehicle {
+.enterprise-TransportationVouchers-container .content .nav-filter .filter-TransportationVouchers {
     display: flex;
     gap: 20px;
 }
 
-.enterprise-vehicle-container .content .nav-filter .filter-vehicle button {
+.enterprise-TransportationVouchers-container .content .nav-filter .filter-TransportationVouchers button {
     padding: 8px 20px;
     border-radius: 10px;
     border: 1px solid #ccc;
@@ -27,12 +27,12 @@
     cursor: pointer;
 }
 
-.enterprise-vehicle-container .content .nav-filter .nav-add-vehicle {
+.enterprise-TransportationVouchers-container .content .nav-filter .nav-add-TransportationVouchers {
     display: flex;
     gap: 20px;
 }
 
-.enterprise-vehicle-container .content .nav-filter .nav-add-vehicle button {
+.enterprise-TransportationVouchers-container .content .nav-filter .nav-add-TransportationVouchers button {
     padding: 8px 20px;
     border-radius: 10px;
     border: none;
@@ -44,18 +44,18 @@
     transition: background-color 0.3s ease;
 }
 
-.enterprise-vehicle-container .content .nav-filter .filter-vehicle button.isActive {
+.enterprise-TransportationVouchers-container .content .nav-filter .filter-TransportationVouchers button.isActive {
     background-color: rgb(237, 248, 255);
     color: rgb(65, 165, 232);
     border-color: rgb(132, 205, 255);
 }
 
 
-.enterprise-vehicle-container .content .nav-filter .nav-add-vehicle button:hover {
+.enterprise-TransportationVouchers-container .content .nav-filter .nav-add-TransportationVouchers button:hover {
     background-color: rgb(39, 100, 140);
 }
 
-.enterprise-vehicle-container .content .nav-filter .nav-add-vehicle select {
+.enterprise-TransportationVouchers-container .content .nav-filter .nav-add-TransportationVouchers select {
     padding: 8px 20px;
     border-radius: 10px;
     border: 1px solid #ccc;
@@ -66,22 +66,22 @@
     cursor: pointer;
 }
 
-.enterprise-vehicle-container .modal3-footer {
+.enterprise-TransportationVouchers-container .modal3-footer {
     display: flex;
     justify-content: center;
     align-items: center; 
     padding: 20px;
   }
-.enterprise-vehicle-container .modal-dialog{
+.enterprise-TransportationVouchers-container .modal-dialog{
  max-width: 40%; 
   max-height: 40%;
   }
-
-.enterprise-vehicle-container .footer-btn{
-    background-color:dodgerblue ;
-    width: 800px;
+.enterprise-TransportationVouchers-container .modal3-footer .footer-btn{
+    background-color: #0C7FDA;
     height: 50px;
+    width: 800px;
 }
+  
 
   
  

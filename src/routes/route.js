@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Route } from "react-router-dom";
 import App from "../App";
 import LandingPage from "../client/pages/Homepage/LandingPage";
 import Login from "../client/pages/Auth/Login/Login";
@@ -33,12 +33,19 @@ import EnterpriseLogin from "../enterprise/auth/login/EnterpriseLogin";
 import EnterpriseDashboard from "../enterprise/dashboard/EnterpriseDashboard";
 import Voucher from "../enterprise/voucher/Voucher";
 import Vehicle from "../enterprise/transportation/vehicleManagement/Vehicle";
-import Schedule from "../enterprise/transportation/schedule/Schedule";
-import Route from "../enterprise/transportation/route/Route";
+
 import RoomHistory from "../enterprise/accomodation/roomHistory/RoomHistory";
 import Room from "../enterprise/accomodation/roomManagement/Room";
 import HotelManagement from "../enterprise/accomodation/manager/HotelManagement";
 import Sumbitenterprise from "../client/pages/Enterprise/Sumbitenterprise";
+import Account from "../enterprise/transportation/account/Account";
+import Schedules from "../enterprise/transportation/schedules/Schedules"
+import TransportationVouchers from "../enterprise/voucher/transportation/TransportationVouchers";
+import schedules from "../enterprise/transportation/schedules/Schedules";
+import Seats from "../enterprise/transportation/seats/Seats";
+import Guest from "../enterprise/transportation/guest/Guest";
+import Routehotel from "../enterprise/transportation/routehotel/Routehotel";
+
 
 const routeAdmin = () => [
   {
@@ -94,17 +101,43 @@ const routeEnterprise = () => [
         path: ":type/vouchers",
         Component: Voucher,
       },
+       
+
+      {
+        path: "transportation/vehicle-schedules",
+        Component: Schedules,
+      },
+      {
+        path: "transportation/Seats",
+        Component: Seats,
+      },
       {
         path: "transportation/vehicle-management",
         Component: Vehicle,
       },
+      
       {
-        path: "transportation/schedule",
-        Component: Schedule,
+        path: "transportation/vehicle-account",
+        Component: Account,
       },
       {
-        path: "transportation/routes",
-        Component: Route,
+        path: "transportation/Guest",
+        Component: Guest,
+      },
+    
+    
+      
+      {
+        path: "transportation/vouchers",
+        Component: TransportationVouchers,
+      },
+      {
+        path: "transportation/Routehotel",
+        Component: Routehotel,
+      },
+      {
+        path: "transportation/schedules",
+        Component: schedules,
       },
       {
         path: "accomodation/room-history",
