@@ -44,12 +44,14 @@
     margin-bottom: 10px;
     font-weight: 600;
     color: #47b5ff;
+    text-align: start;
 }
 
 .checkin-card .content .checkin-name {
     margin-bottom: 10px;
     font-weight: 700;
     /* color: #47b5ff; */
+
 }
 
 .checkin-card .content .rating-badge {

@@ -1,3 +1,4 @@
+import { PaymentService } from "../../../../services/apis/PaymentService";
 import { mbBank } from "./InfoBank";
 
 const ServiceBank = {

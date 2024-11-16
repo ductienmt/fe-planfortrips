@@ -16,11 +16,13 @@ import {
   faScrewdriverWrench,
   faHotel,
   faCableCar,
+  faEarthAsia,
 } from "@fortawesome/free-solid-svg-icons";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { router } from "../../../routes/route";
 import { AdminService } from "../../../services/apis/AdminService";
 import { parseJwt } from "../../../utils/Jwt";
+import logo from "../../../assets/planfortrips-logo_1.png";
 const NAVIGATION = [
   {
     kind: "header",
@@ -59,6 +61,18 @@ const NAVIGATION = [
     icon: (
       <NavLink to="business" className="nav-link">
         <FontAwesomeIcon icon={faBriefcase} />
+      </NavLink>
+    ),
+  },
+  {
+    title: (
+      <NavLink to="tours" className="nav-link">
+        Tour
+      </NavLink>
+    ),
+    icon: (
+      <NavLink to="tours" className="nav-link">
+        <FontAwesomeIcon icon={faEarthAsia} />
       </NavLink>
     ),
   },
@@ -217,7 +231,8 @@ function DashboardLayoutBasic({ window }) {
         user: {
           name: admin.fullName || "",
           email: admin.email || "",
-          image: "https://i.pinimg.com/736x/0a/ab/67/0aab67dce992f37b5a22f681f043574f.jpg",
+          image:
+            "https://i.pinimg.com/736x/0a/ab/67/0aab67dce992f37b5a22f681f043574f.jpg",
         },
       });
     }
@@ -250,8 +265,8 @@ function DashboardLayoutBasic({ window }) {
       window={demoWindow}
       router={router.basename}
       branding={{
-        logo: <img src="src/assets/momo.png" alt="Plan For Trips logo" />,
-        title: "Plan for trips",
+        logo: <img src={logo} alt="Plan For Trips logo" />,
+        title: "",
       }}
     >
       <Outlet />

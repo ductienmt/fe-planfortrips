@@ -2,7 +2,9 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 // import { PlanServiceApi } from "./apis/PlanServiceApi";
 
 // const apiKey = "AIzaSyC--UPHZ3h05O7JyeDsA-MtAFCbN9YjVkI";
-const apiKey = "AIzaSyBrDGzXfjZ2ho6KAXtyFSD_0h859vNlHxI";
+// const apiKey = "AIzaSyBrDGzXfjZ2ho6KAXtyFSD_0h859vNlHxI";
+const apiKey = "AIzaSyAKspUYmNB6Qq2kv5EDRm1fRGedCnUP8m4";
+
 const genAI = new GoogleGenerativeAI(apiKey);
 
 const model = genAI.getGenerativeModel({

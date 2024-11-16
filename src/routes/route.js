@@ -41,7 +41,7 @@ import Room from "../enterprise/accomodation/roomManagement/Room";
 import HotelManagement from "../enterprise/accomodation/manager/HotelManagement";
 
 import Sumbitenterprise from "../client/pages/Enterprise/Sumbitenterprise";
-import Tour from "../admin/pages/Tour/Tour";
+import TourAdmin from "../admin/pages/Tour/TourPage";
 import GuestLiving from "../enterprise/accomodation/guest/GuestLiving";
 import RoomVoucher from "../enterprise/accomodation/roomVoucher/roomVoucher";
 import ChooseHotel from "../enterprise/accomodation/chooseHotel/chooseHotel";
@@ -50,6 +50,7 @@ import TranportatinDashboard from "../enterprise/dashboard/tranportation/Tranpor
 import Hotelpage from "../client/pages/HotelPage/Hotelpage";
 import { BookingHotel } from "../client/pages/HotelPage/BookingHotel";
 import Checkinpage from "../client/pages/Checkin/Checkinpage";
+import User from "../admin/pages/User/User";
 
 const routeAdmin = () => [
   {
@@ -62,11 +63,15 @@ const routeAdmin = () => [
       },
       {
         path: "users",
-        Component: Tour,
+        Component: User,
       },
       {
         path: "business",
         Component: EnterpriseAdmin,
+      },
+      {
+        path: "tours",
+        Component: TourAdmin,
       },
       {
         path: "vouchers",
@@ -240,7 +245,7 @@ const routeClient = () => [
       },
 
       {
-        path: "/enterprise",
+        path: "/submit-enterprise",
         Component: Sumbitenterprise,
       },
       {
