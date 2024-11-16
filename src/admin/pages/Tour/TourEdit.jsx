@@ -9,7 +9,7 @@ import { TourService } from "../../../services/apis/TourService";
 import { toast } from "react-toastify";
 import { parseJwt } from "../../../utils/Jwt";
 
-function TourForm({ setRows }) {
+function TourFormUpdate({ setRows, selectedTourId }) {
   const token = sessionStorage.getItem("token");
   const userName = token ? parseJwt(token).sub : "";
   const [hidden, setHidden] = useState(false);
@@ -23,6 +23,7 @@ function TourForm({ setRows }) {
   const [inputValue, setInputValue] = useState("");
   const [tags, setTags] = useState([]);
   const [errors, setErrors] = useState({});
+
   const [formData, setFormData] = useState({
     title: "",
     destination: "City 1",
@@ -39,6 +40,70 @@ function TourForm({ setRows }) {
     admin_username: userName,
   });
 
+  const validateCouponData = () => {
+    const newErrors = {};
+
+    const {
+      title,
+      description,
+      destination,
+      number_people,
+      total_price,
+      day,
+      night,
+      is_active,
+      tagNames,
+      note,
+      hotel_id,
+      car_company_id,
+      schedule_id,
+      admin_username,
+    } = formData;
+
+    if (!title) newErrors.title = "Tiêu đề không được để trống.";
+
+    if (!description) newErrors.description = "Mô tả không được để trống.";
+
+    if (!destination) newErrors.destination = "Địa điểm không được để trống.";
+
+    if (!number_people || isNaN(number_people) || Number(number_people) <= 0)
+      newErrors.number_people = "Số người phải là một số hợp lệ và lớn hơn 0.";
+
+    if (!total_price || isNaN(total_price) || Number(total_price) <= 0)
+      newErrors.total_price =
+        "Giá trị tổng phải là một số hợp lệ và lớn hơn 0.";
+
+    if (!day || isNaN(day) || Number(day) <= 0)
+      newErrors.day = "Số ngày phải là một số hợp lệ và lớn hơn 0.";
+
+    if (!night || isNaN(night) || Number(night) <= 0)
+      newErrors.night = "Số đêm phải là một số hợp lệ và lớn hơn 0.";
+
+    if (is_active === undefined)
+      newErrors.is_active = "Trạng thái hoạt động không được để trống.";
+
+    if (!tagNames || tagNames.length === 0)
+      newErrors.tagNames = "Vui lòng chọn ít nhất một tag.";
+
+    if (note && note.length > 500)
+      newErrors.note = "Ghi chú không được quá 500 ký tự.";
+
+    if (!hotel_id) newErrors.hotel_id = "ID khách sạn không được để trống.";
+
+    if (!car_company_id)
+      newErrors.car_company_id = "ID công ty xe không được để trống.";
+
+    if (!schedule_id)
+      newErrors.schedule_id = "ID lịch trình không được để trống.";
+
+    if (!admin_username)
+      newErrors.admin_username =
+        "Tên đăng nhập quản trị viên không được để trống.";
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
   const handleSelectTags = (tagNames) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -89,13 +154,18 @@ function TourForm({ setRows }) {
       [name]: value,
     }));
   };
-  const handleSave = async () => {
-    const response = await TourService.createTour(formData);
+  const handleSave = async (id) => {
+    const response = await TourService.updateTour(id, formData);
+    console.log(response);
+
     if (response) {
-      const newFormData = { ...formData, tour_id: response.tour_id };
+      toast("Cập nhật thành công");
+      setRows((prevRows) =>
+        prevRows.map((row) =>
+          row.coupon_id === response.tour_id ? { ...row, ...formData } : row
+        )
+      );
       setHidden(false);
-      toast("Tạo mới thành công");
-      setRows((prevRows) => [...prevRows, newFormData]);
     }
   };
   useEffect(() => {
@@ -114,30 +184,21 @@ function TourForm({ setRows }) {
   return (
     <>
       {/* Button trigger modal */}
-      <button
-        type="button"
-        className="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#exampleModal"
-        onClick={() => setHidden(true)}
-      >
-        Thêm Chuyến Tour Mới
-      </button>
 
       {/* Modal */}
       <div
         className="modal fade"
-        id="exampleModal"
+        id="exampleModal1"
         tabIndex={-1}
-        aria-labelledby="exampleModalLabel"
+        aria-labelledby="exampleModalLabel1"
         aria-hidden={hidden}
         style={{ zIndex: 9999 }}
       >
         <div className="modal-dialog modal-lg" role="document">
           <div className="modal-content">
             <div className="modal-header bg-primary text-white">
-              <h5 className="modal-title" id="exampleModalLabel">
-                Thêm Chuyến Tour
+              <h5 className="modal-title" id="exampleModalLabel1">
+                Chỉnh Chuyến Tour
               </h5>
               <button
                 type="button"
@@ -172,7 +233,6 @@ function TourForm({ setRows }) {
                   <select
                     id="startPoint"
                     className="form-select"
-                    name="destination"
                     defaultValue=""
                     onChange={(e) => {
                       handleAreaDepChange(e);
@@ -191,7 +251,7 @@ function TourForm({ setRows }) {
                 </div>
                 <div className="col-md-6">
                   <label htmlFor="endPoint" className="form-label"></label>
-                  <select id="endPoint" className="form-select">
+                  <select id="endPoint" className="form-select" defaultValue="">
                     <option value="" disabled>
                       Chọn thành phố
                     </option>
@@ -205,23 +265,24 @@ function TourForm({ setRows }) {
 
                 {/* Điểm bắt đầu + Điểm đến */}
                 <div className="col-md-6">
-                  <label htmlFor="startPoint" className="form-label">
+                  <label htmlFor="endPoint" className="form-label">
                     Điểm đến
                   </label>
                   <select
-                    id="startPoint"
-                    className="form-select"
+                    id="endPoint"
                     name="destination"
+                    className="form-select"
+                    value={formData.destination}
                     onChange={(e) => {
                       handleAreaArriveChange(e);
-                      handleChange();
+                      // handleChange();
                     }}
                   >
                     <option value="" disabled>
                       Chọn khu vực
                     </option>
                     {area.map((a) => (
-                      <option key={a.id} value={a.id}>
+                      <option key={a.id} value={a.name}>
                         {a.name}
                       </option>
                     ))}
@@ -229,7 +290,18 @@ function TourForm({ setRows }) {
                 </div>
                 <div className="col-md-6">
                   <label htmlFor="endPoint" className="form-label"></label>
-                  <select id="endPoint" className="form-select" defaultValue="">
+                  <select
+                    id="endPoint"
+                    className="form-select"
+                    defaultValue=""
+                    onChange={(e) => {
+                      const { value } = e.target;
+                      setFormData((prevFormData) => ({
+                        ...prevFormData,
+                        destination: value,
+                      }));
+                    }}
+                  >
                     <option value="" disabled>
                       Chọn thành phố
                     </option>
@@ -372,10 +444,10 @@ function TourForm({ setRows }) {
                 type="button"
                 className="btn btn-primary"
                 onClick={() => {
-                  handleSave();
+                  handleSave(selectedTourId);
                 }}
               >
-                Lưu thay đổi
+                Cập nhật thay đổi
               </button>
             </div>
           </div>
@@ -385,4 +457,4 @@ function TourForm({ setRows }) {
   );
 }
 
-export default TourForm;
+export default TourFormUpdate;

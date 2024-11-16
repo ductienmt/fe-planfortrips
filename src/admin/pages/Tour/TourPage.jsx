@@ -6,6 +6,8 @@ import { CouponService } from "../../../services/apis/CouponService";
 import { toast } from "react-toastify";
 import { TourService } from "../../../services/apis/TourService";
 import TourForm from "./Tour";
+import TourFormUpdate from "./TourEdit";
+
 const paginationModel = { page: 0, pageSize: 100 };
 
 export default function TourAdmin() {
@@ -183,6 +185,8 @@ export default function TourAdmin() {
         <Edit
           key="edit"
           style={{ cursor: "pointer" }}
+          data-bs-toggle="modal"
+        data-bs-target="#exampleModal1"
           onClick={() => {
             handleClick(params.row);
           }}
@@ -252,6 +256,7 @@ export default function TourAdmin() {
           boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
         }}
       />
+      <TourFormUpdate setRows={setRows} selectedTourId={selectedTourId}/>
     </Box>
   );
 }

@@ -1,0 +1,8 @@
+.nav-linkAdmin {
+    background: none !important; /* Loại bỏ tất cả nền */
+    color: inherit !important; /* Kế thừa màu sắc văn bản từ phần tử cha */
+    text-decoration: none !important; /* Loại bỏ gạch chân */
+    background-color: transparent !important; /* Đảm bảo không có màu nền */
+    background-image: none !important; /* Loại bỏ hình nền */
+  }
+  
