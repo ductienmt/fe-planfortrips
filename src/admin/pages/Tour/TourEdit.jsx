@@ -9,10 +9,10 @@ import { TourService } from "../../../services/apis/TourService";
 import { toast } from "react-toastify";
 import { parseJwt } from "../../../utils/Jwt";
 
-function TourForm({ setRows }) {
+function TourFormUpdate({ setRows, selectedTourId }) {
   const token = sessionStorage.getItem("token");
   const userName = token ? parseJwt(token).sub : "";
-  const [hidden,setHidden] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedOption, setSelectedOption] = useState("option1");
   const [area, setArea] = useState([]);
@@ -23,6 +23,7 @@ function TourForm({ setRows }) {
   const [inputValue, setInputValue] = useState("");
   const [tags, setTags] = useState([]);
   const [errors, setErrors] = useState({});
+
   const [formData, setFormData] = useState({
     title: "",
     destination: "City 1",
@@ -35,7 +36,7 @@ function TourForm({ setRows }) {
     note: "",
     hotel_id: "",
     car_company_id: "",
-    schedule_id: 2,
+    schedule_id: 3,
     admin_username: userName,
   });
 
@@ -124,7 +125,7 @@ function TourForm({ setRows }) {
       // Hotel
       const hotel = await HotelService.getHotels(0, 100, "");
       console.log(hotel.hotelResponseList);
-      
+
       setHotel(hotel.hotelResponseList);
       const car = await CarService.getcars(0, 100);
       setCar(car.listResponse);
@@ -153,17 +154,18 @@ function TourForm({ setRows }) {
       [name]: value,
     }));
   };
-  const handleSave = async () => {
-    console.log(formData);
-
-    const response = await TourService.createTour(formData);
+  const handleSave = async (id) => {
+    const response = await TourService.updateTour(id, formData);
     console.log(response);
 
     if (response) {
-      const newFormData = { ...formData, tour_id: response.tour_id };
+      toast("Cập nhật thành công");
+      setRows((prevRows) =>
+        prevRows.map((row) =>
+          row.coupon_id === response.tour_id ? { ...row, ...formData } : row
+        )
+      );
       setHidden(false);
-      toast("Tạo mới thành công");
-      setRows((prevRows) => [...prevRows, newFormData]);
     }
   };
   useEffect(() => {
@@ -182,30 +184,21 @@ function TourForm({ setRows }) {
   return (
     <>
       {/* Button trigger modal */}
-      <button
-        type="button"
-        className="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#exampleModal"
-        onClick={()=>setHidden(true)}
-      >
-        Thêm Chuyến Tour Mới
-      </button>
 
       {/* Modal */}
       <div
         className="modal fade"
-        id="exampleModal"
+        id="exampleModal1"
         tabIndex={-1}
-        aria-labelledby="exampleModalLabel"
+        aria-labelledby="exampleModalLabel1"
         aria-hidden={hidden}
         style={{ zIndex: 9999 }}
       >
         <div className="modal-dialog modal-lg" role="document">
           <div className="modal-content">
             <div className="modal-header bg-primary text-white">
-              <h5 className="modal-title" id="exampleModalLabel">
-                Thêm Chuyến Tour
+              <h5 className="modal-title" id="exampleModalLabel1">
+                Chỉnh Chuyến Tour
               </h5>
               <button
                 type="button"
@@ -451,10 +444,10 @@ function TourForm({ setRows }) {
                 type="button"
                 className="btn btn-primary"
                 onClick={() => {
-                  handleSave();
+                  handleSave(selectedTourId);
                 }}
               >
-                Lưu thay đổi
+                Cập nhật thay đổi
               </button>
             </div>
           </div>
@@ -464,4 +457,4 @@ function TourForm({ setRows }) {
   );
 }
 
-export default TourForm;
+export default TourFormUpdate;

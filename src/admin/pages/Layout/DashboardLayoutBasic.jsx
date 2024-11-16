@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { createTheme } from "@mui/material/styles";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "./Dashboard.css";
 import {
   faHouse,
   faUser,
@@ -22,6 +23,7 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { router } from "../../../routes/route";
 import { AdminService } from "../../../services/apis/AdminService";
 import { parseJwt } from "../../../utils/Jwt";
+import { useAuth } from "../../../context/AuthContext/AuthProvider";
 const NAVIGATION = [
   {
     kind: "header",
@@ -29,72 +31,72 @@ const NAVIGATION = [
   },
   {
     title: (
-      <NavLink to="" className="nav-link">
+      <NavLink to="" className="nav-linkAdmin">
         Trang chủ
       </NavLink>
     ),
     icon: (
-      <NavLink to="" className="nav-link">
+      <NavLink to="" className="nav-linkAdmin">
         <FontAwesomeIcon icon={faHouse} />
       </NavLink>
     ),
   },
   {
     title: (
-      <NavLink to="users" className="nav-link">
+      <NavLink to="users" className="nav-linkAdmin">
         Người dùng
       </NavLink>
     ),
     icon: (
-      <NavLink to="users" className="nav-link">
+      <NavLink to="users" className="nav-linkAdmin">
         <FontAwesomeIcon icon={faUser} />
       </NavLink>
     ),
   },
   {
     title: (
-      <NavLink to="business" className="nav-link">
+      <NavLink to="business" className="nav-linkAdmin">
         Doanh nghiệp
       </NavLink>
     ),
     icon: (
-      <NavLink to="business" className="nav-link">
+      <NavLink to="business" className="nav-linkAdmin">
         <FontAwesomeIcon icon={faBriefcase} />
       </NavLink>
     ),
   },
   {
     title: (
-      <NavLink to="tours" className="nav-link">
+      <NavLink to="tours" className="nav-linkAdmin">
         Tour
       </NavLink>
     ),
     icon: (
-      <NavLink to="tours" className="nav-link">
+      <NavLink to="tours" className="nav-linkAdmin">
         <FontAwesomeIcon icon={faEarthAsia} />
       </NavLink>
     ),
   },
   {
     title: (
-      <NavLink to="vouchers" className="nav-link">
+      <NavLink to="vouchers" className="nav-linkAdmin">
         Mã giảm giá
       </NavLink>
     ),
     icon: (
-      <NavLink to="vouchers" className="nav-link">
+      <NavLink to="vouchers" className="nav-linkAdmin">
         <FontAwesomeIcon icon={faTicket} />
       </NavLink>
     ),
   },
   {
     title: (
-      <NavLink to="statistics" className="nav-link">
+      <NavLink to="statistics" className="nav-linkAdmin">
         Thống kê
       </NavLink>
     ),
     icon: (
-      <NavLink to="statistics" className="nav-link">
+      <NavLink to="statistics" className="nav-linkAdmin">
         <FontAwesomeIcon icon={faChartPie} />
       </NavLink>
     ),
@@ -105,24 +107,24 @@ const NAVIGATION = [
     children: [
       {
         title: (
-          <NavLink to="transactions/hotels" className="nav-link">
+          <NavLink to="transactions/hotels" className="nav-linkAdmin">
             Đơn đặt phòng
           </NavLink>
         ),
         icon: (
-          <NavLink to="transactions/hotels" className="nav-link">
+          <NavLink to="transactions/hotels" className="nav-linkAdmin">
             <FontAwesomeIcon icon={faHotel} />
           </NavLink>
         ),
       },
       {
         title: (
-          <NavLink to="transactions/vehicles" className="nav-link">
+          <NavLink to="transactions/vehicles" className="nav-linkAdmin">
             Đơn đặt xe
           </NavLink>
         ),
         icon: (
-          <NavLink to="transactions/vehicles" className="nav-link">
+          <NavLink to="transactions/vehicles" className="nav-linkAdmin">
             <FontAwesomeIcon icon={faCableCar} />
           </NavLink>
         ),
@@ -131,24 +133,24 @@ const NAVIGATION = [
   },
   {
     title: (
-      <NavLink to="feedbacks" className="nav-link">
+      <NavLink to="feedbacks" className="nav-linkAdmin">
         Đánh giá
       </NavLink>
     ),
     icon: (
-      <NavLink to="feedbacks" className="nav-link">
+      <NavLink to="feedbacks" className="nav-linkAdmin">
         <FontAwesomeIcon icon={faDatabase} />
       </NavLink>
     ),
   },
   {
     title: (
-      <NavLink to="travel" className="nav-link">
+      <NavLink to="travel" className="nav-linkAdmin">
         Điểm du lịch
       </NavLink>
     ),
     icon: (
-      <NavLink to="travel" className="nav-link">
+      <NavLink to="travel" className="nav-linkAdmin">
         <FontAwesomeIcon icon={faUmbrellaBeach} />
       </NavLink>
     ),
@@ -162,24 +164,24 @@ const NAVIGATION = [
   },
   {
     title: (
-      <NavLink to="settings" className="nav-link">
+      <NavLink to="settings" className="nav-linkAdmin">
         Cài đặt
       </NavLink>
     ),
     icon: (
-      <NavLink to="settings" className="nav-link">
+      <NavLink to="settings" className="nav-linkAdmin">
         <FontAwesomeIcon icon={faGear} />
       </NavLink>
     ),
   },
   {
     title: (
-      <NavLink to="tools" className="nav-link">
+      <NavLink to="tools" className="nav-linkAdmin">
         Công cụ
       </NavLink>
     ),
     icon: (
-      <NavLink to="tools" className="nav-link">
+      <NavLink to="tools" className="nav-linkAdmin">
         <FontAwesomeIcon icon={faScrewdriverWrench} />
       </NavLink>
     ),
@@ -203,6 +205,7 @@ const demoTheme = createTheme({
 
 function DashboardLayoutBasic({ window }) {
   const [admin, setAdmin] = React.useState({});
+  const { login, logout } = useAuth();
   const token = sessionStorage.getItem("token");
   const userName = token ? parseJwt(token).sub : "";
   React.useEffect(() => {
@@ -249,15 +252,21 @@ function DashboardLayoutBasic({ window }) {
         });
       },
       signOut: () => {
-        handleToken.delete();
+        logout();
         navigate("/admin/login");
       },
     };
   }, [navigate]);
+  React.useEffect(() => {
+    const listItemButtons = document.querySelectorAll('a.MuiButtonBase-root.MuiListItemButton-root');
+    listItemButtons.forEach(item => {
+      item.style.backgroundColor = 'transparent'; // Loại bỏ background
+    });
+  }, []); 
 
   return (
     <AppProvider
-      navigation={NAVIGATION}
+      navigation={NAVIGATION} 
       session={session}
       authentication={authentication}
       theme={demoTheme}

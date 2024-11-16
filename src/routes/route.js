@@ -61,7 +61,7 @@ const routeAdmin = () => [
       },
       {
         path: "users",
-        Component: Tour,
+        Component:EnterpriseAdmin,
       },
       {
         path: "business",
