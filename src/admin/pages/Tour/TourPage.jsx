@@ -10,11 +10,11 @@ const paginationModel = { page: 0, pageSize: 100 };
 
 export default function TourAdmin() {
   const [rows, setRows] = React.useState([]);
-  const [selectedCouponId, setSelectedCouponId] = React.useState(null);
+  const [selectedTourId, setSelectedTourId] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(true);
 
-  const handleClick = (coupon = null) => {
-    setSelectedCouponId(coupon ? coupon.coupon_id : null);
+  const handleClick = (tour = null) => {
+    setSelectedTourId(tour ? tour.tour_id : null);
   };
 
   React.useEffect(() => {
@@ -42,10 +42,11 @@ export default function TourAdmin() {
   }, []);
   const handleDelete = async (id) => {
     try {
-      const response = await CouponService.deleteCoupon(id);
-      if (response) {
-        toast("Cập nhật thành công");
-        setRows((prevRows) => prevRows.filter((row) => row.coupon_id !== id));
+      console.log("ID" +id);
+      
+      const response = await TourService.deleteTour(id);
+      if (response) {("Xóa thành công");
+        setRows((prevRows) => prevRows.filter((row) => row.tour_id !== id));
       }
     } catch (error) {
       toast("Lỗi");
@@ -193,13 +194,13 @@ export default function TourAdmin() {
             handleDelete(params.row.tour_id);
           }}
         />,
-        <RemoveRedEye
-          key="detail"
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            handleClick(params.row);
-          }}
-        />,
+        // <RemoveRedEye
+        //   key="detail"
+        //   style={{ cursor: "pointer" }}
+        //   onClick={() => {
+        //     handleClick(params.row);
+        //   }}
+        // />,
       ],
     },
   ];

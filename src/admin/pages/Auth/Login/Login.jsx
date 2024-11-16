@@ -66,7 +66,7 @@ export default function LoginAdmin() {
         />
       </svg>
     ),
-    title: "MUI",
+    title: "Plan for trips",
   };
 
   return (
