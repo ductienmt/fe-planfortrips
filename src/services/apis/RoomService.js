@@ -10,8 +10,8 @@ export const RoomService = {
     const response = await Http.get(`api/v1/rooms/${id}`);
     return response.data;
   },
-  getRoomsByHotelId: async () => {
-    const response = await Http.get(`api/v1/rooms/getRoomByHotelId`);
+  getRoomsByHotelId: async (id) => {
+    const response = await Http.get(`api/v1/rooms/getRoomByHotelId?id=${id}`);
     return response.data;
   },
 };

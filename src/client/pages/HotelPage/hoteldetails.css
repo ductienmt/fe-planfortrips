@@ -103,14 +103,6 @@
     padding: 10px;
 }
 
-.hotelpage-header-option {
-    padding: 20px;
-}
-
-.hotelpage-header-option-item {
-    border: none;
-}
-
 
 /* Kiểu cho button với class hoteldetails-sidebar-button */
 .hoteldetails-sidebar-button {
@@ -164,8 +156,15 @@
 }
 
 .hoteldetails-service-list {
+
+
     display: grid;
     grid-template-columns: repeat(3, 2fr);
+}
+
+.hoteldetails-service-lis {
+    display: flex;
+    gap: 10px;
 }
 
 .hoteldetails-service-rules {
@@ -192,4 +191,27 @@
 
 .hoteldetails-content-right-list {
     padding: 10px;
+}
+
+.hoteldetails-service-rules-lis-body-left-icon {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.hoteldetails-service-rules-lis-body-right-icon {
+    display: flex;
+    gap: 10px;
+}
+
+.hoteldetails-content-right-list span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+}
+
+.hoteldetails-content-right-list span:last-child {
+    margin-bottom: 0;
+    /* Bỏ khoảng cách dưới cùng cho dòng cuối */
 }

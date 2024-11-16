@@ -10,6 +10,7 @@ import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import ParkIcon from '@mui/icons-material/Park';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import StarRating from './StarRating';
 export const Hoteldetails = () => {
 
     const cardHeaderList = [
@@ -85,7 +86,7 @@ export const Hoteldetails = () => {
                     <div className='hoteldetails-content-left'>
                         <div className="hoteldetails-information-hotel">
                             <div>
-                                <h3><b>{hotelInfo.name}</b>   {hotelInfo.rating}★</h3>
+                                <h3><b>{hotelInfo.name}</b>   <StarRating rating={hotelInfo.rating} /></h3>
                                 <span>{hotelInfo.address}</span>
                             </div>
                             <hr />
@@ -110,7 +111,7 @@ export const Hoteldetails = () => {
                                 <div className='hoteldetails-service-rules-lis-body-left'>
                                     <center><b>Nhận phòng/Trả phòng</b>
                                         {rulelist.map((rulelist, index) => (
-                                            <div key={index}>
+                                            <div className='hoteldetails-service-rules-lis-body-left-icon' key={index}>
                                                 {rulelist.icon}
                                                 {rulelist.name}
                                             </div>
@@ -118,14 +119,14 @@ export const Hoteldetails = () => {
                                     </center>
                                 </div>
                                 <div className='hoteldetails-service-rules-lis-body-right'>
-                                    <center><b>Về khách sạn</b>
-                                        {hotelbar.map((hotelbar, index) => (
-                                            <div key={index}>
-                                                {hotelbar.icon}
-                                                {hotelbar.name}
-                                            </div>
-                                        ))}
-                                    </center>
+                                    <b>Về khách sạn</b>
+                                    {hotelbar.map((hotelbar, index) => (
+                                        <div className='hoteldetails-service-rules-lis-body-right-icon' key={index}>
+                                            {hotelbar.icon}
+                                            {hotelbar.name}
+                                        </div>
+                                    ))}
+
                                 </div>
                             </div>
                         </div>
@@ -136,15 +137,16 @@ export const Hoteldetails = () => {
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <div>
                                     <h3>Đánh giá</h3>
-                                    <span>{hotelInfo.rating}/5⭐({hotelInfo.reviews})</span>
+
+                                    <span>    <StarRating rating={hotelInfo.rating} />({hotelInfo.reviews})</span>
                                 </div>
                                 <div className='hotealdetails-siderbar-right-item-1'>
                                     <a href=""> đọc mọi đánh giá</a>
                                 </div>
                             </div>
                             <div>
-                                <h5>Giá gốc: {hotelInfo.basicprice}đ</h5>
-                                <h5>Giá sau giảm: {hotelInfo.amoutprice}đ</h5>
+                                <h5 style={{ fontSize: "18px", textDecoration: "line-through" }}>Giá gốc: {hotelInfo.basicprice}đ</h5>
+                                <h5 style={{ color: "red", fontSize: "25px" }}>Giá sau giảm: {hotelInfo.amoutprice}đ</h5>
                                 <small>(đã bao gồm thuế phí)</small>
                             </div>
                             <div className='hotealdetails-siderbar-right-item-button'>

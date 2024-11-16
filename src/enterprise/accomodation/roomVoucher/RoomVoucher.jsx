@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import "./RoomVoucher.css";
 import { Table } from "antd";
 import { InputFlied } from "../../../client/Components/Input/InputFlied";
+import { RoomService } from "../../../services/apis/RoomService";
+import { VoucherService } from "../../../services/apis/VoucherService";
 
 const RoomVoucher = () => {
   const [voucherData, setVoucherData] = useState([]);
@@ -54,6 +56,21 @@ const RoomVoucher = () => {
       key: "",
     },
   ];
+
+  const fetchVoucherData = async () => {
+    try {
+      const res = await VoucherService.getVoucherByEnterpriseId(0, 10, "");
+      console.log("Voucher data: ", res);
+
+      setVoucherData(res);
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchVoucherData();
+  }, []);
 
   return (
     <>

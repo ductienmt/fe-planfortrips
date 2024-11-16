@@ -24,6 +24,7 @@ import { router } from "../../../routes/route";
 import { AdminService } from "../../../services/apis/AdminService";
 import { parseJwt } from "../../../utils/Jwt";
 import { useAuth } from "../../../context/AuthContext/AuthProvider";
+import logo from "../../../assets/planfortrips-logo_1.png";
 const NAVIGATION = [
   {
     kind: "header",
@@ -258,23 +259,25 @@ function DashboardLayoutBasic({ window }) {
     };
   }, [navigate]);
   React.useEffect(() => {
-    const listItemButtons = document.querySelectorAll('a.MuiButtonBase-root.MuiListItemButton-root');
-    listItemButtons.forEach(item => {
-      item.style.backgroundColor = 'transparent'; // Loại bỏ background
+    const listItemButtons = document.querySelectorAll(
+      "a.MuiButtonBase-root.MuiListItemButton-root"
+    );
+    listItemButtons.forEach((item) => {
+      item.style.backgroundColor = "transparent"; // Loại bỏ background
     });
-  }, []); 
+  }, []);
 
   return (
     <AppProvider
-      navigation={NAVIGATION} 
+      navigation={NAVIGATION}
       session={session}
       authentication={authentication}
       theme={demoTheme}
       window={demoWindow}
       router={router.basename}
       branding={{
-        logo: <img src="src/assets/momo.png" alt="Plan For Trips logo" />,
-        title: "Plan for trips",
+        logo: <img src={logo} alt="Plan For Trips logo" />,
+        title: "",
       }}
     >
       <Outlet />

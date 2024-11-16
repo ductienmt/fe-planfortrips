@@ -1,16 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Room.css";
 import { Table } from "antd";
 import { InputFlied } from "../../../client/Components/Input/InputFlied";
+import { useLocation } from "react-router-dom";
+import { RoomService } from "../../../services/apis/RoomService";
 
 const Room = () => {
+  const location = useLocation();
   const [roomsData, setRoomsData] = useState([]);
   const columns = [
-    {
-      title: "Mã phòng",
-      dataIndex: "",
-      key: "",
-    },
     {
       title: "Tên phòng",
       dataIndex: "roomName",
@@ -33,21 +31,53 @@ const Room = () => {
     },
     {
       title: "Trạng thái",
-      dataIndex: "isAvailable",
-      key: "isAvailable",
+      dataIndex: "available",
+      key: "available",
+      render: (available) => (available ? "Đang hoạt động" : "Ngưng hoạt động"),
     },
     {
       title: "Hành động",
-      dataIndex: "action",
-      key: "action",
+      key: "actions",
+      render: (_, record) => (
+        <div>
+          <button className="button-edit btn">
+            <i className="fa-solid fa-pen-to-square"></i>
+          </button>
+          <button className="button-delete btn">
+            <i className="fa-solid fa-trash"></i>
+          </button>
+        </div>
+      ),
     },
   ];
+
+  const getQueryParams = () => {
+    const queryParams = new URLSearchParams(location.search);
+    const id = queryParams.get("id");
+    return id;
+  };
+
+  const fetchRoomData = async (id) => {
+    try {
+      const response = await RoomService.getRoomsByHotelId(id);
+      setRoomsData(response);
+      console.log("Dữ liệu phòng:", response);
+    } catch (error) {
+      console.error("L��i khi lấy dữ liệu phòng:", error);
+    }
+  };
 
   const [selectedItem, setSelectedItem] = useState("all");
 
   const handleSelectItem = (item) => {
     setSelectedItem(item);
   };
+
+  useEffect(() => {
+    const id = getQueryParams();
+    console.log("ID từ URL:", id);
+    fetchRoomData(id);
+  }, [location.search]);
   return (
     <>
       <div className="enterprise-room-container">
@@ -166,7 +196,7 @@ const Room = () => {
                       {/* Input dòng 3 */}
                       <div className="d-flex justify-content-center mt-3 gap-3">
                         <div className="form-group col-md-6">
-                        <InputFlied
+                          <InputFlied
                             nameInput={"search"}
                             content={"Giá phòng"}
                             typeInput={"text"}
@@ -184,14 +214,14 @@ const Room = () => {
                       {/* Input dòng 4 */}
                       <div className="d-flex justify-content-center mt-3 gap-3">
                         <div className="form-group col-md-6">
-                        <label htmlFor="roomType">Loại phòng</label>
+                          <label htmlFor="roomType">Loại phòng</label>
                           <select className="form-control" id="roomType">
                             <option value="suite">Suite</option>
                             <option value="standard">Standard</option>
                           </select>
                         </div>
                         <div className="form-group col-md-6">
-                        <label htmlFor="status">Trạng thái</label>
+                          <label htmlFor="status">Trạng thái</label>
                           <select className="form-control" id="status">
                             <option value="active">Hoạt động</option>
                             <option value="deactivate">Ngưng hoạt động</option>
