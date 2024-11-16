@@ -1,0 +1,38 @@
+.chart-report-dashboard-chart {
+  margin-top: 20px;
+  height: 300px;
+}
+
+.chart-report-total-amount{
+  font:
+    600 34px/1 Afacad Flux;
+}
+
+.chart-report-dashboard-content{
+  display: flex;
+  align-items: center;
+}
+
+.chart-report-section {
+  display: flex;
+  align-items: center;
+}
+
+.chart-report-section select {
+  background-color: #fbfcfe;
+  border-radius: 5px;
+  box-shadow: 0 2px 1px rgba(64, 72, 82, 0.05);
+  color: #5a6acf;
+  padding: 10px 32px;
+  border: 1px solid #dde4f0;
+  cursor: pointer;
+}
+
+.chart-report-section select:hover {
+  background-color: #edeff0;
+}
+
+.chart-report-section select option {
+  padding: 10px;
+}
+

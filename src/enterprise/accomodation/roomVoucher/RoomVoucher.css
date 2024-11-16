@@ -1,0 +1,136 @@
+.enterprise-voucher-container {
+  margin: 10px;
+  width: 100%;
+  border-radius: 20px;
+  box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
+
+.enterprise-voucher-container .voucher-content .nav-filter-voucher {
+  display: flex;
+  justify-content: space-between;
+}
+
+.enterprise-voucher-container
+  .voucher-content
+  .nav-filter-voucher
+  .nav-filterCombobox-voucher {
+  display: flex;
+  gap: 20px;
+}
+
+.enterprise-voucher-container
+  .voucher-content
+  .nav-filter-voucher
+  .nav-filterCombobox-voucher
+  button {
+  padding: 8px 20px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background-color: rgb(50, 129, 181);
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* .enterprise-voucher-container
+  .voucher-content
+  .nav-filter-voucher
+  .filter-voucher
+  button.isActive {
+  background-color: rgb(237, 248, 255);
+  color: rgb(65, 165, 232);
+  border-color: rgb(132, 205, 255);
+} */
+
+.enterprise-voucher-container .voucher-content .nav-filter-voucher .nav-filterCombobox-voucher button:hover {
+    background-color: rgb(39, 100, 140);
+}
+
+.enterprise-voucher-container
+  .voucher-content
+  .nav-filter-voucher
+  .nav-filterCombobox-voucher
+  select {
+  padding: 8px 20px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+  background-color: transparent;
+  color: #adadad;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* From Uiverse.io by javierBarroso */ 
+.voucher-close-button {
+  position: relative;
+  width: 2em;
+  height: 2em;
+  border: none;
+  background: rgba(79, 37, 48, 0.11);
+  border-radius: 5px;
+  transition: background 0.5s;
+}
+
+.voucher-close-X {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1em;
+  height: 0.75px;
+  background-color: rgb(255, 255, 255);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.voucher-close-Y {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1em;
+  height: 0.75px;
+  background-color: #fff;
+  transform: translateX(-50%) rotate(-45deg);
+}
+
+.voucher-close-close {
+  position: absolute;
+  display: flex;
+  padding: 0.8rem 1.5rem;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(-50%);
+  top: -70%;
+  left: 50%;
+  width: 3em;
+  height: 1.7em;
+  font-size: 12px;
+  background-color: rgb(19, 22, 24);
+  color: rgb(187, 229, 236);
+  border: none;
+  border-radius: 3px;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.voucher-close-button:hover {
+  background-color: rgb(211, 21, 21);
+}
+
+.voucher-close-button:active {
+  background-color: rgb(130, 0, 0);
+}
+
+.voucher-close-button:hover > .voucher-close-close {
+  animation: close 0.2s forwards 0.25s;
+}
+
+@keyframes voucher-close-close {
+  100% {
+    opacity: 1;
+  }
+}

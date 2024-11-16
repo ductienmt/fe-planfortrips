@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/charts": "^2.2.3",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
@@ -32,15 +33,18 @@
     "feather-icons": "^4.29.2",
     "flatpickr": "^4.6.13",
     "leaflet": "^1.9.4",
+    "lodash.debounce": "^4.0.8",
     "notistack": "^3.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-easy-crop": "^5.1.0",
     "react-flatpickr": "^3.10.13",
     "react-leaflet": "^4.2.1",
+    "react-rating-stars-component": "^2.2.0",
     "react-router-dom": "^6.27.0",
     "react-toastify": "^10.0.6",
     "react-widgets": "^5.8.4",
+    "recharts": "^2.13.3",
     "styled-components": "^6.1.13"
   },
   "devDependencies": {

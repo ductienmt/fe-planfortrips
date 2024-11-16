@@ -204,7 +204,7 @@ const ProfileDetail = ({ imgUrl, name, username, loadAgain }) => {
   return (
     <>
       {loading ? (
-        <Loading />
+        <Loading rong={"80vh"} />
       ) : (
         <>
           <div className="profile-detail-container">

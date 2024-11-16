@@ -88,24 +88,24 @@ const EnterpriseSidebar = () => {
                   <>
                     <li
                       className={
-                        selectedItem === "room-management" ? "isActive" : ""
+                        selectedItem === "guest-management" ? "isActive" : ""
                       }
-                      onClick={() => handleSelect("room-management")}
+                      onClick={() => handleSelect("guest-management")}
                     >
-                      <Link to="accomodation/room-management">
-                        <i className="fa-duotone fa-solid fa-bed"></i>{" "}
-                        {!collapsed && <span>Quản lý phòng</span>}
+                      <Link to="accomodation/guest-manager">
+                        <i className="fa-solid fa-user-check"></i>{" "}
+                        {!collapsed && <span>Khách hàng</span>}
                       </Link>
                     </li>
                     <li
                       className={
-                        selectedItem === "room-history" ? "isActive" : ""
+                        selectedItem === "choose-hotel" ? "isActive" : ""
                       }
-                      onClick={() => handleSelect("room-history")}
+                      onClick={() => handleSelect("choose-hotel")}
                     >
-                      <Link to="accomodation/room-history">
-                        <i className="fa-duotone fa-solid fa-timeline"></i>{" "}
-                        {!collapsed && <span>Lịch sử sử dụng phòng</span>}
+                      <Link to="accomodation/choose-hotel">
+                        <i className="fa-duotone fa-solid fa-bed"></i>{" "}
+                        {!collapsed && <span>Quản lý phòng</span>}
                       </Link>
                     </li>
                   </>
@@ -114,7 +114,7 @@ const EnterpriseSidebar = () => {
                   className={selectedItem === "vouchers" ? "isActive" : ""}
                   onClick={() => handleSelect("vouchers")}
                 >
-                  <Link to="accomodation/vouchers">
+                  <Link to="accomodation/voucher-manager">
                     <i className="fa-solid fa-ticket"></i>{" "}
                     {!collapsed && <span>Mã giảm giá</span>}
                   </Link>
