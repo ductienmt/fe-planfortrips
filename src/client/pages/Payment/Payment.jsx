@@ -145,7 +145,7 @@ const Payment = () => {
             });
           }
         });
-      }, 3000); // Kiểm tra mỗi 3 giây
+      }, 3000);
 
       return () => clearInterval(intervalId);
     }

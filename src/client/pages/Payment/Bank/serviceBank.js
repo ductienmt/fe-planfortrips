@@ -1,3 +1,4 @@
+import { enqueueSnackbar } from "notistack";
 import { PaymentService } from "../../../../services/apis/PaymentService";
 import { mbBank } from "./InfoBank";
 
@@ -56,7 +57,10 @@ const ServiceBank = {
       if (response) {
         window.location.href = response.url;
       } else {
-        alert("Error creating");
+        enqueueSnackbar("Thanh toán thất bại", {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
       }
     } catch (error) {
       console.error("Error:", error);
