@@ -22,14 +22,23 @@ export const CouponService = {
     }
   },
   updateCoupon: async (id, couponData) => {
-    const response = await Http.put(
-      `api/v1/coupons/update/${id}`,
-      couponData
-    );
+    const response = await Http.put(`api/v1/coupons/update/${id}`, couponData);
     return response.data;
   },
   deleteCoupon: async (id) => {
     const response = await Http.delete(`api/v1/coupons/delete/${id}`);
     return response;
+  },
+  getCouponByCode: async (code, status) => {
+    const params = new URLSearchParams({ code });
+
+    if (status) {
+      params.append("status", status);
+    }
+
+    const response = await Http.get(
+      `/api/v1/coupons/getByCode?${params.toString()}`
+    );
+    return response.data;
   },
 };
