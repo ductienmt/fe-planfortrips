@@ -44,7 +44,9 @@ import AccomodationDashboard from "../enterprise/dashboard/Accomodation/Accomoda
 import TranportatinDashboard from "../enterprise/dashboard/tranportation/TranportatinDashboard";
 import Checkinpage from "../client/pages/Checkin/Checkinpage";
 import User from "../admin/pages/User/User";
-import IntroHotel from "../client/pages/Hotel/IntroHotel/IntroHotel";
+import IntroHotel from "../client/pages/hotel/IntroHotel/IntroHotel";
+import Hotel from "../client/pages/hotel/hotel";
+import VehiclePage from "../client/pages/Vehicle/VehiclePage/VehiclePage";
 import { Component } from "react";
 
 const routeAdmin = () => [
@@ -186,6 +188,14 @@ const routeClient = () => [
       {
         path: "/hotel-intro",
         Component: IntroHotel,
+      },
+      {
+        path: "/hotel-page",
+        Component: Hotel,
+      },
+      {
+        path: "/vehicle-page",
+        Component: VehiclePage,
       },
       {
         path: "/payment",

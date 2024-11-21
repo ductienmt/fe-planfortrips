@@ -1,0 +1,63 @@
+.css-ttgsjq-MuiSlider-track {
+    color: rgb(252, 221, 155);
+}
+
+.css-7o8aqz-MuiSlider-rail {
+    color: #ddd;
+}
+
+.css-188mx6n-MuiSlider-root {
+    height: 6px !important;
+}
+
+.css-cp2j25-MuiSlider-thumb {
+    width: 24px !important;
+    height: 24px !important;
+    color: var(--success-btn-color);
+}
+
+.css-14gyywz-MuiSlider-valueLabel {
+    background-color: var(--success-btn-color) !important;
+    text-align: center;
+    font-family: 'Quicksand', sans-serif !important;
+}
+
+.MuiSlider-valueLabelCircle .MuiSlider-valueLabelLabel {
+    margin: 0;
+}
+
+
+.input-field {
+    border: none;
+    box-shadow: 2px 5px 10px rgba(0, 0, 0, .25);
+    border-radius: 10px;
+    padding: 10px;
+    width: 100%;
+    font-weight: 600;
+    text-align: center;
+
+}
+
+.input-box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.min-box,
+.max-box {
+    width: 50%;
+}
+
+.min-box {
+    padding-right: .5rem;
+    margin-right: .5rem;
+}
+
+.input-wrap {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    width: 100%;
+
+}

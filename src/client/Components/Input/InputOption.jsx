@@ -1,72 +1,100 @@
 import React, { useState } from "react";
+import "./InputLocation.css";
 
-// Autocomplete Component
-const Autocomplete = ({ options = [], placeholder = "Type to search..." }) => {
-    const [inputValue, setInputValue] = useState("");
+const address = [
+    { name: "Hà Nội" },
+    { name: "Hạ Long" },
+    { name: "Đà Nẵng" },
+    { name: "Hội An" },
+    { name: "Huế" },
+    { name: "Nha Trang" },
+    { name: "Đà Lạt" },
+    { name: "Phú Quốc" },
+    { name: "Cần Thơ" },
+    { name: "Sapa" },
+];
+
+const InputLocation = () => {
+    const [noiDi, setNoiDi] = useState("");
+    const [noiDen, setNoiDen] = useState("");
     const [suggestions, setSuggestions] = useState([]);
+    const [activeField, setActiveField] = useState("");
 
-    const handleInputChange = (e) => {
+    const handleInputChange = (e, type) => {
         const value = e.target.value;
-        setInputValue(value);
+        const filteredSuggestions = address.filter((add) =>
+            add.name.toLowerCase().includes(value.toLowerCase())
+        );
 
-        if (value) {
-            const filteredSuggestions = options.filter((option) =>
-                option.toLowerCase().includes(value.toLowerCase())
-            );
-            setSuggestions(filteredSuggestions);
+        if (type === "departure") {
+            setNoiDi(value);
+            setActiveField("departure");
         } else {
-            setSuggestions([]);
+            setNoiDen(value);
+            setActiveField("destination");
         }
+
+        setSuggestions(filteredSuggestions);
     };
 
-    const handleOptionClick = (option) => {
-        setInputValue(option);
+    const handleSuggestionClick = (suggestion) => {
+        if (activeField === "departure") {
+            setNoiDi(suggestion);
+        } else {
+            setNoiDen(suggestion);
+        }
         setSuggestions([]);
+        setActiveField("");
+    };
+
+    const swapDestination = () => {
+        const temp = noiDi;
+        setNoiDi(noiDen);
+        setNoiDen(temp);
     };
 
     return (
-        <div style={{ position: "relative" }}>
-            <input
-                type="text"
-                value={inputValue}
-                onChange={handleInputChange}
-                placeholder={placeholder}
-                style={{
-                    boxSizing: "border-box",
-                }}
-            />
+        <div className="input-location-container">
+            <div className="input-group">
+                <input
+                    type="text"
+                    className="location-input"
+                    value={noiDi}
+                    onChange={(e) => handleInputChange(e, "departure")}
+                    placeholder="Điểm đi"
+                />
+                <button className="swap-btn" onClick={swapDestination}>
+                    <img
+                        src="https://d1785e74lyxkqq.cloudfront.net/_next/static/v2/3/331a92149a02dc615986206c588d6642.svg"
+                        alt="Swap"
+                        width={24}
+                        height={24}
+                    />
+                </button>
+                <input
+                    type="text"
+                    className="location-input"
+                    value={noiDen}
+                    onChange={(e) => handleInputChange(e, "destination")}
+                    placeholder="Điểm đến"
+                />
+            </div>
+
             {suggestions.length > 0 && (
-                <ul style={{
-                    position: "absolute",
-                    top: "100%",
-                    left: 0,
-                    right: 0,
-                    listStyle: "none",
-                    margin: 0,
-                    padding: 0,
-                    backgroundColor: "white",
-                    border: "1px solid #ccc",
-                    borderTop: "none",
-                    zIndex: 1000,
-                    maxHeight: "150px",
-                    overflowY: "auto",
-                }}>
-                    {suggestions.map((option, index) => (
-                        <li
+                <div className="suggestions-dropdown">
+                    {suggestions.map((add, index) => (
+                        <div
                             key={index}
-                            onClick={() => handleOptionClick(option)}
-                            style={{
-                                padding: "10px",
-                                cursor: "pointer",
-                            }}
+                            className="suggestion-item"
+                            onClick={() => handleSuggestionClick(add.name)}
                         >
-                            {option}
-                        </li>
+                            {add.name}
+                        </div>
                     ))}
-                </ul>
+                </div>
             )}
         </div>
     );
 };
 
-export default Autocomplete;
+export default InputLocation;
