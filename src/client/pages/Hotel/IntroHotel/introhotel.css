@@ -1,0 +1,450 @@
+.introhotel-container {}
+
+.introhotel-container .header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 9px 0px 55px 0px;
+    background: linear-gradient(-180deg, rgba(0, 160, 255, 0), #0770cd);
+    background: -webkit-linear-gradient(-180deg, rgba(0, 160, 255, 0), #0770cd);
+}
+
+.introhotel-container .header .item {
+    display: flex;
+    justify-content: stretch;
+    width: 75%;
+    gap: 20px;
+}
+
+.introhotel-container .header .text {
+    flex-grow: 1;
+    flex-basis: 20%;
+}
+
+.introhotel-container .header .img1 {
+    flex-grow: 1;
+    flex-basis: 20%;
+}
+
+.introhotel-container .header .img2 {
+    flex-grow: 1;
+    flex-basis: 20%;
+}
+
+.introhotel-container .header .img1 img {
+    width: 450px;
+    height: 250px;
+    border-radius: 20px;
+}
+
+.introhotel-container .header .img2 img {
+    width: 450px;
+    height: 250px;
+    border-radius: 20px;
+}
+
+/* div content header */
+.introhotel-container .content-header {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+    gap: 10px;
+    border-radius: 0px 0px 10px 10px;
+    background-color: #fff;
+    box-sizing: border-box;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), -4px 0px 10px rgba(0, 0, 0, 0.1), 4px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.introhotel-container .content-header .title {
+    background-color: #EEEEEE;
+    margin-top: -44px;
+    border-radius: 10px 10px 0px 0px;
+    padding: 10px;
+}
+
+.introhotel-container .content-header .main-header {
+    padding: 10px
+}
+
+.introhotel-container .content-header .main-header .input input {
+    width: 100%;
+    padding: 5px;
+    outline: none;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.introhotel-container .content-header .main-header .date-night {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.introhotel-container .content-header .main-header .date-night .input-date {
+    width: 50%;
+}
+
+.introhotel-container .content-header .main-header .date-night .input-night {
+    width: 50%;
+    position: relative;
+}
+
+.introhotel-container .content-header .main-header .header-button {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.introhotel-container .content-header .main-header button {
+    width: 100%;
+    padding: 12px 24px;
+    border-radius: 8px;
+    background: linear-gradient(45deg, #007BFF, #0056b3);
+    border: none;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.introhotel-container .content-header .main-header button:hover {
+    background: #0056b3;
+}
+
+/* main-container */
+.introhotel-container .main-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+}
+
+/* voucher */
+.introhotel-container .main-container .voucher-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+
+.introhotel-container .main-container .voucher-card {
+    position: relative;
+    background: linear-gradient(135deg, #fff8e1, #fdd835);
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.introhotel-container .main-container .voucher-card::before,
+.introhotel-container .main-container .voucher-card::after {
+    content: "";
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: #fff;
+    border-radius: 50%;
+    top: 50%;
+    z-index: 1;
+}
+
+.introhotel-container .main-container .voucher-card::before {
+    left: -15px;
+}
+
+.introhotel-container .main-container .voucher-card::after {
+    right: -15px;
+}
+
+.introhotel-container .main-container .voucher-content {
+    flex: 1;
+    text-align: center;
+}
+
+.introhotel-container .main-container .voucher-title {
+    color: #d32f2f;
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.introhotel-container .main-container .voucher-details {
+    color: #555;
+    font-size: 14px;
+}
+
+.introhotel-container .main-container .voucher-divider {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.introhotel-container .main-container .divider-circle {
+    width: 12px;
+    height: 12px;
+    background-color: #fff;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+}
+
+.introhotel-container .main-container .divider-line {
+    flex: 1;
+    height: 2px;
+    background: repeating-linear-gradient(90deg,
+            #ddd,
+            #ddd 5px,
+            transparent 5px,
+            transparent 10px);
+}
+
+.introhotel-container .main-container .divider-circle.left {
+    margin-right: 10px;
+}
+
+.introhotel-container .main-container .divider-circle.right {
+    margin-left: 10px;
+}
+
+.introhotel-container .main-container .voucher-footer {
+    text-align: center;
+}
+
+.introhotel-container .main-container .voucher-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 15px;
+    background-color: #4D4D4D;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.introhotel-container .main-container .voucher-button:hover {
+    background-color: #1d6edc;
+    transform: scaleX(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.introhotel-container .main-container .voucher-code {
+    margin-right: 8px;
+}
+
+/* ket thuc voucher */
+
+/* deal noi dia */
+.introhotel-container .main-container .deal {
+    display: flex;
+    gap: 20px;
+}
+
+.introhotel-container .main-container .deal .deal-item button {
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+    background-color: #d8d8d8;
+    /* Màu nền mặc định */
+    color: #333;
+    transition: background-color 0.3s ease;
+}
+
+.introhotel-container .main-container .deal .deal-item button.active {
+    background-color: #007bff;
+    /* Màu nền khi nhấn */
+    color: #fff;
+    /* Màu chữ khi nhấn */
+}
+
+/* deal noi dia CARD*/
+.introhotel-container .main-container .deal-card {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+    padding: 20px 0;
+}
+
+.introhotel-container .main-container .deal-card .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15), 0 2px 20px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    overflow: hidden;
+    width: 320px;
+    padding-bottom: 20px;
+}
+
+.introhotel-container .main-container .deal-card .card .image img {
+    width: 100%;
+    object-fit: cover;
+}
+
+.introhotel-container .main-container .deal-card .card .content {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.introhotel-container .main-container .deal-card .card .content .card-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    line-height: 1.4;
+    text-transform: capitalize;
+}
+
+.introhotel-container .main-container .deal-card .card .content .card-description {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 15px;
+    line-height: 1.6;
+    font-style: italic;
+}
+
+.introhotel-container .main-container .deal-card .card .content .price-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.introhotel-container .main-container .deal-card .card .content .card-price-old {
+    font-size: 16px;
+    color: #888;
+    text-decoration: line-through;
+    margin-bottom: 5px;
+}
+
+.introhotel-container .main-container .deal-card .card .content .card-price-new {
+    font-size: 22px;
+    font-weight: bold;
+    color: #e53935;
+}
+
+.introhotel-container .main-container .deal-card .card .card-button {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.introhotel-container .main-container .deal-card .card .buy-button {
+    padding: 12px;
+    background-color: #007bff;
+    width: 50%;
+    color: #FFF;
+    border: none;
+    border-radius: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: 15px;
+}
+
+.introhotel-container .main-container .deal-card .card .buy-button:hover {
+    background-color: #1565c0;
+    transform: scale(1.05);
+}
+
+.introhotel-container .main-container .deal-card .card .details-buttons {
+    width: 50%;
+    padding: 12px;
+    background-color: transparent;
+    border: 1px solid #007BFF;
+    color: rgb(50, 158, 221);
+    border-radius: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: 15px;
+    margin-left: 10px;
+}
+
+.introhotel-container .main-container .deal-card .card .details-buttons:hover {
+    background-color: #ddeaf5;
+    transform: scale(1.05);
+}
+
+
+.introhotel-container .main-container .deal-card .card .discount-banner {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #d32f2f;
+    color: white;
+    padding: 5px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 8px;
+    z-index: 1;
+}
+
+.introhotel-container .main-container .deal-card .card .discount-text {
+    margin: 0;
+}
+
+/* ket thuc deal noi dia */
+
+/* dia diem noi dia */
+.introhotel-container .main-container .deal-img {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+
+.introhotel-container .main-container .deal-img .item-img {
+    position: relative;
+    display: inline-block;
+}
+
+.introhotel-container .main-container .deal-img .item-img .img-container {
+    position: relative;
+}
+
+.introhotel-container .main-container .deal-img .item-img img {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+}
+
+.introhotel-container .main-container .deal-img .item-img .img-text {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.introhotel-container .main-container .deal-img .item-img .img-text .type-text {
+    width: 30%;
+    border-radius: 0px 0px 90px 0px;
+    color: rgb(0, 100, 231);
+    background-color: rgb(248, 248, 248);
+}
+
+.introhotel-container .main-container .deal-img .item-img .img-text .addres-text {
+    width: 50%;
+    border-radius: 0px 40px 0px 0px;
+    color: rgb(248, 248, 248);
+    background-color: rgb(0, 100, 231);
+}
