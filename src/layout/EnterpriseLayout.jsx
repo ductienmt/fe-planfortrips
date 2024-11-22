@@ -22,6 +22,7 @@ export const EnterpriseLayout = () => {
             className="enterprise-main-content"
             style={{
               flexGrow: 1,
+              flexBasis: "30%",
               display: "flex",
               flexDirection: "column",
             }}
@@ -32,7 +33,9 @@ export const EnterpriseLayout = () => {
                 className="content"
                 style={{
                   display: "flex",
-                  flexGrow: 1,
+                  flexBasis: "70%",
+
+                  flexGrow: 2,
                   overflowY: "auto",
                 }}
               >

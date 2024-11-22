@@ -13,6 +13,7 @@ import ChangePassword from "./ChangePass/ChangePassword";
 import InfoDetails from "./InfoDetails/InfoDetails";
 import YourTripsQuery from "./YourTripQuery/YourTripsQuery";
 import { UserService } from "../../../services/apis/UserService";
+import Loader from "../../Components/Loading";
 
 const Profile = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -20,10 +21,12 @@ const Profile = () => {
   const [activeItem, setActiveItem] = useState("profile");
   const navigate = useNavigate();
   const location = useLocation();
+  const [isLoading, setIsLoading] = useState(true);
 
   // Load thông tin chi tiết người dùng
   const loadDetailUser = async () => {
     try {
+      setIsLoading(true);
       const res = await UserService.getDetail();
       setProfile(res.data.data);
     } catch (error) {
@@ -37,6 +40,8 @@ const Profile = () => {
           },
         }
       );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -129,7 +134,15 @@ const Profile = () => {
           </div>
         </div>
         <div className="right">
-          {componentMapping[activeItem] || <div>Vui lòng chọn một mục.</div>}
+          {isLoading ? (
+            <Loader rong={"80vh"} />
+          ) : (
+            <>
+              {componentMapping[activeItem] || (
+                <div>Vui lòng chọn một mục.</div>
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>

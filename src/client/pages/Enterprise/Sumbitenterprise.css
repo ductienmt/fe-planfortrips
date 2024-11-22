@@ -1,4 +1,5 @@
-.signInFormContainer {
+/* Container wrapping the entire sign-in form */
+.signInFormMainContainer {
     display: flex;
     background-image: url('https://4kwallpapers.com/images/walls/thumbs_3t/12252.jpg');
     background-size: cover;
@@ -7,7 +8,8 @@
     height: 100vh;
 }
 
-.formContainer {
+/* Inner container for form layout */
+.signInFormContentContainer {
     position: relative;
     background-color: rgba(247, 211, 211, 0.411);
     backdrop-filter: blur(15px);
@@ -19,7 +21,8 @@
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.formTitle {
+/* Form title */
+.signInFormTitle {
     color: #2c3e50;
     font-weight: 700;
     font-size: 36px;
@@ -29,14 +32,16 @@
     margin-bottom: 30px;
 }
 
-.separator {
+/* Separator line for visual spacing */
+.signInSeparator {
     background-color: #bdc3c7;
     height: 4px;
     border: none;
     margin: 40px 0;
 }
 
-.brandName {
+/* Brand name text */
+.signInBrandName {
     position: absolute;
     top: 50%;
     right: 150px;
@@ -48,38 +53,33 @@
     text-align: right;
 }
 
-/* Tăng kích thước của các phần tử nhập liệu và nút */
-.MuiTextField-root {
+/* Input field and button customization */
+.customInputField {
     font-size: 1.2rem;
     padding: 12px;
     margin: 10px 0;
 }
 
-.MuiInputBase-input {
-    padding: 12px;
-    font-size: 1.2rem;
-}
-
-.MuiButton-root {
+.customButton {
     font-size: 1.2rem;
     padding: 12px 24px;
 }
 
 /* Responsive adjustments */
 @media (max-width: 991px) {
-    .formContainer {
+    .signInFormContentContainer {
         padding: 20px;
         max-width: 90%;
     }
 }
 
 @media (max-width: 640px) {
-    .formContainer {
+    .signInFormContentContainer {
         padding: 10px;
     }
 
-    .MuiTextField-root,
-    .MuiButton-root {
+    .customInputField,
+    .customButton {
         font-size: 1rem;
     }
 }

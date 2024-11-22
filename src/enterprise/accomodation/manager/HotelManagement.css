@@ -1,0 +1,86 @@
+.enterprise-hotelm-container {
+  margin: 10px;
+  width: 100%;
+  border-radius: 20px;
+  box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
+
+.enterprise-hotelm-container .hotelm-title h1 {
+  font-size: 30px;
+  text-transform: uppercase;
+  color: #adadad;
+}
+
+.nav-filterCombobox-hotelm {
+  display: flex;
+  justify-content: end;
+  gap: 20px;
+}
+
+.button-edit:hover,
+.button-delete:hover {
+  background-color: rgb(39, 100, 140);
+  color: #fff;
+}
+
+.nav-filterCombobox-hotelm button {
+  padding: 8px 20px;
+  border-radius: 10px;
+  border: none;
+  background-color: rgb(50, 129, 181);
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.nav-filterCombobox-hotelm button:hover {
+  background-color: rgb(39, 100, 140);
+}
+
+.hotel-close-button {
+  position: relative;
+  width: 2em;
+  height: 2em;
+  background: rgba(79, 37, 48, 0.11);
+  border-radius: 5px;
+  transition: background 0.5s;
+}
+
+.hotel-close-X,
+.hotel-close-Y {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1em;
+  height: 0.75px;
+  background-color: white;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.hotel-close-Y {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.hotel-close-close {
+  position: absolute;
+  top: -70%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgb(19, 22, 24);
+  color: rgb(187, 229, 236);
+  font-size: 12px;
+  opacity: 0;
+  pointer-events: none;
+  padding: 0.5rem 1rem;
+  border-radius: 3px;
+}
+
+.hotel-close-button:hover {
+  background-color: rgb(211, 21, 21);
+}
+
+.hotel-close-button:hover .hotel-close-close {
+  opacity: 1;
+}

@@ -165,7 +165,7 @@ const Header = () => {
                 <span className="me-2 ms-2">|</span>
                 <Link
                   className="nav-link"
-                  to="/vehicle"
+                  to="/booking-vehicle"
                   style={{ fontSize: "18px" }}
                 >
                   Phương tiện
@@ -179,15 +179,19 @@ const Header = () => {
                   Khách sạn
                 </Link>
                 <span className="me-2 ms-2">|</span>
-                <Link className="nav-link" to="#" style={{ fontSize: "18px" }}>
+                {/* <Link className="nav-link" to="#" style={{ fontSize: "18px" }}>
                   Ẩm thực
                 </Link>
-                <span className="me-2 ms-2">|</span>
+                <span className="me-2 ms-2">|</span> */}
                 <Link className="nav-link" to="#" style={{ fontSize: "18px" }}>
                   Tham quan
                 </Link>
                 <span className="me-2 ms-2">|</span>
-                <Link className="nav-link" to="#" style={{ fontSize: "18px" }}>
+                <Link
+                  className="nav-link"
+                  to="/submit-enterprise"
+                  style={{ fontSize: "18px" }}
+                >
                   Hợp tác
                 </Link>
                 <span className="me-2 ms-2">|</span>

@@ -8,7 +8,6 @@ import { CouponService } from "../../../services/apis/CouponService";
 import AddIcon from "@mui/icons-material/Add";
 import { toast } from "react-toastify";
 import CouponDialog from "./CouponDialog";
-import ViewColumnIcon from "@mui/icons-material/ViewColumn";
 const paginationModel = { page: 0, pageSize: 20 };
 
 export default function CouponAdmin() {

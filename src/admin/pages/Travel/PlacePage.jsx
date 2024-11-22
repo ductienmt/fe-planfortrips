@@ -163,12 +163,12 @@ export default function PlacePageAdmin() {
         initialState={{
           pagination: {
             paginationModel: {
-              pageSize: 5,
+              pageSize: 10,
             },
           },
         }}
         getRowId={(row) => row.id}
-        pageSizeOptions={[5]}
+        pageSizeOptions={[10,20,50]}
         checkboxSelection
         disableRowSelectionOnClick
         slots={{ toolbar: EditToolbar }}

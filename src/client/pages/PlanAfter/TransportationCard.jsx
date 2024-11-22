@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { ScheduleService } from "../../../services/apis/ScheduleService";
 import "./TransportationCard.css";
 import "feather-icons/dist/feather";
+import { VehiclesService } from "../../../services/apis/Vehicles";
 
 const TransportationCard = ({
   className,
   onClick,
-  img,
+  vehicleCode,
   nameVehicle,
   departureDate,
   arrivalDate,
@@ -29,10 +30,22 @@ const TransportationCard = ({
       console.error("Error fetching accommodation data", error);
     }
   };
+  const [img, setImg] = useState("");
+
+  const getImg = async (vehicleCode) => {
+    const response = await VehiclesService.getVehicleById(vehicleCode);
+    // console.log("response", response.data.car_company.images[0]);
+    setImg(response.data.car_company.images[0].url);
+    console.log("vehicleCode", response.data.car_company.images[0].url);
+  };
 
   useEffect(() => {
     if (scheduleId) {
       loadStation(scheduleId);
+    }
+    // console.log("vehicleCode", vehicleCode);
+    if (vehicleCode) {
+      getImg(vehicleCode);
     }
   }, [scheduleId]);
   return (
@@ -74,7 +87,7 @@ const TransportationCard = ({
             <LocationDisplay
               place="Xuất phát"
               icon="https://cdn.builder.io/api/v1/image/assets/TEMP/385a865a60db67b2221563c86645d1ba2bb924639ea59ef346b2b709c6b210d2?placeholderIfAbsent=true&apiKey=75fde3af215540558ff19397203996a6"
-              city="Hồ Chí Minh"
+              // city="Hồ Chí Minh"
               station={departureStationData}
               extraInfo="Đón tại Bến"
             />
@@ -88,9 +101,9 @@ const TransportationCard = ({
             <LocationDisplay
               place="Đích đến"
               icon="https://cdn.builder.io/api/v1/image/assets/TEMP/2f2cda72d26f1c67915563e9cacfcc3716d8d5d11d87c08952c0484a418a3102?placeholderIfAbsent=true&apiKey=75fde3af215540558ff19397203996a6"
-              city="Vũng Tàu"
+              // city="Vũng Tàu"
               station={arrivalStationData}
-              extraInfo="Trả tại quốc lộ 1A - Bãi tắm sau"
+              extraInfo="Trả tại bến"
             />
           </div>
         </div>
