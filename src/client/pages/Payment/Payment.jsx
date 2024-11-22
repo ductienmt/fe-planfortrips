@@ -261,7 +261,58 @@ const Payment = () => {
         }
       }
     } else if (activeMethod === "VNPAY") {
-      await BankService.VNPay();
+      if (planData) {
+        const checkinHours = sessionStorage.getItem("checkin");
+        const checkoutHours = sessionStorage.getItem("checkout");
+
+        const tData = JSON.parse(sessionStorage.getItem("tripData"));
+
+        const bookingDetails = tripData.accomodation.rooms.map((room) => ({
+          roomId: room.roomId,
+
+          checkInTime: checkinHours ? checkinHours : "",
+          checkOutTime: checkoutHours ? checkoutHours : "",
+          price: tData?.accomodation?.price_per_night || 0,
+        }));
+
+        // ticket
+
+        const scheduleIdDe = tData?.transportation?.departure?.scheduleId;
+        const scheduleIdRe = tData?.transportation?.return?.scheduleId;
+        const totalPriceTrDe = tData?.transportation?.departure?.totalPrice;
+        const totalPriceTrRe = tData?.transportation?.return?.totalPrice;
+
+        planData.discountPrice = calculateTotalDiscount();
+        planData.finalPrice = calculateTotalAmount();
+
+        try {
+          setIsLoading(true);
+          await handleCreateBooking(bookingDetails, 3);
+          await handleCreateTicket(
+            scheduleIdDe,
+            totalPriceTrDe,
+            3,
+            voucherRes ? voucherRes.code : "",
+            getSeats(tData?.transportation?.departure?.seatBook),
+            tData?.transportation?.departure?.carId
+          );
+          await handleCreateTicket(
+            scheduleIdRe,
+            totalPriceTrRe,
+            3,
+            voucherRes ? voucherRes.code : "",
+            getSeats(tData?.transportation?.return?.seatBook),
+            tData?.transportation?.return?.carId
+          );
+          sessionStorage.setItem("planData", JSON.stringify(planData));
+          await handleCreatePlan();
+          await BankService.VNPay();
+        } catch (error) {
+          console.error("Error creating booking:", error);
+        } finally {
+          setIsLoading(false);
+        }
+      }
     } else if (activeMethod === "MOMO") {
       enqueueSnackbar("Chưa triển khai MOMO", {
         variant: "info",

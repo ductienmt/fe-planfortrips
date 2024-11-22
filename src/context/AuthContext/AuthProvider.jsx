@@ -1,4 +1,4 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 import AuthService from "./AuthServiceContext";
 
 const AuthContext = createContext();
@@ -10,7 +10,21 @@ export const AuthProvider = ({ children }) => {
     sessionStorage.getItem("username") || null
   );
 
+  useEffect(() => {
+    const expirationTime = sessionStorage.getItem("expirationTime");
+    if (expirationTime) {
+      const timeLeft = new Date(expirationTime) - new Date();
+      if (timeLeft > 0) {
+        setTimeout(logout, timeLeft);
+      } else {
+        logout();
+      }
+    }
+  }, []);
+
   const login = (newToken, newRole, newUsername) => {
+    const expirationTime = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+
     AuthService.setToken(newToken);
     AuthService.setRole(newRole);
     AuthService.setUsername(newUsername);
@@ -21,6 +35,9 @@ export const AuthProvider = ({ children }) => {
     sessionStorage.setItem("token", newToken);
     sessionStorage.setItem("role", newRole);
     sessionStorage.setItem("username", newUsername);
+    sessionStorage.setItem("expirationTime", expirationTime);
+
+    setTimeout(logout, 24 * 60 * 60 * 1000);
   };
 
   const logout = () => {
@@ -34,6 +51,7 @@ export const AuthProvider = ({ children }) => {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("role");
     sessionStorage.removeItem("username");
+    sessionStorage.removeItem("expirationTime");
   };
 
   const authContextValue = {
@@ -51,7 +69,6 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Custom hook để truy cập AuthContext
 export const useAuth = () => {
   return useContext(AuthContext);
 };
