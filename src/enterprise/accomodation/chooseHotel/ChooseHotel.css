@@ -6,8 +6,7 @@
   padding: 20px;
 }
 
-.enterprise-chooseHotel-container
-  .nav-filterCombobox-chooseHotel {
+.enterprise-chooseHotel-container .nav-filterCombobox-chooseHotel {
   display: flex;
 }
 
@@ -41,7 +40,7 @@
   cursor: pointer;
 }
 
-.select-chooseHotel-btn:hover{
+.select-chooseHotel-btn:hover {
   background-color: #167ad7;
 }
 

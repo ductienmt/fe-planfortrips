@@ -41,6 +41,7 @@ import Room from "../enterprise/accomodation/roomManagement/Room";
 import HotelManagement from "../enterprise/accomodation/manager/HotelManagement";
 
 import Sumbitenterprise from "../client/pages/Enterprise/Sumbitenterprise";
+import Tour from "../admin/pages/Tour/Tour";
 import TourAdmin from "../admin/pages/Tour/TourPage";
 import GuestLiving from "../enterprise/accomodation/guest/GuestLiving";
 import RoomVoucher from "../enterprise/accomodation/roomVoucher/roomVoucher";
@@ -49,6 +50,12 @@ import AccomodationDashboard from "../enterprise/dashboard/Accomodation/Accomoda
 import TranportatinDashboard from "../enterprise/dashboard/tranportation/TranportatinDashboard";
 import Hotelpage from "../client/pages/HotelPage/Hotelpage";
 import { BookingHotel } from "../client/pages/HotelPage/BookingHotel";
+import Checkinpage from "../client/pages/Checkin/Checkinpage";
+import User from "../admin/pages/User/User";
+import { Component } from "react";
+import TourPage from "../client/pages/Tour/TourPage";
+import TourDetail from "../client/pages/Tour/TourDetail/TourDetail";
+import TourIndex from "../client/pages/Tour/TourIndex";
 
 const routeAdmin = () => [
   {
@@ -61,7 +68,7 @@ const routeAdmin = () => [
       },
       {
         path: "users",
-        Component:EnterpriseAdmin,
+        Component: User,
       },
       {
         path: "business",
@@ -229,10 +236,10 @@ const routeClient = () => [
           // },
         ],
       },
-      {
-        path: "/vehicle",
-        Component: TransportSelectionPage,
-      },
+      // {
+      //   path: "/vehicle",
+      //   Component: TransportSelectionPage,
+      // },
       {
         path: "/booking-vehicle",
         Component: SearchResults,
@@ -243,9 +250,27 @@ const routeClient = () => [
       },
 
       {
-        path: "/enterprise",
+        path: "/submit-enterprise",
         Component: Sumbitenterprise,
       },
+      {
+        path: "/check-in",
+        Component: Checkinpage,
+      },
+      {
+        path: "/tour",
+        Component: TourIndex,
+        children : [
+          {
+            path : "",
+            Component : TourPage
+          },
+          {
+           path : "detail/:tourId",
+           Component: TourDetail
+          }
+         ]
+      }
     ],
   },
 ];

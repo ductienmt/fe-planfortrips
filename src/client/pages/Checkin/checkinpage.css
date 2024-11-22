@@ -1,0 +1,67 @@
+/* Container for the checkin cards with a responsive grid */
+.checkinpage-card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    /* Auto-responsive grid */
+    gap: 30px;
+    /* Adjusted gap between the cards */
+    padding: 20px;
+    margin: 0 auto;
+    /* Center the container */
+    max-width: 1200px;
+    /* Limit maximum width */
+}
+
+/* Style for each checkin card */
+.checkin-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    text-align: center;
+}
+
+/* Image styling */
+.checkin-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+/* Styling for the checkin card title and description */
+.checkin-card h3 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+    margin: 10px 0;
+}
+
+.checkin-card p {
+    font-size: 16px;
+    color: #777;
+}
+
+/* Hover effect for the cards */
+.checkin-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Loading text and error message */
+.loading,
+.error {
+    font-size: 18px;
+    color: #555;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Styling for empty data message */
+.no-data {
+    font-size: 18px;
+    color: #777;
+    text-align: center;
+    margin-top: 20px;
+}

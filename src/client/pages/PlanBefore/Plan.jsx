@@ -583,7 +583,7 @@ function PlanBefore() {
         const tripPlan = await generateTripPlan(response.data);
         console.log(tripPlan);
 
-        if (tripPlan.estimatedCost <= updatedFormData.budget) {
+        if (tripPlan?.estimatedCost <= updatedFormData.budget * 1000) {
           sessionStorage.setItem("tripData", JSON.stringify(tripPlan));
           navigate("/plan/trip");
         } else {
@@ -735,7 +735,7 @@ function PlanBefore() {
         altFormat: "d-m-Y H:i",
         dateFormat: "Y-m-d H:i",
         locale: flatpickrConfig,
-        // minDate: new Date(),
+        minDate: new Date(),
         maxDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
         enableTime: true,
         time_24hr: true,
@@ -757,7 +757,7 @@ function PlanBefore() {
         altFormat: "d-m-Y H:i",
         dateFormat: "Y-m-d H:i",
         locale: flatpickrConfig,
-        // minDate: new Date(),
+        minDate: new Date(),
         maxDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
         enableTime: true,
         time_24hr: true,

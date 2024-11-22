@@ -12,6 +12,8 @@ import {
 } from "react-router-dom";
 import BankService from "./Bank/serviceBank";
 import { useSnackbar } from "notistack";
+import { BookingHotelService } from "../../../services/apis/BookingHotelService";
+import { PaymentService } from "../../../services/apis/PaymentService";
 
 // Hàm sinh mã ngẫu nhiên
 const generateRandomString = () => {
@@ -34,6 +36,7 @@ const Payment = () => {
   const tranData = JSON.parse(sessionStorage.getItem("tranData")) ?? null;
   const acoData = JSON.parse(sessionStorage.getItem("acoData")) ?? null;
   const amount = sessionStorage.getItem("totalPrice");
+  const tripData = JSON.parse(sessionStorage.getItem("tripData"));
 
   const [randomCode, setRanDomCode] = useState("");
   const [activeMethod, setActiveMethod] = useState("");
@@ -41,6 +44,8 @@ const Payment = () => {
     Amount: amount,
     Description: "Thanh toán cho dịch vụ",
   });
+
+  const [bookingHotelId, setBookingHotelId] = useState("");
   const [qrCode, setQrCode] = useState("");
   const navi = useNavigate();
 
@@ -59,10 +64,8 @@ const Payment = () => {
     }
   };
 
-  // Xử lý thanh toán
   const handlePayment = async () => {
     if (!activeMethod) {
-      // alert("Chưa chọn phương thức thanh toán");
       enqueueSnackbar("Chưa chọn phương thức thanh toán", {
         variant: "error",
         autoHideDuration: 2000,
@@ -73,14 +76,48 @@ const Payment = () => {
     if (activeMethod === "VIETQR") {
       const code = generateRandomString();
       setRanDomCode(code);
+
+      const checkinHours = sessionStorage.getItem("checkin");
+      const checkoutHours = sessionStorage.getItem("checkout");
+
+      const acData = JSON.parse(sessionStorage.getItem("tripData"));
+
+      const bookingDetails = tripData.accomodation.rooms.map((room) => ({
+        roomId: room.roomId,
+
+        checkInTime: checkinHours ? checkinHours : "",
+        checkOutTime: checkoutHours ? checkoutHours : "",
+        price: acData?.accomodation?.price_per_night || 0,
+      }));
+
+      const dataToSend = {
+        bookingHotelDetailDto: bookingDetails,
+        paymentId: 3,
+      };
+
+      console.log(JSON.stringify(dataToSend, null, 2));
+
       const contentWithCode = `${infoBank.Description} ${code}`;
       const qrCode = BankService.generateVietQR(
-        infoBank.Amount,
+        infoBank.Amount * 10,
         contentWithCode
       );
-      setQrCode(qrCode);
+
+      try {
+        const res = await BookingHotelService.create(dataToSend);
+        console.log(res);
+        setBookingHotelId(res.data.bookingHotelId);
+        setQrCode(qrCode);
+      } catch (error) {
+        console.error("Error creating booking:", error);
+      }
     } else if (activeMethod === "VNPAY") {
       await BankService.VNPay();
+    } else if (activeMethod === "MOMO") {
+      enqueueSnackbar("Chưa triển khai MOMO", {
+        variant: "info",
+        autoHideDuration: 2000,
+      });
     }
   };
 
@@ -89,15 +126,26 @@ const Payment = () => {
     if (qrCode) {
       const intervalId = setInterval(() => {
         BankService.checkPaidVietQR(
-          infoBank.Amount,
+          infoBank.Amount * 10,
           infoBank.Description,
           randomCode
         ).then((status) => {
+          console.log(status);
+
           if (status) {
-            navi("/success");
+            PaymentService.paymentVietQr(bookingHotelId).then(() => {
+              // alert("Thanh toán thành công");\
+              enqueueSnackbar("Thanh toán thành công", {
+                variant: "success",
+                autoHideDuration: 2000,
+                onExit: () => {
+                  navi("/success");
+                },
+              });
+            });
           }
         });
-      }, 3000); // Kiểm tra mỗi 3 giây
+      }, 3000);
 
       return () => clearInterval(intervalId);
     }

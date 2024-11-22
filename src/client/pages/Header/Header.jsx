@@ -165,7 +165,7 @@ const Header = () => {
                 <span className="me-2 ms-2">|</span>
                 <Link
                   className="nav-link"
-                  to="/vehicle"
+                  to="/booking-vehicle"
                   style={{ fontSize: "18px" }}
                 >
                   Phương tiện
@@ -194,6 +194,10 @@ const Header = () => {
                 >
                   Hợp tác
                 </Link>
+                <span className="me-2 ms-2">|</span>
+                <Link className="nav-link" to="/tour" style={{ fontSize: "18px" }}>
+                  Tour
+                </Link>{" "}
               </div>
             </div>
           </div>

@@ -1,186 +1,253 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import "./HotelManagement.css";
 import { InputFlied } from "../../../client/Components/Input/InputFlied";
 import { Table } from "antd";
+import { HotelService } from "../../../services/apis/HotelService";
+import Loader from "../../../client/Components/Loading";
+import { enqueueSnackbar } from "notistack";
+
+const debounce = (func, delay) => {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), delay);
+  };
+};
 
 const HotelManagement = () => {
-  const [hotelmData, sethotelmData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hotelmData, setHotelmData] = useState([]);
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    phoneNumber: "",
+    description: "",
+    address: "",
+    hotel_id: "",
+  });
+
   const columns = [
-    {
-      title: "Mã khách sạn",
-      dataIndex: "",
-      key: "",
-    },
-    {
-      title: "Tên khách sạn",
-      dataIndex: "",
-      key: "",
-    },
-    {
-      title: "Địa chỉ",
-      dataIndex: "",
-      key: "",
-    },
-    {
-      title: "Mô tả",
-      dataIndex: "",
-      key: "",
-    },
-    {
-      title: "Hotline",
-      dataIndex: "",
-      key: "",
-    },
-    {
-      title: "Đánh giá",
-      dataIndex: "",
-      key: "",
-    },
-    {
-      title: "Trạng thái",
-      dataIndex: "",
-      key: "",
-    },
+    // { title: "Mã khách sạn", dataIndex: "hotel_id", key: "hotel_id" },
+    { title: "Tên khách sạn", dataIndex: "name", key: "name" },
+    { title: "Địa chỉ", dataIndex: "address", key: "address" },
+    { title: "Mô tả", dataIndex: "description", key: "description" },
+    { title: "Hotline", dataIndex: "phoneNumber", key: "phoneNumber" },
+    { title: "Đánh giá", dataIndex: "rating", key: "rating" },
+    { title: "Trạng thái", dataIndex: "status", key: "status" },
     {
       title: "Hành động",
-      dataIndex: "",
-      key: "",
-    },
-  ];
-  return (
-    <>
-      <div className="enterprise-hotelm-container">
-        <div className="hotelm-title">
-          <h1
-            style={{
-              fontSize: "30px",
-              textTransform: "uppercase",
-              color: "#ADADAD",
+      key: "actions",
+      render: (_, record) => (
+        <div>
+          <button
+            className="button-edit btn"
+            data-bs-toggle="modal"
+            data-bs-target="#editHotelModal"
+            onClick={() => {
+              setFormData(record);
             }}
           >
-            Quản Lý Khách sạn
-          </h1>
+            <i className="fa-solid fa-pen-to-square"></i>
+          </button>
+          <button className="button-delete btn">
+            <i className="fa-solid fa-trash"></i>
+          </button>
         </div>
-        <div className="hotelm-content mt-3">
-          <div className="nav-filterCombobox-hotelm">
-            <InputFlied
-              nameInput={"search"}
-              content={"Tìm kiếm"}
-              typeInput={"text"}
-            />
-            {/* Button trigger modal */}
-            <button
-              type="button"
-              data-bs-toggle="modal"
-              data-bs-target="#addHotelModal"
-            >
-              Thêm phòng
-            </button>
+      ),
+    },
+  ];
+
+  const fetchHotelData = async () => {
+    setIsLoading(true);
+    try {
+      const response = await HotelService.detail();
+      setHotelmData(response);
+    } catch (error) {
+      console.error("Error fetching hotel data", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    // console.log(formData);
+  };
+
+  const searchHotel = useCallback(
+    debounce(async (keyword) => {
+      if (!keyword) {
+        fetchHotelData();
+        return;
+      }
+      try {
+        const response = await HotelService.getHotels(0, 10, keyword);
+        setHotelmData(Array.isArray(response) ? response : []);
+      } catch (error) {
+        console.error("Error searching hotel", error);
+      }
+    }, 500),
+    []
+  );
+
+  const handleEditHotel = async () => {
+    if (!formData.phoneNumber || formData.phoneNumber.trim() === "") {
+      enqueueSnackbar("Số điện thoại là bắt buộc", {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
+      return;
+    }
+
+    try {
+      const dataToSend = {
+        name: formData.name,
+        phone_number: formData.phoneNumber,
+        description: formData.description,
+        address: formData.address,
+      };
+
+      await HotelService.update(formData.hotel_id, dataToSend);
+      enqueueSnackbar("Cập nhật thành công!", {
+        variant: "success",
+        autoHideDuration: 2000,
+        onExit: () => {
+          fetchHotelData();
+        },
+      });
+    } catch (error) {
+      console.error("Error updating hotel", error);
+    }
+  };
+
+  useEffect(() => {
+    document.title = "Quản lý khách sạn";
+    fetchHotelData();
+  }, []);
+
+  useEffect(() => {
+    searchHotel(searchKeyword);
+  }, [searchKeyword, searchHotel]);
+
+  return (
+    <>
+      {isLoading ? (
+        <div className="w-100">
+          <Loader rong={"80vh"} />
+        </div>
+      ) : (
+        <div className="enterprise-hotelm-container">
+          <div className="hotelm-title">
+            <h1 className="title">Quản Lý Khách sạn</h1>
           </div>
-
-          <div className="d-flex align-items-stretch">
-            {/* Modal */}
-            <div
-              className="modal fade"
-              id="addHotelModal"
-              tabIndex="-1"
-              role="dialog"
-              aria-labelledby="addHotelLabel"
-              aria-hidden="true"
-            >
-              <div
-                className="modal-dialog modal-dialog-centered"
-                role="document"
+          <div className="hotelm-content mt-3">
+            <div className="nav-filterCombobox-hotelm">
+              <InputFlied
+                nameInput="search"
+                content="Tìm kiếm"
+                typeInput="text"
+                onChange={(e) => setSearchKeyword(e.target.value)}
+              />
+              <button
+                type="button"
+                data-bs-toggle="modal"
+                data-bs-target="#addHotelModal"
               >
-                <div className="modal-content">
-                  <div className="modal-body">
-                    <div className="d-flex justify-content-lg-between">
-                      <h5
-                        style={{
-                          fontSize: "25px",
-                          textTransform: "uppercase",
-                          color: "#ADADAD",
-                        }}
-                        id="addDiscountLabel"
-                      >
-                        THÊM khách sạn
-                      </h5>
+                Thêm khách sạn
+              </button>
+            </div>
 
-                      <button
-                        className="hotel-close-button"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      >
-                        <span className="hotel-close-X"></span>
-                        <span className="hotel-close-Y"></span>
-                        <div className="hotel-close-close">Close</div>
-                      </button>
-                    </div>
-
-                    {/* Form inputs */}
-                    <form>
-                      {/* Input dòng 1 */}
-                      <div className="form-group mt-3">
-                        <InputFlied
-                          nameInput={"search"}
-                          content={"Tên khách sạn"}
-                          typeInput={"text"}
-                        />
-                      </div>
-
-                      {/* Input dòng 2 */}
-                      <div className="form-group mt-3">
-                        <InputFlied
-                          nameInput={"search"}
-                          content={"Mô tả"}
-                          typeInput={"text"}
-                        />
-                      </div>
-
-                      {/* Input dòng 3 */}
-                      <div className="form-group mt-3">
-                        <InputFlied
-                          nameInput={"search"}
-                          content={"Địa chỉ"}
-                          typeInput={"text"}
-                        />
-                      </div>
-
-                      {/* Input dòng 4 */}
-                      <div className="form-group mt-3">
-                        <InputFlied
-                          nameInput={"search"}
-                          content={"Hotline"}
-                          typeInput={"text"}
-                        />
-                      </div>
-                    </form>
-                    <button
-                      type="button"
-                      className="btn btn-primary d-flex justify-content-center col-12 mt-3"
-                    >
-                      Xác nhận
-                    </button>
-                  </div>
-                </div>
-              </div>
+            <div className="content-table mt-4">
+              <Table dataSource={hotelmData} columns={columns} />
             </div>
           </div>
         </div>
-        <div className="content-table mt-4">
-          <Table
-            dataSource={hotelmData}
-            columns={columns}
-            // pagination={{
-            //   current: currentPage,
-            //   pageSize: pageSize,
-            //   total: dataSource.length,
-            //   onChange: (page, pageSize) => {
-            //     setCurrentPage(page);
-            //     setPageSize(pageSize);
-            //   },
-            // }}
-          />
+      )}
+
+      <button
+        className="btn-close"
+        data-bs-dismiss="modal"
+        style={{ display: "none" }}
+        id="closeButton"
+      ></button>
+
+      <div
+        className="modal fade"
+        id="editHotelModal"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabIndex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered modal-profile-custom">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3 style={{ fontWeight: "600" }}>
+                Chỉnh sửa thông tin khách sạn
+              </h3>
+              <button
+                type="button"
+                className="btn-close"
+                // data-bs-toggle="modal"
+                // data-bs-target="#main"
+                data-bs-dismiss="modal"
+              ></button>
+            </div>
+            <div
+              className="modal-body"
+              style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+            >
+              <InputFlied
+                value={formData.name}
+                onChange={handleChange}
+                content={"Tên khách sạn"}
+                nameInput={"name"}
+                typeInput={"text"}
+              />
+              <InputFlied
+                value={formData.address}
+                onChange={handleChange}
+                content={"Địa chỉ"}
+                nameInput={"address"}
+                typeInput={"text"}
+              />
+              <InputFlied
+                value={formData.description}
+                onChange={handleChange}
+                content={"Mô tả"}
+                nameInput={"description"}
+                typeInput={"text"}
+              />
+              <InputFlied
+                value={formData.phoneNumber}
+                onChange={handleChange}
+                content={"Số điện thoại"}
+                nameInput={"phoneNumber"}
+                typeInput={"text"}
+              />
+            </div>
+            <div
+              className="modal-footer"
+              style={{ width: "100%", borderTop: "none" }}
+            >
+              <button
+                data-bs-dismiss="modal"
+                type="button"
+                className="custome-button-footer"
+                onClick={handleEditHotel}
+                style={{
+                  width: "100%",
+                  height: "50px",
+                  margin: "0",
+                  border: "none",
+                }}
+              >
+                Xác nhận
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </>
