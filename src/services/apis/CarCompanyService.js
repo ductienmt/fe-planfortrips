@@ -5,7 +5,6 @@ export const CarService = {
     const response = await Http.get(
       `api/v1/car-companies/all?page=${page}&limit=${limit}`
     );
-    console.log(response);
     return response.data;
   },
   findcarById: async (id) => {

@@ -6,7 +6,6 @@ export const HotelService = {
     const response = await Http.get(
       `api/v1/hotels/all?page=${page}&limit=${limit}&keyword=${keyword}`
     );
-    console.log(response);
     return response.data;
   },
   findHotelById: async (id) => {
