@@ -46,6 +46,8 @@ import AccomodationDashboard from "../enterprise/dashboard/Accomodation/Accomoda
 import TranportatinDashboard from "../enterprise/dashboard/tranportation/TranportatinDashboard";
 import Checkinpage from "../client/pages/Checkin/Checkinpage";
 import User from "../admin/pages/User/User";
+import ChooseProvinceDetail from "../client/pages/Checkin/chooseProvinceDetail/ChooseProvinceDetail";
+import ChooseCheckinFollowArea from "../client/pages/Checkin/chooseCheckinFollowArea/ChooseCheckinFollowArea";
 import IntroHotel from "../client/pages/hotel/IntroHotel/IntroHotel";
 import Hotel from "../client/pages/hotel/hotel";
 import IntroVehicle from "../client/pages/Vehicle/IntroVehicle/IntroVehicle"
@@ -68,6 +70,7 @@ import Seats from "../enterprise/transportation/seats/Seats";
 import Guest from "../enterprise/transportation/guest/Guest";
 import Routehotel from "../enterprise/transportation/routehotel/Routehotel";
 import TourForm from "../admin/pages/Tour/Tour";
+
 
 const routeAdmin = () => [
   {
@@ -306,6 +309,13 @@ const routeClient = () => [
         Component: Checkinpage,
       },
       {
+        path: "/check-in/mien-bac",
+        Component: ChooseProvinceDetail,
+      },
+      {
+        path: "/check-in/mien-bac/hung-yen",
+        Component: ChooseCheckinFollowArea,
+      },
         path: "/tour",
         Component: TourIndex,
         children : [

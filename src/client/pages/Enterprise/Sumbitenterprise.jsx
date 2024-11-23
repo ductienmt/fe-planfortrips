@@ -44,42 +44,15 @@ const Sumbitenterprise = () => {
           noValidate
           autoComplete="off"
         >
-          <h2 className="signInFormTitle">PlanForTrips</h2>
+          <h2 className="signInFormTitle">Đăng ký doanh nghiệp</h2>
 
           <TextField
             id="input-login"
-            label="Tên người dùng *"
+            label="Tên người dùng * &nbsp;"
             variant="outlined"
             placeholder="Email hoặc số điện thoại"
             fullWidth
           />
-
-          <FormControl variant="outlined">
-            <InputLabel htmlFor="outlined-adornment-password">
-              Mật khẩu
-            </InputLabel>
-            <OutlinedInput
-              id="outlined-adornment-password"
-              type={showPassword ? "text" : "password"}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label={
-                      showPassword
-                        ? "hide the password"
-                        : "display the password"
-                    }
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="Mật khẩu"
-            />
-          </FormControl>
 
           <Box sx={{ display: "flex", gap: 2 }}>
             <TextField
@@ -143,10 +116,9 @@ const Sumbitenterprise = () => {
           <Button
             className="customButton"
             variant="contained"
-            color="primary"
             sx={{ mt: 2 }}
           >
-            Gửi
+            Đăng ký
           </Button>
         </Box>
 

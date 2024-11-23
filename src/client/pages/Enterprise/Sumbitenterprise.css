@@ -1,8 +1,9 @@
 /* Container wrapping the entire sign-in form */
 .signInFormMainContainer {
     display: flex;
-    background-image: url('https://4kwallpapers.com/images/walls/thumbs_3t/12252.jpg');
+    background-image: url("../../../assets/pexels-anhtuan-26574977.jpg");
     background-size: cover;
+    object-fit: cover;
     background-position: center;
     background-repeat: no-repeat;
     height: 100vh;
@@ -12,7 +13,7 @@
 .signInFormContentContainer {
     position: relative;
     background-color: rgba(247, 211, 211, 0.411);
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(3px);
     border-radius: 12px;
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
     padding: 60px;
@@ -23,11 +24,10 @@
 
 /* Form title */
 .signInFormTitle {
-    color: #2c3e50;
+    color: #ffffff;
     font-weight: 700;
     font-size: 36px;
     line-height: 1.4;
-    font-family: 'Poppins', sans-serif;
     text-align: center;
     margin-bottom: 30px;
 }
@@ -37,19 +37,18 @@
     background-color: #bdc3c7;
     height: 4px;
     border: none;
-    margin: 40px 0;
+    margin: 5px 0;
 }
 
 /* Brand name text */
 .signInBrandName {
     position: absolute;
-    top: 50%;
-    right: 150px;
+    top: 39%;
+    right: 50px;
     transform: translateY(-50%);
     font-size: 150px;
     font-weight: bold;
     color: #FFF;
-    font-family: 'Poppins', sans-serif;
     text-align: right;
 }
 
@@ -61,25 +60,17 @@
 }
 
 .customButton {
-    font-size: 1.2rem;
-    padding: 12px 24px;
+    font-size: 20px !important;
+    height: 55px;
+    font-weight: 600 !important;
+    background-color: transparent !important;
+    border: 2px solid #27648c !important;
+    box-shadow: none !important;
+    text-transform: capitalize !important;
 }
 
-/* Responsive adjustments */
-@media (max-width: 991px) {
-    .signInFormContentContainer {
-        padding: 20px;
-        max-width: 90%;
-    }
-}
-
-@media (max-width: 640px) {
-    .signInFormContentContainer {
-        padding: 10px;
-    }
-
-    .customInputField,
-    .customButton {
-        font-size: 1rem;
-    }
+.customButton:hover {
+    background-color: #27648c !important;
+    border: none !important;
+    color: white !important;
 }

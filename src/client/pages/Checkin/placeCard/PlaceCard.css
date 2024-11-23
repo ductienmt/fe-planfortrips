@@ -1,0 +1,67 @@
+.place-card-container {
+  width: 200px;
+  background: white;
+  padding: 0.4em;
+  border-radius: 6px;
+  /* border: 1px solid gray; */
+}
+
+.place-card-container:hover {
+    transform: scale(1.1);
+}
+
+.place-card-image img {
+  background-color: rgb(236, 236, 236);
+  width: 100%;
+  height: 130px;
+  border-radius: 6px 6px 0 0;
+}
+
+.place-card-image:hover {
+  transform: scale(0.98);
+}
+
+.place-card-category {
+  text-transform: capitalize;
+  font-size: 20px;
+  font-weight: 600;
+  color: rgb(63, 121, 230);
+  padding: 10px 7px 0;
+}
+
+.place-card-category:hover {
+  cursor: pointer;
+}
+
+.place-card-heading {
+  font-weight: 600;
+  color: rgb(88, 87, 87);
+  padding: 7px;
+}
+
+.place-card-heading:hover {
+  cursor: pointer;
+}
+
+.place-card-author {
+  color: gray;
+  font-weight: 400;
+  font-size: 11px;
+  padding-top: 20px;
+}
+
+.place-card-name {
+  font-weight: 600;
+}
+
+.place-card-name:hover {
+  cursor: pointer;
+}
+
+.placeCard-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    padding: 20px;
+    margin: 0 200px 0 200px;
+}
