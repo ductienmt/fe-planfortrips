@@ -1,48 +1,43 @@
 import React, { useState } from 'react'
-import "./Vehicle.css";
+import "./Schedules.css";
 import { Table } from "antd";
-const Vehicle = () => {
+const schedules = () => {
   const [roomsData, setRoomsData] = useState([]);
   const columns = [
     {
-      title: "Biển Số",
-      dataIndex: "",
-      key: "",
+      title: "Mã lịch Trình",
+      dataIndex: "roomName",
+      key: "roomName",
     },
     {
-      title: "Tên Tài Xế",
-      dataIndex: "",
-      key: "",
+      title: "Mã Tuyến",
+      dataIndex: "typeOfRoom",
+      key: "typeOfRoom",
     },
     {
-      title: "Loại Xe",
-      dataIndex: "",
-      key: "",
+      title: "Mã Xe",
+      dataIndex: "price",
+      key: "price",
     },
     {
-      title: "Số Điện Thoại",
-      dataIndex: "",
-      key: "",
+      title: "Ngày/Giờ Xuất Phát",
+      dataIndex: "maxSize",
+      key: "maxSize",
     },
     {
-      title: "Hoạt Động",
-      dataIndex: "",
-      key: "",
+      title: "Ngày/Giờ Đến",
+      dataIndex: "isAvailable",
+      key: "isAvailable",
     },
     {
-      title: "Số ghế",
-      dataIndex: "",
-      key: "",
+      title: "Giá Vé",
+      dataIndex: "rating",
+      key: "rating",
     },
     {
-      title: "Công Ty Xe",
-      dataIndex: "",
-      key: "",
-    },
-    {
-      title: "Trạng Thái",
-      dataIndex: "",
-      key: "",
+      title: "Hành Động",
+      dataIndex: "action",
+      key: "action",
     },
   ];
 
@@ -53,7 +48,7 @@ const Vehicle = () => {
   };
   return (
     <>
-      <div className="enterprise-vehicle-container">
+      <div className="enterprise-schedules-container">
         <div className="title">
           <h1
             style={{
@@ -62,13 +57,13 @@ const Vehicle = () => {
               color: "#ADADAD",
             }}
           >
-            Danh Sách Xe
+            Lịch Trình
           </h1>
         </div>
 
         <div className="content mt-3">
           <div className="nav-filter">
-            <div className="filter-vehicle">
+            <div className="filter-schedules">
               <button
                 onClick={() => handleSelectItem("all")}
                 className={selectedItem === "all" ? "isActive" : ""}
@@ -89,7 +84,7 @@ const Vehicle = () => {
               </button>
             </div>
 
-            <div className="nav-add-vehicle">
+            <div className="nav-add-schedules">
               <select>
                 <option value="">Lọc</option>
                 <option value="deluxe">Deluxe</option>
@@ -102,7 +97,7 @@ const Vehicle = () => {
                 data-bs-toggle="modal"
                 data-bs-target="#contactModal"
               >
-               Thêm Xe
+                Thêm Lịch Trình
               </button>
             </div>
 
@@ -112,7 +107,7 @@ const Vehicle = () => {
                 <div className="modal-content">
 
                   <div className="modal-header">
-                    <h3> Danh Sách  Xe</h3>
+                    <h3>Thêm Lịch Trình</h3>
                     <button
                       type="button"
                       className="btn-close"
@@ -229,4 +224,4 @@ const Vehicle = () => {
   )
 }
 
-export default Vehicle
+export default schedules
