@@ -32,4 +32,8 @@ export const TourService = {
     const response = await Http.delete(`api/v1/tours/delete/${id}`);
     return response;
   },
+  uploadImage:async(id,formData)=>{
+    const response = await Http.post(`api/v1/tours/uploads/${id}`,formData)
+    return response.data
+  }
 };

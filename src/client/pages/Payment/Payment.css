@@ -12,6 +12,7 @@
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
     border-radius: 10px;
 }
+
 .payment__qr-code {
     text-align: center;
     margin-top: 20px;
@@ -40,9 +41,6 @@
 .payment-footer .voucher {
     flex-grow: 1;
     flex-basis: 30%;
-}
-
-.payment-footer .voucher .voucher-item {
     width: 100%;
     border-radius: 20px;
     box-shadow: 2px 2px 7px #868686;
@@ -50,10 +48,141 @@
     align-items: center;
     height: 80px;
     display: flex;
-    padding: 10px;
+    padding: 20px;
+    justify-content: space-between;
 }
+
 
 .payment-footer .payment-footer-right {
     flex-grow: 2;
     flex-basis: 70%;
+}
+
+.content-voucher .null-content {
+    margin-top: 10px;
+    height: 150px;
+    border-top: 2px dashed #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content-voucher .not-null-content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    border-top: 2px dashed #e0e0e0;
+
+
+}
+
+.content-voucher .not-null-content .voucher-item {
+    box-shadow: 1px 1px 5px #868686;
+    border-radius: 20px;
+    display: flex;
+    justify-content: stretch;
+    padding: 10px;
+}
+
+.content-voucher .not-null-content .voucher-item .voucher-item-right {
+    flex-grow: 1;
+    flex-basis: 10%;
+    width: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.content-voucher .not-null-content .voucher-item .voucher-item-left {
+    flex-grow: 2;
+    flex-basis: 90%;
+}
+
+.content-voucher .not-null-content .voucher-item .voucher-item-right .button-apply {
+    width: 100%;
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.content-voucher .not-null-content .voucher-item .voucher-item-right .button-apply input {
+    display: none;
+}
+
+.content-voucher .not-null-content .voucher-item .voucher-item-right .button-apply svg {
+    overflow: visible;
+}
+
+.content-voucher .not-null-content .voucher-item .voucher-item-right .button-apply .path {
+    fill: none;
+    stroke: rgb(0, 0, 0);
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke-dasharray 0.5s ease, stroke-dashoffset 0.5s ease;
+    stroke-dasharray: 241 9999999;
+    stroke-dashoffset: 0;
+}
+
+
+.content-voucher .not-null-content .voucher-item .voucher-item-right .button-apply input:checked~svg .path {
+    stroke-dasharray: 70.5096664428711 9999999;
+    stroke-dashoffset: -262.2723388671875;
+}
+
+
+
+.check-voucher-button {
+    font-size: 18px;
+    background: #ffbd07;
+    color: white;
+    padding: 0.3em 1.5em;
+    padding-left: 0.9em;
+    display: flex;
+    align-items: center;
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.2s;
+    cursor: pointer;
+    width: 37%;
+}
+
+.check-voucher-button:hover .svg-wrapper {
+    animation: fly-1 0.6s ease-in-out infinite alternate;
+}
+
+.check-voucher-button span {
+    display: block;
+    margin-left: 0.3em;
+    transition: all 0.3s ease-in-out;
+}
+
+.check-voucher-button svg {
+    display: block;
+    transform-origin: center center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.check-voucher-button:hover svg {
+    transform: translateX(1.2em) rotate(45deg) scale(1.1);
+}
+
+.check-voucher-button:hover span {
+    transform: translateX(5em);
+}
+
+.check-voucher-button:active {
+    transform: scale(0.95);
+}
+
+@keyframes fly-1 {
+    from {
+        transform: translateY(0.1em);
+    }
+
+    to {
+        transform: translateY(-0.1em);
+    }
 }

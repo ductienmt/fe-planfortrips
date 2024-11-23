@@ -36,6 +36,7 @@ import Route from "../enterprise/transportation/route/Route";
 import Room from "../enterprise/accomodation/roomManagement/Room";
 import HotelManagement from "../enterprise/accomodation/manager/HotelManagement";
 import Sumbitenterprise from "../client/pages/Enterprise/Sumbitenterprise";
+import Tour from "../admin/pages/Tour/Tour";
 import TourAdmin from "../admin/pages/Tour/TourPage";
 import GuestLiving from "../enterprise/accomodation/guest/GuestLiving";
 import RoomVoucher from "../enterprise/accomodation/roomVoucher/roomVoucher";
@@ -52,6 +53,12 @@ import VehicleBooking from "../client/pages/Vehicle/VehicleBooking/VehicleBookin
 
 import { Component } from "react";
 import DetailCard from "../client/pages/hotel/detailHotel/detailCard";
+import Failed from "../client/pages/Payment/Status/Failed";
+import { Component } from "react";
+import TourPage from "../client/pages/Tour/TourPage";
+import TourDetail from "../client/pages/Tour/TourDetail/TourDetail";
+import TourIndex from "../client/pages/Tour/TourIndex";
+
 
 const routeAdmin = () => [
   {
@@ -225,6 +232,10 @@ const routeClient = () => [
         exact: true,
       },
       {
+        path: "/failed",
+        Component: Failed,
+      },
+      {
         path: "/profile",
         Component: Profile,
         children: [
@@ -262,6 +273,20 @@ const routeClient = () => [
         path: "/check-in",
         Component: Checkinpage,
       },
+      {
+        path: "/tour",
+        Component: TourIndex,
+        children : [
+          {
+            path : "",
+            Component : TourPage
+          },
+          {
+           path : "detail/:tourId",
+           Component: TourDetail
+          }
+         ]
+      }
     ],
   },
 ];
