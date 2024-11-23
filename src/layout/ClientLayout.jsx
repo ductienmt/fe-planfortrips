@@ -17,6 +17,7 @@ export const ClientLayout = () => {
     "/booking/hotel",
     "/booking/transportation",
     "/hotel",
+    "/check-in",
   ]; // Các đường dẫn chỉ ẩn Footer
 
   // Xác định hiển thị Header và Footer

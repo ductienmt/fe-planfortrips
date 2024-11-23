@@ -183,7 +183,7 @@ const Header = () => {
                   Ẩm thực
                 </Link>
                 <span className="me-2 ms-2">|</span> */}
-                <Link className="nav-link" to="#" style={{ fontSize: "18px" }}>
+                <Link className="nav-link" to="/check-in" style={{ fontSize: "18px" }}>
                   Tham quan
                 </Link>
                 <span className="me-2 ms-2">|</span>

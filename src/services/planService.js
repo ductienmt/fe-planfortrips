@@ -8,7 +8,7 @@ const apiKey = "AIzaSyAKspUYmNB6Qq2kv5EDRm1fRGedCnUP8m4";
 const genAI = new GoogleGenerativeAI(apiKey);
 
 const model = genAI.getGenerativeModel({
-  model: "gemini-1.5-flash",
+  model: "gemini-1.5-pro",
 });
 
 const generationConfig = {

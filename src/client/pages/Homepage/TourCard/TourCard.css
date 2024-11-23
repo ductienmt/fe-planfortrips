@@ -124,9 +124,16 @@
 
 .tour-card .footer .btn-book {
     border: 2px solid #fff;
+    width: 50%;
     color: #fff;
-    border-radius: 20px;
+    border-radius: 10px;
     padding: 10px 20px;
     font-size: 20px;
     font-weight: 600;
+}
+
+.tour-card .footer .btn-book:hover {
+    border: 2px solid #fff;
+    color: #41a5e8;
+    background-color: #fff;
 }

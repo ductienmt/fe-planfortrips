@@ -51,6 +51,8 @@ import Hotelpage from "../client/pages/HotelPage/Hotelpage";
 import { BookingHotel } from "../client/pages/HotelPage/BookingHotel";
 import Checkinpage from "../client/pages/Checkin/Checkinpage";
 import User from "../admin/pages/User/User";
+import ChooseProvinceDetail from "../client/pages/Checkin/chooseProvinceDetail/ChooseProvinceDetail";
+import ChooseCheckinFollowArea from "../client/pages/Checkin/chooseCheckinFollowArea/ChooseCheckinFollowArea";
 
 const routeAdmin = () => [
   {
@@ -251,6 +253,14 @@ const routeClient = () => [
       {
         path: "/check-in",
         Component: Checkinpage,
+      },
+      {
+        path: "/check-in/mien-bac",
+        Component: ChooseProvinceDetail,
+      },
+      {
+        path: "/check-in/mien-bac/hung-yen",
+        Component: ChooseCheckinFollowArea,
       },
     ],
   },
