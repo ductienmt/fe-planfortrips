@@ -5,7 +5,6 @@ export const CouponService = {
     const response = await Http.get(
       `api/v1/coupons/all?page=${page}&limit=${limit}&id=${id}`
     );
-    console.log(response);
     return response.data;
   },
   findCouponById: async (id) => {

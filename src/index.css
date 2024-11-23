@@ -1,11 +1,18 @@
 /* font Afacad FLux */
 @import url('https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&display=swap');
 
-/* font Baloo Paaji */
-@import url('https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400..800&display=swap');
-
 * {
     font-family: 'Afacad Flux', sans-serif;
     margin: 0;
     padding: 0;
+}
+
+:root {
+    --dark-color: #235284;
+    --background-color: #fff;
+    --success-color: #46a2da;
+    --danger-color: #d9534f;
+    --warning-color: #f0ad4e;
+    --success-btn-color: #8dcfec;
+    --success-text-color: #58afdd;
 }

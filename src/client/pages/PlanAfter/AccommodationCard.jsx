@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./AccommodationCard.css";
 import { HotelService } from "../../../services/apis/HotelService";
+import nhaxe from "../../../assets/caurong.webp";
 
 function AccommodationCard({ className, onClick, accomodation }) {
   const [hotelImage1, setHotelImage1] = useState("");
@@ -36,73 +37,199 @@ function AccommodationCard({ className, onClick, accomodation }) {
 
   useEffect(() => {
     console.log(accomodation.hotelId);
+    console.log(accomodation);
+
     loadHotelImages();
   }, [accomodation.hotelId]);
 
   return (
-    <article className={`accommodation-card ${className}`} onClick={onClick}>
-      <div className="image-gallery">
-        <img
-          src={hotelImage1}
-          alt="Accommodation view 1"
-          className="gallery-image"
-          loading="lazy"
-        />
-        <img
-          src={hotelImage2}
-          alt="Accommodation view 2"
-          className="gallery-image1"
-          loading="lazy"
-        />
-        <img
-          src={hotelImage3}
-          alt="Accommodation view 3"
-          className="gallery-image2 full-width"
-          loading="lazy"
-        />
-      </div>
-      <div className="accommodation-details">
-        <div className="details-header">
-          <div className="accommodation-info">
-            <h3 className="accommodation-name" style={{ fontSize: "25px" }}>
-              {accomodation.nameHotel}
-            </h3>
-
-            {accomodation.rooms?.map((room, index) => (
-              <div key={index}>
-                <p className="room-type" style={{ fontSize: "15px" }}>
-                  {room.nameRoom} - {room.roomType}
-                </p>
-                <CheckInOut checkIn={room.checkin} checkOut={room.checkout} />
-              </div>
-            ))}
-          </div>
+    <>
+      <article className={`accommodation-card ${className}`} onClick={onClick}>
+        <div className="image-gallery">
           <img
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/8312b6c1afbf8ba2407ea61d3c83d5228f569367fc22cfce1fef9201d811a2c5?placeholderIfAbsent=true&apiKey=75fde3af215540558ff19397203996a6"
-            alt="Accommodation logo"
-            className="accommodation-logo"
+            src={hotelImage1}
+            alt="Accommodation view 1"
+            className="gallery-image"
+            loading="lazy"
+          />
+          <img
+            src={hotelImage2}
+            alt="Accommodation view 2"
+            className="gallery-image1"
+            loading="lazy"
+          />
+          <img
+            src={hotelImage3}
+            alt="Accommodation view 3"
+            className="gallery-image2 full-width"
+            loading="lazy"
           />
         </div>
-        <div className="amenities">
-          <span className="amenity">Wifi</span>
-          <span className="amenity">Gian bếp</span>
-          <span className="amenity">Điều hòa</span>
-          <span className="amenity">Sân vườn</span>
+        <div className="accommodation-details">
+          <div className="details-header">
+            <div className="accommodation-info">
+              <h3 className="accommodation-name" style={{ fontSize: "25px" }}>
+                {accomodation.nameHotel}
+              </h3>
+
+              {accomodation.rooms?.map((room, index) => (
+                <div key={index}>
+                  <p className="room-type" style={{ fontSize: "15px" }}>
+                    {room.nameRoom} - {room.roomType}
+                  </p>
+                  <CheckInOut checkIn={room.checkin} checkOut={room.checkout} />
+                </div>
+              ))}
+            </div>
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets/TEMP/8312b6c1afbf8ba2407ea61d3c83d5228f569367fc22cfce1fef9201d811a2c5?placeholderIfAbsent=true&apiKey=75fde3af215540558ff19397203996a6"
+              alt="Accommodation logo"
+              className="accommodation-logo"
+            />
+          </div>
+          <div className="amenities">
+            <span className="amenity">Wifi</span>
+            <span className="amenity">Gian bếp</span>
+            <span className="amenity">Điều hòa</span>
+            <span className="amenity">Sân vườn</span>
+          </div>
+          <div className="action-buttons">
+            {/* Bắt đầu xem chi tiết nơi ở */}
+            <button
+              className="action-button"
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#detailLiveModal"
+              // onClick={onNext()}
+            >
+              Chi tiết nơi ở<i className="fa-solid fa-chevron-right"></i>
+            </button>
+            {/* Kết thúc xem chi tiết nơi ở */}
+
+            {/* Bắt đầu thay đổi nơi ở */}
+            <button
+              className="action-button"
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#changeLiveModal"
+            >
+              Thay đổi nơi ở<i className="fa-solid fa-chevron-right"></i>
+            </button>
+            {/* Kết thúc thay đổi nơi ở */}
+          </div>
         </div>
-        <div className="action-buttons">
-          <ActionButton
-            text="Xem chi tiết nơi ở"
-            icon="https://cdn.builder.io/api/v1/image/assets/TEMP/3c4e2726658b7f7d54acceb716f5b91adb3cdef16db10fa02801ded0764b224f?placeholderIfAbsent=true&apiKey=75fde3af215540558ff19397203996a6"
-            primary={false}
-          />
-          <ActionButton
-            text="Thay đổi nơi ở"
-            icon="https://cdn.builder.io/api/v1/image/assets/TEMP/bab203259e8fa19a412838eaf140ba64e9f7722a017a26c19842b57d89cdb891?placeholderIfAbsent=true&apiKey=75fde3af215540558ff19397203996a6"
-            primary={true}
-          />
+      </article>
+
+      {/* Detail Modal */}
+      <div
+        className="modal fade"
+        id="detailLiveModal"
+        tabIndex="-1"
+        aria-labelledby="detailLiveLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered" role="document">
+          <div className="modal-content">
+            <div className="modal-body detail-ticket-color">
+              <div className="d-flex justify-content-lg-between">
+                <h5
+                  style={{
+                    fontSize: "25px",
+                    textTransform: "uppercase",
+                    color: "black",
+                  }}
+                  id="detailLiveLabel"
+                >
+                  {accomodation.nameHotel}
+                </h5>
+
+                {/* Sử dụng css của RoomVoucher   */}
+                <button
+                  className="voucher-close-button"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span className="voucher-close-X"></span>
+                  <span className="voucher-close-Y"></span>
+                  <div className="voucher-close-close">Close</div>
+                </button>
+              </div>
+
+              {/* Form chi tiết vé */}
+              <div className="ticket-detail">
+                {/* Ảnh nhà xe */}
+                <div className="ticket-detail-image mt-4">
+                  <img src={hotelImage1} />
+                </div>
+
+                <h5>Thông tin nơi ở</h5>
+                <div className="tripTicket-info mb-3">
+                  <div className="tripTicket-item">
+                    <p>Phòng:</p>
+                    <h6>
+                      {accomodation.rooms?.map((room, index) => (
+                        <div key={index}>
+                          <h6>
+                            {room.nameRoom} - {room.roomType}
+                          </h6>
+                        </div>
+                      ))}
+                    </h6>
+                  </div>
+                  <div className="tripTicket-item">
+                    <p>Địa chỉ:</p>
+                    <h6>Vũng Tàu</h6>
+                  </div>
+                  <div className="tripTicket-item">
+                    <p>Liên hệ:</p>
+                    <h6>0123 456 789</h6>
+                  </div>
+                  {accomodation.rooms?.map((room, index) => (
+                    <div key={index}>
+                      <div className="tripTicket-item">
+                        <p>Check-in:</p>
+                        <h6>{room.checkin}</h6>
+                      </div>
+                      <div className="tripTicket-item">
+                        <p>Check-out:</p>
+                        <h6>{room.checkout}</h6>
+                      </div>
+                    </div>
+                  ))}
+
+                  <div className="tripTicket-item">
+                    <p>Tiện ích phòng:</p>
+                    <h6>wifi, gian bếp, điều hòa, sân vườn</h6>
+                  </div>
+                </div>
+
+                {/* Tổng tiền */}
+                <div className="totalTicket-container d-flex justify-content-md-between">
+                  <h3
+                    style={{
+                      fontWeight: 450,
+                    }}
+                  >
+                    Tổng tiền:
+                  </h3>
+                  <div className="totalTicket-amount">
+                    <h5
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: "25px",
+                        color: "red",
+                      }}
+                    >
+                      {accomodation.total}.000 VND
+                    </h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </article>
+    </>
   );
 }
 
@@ -128,15 +255,6 @@ function CheckInOut({ checkIn, checkOut }) {
         {/* <span className="check-time">until 12:00</span> */}
       </div>
     </div>
-  );
-}
-
-function ActionButton({ text, primary, icon }) {
-  return (
-    <button className={`action-button ${primary ? "primary" : "secondary"}`}>
-      {text}
-      <img src={icon} alt="Action icon" className="action-icon" />
-    </button>
   );
 }
 

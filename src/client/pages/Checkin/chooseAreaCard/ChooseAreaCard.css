@@ -1,0 +1,66 @@
+.chooseArea-card {
+    width: 90%;
+    height: 340px;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    position: relative;
+    cursor: pointer;
+}
+
+.chooseArea-card:hover {
+    transform: scale(1.05);
+}
+
+.chooseArea-card .chooseArea-card-item {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* position: relative; */
+}
+
+.chooseArea-card .chooseArea-card-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: filter 0.3s ease;
+}
+
+.chooseArea-card:hover .chooseArea-card-item img {
+    filter: brightness(0.7);
+}
+
+.chooseArea-card .chooseArea-content {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    padding: 10px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 15px;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.chooseArea-card:hover .chooseArea-content {
+    background-color: transparent; /* Bỏ màu nền */
+    border-radius: 0; /* Bỏ bo góc */
+    transition: color 0.3s ease;
+    box-shadow: none;
+}
+
+.chooseArea-card:hover .chooseArea-content .chooseArea-name {
+    color: white; /* Đổi màu chữ thành trắng khi hover */
+}
+
+.chooseArea-card .chooseArea-content .chooseArea-name {
+    margin-bottom: 0px;
+    font-weight: 700;
+    font-size: 25px;
+    color: #47b5ff;
+    text-align: center;
+    text-transform: uppercase;
+}

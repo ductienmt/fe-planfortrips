@@ -85,11 +85,16 @@ function TravelPlan() {
     setSelectedCard(card === selectedCard ? null : card); // Nếu click lại thì bỏ chọn
     console.log(card);
     if (card == "attraction") handleAttractionSelected();
+    // if (card == "transportation") handleTransportationSelected();
   };
 
   const handleAttractionSelected = () => {
     setSelectedCard("attraction");
   };
+
+  // const handleTransportationSelected = () => {
+  //   setSelectedCard("transportation");
+  // };
 
   const handleSubmit = async () => {
     try {
@@ -219,6 +224,7 @@ function TravelPlan() {
                       : ""
                 }
                 onClick={() => handleCardClick("transportation")}
+                // onNext = {handleTransportationSelected}
                 vehicleCode={tripData.transportation.departure.vehicleCode}
                 departureTime={formatTime(
                   tripData.transportation.departure.departureTime

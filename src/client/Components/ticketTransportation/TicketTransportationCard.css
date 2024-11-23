@@ -1,0 +1,14 @@
+.ticket-transport-card{
+    display: flex;
+    gap: 60px;
+}
+
+.ticket-transport-time-destination{
+    display: flex;
+    justify-items: center;
+    gap: 60px;
+}
+
+.ticket-transport-price-seat{
+    text-align: end;
+}

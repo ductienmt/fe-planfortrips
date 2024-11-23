@@ -2,6 +2,13 @@ import axios from "axios";
 import Http from "../Http";
 
 export const CheckinService = {
+  
+  getCheckins: async () => {
+    const response = await Http.get(
+      `api/v1/check-in/all`
+    );
+    return response.data;
+  },
   getImageById: async (id) => {
     const response = await Http.get(
       `api/v1/check-in/getImages?checkinId=${id}`
