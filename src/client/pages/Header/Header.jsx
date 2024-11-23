@@ -165,7 +165,7 @@ const Header = () => {
                 <span className="me-2 ms-2">|</span>
                 <Link
                   className="nav-link"
-                  to="/booking-vehicle"
+                  to="/vehicle-page"
                   style={{ fontSize: "18px" }}
                 >
                   Phương tiện
@@ -173,7 +173,7 @@ const Header = () => {
                 <span className="me-2 ms-2">|</span>
                 <Link
                   className="nav-link"
-                  to="/hotel"
+                  to="/hotel-intro"
                   style={{ fontSize: "18px" }}
                 >
                   Khách sạn
