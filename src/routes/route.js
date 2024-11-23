@@ -54,7 +54,6 @@ import VehicleBooking from "../client/pages/Vehicle/VehicleBooking/VehicleBookin
 import { Component } from "react";
 import DetailCard from "../client/pages/hotel/detailHotel/detailCard";
 import Failed from "../client/pages/Payment/Status/Failed";
-import { Component } from "react";
 import TourPage from "../client/pages/Tour/TourPage";
 import TourDetail from "../client/pages/Tour/TourDetail/TourDetail";
 import TourIndex from "../client/pages/Tour/TourIndex";
