@@ -1,0 +1,153 @@
+/* Tổng quan container */
+.tour-detail-info {
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+  }
+  
+  /* Header: Ảnh người và thông tin chuyến đi */
+  .tour-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .tour-detail-author {
+    display: flex;
+    align-items: center;
+  }
+  
+  .tour-detail-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin-right: 15px;
+  }
+  
+  .tour-detail-title {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #222;
+  }
+  
+  .tour-detail-view-count {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  .tour-detail-view-count i {
+    margin-right: 5px;
+    color: #1e88e5;
+  }
+  
+  /* Hashtags */
+  .tour-detail-hashtags {
+    margin: 20px 0;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .tour-detail-hashtag {
+    background: #e3f2fd;
+    color: #1565c0;
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+  }
+  
+  /* Mô tả */
+  .tour-detail-description {
+    margin: 20px 0;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #444;
+  }
+
+  .MuiButtonBase-root  {
+    color: green !important;
+    font-weight: bold !important;
+  }
+
+  .Mui-disabled{
+     color: red !important;
+     font-weight: normal !important;
+  }
+  
+  /* Hình ảnh */
+  .tour-detail-images {
+    margin: 20px 0;
+  }
+  
+  .tour-detail-image {
+    width: 100%;
+    border-radius: 10px;
+  }
+  
+  /* Dịch vụ */
+  .tour-detail-services h4 {
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+    color: #1565c0;
+  }
+  
+  .tour-detail-services ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .tour-detail-services li {
+    margin-bottom: 10px;
+    font-size: 1rem;
+  }
+  
+  /* Lịch trình */
+  .tour-detail-schedule h4 {
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+    color: #1565c0;
+  }
+  
+  .tour-detail-schedule-day h5 {
+    margin: 10px 0;
+    font-size: 1.2rem;
+  }
+  
+  .tour-detail-schedule-day img {
+    width: 100%;
+    margin: 10px 0;
+    border-radius: 8px;
+  }
+  
+  /* Lịch ngày */
+  .tour-detail-calendar {
+    margin: 20px 0;
+    text-align: center;
+  }
+  
+  /* Nút đặt Tour */
+  .tour-detail-booking {
+    text-align: center;
+    margin-top: 30px;
+  }
+  
+  .tour-detail-btn {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 25px;
+    background-color: #1e88e5;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .tour-detail-btn:hover {
+    background-color: #1565c0;
+  }
+  
