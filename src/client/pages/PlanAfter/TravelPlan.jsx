@@ -112,11 +112,11 @@ function TravelPlan() {
         const transportationDeparturePlanData = {
           carId: tripData.transportation.departure.vehicleCode,
           totalPrice: tripData.transportation.departure.totalPrice,
-          startDate: tripData.transportation.departure.departureTime.replace(
+          startDate: tripData.transportation?.departure?.departureTime?.replace(
             "T",
             " "
           ),
-          endDate: tripData.transportation.departure.arrivalTime.replace(
+          endDate: tripData.transportation?.departure?.arrivalTime?.replace(
             "T",
             " "
           ),
@@ -124,8 +124,8 @@ function TravelPlan() {
         };
         const transportationReturnPlanData = {
           carId: tripData.transportation.return.vehicleCode,
-          totalPrice: tripData.transportation.return.totalPrice,
-          startDate: tripData.transportation.return.departureTime.replace(
+          totalPrice: tripData.transportation?.return?.totalPrice,
+          startDate: tripData.transportation?.return?.departureTime?.replace(
             "T",
             " "
           ),
@@ -148,6 +148,8 @@ function TravelPlan() {
           budget: tripData.userData.budget,
           numberPeople: tripData.userData.numberPeople,
           totalPrice: tripData.estimatedCost,
+          discountPrice: 0,
+          finalPrice: tripData.estimatedCost,
           planDetails: [
             transportationDeparturePlanData,
             transportationReturnPlanData,

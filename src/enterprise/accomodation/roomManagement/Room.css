@@ -1,138 +1,161 @@
 .enterprise-room-container {
-    margin: 10px;
-    width: 100%;
-    border-radius: 20px;
-    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.2);
-    padding: 20px;
+  margin: 10px;
+  width: 100%;
+  border-radius: 20px;
+  box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.2);
+  padding: 20px;
 }
 
 .enterprise-room-container .content .nav-filter {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .enterprise-room-container .content .nav-filter .filter-room {
-    display: flex;
-    gap: 20px;
+  display: flex;
+  gap: 20px;
 }
 
 .enterprise-room-container .content .nav-filter .filter-room button {
-    padding: 8px 20px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    outline: none;
-    background-color: transparent;
-    color: #ADADAD;
-    font-size: 16px;
-    cursor: pointer;
+  padding: 8px 20px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+  background-color: transparent;
+  color: #ADADAD;
+  font-size: 16px;
+  cursor: pointer;
+
 }
 
 .enterprise-room-container .content .nav-filter .nav-add-room {
-    display: flex;
-    gap: 20px;
+  display: flex;
+  gap: 20px;
 }
 
 .enterprise-room-container .content .nav-filter .nav-add-room button {
-    padding: 8px 20px;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-    background-color: rgb(50, 129, 181);
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  padding: 8px 20px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background-color: rgb(50, 129, 181);
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .enterprise-room-container .content .nav-filter .filter-room button.isActive {
-    background-color: rgb(237, 248, 255);
-    color: rgb(65, 165, 232);
-    border-color: rgb(132, 205, 255);
+  background-color: rgb(237, 248, 255);
+  color: rgb(65, 165, 232);
+  border-color: rgb(132, 205, 255);
 }
 
 
 .enterprise-room-container .content .nav-filter .nav-add-room button:hover {
-    background-color: rgb(39, 100, 140);
+  background-color: rgb(39, 100, 140);
 }
 
 .enterprise-room-container .content .nav-filter .nav-add-room select {
-    padding: 8px 20px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    outline: none;
-    background-color: transparent;
-    color: #ADADAD;
-    font-size: 16px;
-    cursor: pointer;
+  padding: 8px 20px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+  background-color: transparent;
+  color: #ADADAD;
+  font-size: 16px;
+  cursor: pointer;
 }
 
-/* From Uiverse.io by javierBarroso */ 
 .room-close-button {
-    position: relative;
-    width: 2em;
-    height: 2em;
-    border: none;
-    background: rgba(79, 37, 48, 0.11);
-    border-radius: 5px;
-    transition: background 0.5s;
+  position: relative;
+  width: 2em;
+  height: 2em;
+  border: none;
+  background: rgba(79, 37, 48, 0.11);
+  border-radius: 5px;
+  transition: background 0.5s;
+}
+
+.room-close-X {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1em;
+  height: 0.75px;
+  background-color: rgb(255, 255, 255);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.room-close-Y {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1em;
+  height: 0.75px;
+  background-color: #fff;
+  transform: translateX(-50%) rotate(-45deg);
+}
+
+.room-close-close {
+  position: absolute;
+  display: flex;
+  padding: 0.8rem 1.5rem;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(-50%);
+  top: -70%;
+  left: 50%;
+  width: 3em;
+  height: 1.7em;
+  font-size: 12px;
+  background-color: rgb(19, 22, 24);
+  color: rgb(187, 229, 236);
+  border: none;
+  border-radius: 3px;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.room-close-button:hover {
+  background-color: rgb(211, 21, 21);
+}
+
+.room-close-button:active {
+  background-color: rgb(130, 0, 0);
+}
+
+.room-close-button:hover>.room-close-close {
+  animation: close 0.2s forwards 0.25s;
+}
+
+@keyframes room-close-close {
+  100% {
+    opacity: 1;
   }
-  
-  .room-close-X {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 1em;
-    height: 0.75px;
-    background-color: rgb(255, 255, 255);
-    transform: translateX(-50%) rotate(45deg);
-  }
-  
-  .room-close-Y {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 1em;
-    height: 0.75px;
-    background-color: #fff;
-    transform: translateX(-50%) rotate(-45deg);
-  }
-  
-  .room-close-close {
-    position: absolute;
-    display: flex;
-    padding: 0.8rem 1.5rem;
-    align-items: center;
-    justify-content: center;
-    transform: translateX(-50%);
-    top: -70%;
-    left: 50%;
-    width: 3em;
-    height: 1.7em;
-    font-size: 12px;
-    background-color: rgb(19, 22, 24);
-    color: rgb(187, 229, 236);
-    border: none;
-    border-radius: 3px;
-    pointer-events: none;
-    opacity: 0;
-  }
-  
-  .room-close-button:hover {
-    background-color: rgb(211, 21, 21);
-  }
-  
-  .room-close-button:active {
-    background-color: rgb(130, 0, 0);
-  }
-  
-  .room-close-button:hover > .room-close-close {
-    animation: close 0.2s forwards 0.25s;
-  }
-  
-  @keyframes room-close-close {
-    100% {
-      opacity: 1;
-    }
-  }
+}
+
+.modal-edit-info-room .modal-body ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.modal-edit-info-room .modal-body ul li {}
+
+.modal-edit-info-room .modal-body ul li button {
+  border: none;
+  width: 100%;
+  padding: 10px;
+  background-color: #2e2e2e;
+  display: flex;
+  justify-content: space-between;
+  color: #fff;
+
+}
+
+.modal-edit-info-room .modal-body ul li button:hover {
+  background-color: #4e4e4e;
+}

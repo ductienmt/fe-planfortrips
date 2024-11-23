@@ -44,10 +44,11 @@ export default function TourAdmin() {
   }, []);
   const handleDelete = async (id) => {
     try {
-      console.log("ID" +id);
-      
+      console.log("ID" + id);
+
       const response = await TourService.deleteTour(id);
-      if (response) {("Xóa thành công");
+      if (response) {
+        ("Xóa thành công");
         setRows((prevRows) => prevRows.filter((row) => row.tour_id !== id));
       }
     } catch (error) {
@@ -87,7 +88,7 @@ export default function TourAdmin() {
           justifyContent: "flex-end",
         }}
       >
-        <TourForm setRows={setRows}/>
+        <TourForm setRows={setRows} />
         <GridToolbar />
       </GridToolbarContainer>
     );
@@ -186,7 +187,7 @@ export default function TourAdmin() {
           key="edit"
           style={{ cursor: "pointer" }}
           data-bs-toggle="modal"
-        data-bs-target="#exampleModal1"
+          data-bs-target="#exampleModaledit"
           onClick={() => {
             handleClick(params.row);
           }}
@@ -231,7 +232,7 @@ export default function TourAdmin() {
         getRowHeight={(params) => {
           const baseHeight = 52; // Chiều cao tối thiểu
           if (params.model.tags && params.model.tags.length > 1) {
-            return baseHeight + (params.model.tags.length * 10); 
+            return baseHeight + params.model.tags.length * 10;
           }
           return baseHeight;
         }}
@@ -256,7 +257,11 @@ export default function TourAdmin() {
           boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
         }}
       />
-      <TourFormUpdate setRows={setRows} selectedTourId={selectedTourId}/>
+      <TourFormUpdate
+        setRows={setRows}
+        rows={rows}
+        selectedTourId={selectedTourId}
+      />
     </Box>
   );
 }

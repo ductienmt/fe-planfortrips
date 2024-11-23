@@ -1,0 +1,238 @@
+.custom-detailCard {
+    margin-top: 8rem;
+    margin-left: 4rem;
+    margin-right: 4rem;
+}
+
+.flex-container-header {
+    display: flex;
+    align-items: stretch;
+}
+
+
+.flex-container>.nameHotelDetail .start-feedback i {
+    color: salmon;
+}
+
+.btn-detail-hotel {
+    display: flex;
+    justify-content: stretch;
+    gap: 10px;
+    width: 100%;
+}
+
+.hotel-adr {
+    font-size: 1.2rem;
+}
+
+.btn-detail-hotel button {
+    border: none;
+    color: var(--success-btn-color);
+    font-size: 1.5rem;
+}
+
+.btn-detail-hotel button i {
+    width: 100%;
+}
+
+.btn-detail-hotel button:hover {
+    /* background-color: var(--success-text-color); */
+    color: var(--success-text-color);
+}
+
+.btn-detail-hotel a {
+    border: none;
+    height: 50px;
+    background-color: var(--success-btn-color);
+    color: var(--background-color);
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 13px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+.btn-detail-hotel a:hover {
+    background-color: var(--success-text-color);
+}
+
+.flex-container-body {
+    display: flex;
+    align-items: stretch;
+    max-height: 500px;
+    margin-top: 2rem;
+    gap: 10px;
+    position: relative;
+}
+
+.flex-container-body img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.flex-container-body .img1 {
+    border-radius: 13px 0 0 13px !important;
+}
+
+.img-col-2,
+.img-col-3 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.flex-container-body .img2 {
+    width: 100%;
+    max-height: 250px;
+}
+
+.flex-container-body .img3 {
+    width: 100%;
+    max-height: 250px;
+    border-radius: 0 13px 0 0 !important;
+}
+
+.flex-container-body .img4 {
+    width: 100%;
+    max-height: 250px;
+    border-radius: 0 0 13px 0 !important;
+}
+
+.flex-container-body .img-col-1 {
+    flex-grow: 6;
+}
+
+.flex-container-body .img-col-2 {
+    flex-grow: 2;
+}
+
+.flex-container-body .img-col-3 {
+    flex-grow: 2;
+}
+
+
+/* .btn-seeAll {
+    position: absolute;
+    border: none;
+    height: 50px;
+    background-color: var(--success-btn-color);
+    color: var(--background-color);
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 13px;
+    padding: 11px;
+    transform: translateY(-150%);
+    right: 6rem;
+}
+
+.btn-seeAll:hover {
+    background-color: var(--success-text-color);
+} */
+
+/* Bọc nút btn-seeAll bằng một container */
+.btn-seeAll-container {
+    position: absolute;
+    right: 6rem;
+    transform: translateY(-150%);
+}
+
+.btn-seeAll {
+    border: none;
+    height: 50px;
+    background-color: var(--success-btn-color);
+    color: var(--background-color);
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 13px;
+    padding: 11px;
+    /* Loại bỏ transform từ btn-seeAll */
+}
+
+.btn-seeAll:hover {
+    background-color: var(--success-text-color);
+    /* Đảm bảo không có thay đổi về kích thước hoặc vị trí */
+}
+
+.amenities-text {
+    text-align: center;
+}
+
+.location-hotel .findHotel-onMap {
+    height: 50px;
+    width: 15%;
+    border: none;
+    background-color: var(--success-btn-color);
+    color: var(--background-color);
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.location-hotel .findHotel-onMap:hover,
+.review-hotel .giveYour-review:hover {
+    background-color: var(--success-text-color);
+}
+
+.review-hotel .giveYour-review {
+    height: 50px;
+    width: 20%;
+    border: none;
+    background-color: var(--success-btn-color);
+    color: var(--background-color);
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.star-review .star-number {
+    font-size: 4rem;
+    color: salmon;
+}
+
+.star-review .status-review .status-text-review {
+    font-size: 1.8rem;
+    color: var(--success-text-color);
+}
+
+.star-review .status-review {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 1rem;
+}
+
+
+
+@media screen and (max-width: 960px) {
+    .flex-container-header {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* .btn-seeAll {
+        font-size: 0.9rem;
+        font-weight: 400;
+        height: 40px;
+
+    } */
+
+    .review-hotel .giveYour-review {
+        font-size: 0.8rem;
+        font-weight: 400;
+
+    }
+
+    .flex-container-body {
+        flex-direction: column;
+        max-height: max-content;
+    }
+
+    .btn-seeAl {
+        background-color: var(--success-text-color);
+    }
+
+    .location-hotel .findHotel-onMap {
+        font-size: 0.8rem;
+    }
+}

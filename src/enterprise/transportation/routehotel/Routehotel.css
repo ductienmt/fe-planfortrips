@@ -1,0 +1,87 @@
+.enterprise-Route-container {
+    margin: 10px;
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+}
+
+.enterprise-Route-container .content .nav-filter {
+    display: flex;
+    justify-content: space-between;
+}
+
+.enterprise-Route-container .content .nav-filter .filter-Route {
+    display: flex;
+    gap: 20px;
+}
+
+.enterprise-Route-container .content .nav-filter .filter-Route button {
+    padding: 8px 20px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    outline: none;
+    background-color: transparent;
+    color: #ADADAD;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.enterprise-Route-container .content .nav-filter .nav-add-Route {
+    display: flex;
+    gap: 20px;
+}
+
+.enterprise-Route-container .content .nav-filter .nav-add-Route button {
+    padding: 8px 20px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background-color: rgb(50, 129, 181);
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.enterprise-Route-container .content .nav-filter .filter-Route button.isActive {
+    background-color: rgb(237, 248, 255);
+    color: rgb(65, 165, 232);
+    border-color: rgb(132, 205, 255);
+}
+
+
+.enterprise-Route-container .content .nav-filter .nav-add-Route button:hover {
+    background-color: rgb(39, 100, 140);
+}
+
+.enterprise-Route-container .content .nav-filter .nav-add-Route select {
+    padding: 8px 20px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    outline: none;
+    background-color: transparent;
+    color: #ADADAD;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.enterprise-Route-container .modal3-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    padding: 20px;
+  }
+.enterprise-Route-container .modal-dialog{
+ max-width: 40%; 
+  max-height: 40%;
+  }
+.enterprise-Route-container .modal3-footer .footer-btn{
+    background-color: #0C7FDA;
+    height:50px;
+    width: 800px;
+}
+
+
+  
+ 

@@ -5,7 +5,6 @@ export const TagService = {
     const response = await Http.get(
       `api/v1/tags/all?page=${page}&limit=${limit}`
     );
-    console.log(response);
     return response.data;
   },
   createTag: async (data) => {
@@ -14,7 +13,10 @@ export const TagService = {
       return response.data;
     } catch (error) {
       console.error("Error creating Tag:", error);
-      return null;
+      return {
+        success: false,
+        message: error.response?.data || "An unknown error occurred",
+      };
     }
   },
 };
