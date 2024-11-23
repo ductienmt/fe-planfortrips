@@ -1,16 +1,26 @@
-import React, { useState } from 'react'
-import "./Vehicle.css";
+import React, { useState } from "react";
 import { Table } from "antd";
-const Vehicle = () => {
+import "./Transportavoucher.css";
+const TransportationVouchers = () => {
   const [roomsData, setRoomsData] = useState([]);
   const columns = [
     {
-      title: "Biển Số",
+      title: "Giảm Giá",
       dataIndex: "",
       key: "",
     },
     {
-      title: "Tên Tài Xế",
+      title: "Mã Voucher",
+      dataIndex: "",
+      key: "",
+    },
+    {
+      title: "Số Lượng",
+      dataIndex: "",
+      key: "",
+    },
+    {
+      title: "Còn Lại",
       dataIndex: "",
       key: "",
     },
@@ -20,22 +30,7 @@ const Vehicle = () => {
       key: "",
     },
     {
-      title: "Số Điện Thoại",
-      dataIndex: "",
-      key: "",
-    },
-    {
-      title: "Hoạt Động",
-      dataIndex: "",
-      key: "",
-    },
-    {
-      title: "Số ghế",
-      dataIndex: "",
-      key: "",
-    },
-    {
-      title: "Công Ty Xe",
+      title: "Hết Hạn",
       dataIndex: "",
       key: "",
     },
@@ -53,7 +48,7 @@ const Vehicle = () => {
   };
   return (
     <>
-      <div className="enterprise-vehicle-container">
+      <div className="enterprise-TransportationVouchers-container">
         <div className="title">
           <h1
             style={{
@@ -62,13 +57,13 @@ const Vehicle = () => {
               color: "#ADADAD",
             }}
           >
-            Danh Sách Xe
+            Mã Giảm Giá
           </h1>
         </div>
 
         <div className="content mt-3">
           <div className="nav-filter">
-            <div className="filter-vehicle">
+            <div className="filter-TransportationVouchers">
               <button
                 onClick={() => handleSelectItem("all")}
                 className={selectedItem === "all" ? "isActive" : ""}
@@ -89,7 +84,7 @@ const Vehicle = () => {
               </button>
             </div>
 
-            <div className="nav-add-vehicle">
+            <div className="nav-add-TransportationVouchers">
               <select>
                 <option value="">Lọc</option>
                 <option value="deluxe">Deluxe</option>
@@ -100,19 +95,20 @@ const Vehicle = () => {
                 type="button"
                 className="btn btn-primary"
                 data-bs-toggle="modal"
-                data-bs-target="#contactModal"
+                data-bs-target="#addvouchersModal"
               >
-               Thêm Xe
+                Thêm Voucher
               </button>
             </div>
 
+
             {/* Contact Info Modal */}
-            <div className="modal fade" id="contactModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+            <div className="modal fade" id="addvouchersModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="addvouchersModal  " aria-hidden="true">
               <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
 
                   <div className="modal-header">
-                    <h3> Danh Sách  Xe</h3>
+                    <h3>Thêm Mã Giảm Giá</h3>
                     <button
                       type="button"
                       className="btn-close"
@@ -126,45 +122,46 @@ const Vehicle = () => {
                     <div className="row">
 
                       <div className="col-12 mb-3">
-                        <label htmlFor="routeCode" className="form-label">
-                          Mã Tuyến
+                        <label htmlFor="Price" className="form-label">
+                          Mã  phòng áp dụng
                         </label>
-                        <select className="form-control" id="routeCode" name="routeCode">
-                          <option value="">Chọn Mã Tuyến</option>
-                          <option value="route1">Tuyến 1</option>
-                          <option value="route2">Tuyến 2</option>
-                          <option value="route3">Tuyến 3</option>
-                          <option value="route4">Tuyến 4</option>
-                          {/* Thêm các lựa chọn khác nếu cần */}
-                        </select>
+                        <input className="form-control" placeholder="  Mã  phòng áp dụng" />
                       </div>
-
-
-
                       <div className="col-6 mb-3">
-                        <label htmlFor="busCode" className="form-label">
-                          Mã Xe
+                        <label htmlFor="Price" className="form-label">
+                          Mã  giảm giá
                         </label>
-                        <select className="form-control" id="busCode" name="busCode">
-                          <option value="">Chọn Mã Xe</option>
-                          <option value="bus1">Xe 1</option>
-                          <option value="bus2">Xe 2</option>
-                          <option value="bus3">Xe 3</option>
-                          <option value="bus4">Xe 4</option>
-                          {/* Thêm các lựa chọn khác nếu cần */}
-                        </select>
+                        <input className="form-control" placeholder="  Mã  giảm giá" />
+                      </div>
+                      <div className="col-6 mb-3">
+                        <label htmlFor="Price" className="form-label">
+                          Giới hạn sử dụng
+                        </label>
+                        <input className="form-control" placeholder="  Giới hạn sử dụng" />
                       </div>
 
                       <div className="col-6 mb-3">
                         <label htmlFor="Price" className="form-label">
-                          Giá Vé (VNĐ)
+                          Loại giảm giá
                         </label>
-                        <input className="form-control" placeholder="Nhập giá vé" />
+                        <input className="form-control" placeholder=" Loại giảm giá" />
                       </div>
+                      <div className="col-6 mb-3">
+                        <label htmlFor="Price" className="form-label">
+                          Giảm giá
+                        </label>
+                        <input className="form-control" placeholder=" Giảm giá" />
+                      </div>
+
+
+
+
+
+
 
                       <div className="col-6 mb-3">
                         <label htmlFor="departureTime" className="form-label">
-                          Ngày/Giờ Xuất Phát
+                          Ngày/Giờ bắt đầu
                         </label>
                         <input
                           type="datetime-local"
@@ -175,7 +172,7 @@ const Vehicle = () => {
 
                       <div className="col-6 mb-3">
                         <label htmlFor="arrivalTime" className="form-label">
-                          Ngày/Giờ Đến
+                          Ngày/Giờ kết thúc
                         </label>
                         <input
                           type="datetime-local"
@@ -197,16 +194,6 @@ const Vehicle = () => {
               </div>
             </div>
 
-
-
-
-
-
-
-
-
-
-
           </div>
           <div className="content-table mt-4">
             <Table
@@ -226,7 +213,7 @@ const Vehicle = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Vehicle
+export default TransportationVouchers;
