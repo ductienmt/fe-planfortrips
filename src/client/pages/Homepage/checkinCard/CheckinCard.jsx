@@ -34,7 +34,7 @@ const CheckinCard = ({ img, cityName, checkinName, rating }) => {
 
   return (
     <>
-      <div className="checkin-card">
+      <div className="checkin-card" style={{ padding: "0" }}>
         <div className="checkin-card-item">
           <img src={img} alt={checkinName} />
           <div className="content">

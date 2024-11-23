@@ -583,7 +583,7 @@ function PlanBefore() {
         const tripPlan = await generateTripPlan(response.data);
         console.log(tripPlan);
 
-        if (tripPlan.estimatedCost <= updatedFormData.budget) {
+        if (tripPlan?.estimatedCost <= updatedFormData.budget * 1000) {
           sessionStorage.setItem("tripData", JSON.stringify(tripPlan));
           navigate("/plan/trip");
         } else {

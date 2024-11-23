@@ -35,7 +35,7 @@ const EnterpriseLogin = () => {
 
   useEffect(() => {
     document.title = "Doanh nghiệp - Đăng nhập";
-    logout();
+    sessionStorage.clear();
     loadServiceType();
   }, []);
 

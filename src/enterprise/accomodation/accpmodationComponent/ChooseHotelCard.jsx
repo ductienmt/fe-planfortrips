@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import "./ChooseHotelCard.css";
 
 const ChooseHotelCard = ({
-  hotelCode,
-  name,
-  status,
-  address,
-  phone,
-  image,
+  hotelId,
+  hotelName,
+  hotelStatus,
+  hotelAddress,
+  hotelPhoneNumber,
+  hotelImages,
 }) => {
   const getStatusStyles = (status) => {
     if (status === "Đang hoạt động") {
@@ -28,8 +28,8 @@ const ChooseHotelCard = ({
       <article className="chooseHotelCard-card">
         <div className="chooseHotelCard-image">
           <img
-            src={image}
-            alt={`${name} exterior`}
+            src={hotelImages && hotelImages[0]?.url}
+            alt={`${hotelName} exterior`}
             className="chooseHotelCard-photo"
           />
         </div>
@@ -37,16 +37,21 @@ const ChooseHotelCard = ({
           <header className="chooseHotelCard-header">
             <div className="chooseHotelCard-title">
               <span className="chooseHotelCard-code">
-                Mã Khách Sạn: {hotelCode}
+                Mã Khách Sạn: {hotelId}
               </span>
               <div className="chooseHotelCard-body">
-                <h2 className="chooseHotelCard-name">{name}</h2>
-                <span className="chooseHotelCard-status" style={getStatusStyles(status)}>{status}</span>
+                <h2 className="chooseHotelCard-name">{hotelName}</h2>
+                <span
+                  className="chooseHotelCard-status"
+                  style={getStatusStyles(hotelStatus)}
+                >
+                  {hotelStatus}
+                </span>
               </div>
             </div>
           </header>
-          <p className="chooseHotelCard-address">{address}</p>
-          <p className="chooseHotelCard-phone">Hotline: {phone}</p>
+          <p className="chooseHotelCard-address">{hotelAddress}</p>
+          <p className="chooseHotelCard-phone">Hotline: {hotelPhoneNumber}</p>
         </div>
       </article>
     </>

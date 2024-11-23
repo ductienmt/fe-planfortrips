@@ -218,6 +218,7 @@ export default function CouponAdmin() {
           style={{ cursor:"pointer" }}
           onClick={() => {
             handleClick(params.row);
+            setEditMode(true)
             setViewMode(false);
           }}
         />,

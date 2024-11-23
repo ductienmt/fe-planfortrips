@@ -21,9 +21,6 @@ import OrderCarPage from "../admin/pages/Exchange/OrderCar/OrderCar";
 import BookingHotelPage from "../admin/pages/Exchange/BookingHotel/BookingHotel";
 import LoginAdmin from "../admin/pages/Auth/Login/Login";
 import FeedbackPage from "../admin/pages/Feedback/Feedback";
-import TransportSelectionPage from "../client/pages/VehiclePage/BookingVehiclesFind/TransportSelectionPage";
-import SearchResults from "../client/pages/VehiclePage/BookingVehicles/SearchResults";
-import BookingSteps from "../client/pages/VehiclePage/BookingVehiclesDetails/BookingSteps";
 import ProfileDetail from "../client/pages/Profile/ProfileDetail/ProfileDetail";
 import ChangePassword from "../client/pages/Profile/ChangePass/ChangePassword";
 import InfoDetails from "../client/pages/Profile/InfoDetails/InfoDetails";
@@ -32,7 +29,6 @@ import PlacePageAdmin from "../admin/pages/Travel/PlacePage";
 import { EnterpriseLayout } from "../layout/EnterpriseLayout";
 import EnterpriseLogin from "../enterprise/auth/login/EnterpriseLogin";
 // import EnterpriseDashboard from "../enterprise/dashboard/EnterpriseDashboard";
-// import Hotel from "../client/pages/HotelPage/Hotel/Hotel";
 import Voucher from "../enterprise/voucher/Voucher";
 import Vehicle from "../enterprise/transportation/vehicleManagement/Vehicle";
 import Schedule from "../enterprise/transportation/schedules/Schedules";
@@ -40,16 +36,29 @@ import RouteTrans from "../enterprise/transportation/routehotel/Routehotel";
 
 import Room from "../enterprise/accomodation/roomManagement/Room";
 import HotelManagement from "../enterprise/accomodation/manager/HotelManagement";
-
 import Sumbitenterprise from "../client/pages/Enterprise/Sumbitenterprise";
+import Tour from "../admin/pages/Tour/Tour";
 import TourAdmin from "../admin/pages/Tour/TourPage";
 import GuestLiving from "../enterprise/accomodation/guest/GuestLiving";
 import RoomVoucher from "../enterprise/accomodation/roomVoucher/RoomVoucher";
 import ChooseHotel from "../enterprise/accomodation/chooseHotel/chooseHotel";
 import AccomodationDashboard from "../enterprise/dashboard/Accomodation/AccomodationDashboard";
 import TranportatinDashboard from "../enterprise/dashboard/tranportation/TranportatinDashboard";
-import Hotelpage from "../client/pages/HotelPage/Hotelpage";
-import { BookingHotel } from "../client/pages/HotelPage/BookingHotel";
+import Checkinpage from "../client/pages/Checkin/Checkinpage";
+import User from "../admin/pages/User/User";
+import IntroHotel from "../client/pages/hotel/IntroHotel/IntroHotel";
+import Hotel from "../client/pages/hotel/hotel";
+import IntroVehicle from "../client/pages/Vehicle/IntroVehicle/IntroVehicle"
+import VehiclePage from "../client/pages/Vehicle/VehiclePage/VehiclePage";
+import VehicleBooking from "../client/pages/Vehicle/VehicleBooking/VehicleBooking";
+
+import { Component } from "react";
+import DetailCard from "../client/pages/hotel/detailHotel/detailCard";
+import Failed from "../client/pages/Payment/Status/Failed";
+import TourPage from "../client/pages/Tour/TourPage";
+import TourDetail from "../client/pages/Tour/TourDetail/TourDetail";
+import TourIndex from "../client/pages/Tour/TourIndex";
+
 
 import Account from "../enterprise/transportation/account/Account";
 import Schedules from "../enterprise/transportation/schedules/Schedules";
@@ -70,8 +79,8 @@ const routeAdmin = () => [
         Component: HomePage,
       },
       {
-        path: "tour",
-        Component: TourForm,
+        path: "users",
+        Component: User,
       },
       {
         path: "business",
@@ -208,14 +217,6 @@ const routeClient = () => [
         Component: Register,
       },
       {
-        path: "/hotel",
-        Component: Hotelpage,
-      },
-      {
-        path: "/booking-hotel",
-        Component: BookingHotel,
-      },
-      {
         path: "/plan",
         Component: PlanBefore,
       },
@@ -228,6 +229,32 @@ const routeClient = () => [
         Component: Booking,
       },
       {
+        path: "/hotel",
+        Component: IntroHotel,
+      },
+      {
+        path: "/hotel-page",
+        Component: Hotel,
+
+      },
+      {
+        path: "/hotel-page/detail",
+        Component: DetailCard,
+
+      },
+      {
+        path: "/vehicle-intro",
+        Component: IntroVehicle,
+      },
+      {
+        path: "/vehicle-page",
+        Component: VehiclePage,
+      },
+      {
+        path: "/vehicle-booking",
+        Component: VehicleBooking,
+      },
+      {
         path: "/payment",
         Component: Payment,
       },
@@ -235,6 +262,10 @@ const routeClient = () => [
         path: "/success",
         Component: Success,
         exact: true,
+      },
+      {
+        path: "/failed",
+        Component: Failed,
       },
       {
         path: "/profile",
@@ -262,23 +293,32 @@ const routeClient = () => [
           // },
         ],
       },
+      // {
+      //   path: "/vehicle",
+      //   Component: TransportSelectionPage,
+      // },
       {
-        path: "/vehicle",
-        Component: TransportSelectionPage,
-      },
-      {
-        path: "/booking-vehicle",
-        Component: SearchResults,
-      },
-      {
-        path: "/vehicle-details/:id",
-        Component: BookingSteps,
-      },
-
-      {
-        path: "/enterprise",
+        path: "/submit-enterprise",
         Component: Sumbitenterprise,
       },
+      {
+        path: "/check-in",
+        Component: Checkinpage,
+      },
+      {
+        path: "/tour",
+        Component: TourIndex,
+        children : [
+          {
+            path : "",
+            Component : TourPage
+          },
+          {
+           path : "detail/:tourId",
+           Component: TourDetail
+          }
+         ]
+      }
     ],
   },
 ];

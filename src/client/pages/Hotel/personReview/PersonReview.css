@@ -1,0 +1,18 @@
+.person-review {
+    display: flex;
+    justify-content: stretch;
+    align-items: center;
+}
+
+.person-review .person-avatar img {
+    border-radius: 50%;
+}
+
+.person-review .review-rating i {
+    font-size: 1.5rem;
+}
+
+.person-review .person-info i {
+    font-size: 0.9rem;
+    color: var(--warning-color);
+}

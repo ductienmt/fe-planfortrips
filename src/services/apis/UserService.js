@@ -52,8 +52,8 @@ export const UserService = {
     );
     return response.data;
   },
-  findUserById: async (id) => {
-    const response = await Http.get(`api/v1/users/getDetail?id=${id}`);
-    return response.data;
-  },
+  // findUserById: async (id) => {
+  //   const response = await Http.get(`api/v1/users/getDetail?id=${id}`);
+  //   return response.data;
+  // },
 };

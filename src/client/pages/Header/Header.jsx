@@ -91,7 +91,7 @@ const Header = () => {
             </div>
           </form>
 
-          <h1 className="text-center flex-grow-1">Plan for Trips</h1>
+          <h1 className="text-center flex-grow-1" style={{color: "black"}}>Plan for Trips</h1>
 
           <div style={{ width: "209px", justifyContent: "end" }}>
             {!isLoggedIn ? (
@@ -165,7 +165,7 @@ const Header = () => {
                 <span className="me-2 ms-2">|</span>
                 <Link
                   className="nav-link"
-                  to="/vehicle"
+                  to="/vehicle-page"
                   style={{ fontSize: "18px" }}
                 >
                   Phương tiện
@@ -194,6 +194,10 @@ const Header = () => {
                 >
                   Hợp tác
                 </Link>
+                <span className="me-2 ms-2">|</span>
+                <Link className="nav-link" to="/tour" style={{ fontSize: "18px" }}>
+                  Tour
+                </Link>{" "}
               </div>
             </div>
           </div>

@@ -1,0 +1,119 @@
+.custom-card-hotel .custom-img-hotel-card {
+    height: 100%;
+    /* Chiều cao của hình ảnh sẽ bằng với chiều cao của card */
+    width: 100%;
+    /* Đảm bảo hình ảnh rộng 100% */
+    object-fit: cover;
+    /* Đảm bảo hình ảnh sẽ điều chỉnh sao cho vừa với kích thước mà không bị căng ra */
+}
+
+.hotel-adr {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.price {
+    color: var(--success-text-color);
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.addFav-viewDe button {
+    border: none;
+    width: 100%;
+    height: 50px;
+    font-size: 1.2rem;
+    color: var(--background-color);
+    background-color: var(--success-btn-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+.addFav-viewDe a {
+    background-color: var(--success-btn-color);
+    color: var(--background-color);
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.addFav-viewDe a:hover {
+    background-color: var(--success-text-color);
+    color: var(--background-color);
+    transition: background-color 0.3s ease;
+}
+
+.amenities {
+    justify-content: start;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.amenities small i {
+    margin-right: 0.5rem;
+}
+
+.amenities small {
+    background-color: rgb(230, 230, 230);
+    padding: 8px;
+    border-radius: 10px;
+}
+
+.feed-back-hotel i {
+    color: salmon;
+
+}
+
+.feed-back-hotel {
+    gap: 10px;
+}
+
+
+.feed-back-hotel span {
+    font-size: 0.6rem;
+}
+
+.discounted {
+    text-decoration: line-through;
+    color: gray;
+    font-size: 1.2rem;
+    text-wrap: nowrap;
+}
+
+.new-price {
+    font-size: 1.5rem;
+    color: var(--success-text-color);
+    text-wrap: nowrap;
+}
+
+
+@media screen and (max-width: 1230px) {
+    .addFav-viewDe {
+        gap: 10px;
+    }
+
+}
+
+@media screen and (max-width: 1300px) {
+    .addFav-viewDe {
+        gap: 10px;
+    }
+
+    .new-price {
+        font-size: 1.2rem;
+    }
+
+    .price .discounted {
+        font-size: 1rem;
+    }
+}

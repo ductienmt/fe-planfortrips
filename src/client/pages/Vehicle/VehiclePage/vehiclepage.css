@@ -1,0 +1,222 @@
+/* vehicle header */
+.vehicle-header {
+    width: 1200px;
+    padding: 20px 30px 20px 30px;
+    margin: auto;
+    border-radius: 20px;
+    background-color: #F4F7FA;
+}
+
+.vehicle-header .vehicle-search-button {
+    background-color: #005293;
+    width: 100%;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.vehicle-header .vehicle-search-button:hover {
+    background-color: #003f73;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.vehicle-header .vehicle-search-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #005293;
+}
+
+/* ket thucvehicle header */
+
+.vehicle-body {
+    display: flex;
+    justify-content: stretch;
+    gap: 20px;
+    padding: 20px 10px 20px 10px;
+    border-radius: 10px;
+    width: 1500px;
+    margin: auto;
+}
+
+/* side bar */
+.vehicle-body .sidebar {
+    flex-grow: 1;
+    flex-basis: 30%;
+    border-radius: 20px 0px 0px 20px;
+    padding: 15px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+    background-color: #FFF;
+}
+
+.vehicle-body .main-content {
+    flex-grow: 2;
+    flex-basis: 50%;
+}
+
+.vehicle-body .sidebar .filter-sort {
+    color: gray;
+    margin: auto;
+    width: 70%;
+}
+
+
+.vehicle-body .sidebar .filter-sort .custom-checkbox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.vehicle-body .sidebar .filter-sort .custom-checkbox input {
+    display: none;
+}
+
+.vehicle-body .sidebar .filter-sort .custom-checkbox .checkmark {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #000;
+    background-color: white;
+    display: inline-block;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.vehicle-body .sidebar .filter-sort .custom-checkbox input:checked+.checkmark {
+    background-color: black;
+    border-color: black;
+}
+
+.vehicle-body .sidebar .filter-date {
+    display: flex;
+    gap: 30px;
+    margin: auto;
+    border-radius: 10px;
+    padding: 10px;
+    width: 80%;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.vehicle-body .sidebar .filter-date select {
+    border-radius: 10px;
+    border: 1px solid #d3d3d3;
+    outline: none;
+}
+
+.vehicle-body .sidebar .filter-price {
+    border-radius: 10px;
+    padding: 10px;
+    width: 80%;
+    margin: auto;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.vehicle-body .sidebar .filter-review {
+    text-align: center;
+    border-radius: 10px;
+    padding: 10px;
+    width: 80%;
+    margin: auto;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.vehicle-body .sidebar .filter-review .star-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.vehicle-body .sidebar .filter-review .star-button {
+    border-radius: 10px;
+    font-size: 20px;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.vehicle-body .sidebar .filter-review .star-button.active {
+    background-color: #ffcc00;
+    color: white;
+}
+
+.vehicle-body .sidebar .filter-review .star-button:hover {
+    background-color: #ffeb3b;
+}
+
+/* ket thuc side bar */
+/* main content */
+.vehicle-body .main-content {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
+
+.vehicle-body .main-content .card {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    width: 100%;
+    padding: 20px;
+    border: none;
+    border-radius: 0px 10px 10px 0px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.vehicle-body .main-content .card .right {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 70%;
+}
+
+.vehicle-body .main-content .card .left {
+    width: 50%;
+}
+
+.vehicle-body .main-content .card .right .item1 {
+    display: flex;
+    justify-content: space-around;
+}
+
+.vehicle-body .main-content .card .right .item2 .voucher {
+    width: 17%;
+    padding: 3px;
+    border-radius: 30px;
+    background-color: #e77d4469;
+}
+
+.vehicle-body .main-content .card .left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.vehicle-body .main-content .card .left button {
+    background-color: #0976CF;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.vehicle-body .main-content .card .left button:hover {
+    background-color: #0c5b9c;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.vehicle-body .main-content .card .left button:focus {
+    outline: none;
+}
+
+/* ket thuc main content */

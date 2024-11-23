@@ -19,6 +19,8 @@ const UserInformation = ({
   priceOneNight,
   totalRoom,
   nights,
+  checkinHours,
+  checkoutHours,
 }) => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -64,6 +66,8 @@ const UserInformation = ({
         sessionStorage.setItem("priceTr", totalPriceTransportation);
         sessionStorage.setItem("priceAc", totalPriceAccommodation);
         sessionStorage.setItem("totalPrice", totalPrice);
+        sessionStorage.setItem("checkin", checkinHours);
+        sessionStorage.setItem("checkout", checkoutHours);
         navigate(`/payment`);
       }
     } else {

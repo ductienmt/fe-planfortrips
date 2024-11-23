@@ -1,0 +1,67 @@
+.payment-status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    background: #f9f9f9;
+}
+
+.payment-status-container {
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    background: white;
+    max-width: 500px;
+    width: 90%;
+}
+
+.payment-status-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.payment-status.success .payment-status-icon {
+    color: #28a745;
+    /* Xanh lá */
+}
+
+.payment-status.failure .payment-status-icon {
+    color: #dc3545;
+    /* Đỏ */
+}
+
+.payment-status h1 {
+    margin: 1rem 0;
+    font-size: 2rem;
+    color: #333;
+}
+
+.payment-status p {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+.payment-status .btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.payment-status.success .btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.payment-status.failure .btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
