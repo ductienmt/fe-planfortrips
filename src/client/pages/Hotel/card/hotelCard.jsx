@@ -2,7 +2,7 @@
 import PropTypes from "prop-types";
 // import { Link } from "react-router-dom";
 import "./hotelCard.css";
-// import imghotel from "../../../assets/img/hotel2.jpg";
+import imghotel from "../../../../assets/beach.jpg";
 import { Link } from "react-router-dom";
 
 const HotelCard = ({ name }) => {

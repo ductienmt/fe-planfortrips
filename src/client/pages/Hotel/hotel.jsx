@@ -4,13 +4,13 @@ import React, { useEffect, useRef, useState } from "react";
 import "./hotel.css";
 import provinces from "./provinces";
 import flatpickr from "flatpickr";
-// import "flatpickr/dist/flatpickr.min.css";
+import "flatpickr/dist/flatpickr.min.css";
 import "flatpickr/dist/flatpickr.min.js"; // Import CSS for flatpickr
 import HotelCard from "./card/hotelCard";
-// import Loading from "../../components/Loading/LoadingAnimation ";
 import PriceRangeSlider from "./priceRange/PriceRangeSlider";
 import CheckboxGroup from "./checkBox/CheckboxGroup";
 import ServicesCheckboxGroup from "./checkBox/ServicesCheckboxGroup";
+import Loader from "../../Components/Loading";
 
 const Hotel = () => {
   window.scrollTo(0, 0);
@@ -457,7 +457,7 @@ const Hotel = () => {
           </div>
         </section>
       ) : (
-        <Loading />
+        <Loader />
       )}
     </>
   );

@@ -1,9 +1,9 @@
 import "./detailCard.css";
-// import img1 from "../../../assets/img/group-hotel-1.jpg";
-// import img2 from "../../../assets/img/group-hotel-2.jpg";
-// import img3 from "../../../assets/img/group-hotel-6.webp";
-// import img4 from "../../../assets/img/group-hotel-4.png";
-// import img5 from "../../../assets/img/group-hotel-5.jpg";
+import img1 from "../../../../assets/beach.jpg";
+import img2 from "../../../../assets/beach.jpg";
+import img3 from "../../../../assets/beach.jpg";
+import img4 from "../../../../assets/beach.jpg";
+import img5 from "../../../../assets/beach.jpg";
 import RoomCard from "../roomCard/roomCard";
 import PersonReview from "../personReview/PersonReview";
 

@@ -1,6 +1,6 @@
-// import img1 from "../../../assets/img/group-hotel-1.jpg";
-// import img3 from "../../../assets/img/group-hotel-6.webp";
-// import img5 from "../../../assets/img/group-hotel-5.jpg";
+import img1 from "../../../../assets/beach.jpg";
+import img3 from "../../../../assets/beach.jpg";
+import img5 from "../../../../assets/beach.jpg";
 import "./roomCard.css";
 import { Link } from "react-router-dom";
 
@@ -10,7 +10,7 @@ const RoomCard = () => {
       <div className="flex-container-room-card">
         <div className="card-room-type align-items-center">
           <div className="d-flex align-items-center custom-img-room-type">
-            <img src={img1} alt="" />
+            <img style={{ width: "500px", }} src={img1} alt="" />
             <p className="content-type ms-3">Phòng đơn 1 người</p>
           </div>
           <div className="price-room-type text-end">
@@ -31,7 +31,7 @@ const RoomCard = () => {
         </div>
         <div className="card-room-type align-items-center">
           <div className="d-flex align-items-center custom-img-room-type">
-            <img src={img3} alt="" />
+            <img style={{ width: "100%" }} src={img3} alt="" />
             <p className="content-type ms-3">Phòng đôi 2 người</p>
           </div>
           <div className="price-room-type text-end">
@@ -52,7 +52,7 @@ const RoomCard = () => {
         </div>
         <div className="card-room-type align-items-center">
           <div className="d-flex align-items-center custom-img-room-type">
-            <img src={img5} alt="" className="" />
+            <img style={{ width: "" }} src={img5} alt="" className="" />
             <p className="content-type ms-3">
               Phòng gia đình (2 người lớn, 2 bé nhỏ)
             </p>

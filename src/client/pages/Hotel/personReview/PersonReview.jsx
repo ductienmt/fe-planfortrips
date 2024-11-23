@@ -1,5 +1,5 @@
 import "./PersonReview.css";
-// import person_avt from "../../../assets/img/person-review-avt.jpg";
+import person_avt from "../../../../assets/beach.jpg";
 
 const PersonReview = () => {
   return (
@@ -9,7 +9,7 @@ const PersonReview = () => {
           <img
             src={person_avt}
             alt="person-avatar"
-            style={{ width: "100px" }}
+            style={{ width: "100px", height: "90px" }}
           />
         </div>
         <div className="person-info ms-5 me-4" style={{ flexGrow: 8 }}>

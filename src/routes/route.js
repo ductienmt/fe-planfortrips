@@ -46,8 +46,12 @@ import Checkinpage from "../client/pages/Checkin/Checkinpage";
 import User from "../admin/pages/User/User";
 import IntroHotel from "../client/pages/hotel/IntroHotel/IntroHotel";
 import Hotel from "../client/pages/hotel/hotel";
+import IntroVehicle from "../client/pages/Vehicle/IntroVehicle/IntroVehicle"
 import VehiclePage from "../client/pages/Vehicle/VehiclePage/VehiclePage";
+import VehicleBooking from "../client/pages/Vehicle/VehicleBooking/VehicleBooking";
+
 import { Component } from "react";
+import DetailCard from "../client/pages/hotel/detailHotel/detailCard";
 
 const routeAdmin = () => [
   {
@@ -186,16 +190,30 @@ const routeClient = () => [
         Component: Booking,
       },
       {
-        path: "/hotel-intro",
+        path: "/hotel",
         Component: IntroHotel,
       },
       {
         path: "/hotel-page",
         Component: Hotel,
+
+      },
+      {
+        path: "/hotel-page/detail",
+        Component: DetailCard,
+
+      },
+      {
+        path: "/vehicle-intro",
+        Component: IntroVehicle,
       },
       {
         path: "/vehicle-page",
         Component: VehiclePage,
+      },
+      {
+        path: "/vehicle-booking",
+        Component: VehicleBooking,
       },
       {
         path: "/payment",
