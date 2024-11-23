@@ -67,13 +67,6 @@
     padding: 10px
 }
 
-.introhotel-container .content-header .main-header .input input {
-    width: 100%;
-    padding: 5px;
-    outline: none;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
 
 .introhotel-container .content-header .main-header .date-night {
     display: flex;
@@ -96,7 +89,7 @@
     width: 100%;
 }
 
-.introhotel-container .content-header .main-header button {
+.introhotel-container .content-header .main-header .header-button button {
     width: 100%;
     padding: 12px 24px;
     border-radius: 8px;
@@ -110,7 +103,7 @@
     cursor: pointer;
 }
 
-.introhotel-container .content-header .main-header button:hover {
+.introhotel-container .content-header .main-header .header-button button:hover {
     background: #0056b3;
 }
 
