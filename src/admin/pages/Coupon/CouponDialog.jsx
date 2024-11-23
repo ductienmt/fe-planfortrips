@@ -11,9 +11,11 @@ import {
   MenuItem,
   FormControlLabel,
   Button,
+  FormLabel,
+  RadioGroup,
+  Radio,
 } from "@mui/material";
 import { toast } from "react-toastify";
-import IOSSwitch from "./IOSSwitch";
 import { CouponService } from "../../../services/apis/CouponService";
 
 export default function CouponDialog({
@@ -27,7 +29,7 @@ export default function CouponDialog({
 }) {
   const [formData, setFormData] = useState({
     code: "",
-    discount_type: 1,
+    discount_type: "",
     discount_value: "",
     start_date: "",
     end_date: "",
@@ -35,16 +37,27 @@ export default function CouponDialog({
     use_count: 0,
     is_active: true,
   });
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await CouponService.findCouponById(selectedCouponId);
+      if (data) {
+        setFormData(data);
+        console.log(data);
+      }
+    };
+    fetchData();
+  }, [selectedCouponId]);
   const [errors, setErrors] = useState({});
   const handleClose = () => {
     setOpen(false);
     setFormData({
       code: "",
-      discountType: 1,
-      discountValue: "",
-      startDate: "",
-      endDate: "",
-      useLimit: "",
+      discount_type: "",
+      discount_value: "",
+      start_date: "",
+      end_date: "",
+      use_limit: "",
+      use_count: 0,
       is_active: true,
     });
   };
@@ -55,6 +68,12 @@ export default function CouponDialog({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+  };
+  const handleChange = (event) => {
+    setFormData({
+      ...formData,
+      is_active: event.target.value === "true",
+    });
   };
   const validateCouponData = () => {
     const newErrors = {};
@@ -82,8 +101,14 @@ export default function CouponDialog({
     if (endYear.length > 4)
       newErrors.end_date = "Năm của ngày kết thúc không được quá 4 chữ số.";
 
-    if (new Date(start_date) < new Date())
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() - 1);
+    console.log(tomorrow);
+
+    if (new Date(start_date) < tomorrow) {
       newErrors.start_date = "Ngày bắt đầu không được ở quá khứ.";
+    }
     if (new Date(end_date) < new Date(start_date))
       newErrors.end_date = "Ngày kết thúc phải sau ngày bắt đầu.";
     if (!use_limit || isNaN(use_limit) || Number(use_limit) < 0)
@@ -238,16 +263,27 @@ export default function CouponDialog({
           error={!!errors.use_limit}
           helperText={errors.use_limit}
         />
-        <FormControlLabel
-          control={
-            <IOSSwitch
-              name="is_active"
-              checked={formData.is_active}
-              onChange={handleInputChange}
+        <FormControl>
+          <FormLabel id="demo-radio-buttons-group-label">Trạng thái</FormLabel>
+          <RadioGroup
+            row
+            aria-labelledby="demo-radio-buttons-group-label"
+            value={formData.is_active.toString()}
+            onChange={handleChange}
+            name="is_active"
+          >
+            <FormControlLabel
+              value="true"
+              control={<Radio />}
+              label="Còn hạn"
             />
-          }
-          label="Trạng thái kích hoạt"
-        />
+            <FormControlLabel
+              value="false"
+              control={<Radio />}
+              label="Hết hạn"
+            />
+          </RadioGroup>
+        </FormControl>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">

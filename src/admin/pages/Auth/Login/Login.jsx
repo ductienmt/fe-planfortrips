@@ -24,8 +24,8 @@ export default function LoginAdmin() {
       const response = await AdminService.login(username, password);
       login(
         response.data.token,
-        response.data.userName,
-        response.data.role
+        response.data.role,
+        response.data.userName
       );
       enqueueSnackbar(response.message, {
         variant: "success",
