@@ -20,7 +20,7 @@ const TripCompo = ({ trip }) => {
     const formattedAmount = amount
       .toString()
       .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return `${formattedAmount}.000VNĐ`;
+    return `${formattedAmount}VNĐ`;
   };
   return (
     <>
@@ -61,7 +61,7 @@ const TripCompo = ({ trip }) => {
               <div className="body-right" style={{ paddingLeft: "20px" }}>
                 <div>Chi phí: {convertToVND(trip.budget)}</div>
                 <div>
-                  Còn lại: {convertToVND(trip.budget - trip.total_price)}
+                  Còn lại: {convertToVND(trip.budget - trip.final_price)}
                 </div>
               </div>
             </div>

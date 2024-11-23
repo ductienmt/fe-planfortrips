@@ -52,10 +52,12 @@ import Hotelpage from "../client/pages/HotelPage/Hotelpage";
 import { BookingHotel } from "../client/pages/HotelPage/BookingHotel";
 import Checkinpage from "../client/pages/Checkin/Checkinpage";
 import User from "../admin/pages/User/User";
+import Failed from "../client/pages/Payment/Status/Failed";
 import { Component } from "react";
 import TourPage from "../client/pages/Tour/TourPage";
 import TourDetail from "../client/pages/Tour/TourDetail/TourDetail";
 import TourIndex from "../client/pages/Tour/TourIndex";
+
 
 const routeAdmin = () => [
   {
@@ -209,6 +211,10 @@ const routeClient = () => [
         path: "/success",
         Component: Success,
         exact: true,
+      },
+      {
+        path: "/failed",
+        Component: Failed,
       },
       {
         path: "/profile",
