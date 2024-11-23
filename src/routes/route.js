@@ -50,7 +50,7 @@ import ChooseProvinceDetail from "../client/pages/Checkin/chooseProvinceDetail/C
 import ChooseCheckinFollowArea from "../client/pages/Checkin/chooseCheckinFollowArea/ChooseCheckinFollowArea";
 import IntroHotel from "../client/pages/hotel/IntroHotel/IntroHotel";
 import Hotel from "../client/pages/hotel/hotel";
-import IntroVehicle from "../client/pages/Vehicle/IntroVehicle/IntroVehicle"
+import IntroVehicle from "../client/pages/Vehicle/IntroVehicle/IntroVehicle";
 import VehiclePage from "../client/pages/Vehicle/VehiclePage/VehiclePage";
 import VehicleBooking from "../client/pages/Vehicle/VehicleBooking/VehicleBooking";
 
@@ -61,7 +61,6 @@ import TourPage from "../client/pages/Tour/TourPage";
 import TourDetail from "../client/pages/Tour/TourDetail/TourDetail";
 import TourIndex from "../client/pages/Tour/TourIndex";
 
-
 import Account from "../enterprise/transportation/account/Account";
 import Schedules from "../enterprise/transportation/schedules/Schedules";
 import TransportationVouchers from "../enterprise/voucher/transportation/TransportationVouchers";
@@ -70,7 +69,6 @@ import Seats from "../enterprise/transportation/seats/Seats";
 import Guest from "../enterprise/transportation/guest/Guest";
 import Routehotel from "../enterprise/transportation/routehotel/Routehotel";
 import TourForm from "../admin/pages/Tour/Tour";
-
 
 const routeAdmin = () => [
   {
@@ -238,12 +236,10 @@ const routeClient = () => [
       {
         path: "/hotel-page",
         Component: Hotel,
-
       },
       {
         path: "/hotel-page/detail",
         Component: DetailCard,
-
       },
       {
         path: "/vehicle-intro",
@@ -316,19 +312,20 @@ const routeClient = () => [
         path: "/check-in/mien-bac/hung-yen",
         Component: ChooseCheckinFollowArea,
       },
+      {
         path: "/tour",
         Component: TourIndex,
-        children : [
+        children: [
           {
-            path : "",
-            Component : TourPage
+            path: "",
+            Component: TourPage,
           },
           {
-           path : "detail/:tourId",
-           Component: TourDetail
-          }
-         ]
-      }
+            path: "detail/:tourId",
+            Component: TourDetail,
+          },
+        ],
+      },
     ],
   },
 ];
