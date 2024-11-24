@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
 import App from "../App";
 import LandingPage from "../client/pages/Homepage/LandingPage";
 import Login from "../client/pages/Auth/Login/Login";
@@ -62,146 +62,269 @@ import schedules from "../enterprise/transportation/schedules/Schedules";
 import Seats from "../enterprise/transportation/seats/Seats";
 import Guest from "../enterprise/transportation/guest/Guest";
 import Routehotel from "../enterprise/transportation/routehotel/Routehotel";
+import React, { useContext } from "react";
+const isAuthenticated = () => {
+  return sessionStorage.getItem("token") !== null;
+};
+const ProtectedRoute = ({ role }) => {
+  return isAuthenticated()
+    ? React.createElement(Outlet)
+    : React.createElement(Navigate, { to: `login` });
+};
 
-const routeAdmin = () => [
-  {
-    path: "/admin",
-    Component: LayoutAdmin,
-    children: [
+const routeAdmin = () => {
+  if (isAuthenticated()) {
+    return [
       {
-        path: "",
-        Component: HomePage,
+        path: "/admin",
+        Component: ProtectedRoute,
+        children: [
+          {
+            path: "",
+            Component: LayoutAdmin,
+            children: [
+              { path: "", Component: HomePage },
+              { path: "users", Component: User },
+              { path: "business", Component: EnterpriseAdmin },
+              { path: "tours", Component: TourAdmin },
+              { path: "vouchers", Component: CouponAdmin },
+              { path: "transactions/hotels", Component: BookingHotelPage },
+              { path: "transactions/vehicles", Component: OrderCarPage },
+              { path: "travel", Component: PlacePageAdmin },
+              { path: "feedbacks", Component: FeedbackPage },
+            ],
+          },
+        ],
       },
+    ];
+  } else {
+    return [
       {
-        path: "users",
-        Component: User,
+        path: "/admin/login",
+        Component: LoginAdmin,
       },
-      {
-        path: "business",
-        Component: EnterpriseAdmin,
-      },
-      {
-        path: "tours",
-        Component: TourAdmin,
-      },
-      {
-        path: "vouchers",
-        Component: CouponAdmin,
-      },
-      {
-        path: "transactions/hotels",
-        Component: BookingHotelPage,
-      },
-      {
-        path: "transactions/vehicles",
-        Component: OrderCarPage,
-      },
+    ];
+  }
+};
 
+const routeEnterprise = () => {
+  if (isAuthenticated()) {
+    return [
       {
-        path: "travel",
-        Component: PlacePageAdmin,
-      },
-      {
-        path: "feedbacks",
-        Component: FeedbackPage,
-      },
-    ],
-  },
-  {
-    path: "/admin/login",
-    Component: LoginAdmin,
-  },
-];
+        path: "/enterprise",
+        Component: ProtectedRoute,
+        children: [
+          {
+            path: "",
+            Component: EnterpriseLayout,
+            children: [
+              {
+                path: "accomodation/dashboard",
+                Component: AccomodationDashboard,
+              },
+              {
+                path: "transportation/dashboard",
+                Component: TranportatinDashboard,
+              },
+              {
+                path: ":type/vouchers",
+                Component: Voucher,
+              },
 
-const routeEnterprise = () => [
-  {
-    path: "/enterprise",
-    Component: EnterpriseLayout,
-    children: [
+              {
+                path: "transportation/vehicle-schedules",
+                Component: Schedules,
+              },
+              {
+                path: "transportation/Seats",
+                Component: Seats,
+              },
+              {
+                path: "transportation/vehicle-management",
+                Component: Vehicle,
+              },
+
+              {
+                path: "transportation/vehicle-account",
+                Component: Account,
+              },
+              {
+                path: "transportation/Guest",
+                Component: Guest,
+              },
+
+              {
+                path: "transportation/vouchers",
+                Component: TransportationVouchers,
+              },
+              {
+                path: "transportation/Routehotel",
+                Component: Routehotel,
+              },
+              {
+                path: "transportation/schedules",
+                Component: schedules,
+              },
+              {
+                path: "accomodation/room-management",
+                Component: Room,
+              },
+              {
+                path: "accomodation/accomodation-manager",
+                Component: HotelManagement,
+              },
+              {
+                path: "accomodation/guest-manager",
+                Component: GuestLiving,
+              },
+              {
+                path: "accomodation/voucher-manager",
+                Component: RoomVoucher,
+              },
+              {
+                path: "accomodation/choose-hotel",
+                Component: ChooseHotel,
+              },
+            ],
+          },
+        ],
+      },
+    ];
+  } else {
+    return [
       {
-        path: "login",
+        path: "/enterprise/login",
         Component: EnterpriseLogin,
       },
-      {
-        path: "accomodation/dashboard",
-        Component: AccomodationDashboard,
-      },
-      {
-        path: "transportation/dashboard",
-        Component: TranportatinDashboard,
-      },
-      {
-        path: ":type/vouchers",
-        Component: Voucher,
-      },
+    ];
+  }
+};
 
+const routeClient = () => {
+  if (isAuthenticated()) {
+    return [
       {
-        path: "transportation/vehicle-schedules",
-        Component: Schedules,
+        path: "/",
+        Component: ClientLayout,
+        children: [
+          {
+            path: "",
+            Component: LandingPage,
+          },
+          {
+            path: "/plan",
+            Component: PlanBefore,
+          },
+          {
+            path: "/plan/trip",
+            Component: TravelPlan,
+          },
+          {
+            path: "/booking/:type",
+            Component: Booking,
+          },
+          {
+            path: "/hotel",
+            Component: IntroHotel,
+          },
+          {
+            path: "/hotel-page",
+            Component: Hotel,
+          },
+          {
+            path: "/hotel-page/detail",
+            Component: DetailCard,
+          },
+          {
+            path: "/vehicle-intro",
+            Component: IntroVehicle,
+          },
+          {
+            path: "/vehicle-page",
+            Component: VehiclePage,
+          },
+          {
+            path: "/vehicle-booking",
+            Component: VehicleBooking,
+          },
+          {
+            path: "/payment",
+            Component: Payment,
+          },
+          {
+            path: "/success",
+            Component: Success,
+            exact: true,
+          },
+          {
+            path: "/failed",
+            Component: Failed,
+          },
+          {
+            path: "/profile",
+            Component: Profile,
+            children: [
+              {
+                path: "",
+                Component: ProfileDetail,
+              },
+              {
+                path: "change-password",
+                Component: ChangePassword,
+              },
+              {
+                path: "detail",
+                Component: InfoDetails,
+              },
+              {
+                path: "trip",
+                Component: YourTripsQuery,
+              },
+              // {
+              //   path: "trip-save",
+              //   Component: YourSavedTrips, // Ensure you have this Component
+              // },
+            ],
+          },
+          // {
+          //   path: "/vehicle",
+          //   Component: TransportSelectionPage,
+          // },
+          {
+            path: "/submit-enterprise",
+            Component: Sumbitenterprise,
+          },
+          {
+            path: "/check-in",
+            Component: Checkinpage,
+          },
+          {
+            path: "/check-in/mien-bac",
+            Component: ChooseProvinceDetail,
+          },
+          {
+            path: "/check-in/mien-bac/hung-yen",
+            Component: ChooseCheckinFollowArea,
+          },
+          {
+            path: "/tour",
+            Component: TourIndex,
+            children: [
+              {
+                path: "",
+                Component: TourPage,
+              },
+              {
+                path: "detail/:tourId",
+                Component: TourDetail,
+              },
+            ],
+          },
+        ],
       },
-      {
-        path: "transportation/Seats",
-        Component: Seats,
-      },
-      {
-        path: "transportation/vehicle-management",
-        Component: Vehicle,
-      },
-
-      {
-        path: "transportation/vehicle-account",
-        Component: Account,
-      },
-      {
-        path: "transportation/Guest",
-        Component: Guest,
-      },
-
-      {
-        path: "transportation/vouchers",
-        Component: TransportationVouchers,
-      },
-      {
-        path: "transportation/Routehotel",
-        Component: Routehotel,
-      },
-      {
-        path: "transportation/schedules",
-        Component: schedules,
-      },
-      {
-        path: "accomodation/room-management",
-        Component: Room,
-      },
-      {
-        path: "accomodation/accomodation-manager",
-        Component: HotelManagement,
-      },
-      {
-        path: "accomodation/guest-manager",
-        Component: GuestLiving,
-      },
-      {
-        path: "accomodation/voucher-manager",
-        Component: RoomVoucher,
-      },
-      {
-        path: "accomodation/choose-hotel",
-        Component: ChooseHotel,
-      },
-    ],
-  },
-];
-
-const routeClient = () => [
-  {
-    path: "/",
-    Component: ClientLayout,
-    children: [
-      {
-        path: "",
-        Component: LandingPage,
-      },
+    ];
+  } else {
+    return [
       {
         path: "/login",
         Component: Login,
@@ -210,118 +333,9 @@ const routeClient = () => [
         path: "/register",
         Component: Register,
       },
-      {
-        path: "/plan",
-        Component: PlanBefore,
-      },
-      {
-        path: "/plan/trip",
-        Component: TravelPlan,
-      },
-      {
-        path: "/booking/:type",
-        Component: Booking,
-      },
-      {
-        path: "/hotel",
-        Component: IntroHotel,
-      },
-      {
-        path: "/hotel-page",
-        Component: Hotel,
-      },
-      {
-        path: "/hotel-page/detail",
-        Component: DetailCard,
-      },
-      {
-        path: "/vehicle-intro",
-        Component: IntroVehicle,
-      },
-      {
-        path: "/vehicle-page",
-        Component: VehiclePage,
-      },
-      {
-        path: "/vehicle-booking",
-        Component: VehicleBooking,
-      },
-      {
-        path: "/payment",
-        Component: Payment,
-      },
-      {
-        path: "/success",
-        Component: Success,
-        exact: true,
-      },
-      {
-        path: "/failed",
-        Component: Failed,
-      },
-      {
-        path: "/profile",
-        Component: Profile,
-        children: [
-          {
-            path: "",
-            Component: ProfileDetail,
-          },
-          {
-            path: "change-password",
-            Component: ChangePassword,
-          },
-          {
-            path: "detail",
-            Component: InfoDetails,
-          },
-          {
-            path: "trip",
-            Component: YourTripsQuery,
-          },
-          // {
-          //   path: "trip-save",
-          //   Component: YourSavedTrips, // Ensure you have this component
-          // },
-        ],
-      },
-      // {
-      //   path: "/vehicle",
-      //   Component: TransportSelectionPage,
-      // },
-      {
-        path: "/submit-enterprise",
-        Component: Sumbitenterprise,
-      },
-      {
-        path: "/check-in",
-        Component: Checkinpage,
-      },
-      {
-        path: "/check-in/mien-bac",
-        Component: ChooseProvinceDetail,
-      },
-      {
-        path: "/check-in/mien-bac/hung-yen",
-        Component: ChooseCheckinFollowArea,
-      },
-      {
-        path: "/tour",
-        Component: TourIndex,
-        children: [
-          {
-            path: "",
-            Component: TourPage,
-          },
-          {
-            path: "detail/:tourId",
-            Component: TourDetail,
-          },
-        ],
-      },
-    ],
-  },
-];
+    ];
+  }
+};
 
 export const router = createBrowserRouter([
   {
