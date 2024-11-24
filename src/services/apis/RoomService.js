@@ -2,12 +2,23 @@ import Http from "../Http";
 
 export const RoomService = {
   getRooms: async (page, limit, keyword) => {
-    const response = await Http.get(`api/v1/rooms?page=${page}&limit=${limit}`);
+    const params = new URLSearchParams();
+    if (page) {
+      params.append("page", page);
+    }
+    if (limit) {
+      params.append("limit", limit);
+    }
+    if (keyword) {
+      params.append("keyword", keyword);
+    }
+
+    const response = await Http.get(`/rooms?${params.toString()}`);
     console.log(response);
     return response.data;
   },
   findRoomById: async (id) => {
-    const response = await Http.get(`api/v1/rooms/${id}`);
+    const response = await Http.get(`/rooms/${id}`);
     return response.data;
   },
   getRoomsByHotelId: async (id, pageNo, pageSize, sortBy, sortType) => {
@@ -25,22 +36,22 @@ export const RoomService = {
       params.append("sortType", sortType);
     }
     const response = await Http.get(
-      `api/v1/rooms/getRoomByHotelId?${params.toString()}`
+      `/rooms/getRoomByHotelId?${params.toString()}`
     );
     console.log(params.toString());
 
     return response.data;
   },
   addRoom: async (roomData) => {
-    const response = await Http.post(`api/v1/rooms/create`, roomData);
+    const response = await Http.post(`/rooms/create`, roomData);
     return response.data;
   },
   updateRoom: async (id, roomData) => {
-    const response = await Http.put(`api/v1/rooms/update/${id}`, roomData);
+    const response = await Http.put(`/rooms/update/${id}`, roomData);
     return response.data;
   },
   deleteRoom: async (id) => {
-    const response = await Http.delete(`api/v1/rooms/delete/${id}`);
+    const response = await Http.delete(`/rooms/delete/${id}`);
     return response;
   },
 };

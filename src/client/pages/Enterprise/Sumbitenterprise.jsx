@@ -13,14 +13,38 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import "./Sumbitenterprise.css";
+import Http from "../../../services/Http";
 
 const Sumbitenterprise = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [type, setType] = useState("");
+  const [type, setType] = useState([]);
 
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
+  };
+
+  const [enterpriseForm, setEnterpriseForm] = useState({
+    username: "",
+    email: "",
+    enterpriseName: "",
+    representative: "",
+    taxCode: "",
+    phoneNumber: "",
+    address: "",
+    typeEnterpriseDetailId: "",
+  });
+
+  const getTypeEnterprise = async () => {
+    try {
+      const response = await Http.get(
+        "http://localhost:8080/api/v1/type-enterprise-details/all"
+      );
+      console.log("response", response);
+      setType(response.data);
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
   const handleChange = (event) => {
@@ -29,6 +53,7 @@ const Sumbitenterprise = () => {
   useEffect(() => {
     window.scrollTo(0, 138);
     document.title = "Đăng ký doanh nghiệp";
+    getTypeEnterprise();
   }, []);
 
   return (
@@ -99,8 +124,8 @@ const Sumbitenterprise = () => {
           />
 
           <FormControl fullWidth>
-            <InputLabel id="business-type-label">Loại Doanh Nghiệp</InputLabel>
-            <Select
+            {/* <InputLabel id="business-type-label">Loại Doanh Nghiệp</InputLabel> */}
+            {/* <Select
               labelId="business-type-label"
               id="business-type-select"
               value={type}
@@ -110,14 +135,23 @@ const Sumbitenterprise = () => {
               <MenuItem value={10}>Khách Sạn</MenuItem>
               <MenuItem value={20}>Xe Khách</MenuItem>
               <MenuItem value={30}>Dịch Vụ Khác</MenuItem>
-            </Select>
+            </Select> */}
+            <label htmlFor="">Loại doanh nghiệp</label>
+            <select
+              name="typeEnterpriseDetailId"
+              id=""
+              onChange={handleChange}
+              style={{ height: "40px", backgroundColor: "transparent" }}
+            >
+              {type.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
           </FormControl>
 
-          <Button
-            className="customButton"
-            variant="contained"
-            sx={{ mt: 2 }}
-          >
+          <Button className="customButton" variant="contained" sx={{ mt: 2 }}>
             Đăng ký
           </Button>
         </Box>

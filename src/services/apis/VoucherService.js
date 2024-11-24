@@ -25,7 +25,7 @@ export const VoucherService = {
       params.append("sortType", sortType);
     }
     const response = await Http.get(
-      `api/v1/coupons/getByEnterpriseId?${params.toString()}`
+      `/coupons/getByEnterpriseId?${params.toString()}`
     );
     return response.data;
   },
