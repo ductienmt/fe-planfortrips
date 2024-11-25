@@ -5,6 +5,8 @@ import "feather-icons/dist/feather";
 import { VehiclesService } from "../../../services/apis/Vehicles";
 import nhaxe from "../../../assets/caurong.webp";
 import TicketTransportationCard from "../../Components/ticketTransportation/TicketTransportationCard";
+import { convertToVND } from "../../../utils/FormatMoney";
+import { DateFormatter } from "../../../utils/DateFormat";
 
 const TransportationCard = ({
   className,
@@ -19,9 +21,13 @@ const TransportationCard = ({
   timeCommunicate,
   seatCode,
   scheduleId,
+  total,
+  destination,
+  originalLocation,
 }) => {
   const [departureStationData, setDepartureStationData] = useState("");
   const [arrivalStationData, setArrivalStationData] = useState("");
+  const [vehicleData, setvehicleData] = useState({});
   const loadStation = async (id) => {
     try {
       const response = await ScheduleService.getStation(id);
@@ -37,9 +43,13 @@ const TransportationCard = ({
 
   const getImg = async (vehicleCode) => {
     const response = await VehiclesService.getVehicleById(vehicleCode);
+    // console.log(response.data);
+    setvehicleData(response.data);
+    console.log(vehicleData);
+
     // console.log("response", response.data.car_company.images[0]);
     setImg(response.data.car_company.images[0].url);
-    console.log("vehicleCode", response.data.car_company.images[0].url);
+    // console.log("vehicleCode", response.data.car_company.images[0].url);
   };
 
   useEffect(() => {
@@ -51,6 +61,8 @@ const TransportationCard = ({
       getImg(vehicleCode);
     }
   }, [scheduleId]);
+  // console.log(TransportationCard);
+
   return (
     <>
       <article className={`transportation-card ${className}`} onClick={onClick}>
@@ -81,11 +93,11 @@ const TransportationCard = ({
           </div>
           <div className="journey-info">
             <div className="time-info">
-              <TimeDisplay time={departureTime} date={departureDate} />
+              <TimeDisplay time={departureTime} />
               <span className="duration" style={{ fontSize: "14px" }}>
                 {timeCommunicate}
               </span>
-              <TimeDisplay time={arrivalTime} date={arrivalDate} />
+              <TimeDisplay time={arrivalTime} />
             </div>
             <div className="location-info">
               <LocationDisplay
@@ -161,7 +173,7 @@ const TransportationCard = ({
                   }}
                   id="detailLabel"
                 >
-                  ABC Bus
+                  {nameVehicle}
                 </h5>
 
                 {/* Sử dụng css của RoomVoucher   */}
@@ -180,39 +192,46 @@ const TransportationCard = ({
               <div className="ticket-detail">
                 {/* Ảnh nhà xe */}
                 <div className="ticket-detail-image mt-4">
-                  <img src={nhaxe} />
+                  <img src={img} />
                 </div>
-
-                {/* Tên nhà xe */}
-                {/* <h5 className="ticket-bus-name mb-3">Tên nhà xe: ABC Bus</h5> */}
-
-                {/* Thông tin chuyến đi */}
 
                 <h5>Thông tin chuyến đi</h5>
                 <div className="tripTicket-info mb-3">
                   <div className="tripTicket-item">
                     <p>Tuyến:</p>
-                    <h6>Hà Nội - Sài Gòn</h6>
+                    <h6>
+                      {originalLocation} - {destination}
+                    </h6>
+                  </div>
+                  <div className="tripTicket-item">
+                    <p>Xuất phát:</p>
+                    <h6>{departureStationData}</h6>
+                  </div>
+                  <div className="tripTicket-item">
+                    <p>Điểm đến:</p>
+                    <h6>{arrivalStationData}</h6>
                   </div>
                   <div className="tripTicket-item">
                     <p>Khởi hành:</p>
-                    <h6>07:30, 22/11/2024</h6>
+                    <h6>
+                      {departureTime} - {departureDate}
+                    </h6>
                   </div>
                   <div className="tripTicket-item">
                     <p>Liên hệ:</p>
-                    <h6>0123 456 789</h6>
+                    <h6>{vehicleData.driverPhone}</h6>
                   </div>
                   <div className="tripTicket-item">
                     <p>Loại xe:</p>
-                    <h6>Giường nằm</h6>
+                    <h6>{vehicleData.type_vehicle}</h6>
                   </div>
                   <div className="tripTicket-item">
                     <p>Chỗ đã đặt:</p>
-                    <h6>A01, A02, A03</h6>
+                    <h6>{seatCode}</h6>
                   </div>
                   <div className="tripTicket-item">
                     <p>Biển số xe:</p>
-                    <h6>29A-12345</h6>
+                    <h6>{vehicleData.plateNumber}</h6>
                   </div>
                 </div>
 
@@ -233,7 +252,7 @@ const TransportationCard = ({
                         color: "red",
                       }}
                     >
-                      1,500,000 VND
+                      {convertToVND(total)}
                     </h5>
                   </div>
                 </div>
@@ -251,19 +270,41 @@ const TransportationCard = ({
         aria-labelledby="changeLabel"
         aria-hidden="true"
       >
-        <div className="modal-dialog modal-dialog-centered" role="document">
-          <div className="modal-content">
-            <div className="modal-body change-ticket-color">
-              <div className="d-flex justify-content-lg-between">
+        <div
+          className="modal-dialog modal-dialog-centered"
+          style={{
+            width: "700px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          role="document"
+        >
+          <div
+            className="modal-content"
+            style={{
+              width: "700px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <div
+              className="modal-body change-ticket-color2"
+              style={{
+                width: "700px"
+              }}
+            >
+              <div className="d-flex justify-content-lg-between mb-3">
                 <h5
                   style={{
                     fontSize: "25px",
                     textTransform: "uppercase",
-                    color: "black",
+                    color: "darkblue",
                   }}
                   id="changeLabel"
                 >
-                  ABC Bus
+                  Thay đổi vé xe
                 </h5>
 
                 <button
@@ -276,7 +317,17 @@ const TransportationCard = ({
                   <div className="voucher-close-close">Close</div>
                 </button>
               </div>
-              <TicketTransportationCard />
+              <TicketTransportationCard
+                start="Hồ Chí Minh"
+                destination="Vũng Tàu"
+                departTime="12h00"
+                arrivalTime="15h00"
+                totalTime="03h00"
+                companyName="Phương Trang"
+                typeSeat="Standard"
+                price="180.000 VND"
+                leftSeat="Còn lại 10"
+              />
             </div>
           </div>
         </div>

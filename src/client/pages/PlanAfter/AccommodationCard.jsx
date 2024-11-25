@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import "./AccommodationCard.css";
 import { HotelService } from "../../../services/apis/HotelService";
 import nhaxe from "../../../assets/caurong.webp";
+import HotelCard from "../Hotel/card/hotelCard";
 import { convertToVND } from "../../../utils/FormatMoney";
+
 
 function AccommodationCard({ className, onClick, accomodation }) {
   const [hotelImage1, setHotelImage1] = useState("");
@@ -226,6 +228,67 @@ function AccommodationCard({ className, onClick, accomodation }) {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Change Modal */}
+      <div
+        className="modal fade"
+        id="changeLiveModal"
+        tabIndex="-1"
+        aria-labelledby="changeLiveLabel"
+        aria-hidden="true"
+      >
+        <div
+          className="modal-dialog modal-dialog-centered"
+          style={{
+            width: "1000px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          role="document"
+        >
+          <div
+            className="modal-content"
+            style={{
+              width: "1000px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <div
+              className="modal-body change-ticket-color2"
+              style={{
+                width: "1000px"
+              }}
+            >
+              <div className="d-flex justify-content-lg-between mb-3">
+                <h5
+                  style={{
+                    fontSize: "25px",
+                    textTransform: "uppercase",
+                    color: "darkblue",
+                  }}
+                  id="changeLiveLabel"
+                >
+                  Thay đổi nơi ở
+                </h5>
+
+                <button
+                  className="voucher-close-button"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span className="voucher-close-X"></span>
+                  <span className="voucher-close-Y"></span>
+                  <div className="voucher-close-close">Close</div>
+                </button>
+              </div>
+              <HotelCard />
             </div>
           </div>
         </div>

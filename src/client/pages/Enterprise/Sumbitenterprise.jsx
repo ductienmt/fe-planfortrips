@@ -308,19 +308,9 @@ const Sumbitenterprise = () => {
             </select>
           </FormControl>
 
-          <Button
-            className="customButton"
-            variant="contained"
-            sx={{ mt: 2 }}
-            type="submit"
-            disabled={
-              !validation.username ||
-              !validation.email ||
-              !validation.phoneNumber
-            }
-          >
-            Đăng ký
-          </Button>
+          <div className="enterprise-submit-button mt-2">
+            <button className="customButton">Đăng Ký</button>
+          </div>
         </Box>
 
         <hr className="signInSeparator" />

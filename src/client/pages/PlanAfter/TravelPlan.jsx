@@ -81,6 +81,11 @@ function TravelPlan() {
     return datePart; // Trả về chỉ phần ngày
   };
 
+  const formatDateT = (dateTime) => {
+    const datePart = dateTime.split("T")[0];
+    return datePart; // Trả về chỉ phần ngày
+  };
+
   const handleCardClick = (card) => {
     setSelectedCard(card === selectedCard ? null : card); // Nếu click lại thì bỏ chọn
     console.log(card);
@@ -172,27 +177,27 @@ function TravelPlan() {
   const newSummaryItems = tripData.userData
     ? [
         {
-          label: "Location",
+          label: "Xuất phát",
           value: getLastThreeWords(tripData.userData.location),
         },
         {
-          label: "Destination",
+          label: "Điểm đến",
           value: getLastThreeWords(tripData.userData.destination),
         },
         {
-          label: "Start Date",
+          label: "Ngày đi",
           value: formatDate(tripData.userData.startDate),
         },
         {
-          label: "End Date",
+          label: "Ngày về",
           value: formatDate(tripData.userData.endDate),
         },
         {
-          label: "Number of People",
+          label: "Số lượng người",
           value: tripData.userData.numberPeople,
         },
         {
-          label: "Budget",
+          label: "Ngân sách",
           value: convertToVND(tripData.userData.budget),
         },
       ]
@@ -229,6 +234,8 @@ function TravelPlan() {
                 departureTime={formatTime(
                   tripData.transportation.departure.departureTime
                 )}
+                departureDate={formatDateT(tripData.transportation.departure.departureTime)}
+                arrivalDate={formatDateT(tripData.transportation.departure.arrivalTime)}
                 arrivalTime={formatTime(
                   tripData.transportation.departure.arrivalTime
                 )}
@@ -239,6 +246,10 @@ function TravelPlan() {
                   formatTime(tripData.transportation.departure.departureTime),
                   formatTime(tripData.transportation.departure.arrivalTime)
                 )}
+                total={tripData.transportation?.departure?.totalPrice}
+                routeId={tripData.transportation?.departure?.routeId}
+                originalLocation={tripData.userData?.location}
+                destination={tripData.userData?.destination}
               />
               <AccommodationCard
                 className={
