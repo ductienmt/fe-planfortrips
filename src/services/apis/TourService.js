@@ -1,6 +1,16 @@
 import Http from "../Http";
 
 export const TourService = {
+
+  getToursClient : async () => {
+        const response = await Http.get('api/v1/tours/client/');
+        return response.data;
+  },
+  getTourDetail : async (tourId) => {
+    const response = await Http.get(`api/v1/tours/available/${tourId}`);    
+    return response.data;
+  },
+
   getTours: async (page, limit) => {
     const response = await Http.get(
       `api/v1/tours/all?page=${page}&limit=${limit}`
