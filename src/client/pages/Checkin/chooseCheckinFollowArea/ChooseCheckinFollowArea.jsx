@@ -46,7 +46,7 @@ const ChooseCheckinFollowArea = () => {
 
   useEffect(() => {
     // console.log("ChooseCheckinFollowArea id", city);
-
+    document.title = "Điểm check-in";
     loadCityData(city);
   }, [city]);
 

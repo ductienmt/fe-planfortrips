@@ -27,6 +27,7 @@ const ChooseProvinceDetail = () => {
   };
 
   useEffect(() => {
+    document.title = "Các tỉnh thành";
     console.log("ChooseProvinceDetail id", area);
 
     loadCitiesData(area);
