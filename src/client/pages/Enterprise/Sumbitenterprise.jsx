@@ -113,13 +113,12 @@ const Sumbitenterprise = () => {
             </Select>
           </FormControl>
 
-          <Button
-            className="customButton"
-            variant="contained"
-            sx={{ mt: 2 }}
-          >
+          {/* <Button className="customButton" variant="contained" sx={{ mt: 2 }}>
             Đăng ký
-          </Button>
+          </Button> */}
+          <div className="enterprise-submit-button mt-2">
+            <button className="customButton">Đăng Ký</button>
+          </div>
         </Box>
 
         <hr className="signInSeparator" />
