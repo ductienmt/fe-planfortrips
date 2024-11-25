@@ -121,7 +121,8 @@ const Room = () => {
             <ButtonDelete
               toogleModal={"modal"}
               tagertModal={"#deleteRoom"}
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
                 setRoomDeleteId(record.id);
               }}
             />
@@ -849,7 +850,11 @@ const Room = () => {
                   Hủy
                 </button>
                 <span className="w-50">
-                  <ButtonDeleteRoom onClick={handleDeleteRoom(roomDeleteId)} />
+                  <ButtonDeleteRoom
+                    onClick={() => {
+                      handleDeleteRoom(roomDeleteId);
+                    }}
+                  />
                 </span>
               </div>
             </div>

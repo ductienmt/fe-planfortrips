@@ -28,12 +28,16 @@ const HotelManagement = () => {
 
   const columns = [
     // { title: "Mã khách sạn", dataIndex: "hotel_id", key: "hotel_id" },
-    { title: "Tên khách sạn", dataIndex: "name", key: "name" },
-    { title: "Địa chỉ", dataIndex: "address", key: "address" },
+    { title: "Tên khách sạn", dataIndex: "hotelName", key: "hotelName" },
+    { title: "Địa chỉ", dataIndex: "hotelAddress", key: "hotelAddress" },
     { title: "Mô tả", dataIndex: "description", key: "description" },
-    { title: "Hotline", dataIndex: "phoneNumber", key: "phoneNumber" },
+    {
+      title: "Hotline",
+      dataIndex: "hotelPhoneNumber",
+      key: "hotelPhoneNumber",
+    },
     { title: "Đánh giá", dataIndex: "rating", key: "rating" },
-    { title: "Trạng thái", dataIndex: "status", key: "status" },
+    { title: "Trạng thái", dataIndex: "hotelStatus", key: "hotelStatus" },
     {
       title: "Hành động",
       key: "actions",
@@ -61,6 +65,8 @@ const HotelManagement = () => {
     setIsLoading(true);
     try {
       const response = await HotelService.detail();
+      console.log(response);
+
       setHotelmData(response);
     } catch (error) {
       console.error("Error fetching hotel data", error);
@@ -159,7 +165,13 @@ const HotelManagement = () => {
             </div>
 
             <div className="content-table mt-4">
-              <Table dataSource={hotelmData} columns={columns} />
+              <Table
+                columns={columns}
+                dataSource={hotelmData.map((hotel, index) => ({
+                  ...hotel,
+                  key: hotel.id || index,
+                }))}
+              />
             </div>
           </div>
         </div>

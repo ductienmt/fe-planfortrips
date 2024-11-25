@@ -20,6 +20,8 @@ export const ClientLayout = () => {
     "/check-in",
     "/payment",
     "/success",
+    "/failed",
+    "/tour",
   ]);
 
   // Kiểm tra logic hiển thị
