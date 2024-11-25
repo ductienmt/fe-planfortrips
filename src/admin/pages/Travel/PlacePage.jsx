@@ -169,7 +169,7 @@ export default function PlacePageAdmin() {
         }}
         getRowId={(row) => row.id}
         pageSizeOptions={[10,20,50]}
-        checkboxSelection
+        checkboxSelection 
         disableRowSelectionOnClick
         slots={{ toolbar: EditToolbar }}
       />
