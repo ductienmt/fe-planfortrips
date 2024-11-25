@@ -69,16 +69,6 @@
     color: #444;
   }
 
-  .MuiButtonBase-root  {
-    color: green !important;
-    font-weight: bold !important;
-  }
-
-  .Mui-disabled{
-     color: red !important;
-     font-weight: normal !important;
-  }
-  
   /* Hình ảnh */
   .tour-detail-images {
     margin: 20px 0;
