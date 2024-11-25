@@ -31,4 +31,8 @@ export const CheckinService = {
     const response = await Http.get(`/check-in/all`);
     return response.data;
   },
+  getCheckInByCityId: async (id) => {
+    const response = await Http.get(`/check-in/getByCityId?cityId=${id}`);
+    return response.data;
+  },
 };

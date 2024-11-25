@@ -228,11 +228,16 @@ const routeClient = () => [
       },
       {
         path: "/hotel-page",
-        Component: Hotel,
-      },
-      {
-        path: "/hotel-page/detail",
-        Component: DetailCard,
+        children: [
+          {
+            path: "",
+            Component: Hotel,
+          },
+          {
+            path: "detail/:id",
+            Component: DetailCard,
+          },
+        ],
       },
       {
         path: "/vehicle-intro",
@@ -295,16 +300,22 @@ const routeClient = () => [
       },
       {
         path: "/check-in",
-        Component: Checkinpage,
+        children: [
+          {
+            path: "",
+            Component: Checkinpage,
+          },
+          {
+            path: "area/:area",
+            Component: ChooseProvinceDetail,
+          },
+          {
+            path: "city/:city",
+            Component: ChooseCheckinFollowArea,
+          },
+        ],
       },
-      {
-        path: "/check-in/mien-bac",
-        Component: ChooseProvinceDetail,
-      },
-      {
-        path: "/check-in/mien-bac/hung-yen",
-        Component: ChooseCheckinFollowArea,
-      },
+
       {
         path: "/tour",
         Component: TourIndex,

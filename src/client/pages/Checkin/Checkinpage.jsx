@@ -36,13 +36,6 @@ const Checkinpage = () => {
     },
   ];
 
-  const handleCardClick = (area) => {
-    if (area === "Miền Bắc") {
-      navigate("/check-in/mien-bac"); // Đường dẫn đến trang khách sạn
-    }
-    // Bạn có thể thêm logic khác nếu cần điều hướng theo từng vùng miền.
-  };
-
   return (
     <>
       <div className="checkInPage-header mt-5">
@@ -62,10 +55,18 @@ const Checkinpage = () => {
         <ChooseAreaCard
           img={mienbac}
           chooseArea="Miền Bắc"
-          linkto={"/check-in/mien-bac"}
+          linkto={"/check-in/area/MB"}
         />
-        <ChooseAreaCard img={mientrung} chooseArea="Miền Trung" />
-        <ChooseAreaCard img={miennam} chooseArea="Miền Nam" />
+        <ChooseAreaCard
+          img={mientrung}
+          chooseArea="Miền Trung"
+          linkto={"/check-in/area/MT"}
+        />
+        <ChooseAreaCard
+          img={miennam}
+          chooseArea="Miền Nam"
+          linkto={"/check-in/area/MN"}
+        />
       </div>
       <div className="checkInPage-text mt-5">
         <h2 className="text-center" style={{ fontWeight: "700" }}>
