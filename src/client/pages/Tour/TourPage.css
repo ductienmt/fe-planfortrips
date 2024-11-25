@@ -133,13 +133,13 @@
 }
 
 
-body {
+/* body {
   background: #161616;
 }
 
 h1 {
   color: #fff;
-}
+} */
 
 .lead {
   color: #aaa;
@@ -242,7 +242,10 @@ h1 {
   background: rgb(255, 186, 33);
   background: linear-gradient(0deg, rgba(255, 186, 33, 0.378) 0%, rgba(255, 186, 33, 1) 100%);
 }
-
-
   
- 
+ .tour-page-loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+}

@@ -2,18 +2,36 @@ import "./ChooseProvinceDetail.css";
 import phuquoc from "../../../../assets/phuquoc.jpg";
 import ChooseProvince from "../chooseProvince/ChooseProvince";
 import TourCard from "../../Homepage/TourCard/TourCard";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { CityService } from "../../../../services/apis/CityService";
+import Loader from "../../../Components/Loading";
 
 const ChooseProvinceDetail = () => {
   const navigate = useNavigate();
-  const provincesFollowArea = [
-    { img: phuquoc, provinceName: "Hưng Yên" },
-    { img: phuquoc, provinceName: "Hà Nội" },
-    { img: phuquoc, provinceName: "Hạ Long" },
-    { img: phuquoc, provinceName: "Cao Bằng" },
-    { img: phuquoc, provinceName: "Lào Cai" },
-    { img: phuquoc, provinceName: "Điện Biên" },
-  ];
+  const { area } = useParams();
+  const [provincesFollowArea, setProvincesFollowArea] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const loadCitiesData = async (id) => {
+    try {
+      setLoading(true);
+      const response = await CityService.getCitiesByAreaId(id);
+      // console.log("cities", response);
+      setProvincesFollowArea(response);
+    } catch (error) {
+      console.log("error", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    document.title = "Các tỉnh thành";
+    console.log("ChooseProvinceDetail id", area);
+
+    loadCitiesData(area);
+  }, [area]);
 
   const tourCard = [
     {
@@ -30,63 +48,68 @@ const ChooseProvinceDetail = () => {
       number: "2",
     },
   ];
-  const handleCardClick = (area) => {
-    if (area === "Miền Bắc") {
-      navigate("/check-in/mien-bac/hung-yen"); // Đường dẫn đến trang khách sạn
-    }
-    // Bạn có thể thêm logic khác nếu cần điều hướng theo từng vùng miền.
-  };
   return (
     <>
-      <div className="chooseProvinceDetail-container">
-        <div className="checkInPage-text mt-5">
-          <h2 className="text-center">TOP ĐỊA ĐIỂM THAM QUAN Ở CÁC TỈNH</h2>
-          <p className="text-center w-50 mx-auto">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Asperiores
-            non quibusdam a culpa repellat? Magni ad et exercitationem
-            voluptates reiciendis sint cumque non, rem tempora temporibus
-            corrupti quidem. Vel, facere.
-          </p>
-        </div>
-        <div className="checkInPage-card-chooseProvince">
-          {provincesFollowArea.map((province, index) => (
-            <ChooseProvince
-              key={index} // Sử dụng index làm key (tốt hơn là sử dụng ID nếu có)
-              img={province.img}
-              provinceName={province.provinceName}
-              onClick={() => handleCardClick("Miền Bắc")}
-            />
-          ))}
-        </div>
+      {loading ? (
+        <Loader rong={"80vh"} />
+      ) : (
+        <>
+          <div className="chooseProvinceDetail-container">
+            <div className="checkInPage-text mt-5">
+              <h2 className="text-center" style={{ fontWeight: "700" }}>
+                CÁC TỈNH CỦA KHU VỰC
+              </h2>
+              <p className="text-center w-50 mx-auto">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                Asperiores non quibusdam a culpa repellat? Magni ad et
+                exercitationem voluptates reiciendis sint cumque non, rem
+                tempora temporibus corrupti quidem. Vel, facere.
+              </p>
+            </div>
+            <div className="checkInPage-card-chooseProvince">
+              {provincesFollowArea.map((province, index) => (
+                <ChooseProvince
+                  key={index}
+                  img={
+                    province.image ||
+                    "https://images.pexels.com/photos/457882/pexels-photo-457882.jpeg?cs=srgb&dl=pexels-asadphoto-457882.jpg&fm=jpg"
+                  }
+                  provinceName={province.nameCity}
+                  linkTo={`/check-in/city/${province.id}`}
+                />
+              ))}
+            </div>
 
-        <div className="checkInPage-text mt-5">
-          <h2 className="text-center">GỢI Ý TOUR DU LỊCH DÀNH CHO BẠN</h2>
-          <p className="text-center w-50 mx-auto">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Asperiores
-            non quibusdam a culpa repellat? Magni ad et exercitationem
-            voluptates reiciendis sint cumque non, rem tempora temporibus
-            corrupti quidem. Vel, facere.
-          </p>
-        </div>
-        <div className="checkInPage-card-chooseTour mt-5">
-          {tourCard.map((tour, index) => (
-            <TourCard
-              key={index}
-              image={tour.image}
-              title={tour.title}
-              description={tour.description}
-              location={tour.location}
-              people={tour.people}
-              nights={tour.nights}
-              rating={tour.rating}
-              price={tour.price}
-              feedback={tour.feedback}
-              number={tour.number}
-              handleClick={() => {}}
-            />
-          ))}
-        </div>
-      </div>
+            <div className="checkInPage-text mt-5">
+              <h2 className="text-center">GỢI Ý TOUR DU LỊCH DÀNH CHO BẠN</h2>
+              <p className="text-center w-50 mx-auto">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                Asperiores non quibusdam a culpa repellat? Magni ad et
+                exercitationem voluptates reiciendis sint cumque non, rem
+                tempora temporibus corrupti quidem. Vel, facere.
+              </p>
+            </div>
+            <div className="checkInPage-card-chooseTour mt-5">
+              {tourCard.map((tour, index) => (
+                <TourCard
+                  key={index}
+                  image={tour.image}
+                  title={tour.title}
+                  description={tour.description}
+                  location={tour.location}
+                  people={tour.people}
+                  nights={tour.nights}
+                  rating={tour.rating}
+                  price={tour.price}
+                  feedback={tour.feedback}
+                  number={tour.number}
+                  handleClick={() => {}}
+                />
+              ))}
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 };

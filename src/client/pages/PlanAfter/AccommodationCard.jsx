@@ -3,6 +3,8 @@ import "./AccommodationCard.css";
 import { HotelService } from "../../../services/apis/HotelService";
 import nhaxe from "../../../assets/caurong.webp";
 import HotelCard from "../Hotel/card/hotelCard";
+import { convertToVND } from "../../../utils/FormatMoney";
+
 
 function AccommodationCard({ className, onClick, accomodation }) {
   const [hotelImage1, setHotelImage1] = useState("");
@@ -221,7 +223,7 @@ function AccommodationCard({ className, onClick, accomodation }) {
                         color: "red",
                       }}
                     >
-                      {accomodation.total}.000 VND
+                      {convertToVND(accomodation.total)}
                     </h5>
                   </div>
                 </div>

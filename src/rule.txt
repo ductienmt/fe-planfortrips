@@ -1,4 +1,4 @@
-Quy tắc code css font-end
+Quy tắc code css front-end
 
 
 quy tắc đặt tên

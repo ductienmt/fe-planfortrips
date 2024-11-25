@@ -25,7 +25,7 @@ const Checkinpage = () => {
       image: phuquoc,
       title: "Tour Đảo Phú Quốc",
       description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. 1",
       location: "Phú Quốc, Kiên Giang",
       people: "2 người",
       nights: "2N/1Đ",
@@ -36,62 +36,67 @@ const Checkinpage = () => {
     },
   ];
 
-  const handleCardClick = (area) => {
-    if (area === "Miền Bắc") {
-      navigate("/check-in/mien-bac"); // Đường dẫn đến trang khách sạn
-    }
-    // Bạn có thể thêm logic khác nếu cần điều hướng theo từng vùng miền.
-  };  
-
   return (
     <>
       <div className="checkInPage-header mt-5">
         <h4 className="text-center py-3 text-head">
           Plan for Trips đồng hành cùng bạn trên hành trình khám phá Việt Nam
         </h4>
-        <h1 className="text-center">
+        <h1 className="text-center" style={{ color: "black" }}>
           NHỮNG NƠI THAM QUAN PHỔ BIẾN TRÊN MỌI MIỀN
         </h1>
         <p className="text-center w-50 mx-auto">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Asperiores
-          non quibusdam a culpa repellat? Magni ad et exercitationem voluptates
-          reiciendis sint cumque non, rem tempora temporibus corrupti quidem.
-          Vel, facere.
+          Tham quan những địa điểm du lịch phổ biến nhất ở mỗi miền của Việt
+          Nam. Hãy chọn miền bạn muốn khám phá! Plan for Trips sẽ giúp bạn tìm
+          kiếm những địa điểm du lịch phù hợp
         </p>
       </div>
       <div className="checkInPage-card-chooseArea">
-        <ChooseAreaCard img={mienbac} chooseArea="Miền Bắc" onClick={() => handleCardClick("Miền Bắc")}/>
-        <ChooseAreaCard img={mientrung} chooseArea="Miền Trung" />
-        <ChooseAreaCard img={miennam} chooseArea="Miền Nam" />
+        <ChooseAreaCard
+          img={mienbac}
+          chooseArea="Miền Bắc"
+          linkto={"/check-in/area/MB"}
+        />
+        <ChooseAreaCard
+          img={mientrung}
+          chooseArea="Miền Trung"
+          linkto={"/check-in/area/MT"}
+        />
+        <ChooseAreaCard
+          img={miennam}
+          chooseArea="Miền Nam"
+          linkto={"/check-in/area/MN"}
+        />
       </div>
       <div className="checkInPage-text mt-5">
-        <h2 className="text-center">TOP ĐỊA ĐIỂM THAM QUAN Ở CÁC TỈNH</h2>
+        <h2 className="text-center" style={{ fontWeight: "700" }}>
+          TOP CÁC TỈNH ĐƯỢC YÊU THÍCH
+        </h2>
         <p className="text-center w-50 mx-auto">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Asperiores
-          non quibusdam a culpa repellat? Magni ad et exercitationem voluptates
-          reiciendis sint cumque non, rem tempora temporibus corrupti quidem.
-          Vel, facere.
+          Các tỉnh được du khách yêu thích và thường xuyên tham quan nhất ở Việt
+          Nam
         </p>
       </div>
       <div className="checkInPage-card-chooseProvince">
         {provinces.map((province, index) => (
           <ChooseProvince
-            key={index} // Sử dụng index làm key (tốt hơn là sử dụng ID nếu có)
+            key={index}
             img={province.img}
             provinceName={province.provinceName}
           />
         ))}
       </div>
       <div className="checkInPage-text mt-5">
-        <h2 className="text-center">GỢI Ý TOUR DU LỊCH DÀNH CHO BẠN</h2>
+        <h2 className="text-center">
+          TOUR DU LỊCH PLAN FOR TRIPS GỢI Ý CHO BẠN
+        </h2>
         <p className="text-center w-50 mx-auto">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Asperiores
-          non quibusdam a culpa repellat? Magni ad et exercitationem voluptates
-          reiciendis sint cumque non, rem tempora temporibus corrupti quidem.
-          Vel, facere.
+          Các tour du lịch cố địch được Plan for Trips gợi ý cho bạn. Hãy chọn
+          tour phù hợp với bạn nhất! Plan for Trips giúp bạn tổng hợp lại các
+          combo dịch vụ thành 1 tour du lịch cho bạn
         </p>
       </div>
-      <div className="checkInPage-card-chooseTour mt-5">
+      <div className="checkInPage-card-chooseTour mt-5 mb-5">
         {tourCard.map((tour, index) => (
           <TourCard
             key={index}
