@@ -81,9 +81,9 @@ function TourForm({ setRows,rows }) {
     try {
       const areaData = await AreaService.getAll();
       setArea(areaData);
-      const hotelData = await HotelService.getHotels(0, 100, "");
+      const hotelData = await HotelService.getHotels(0, 10, "");
       setHotel(hotelData.hotelResponseList);
-      const carData = await CarService.getcars(0, 100);
+      const carData = await CarService.getcars(0, 10);
       setCar(carData.listResponse);
       const checkinData = await CheckinService.getCheckins();
       setCheckin(checkinData.data.checkinResponses);

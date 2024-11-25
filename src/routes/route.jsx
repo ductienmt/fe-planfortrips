@@ -62,150 +62,159 @@ import schedules from "../enterprise/transportation/schedules/Schedules";
 import Seats from "../enterprise/transportation/seats/Seats";
 import Guest from "../enterprise/transportation/guest/Guest";
 import Routehotel from "../enterprise/transportation/routehotel/Routehotel";
-import React, { useContext } from "react";
-const isAuthenticated = () => {
-  return sessionStorage.getItem("token") !== null;
-};
-const ProtectedRoute = ({ role }) => {
-  return isAuthenticated()
-    ? React.createElement(Outlet)
-    : React.createElement(Navigate, { to: `login` });
+import React from "react";
+
+// Enum for user roles
+const ROLES = {
+  CLIENT: 'ROLE_USER',
+  ADMIN: 'ROLE_ADMIN',
+  ENTERPRISE: 'ROLE_ENTERPRISE'
 };
 
-const routeAdmin = () => {
-  if (isAuthenticated()) {
-    return [
+// Central authentication check with role validation
+const isAuthenticated = (requiredRole = null) => {
+  const token = sessionStorage.getItem("token");
+  const userRole = sessionStorage.getItem("role");
+
+  if (!token) return false;
+  
+  if (requiredRole && userRole !== requiredRole) return false;
+
+  return true;
+};
+
+// Protected Route Component with Role-based Access Control
+const ProtectedRoute = ({ allowedRoles }) => {
+  const token = sessionStorage.getItem("token");
+  const userRole = sessionStorage.getItem("role");
+
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (allowedRoles && !allowedRoles.includes(userRole)) {
+    return <Navigate to="/unauthorized" replace />;
+  }
+
+  return <Outlet />;
+};
+
+const routeAdmin = () => [
+  {
+    path: "/admin",
+    element: <ProtectedRoute allowedRoles={[ROLES.ADMIN]} />,
+    children: [
       {
-        path: "/admin",
-        Component: ProtectedRoute,
+        path: "",
+        element: <LayoutAdmin />,
         children: [
+          { path: "", element: <HomePage /> },
+          { path: "users", element: <User /> },
+          { path: "business", element: <EnterpriseAdmin /> },
+          { path: "tours", element: <TourAdmin /> },
+          { path: "vouchers", element: <CouponAdmin /> },
+          { path: "transactions/hotels", element: <BookingHotelPage /> },
+          { path: "transactions/vehicles", element: <OrderCarPage /> },
+          { path: "travel", element: <PlacePageAdmin /> },
+          { path: "feedbacks", element: <FeedbackPage /> },
+        ],
+      },
+    ],
+  },
+  {
+    path: "/admin/login",
+    element: <LoginAdmin />,
+  }
+];
+
+const routeEnterprise = () => [
+  {
+    path: "/enterprise",
+    element: <ProtectedRoute allowedRoles={[ROLES.ENTERPRISE]} />,
+    children: [
+      {
+        path: "",
+        element: <EnterpriseLayout />,
+        children: [
+          { path: "accomodation/dashboard", element: <AccomodationDashboard /> },
+          { path: "transportation/dashboard", element: <TranportatinDashboard /> },
           {
-            path: "",
-            Component: LayoutAdmin,
-            children: [
-              { path: "", Component: HomePage },
-              { path: "users", Component: User },
-              { path: "business", Component: EnterpriseAdmin },
-              { path: "tours", Component: TourAdmin },
-              { path: "vouchers", Component: CouponAdmin },
-              { path: "transactions/hotels", Component: BookingHotelPage },
-              { path: "transactions/vehicles", Component: OrderCarPage },
-              { path: "travel", Component: PlacePageAdmin },
-              { path: "feedbacks", Component: FeedbackPage },
-            ],
+            path: ":type/vouchers",
+            Component: Voucher,
+          },
+
+          {
+            path: "transportation/vehicle-schedules",
+            Component: Schedules,
+          },
+          {
+            path: "transportation/Seats",
+            Component: Seats,
+          },
+          {
+            path: "transportation/vehicle-management",
+            Component: Vehicle,
+          },
+
+          {
+            path: "transportation/vehicle-account",
+            Component: Account,
+          },
+          {
+            path: "transportation/Guest",
+            Component: Guest,
+          },
+
+          {
+            path: "transportation/vouchers",
+            Component: TransportationVouchers,
+          },
+          {
+            path: "transportation/Routehotel",
+            Component: Routehotel,
+          },
+          {
+            path: "transportation/schedules",
+            Component: schedules,
+          },
+          {
+            path: "accomodation/room-management",
+            Component: Room,
+          },
+          {
+            path: "accomodation/accomodation-manager",
+            Component: HotelManagement,
+          },
+          {
+            path: "accomodation/guest-manager",
+            Component: GuestLiving,
+          },
+          {
+            path: "accomodation/voucher-manager",
+            Component: RoomVoucher,
+          },
+          {
+            path: "accomodation/choose-hotel",
+            Component: ChooseHotel,
           },
         ],
       },
-    ];
-  } else {
-    return [
-      {
-        path: "/admin/login",
-        Component: LoginAdmin,
-      },
-    ];
+    ],
+  },
+  {
+    path: "/enterprise/login",
+    element: <EnterpriseLogin />,
   }
-};
+];
 
-const routeEnterprise = () => {
-  if (isAuthenticated()) {
-    return [
+const routeClient = () => [
+  {
+    path: "/",
+    element: <ProtectedRoute allowedRoles={[ROLES.CLIENT]} />,
+    children: [
       {
-        path: "/enterprise",
-        Component: ProtectedRoute,
-        children: [
-          {
-            path: "",
-            Component: EnterpriseLayout,
-            children: [
-              {
-                path: "accomodation/dashboard",
-                Component: AccomodationDashboard,
-              },
-              {
-                path: "transportation/dashboard",
-                Component: TranportatinDashboard,
-              },
-              {
-                path: ":type/vouchers",
-                Component: Voucher,
-              },
-
-              {
-                path: "transportation/vehicle-schedules",
-                Component: Schedules,
-              },
-              {
-                path: "transportation/Seats",
-                Component: Seats,
-              },
-              {
-                path: "transportation/vehicle-management",
-                Component: Vehicle,
-              },
-
-              {
-                path: "transportation/vehicle-account",
-                Component: Account,
-              },
-              {
-                path: "transportation/Guest",
-                Component: Guest,
-              },
-
-              {
-                path: "transportation/vouchers",
-                Component: TransportationVouchers,
-              },
-              {
-                path: "transportation/Routehotel",
-                Component: Routehotel,
-              },
-              {
-                path: "transportation/schedules",
-                Component: schedules,
-              },
-              {
-                path: "accomodation/room-management",
-                Component: Room,
-              },
-              {
-                path: "accomodation/accomodation-manager",
-                Component: HotelManagement,
-              },
-              {
-                path: "accomodation/guest-manager",
-                Component: GuestLiving,
-              },
-              {
-                path: "accomodation/voucher-manager",
-                Component: RoomVoucher,
-              },
-              {
-                path: "accomodation/choose-hotel",
-                Component: ChooseHotel,
-              },
-            ],
-          },
-        ],
-      },
-    ];
-  } else {
-    return [
-      {
-        path: "/enterprise/login",
-        Component: EnterpriseLogin,
-      },
-    ];
-  }
-};
-
-const routeClient = () => {
-  if (isAuthenticated()) {
-    return [
-      {
-        path: "/",
-        Component: ClientLayout,
+        path: "",
+        element: <ClientLayout />,
         children: [
           {
             path: "",
@@ -322,24 +331,21 @@ const routeClient = () => {
           },
         ],
       },
-    ];
-  } else {
-    return [
-      {
-        path: "/login",
-        Component: Login,
-      },
-      {
-        path: "/register",
-        Component: Register,
-      },
-    ];
+    ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
   }
-};
+];
 
 export const router = createBrowserRouter([
   {
-    Component: App,
-    children: [...routeAdmin(), ...routeClient(), ...routeEnterprise()],
-  },
+    element: <App />,
+    children: [...routeAdmin(), ...routeClient(), ...routeEnterprise()]
+  }
 ]);

@@ -20,11 +20,11 @@ import {
   faEarthAsia,
 } from "@fortawesome/free-solid-svg-icons";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { router } from "../../../routes/route";
 import { AdminService } from "../../../services/apis/AdminService";
 import { parseJwt } from "../../../utils/Jwt";
 import { useAuth } from "../../../context/AuthContext/AuthProvider";
 import logo from "../../../assets/planfortrips-logo_1.png";
+import { router } from "../../../routes/route";
 const NAVIGATION = [
   {
     kind: "header",
@@ -106,18 +106,18 @@ const NAVIGATION = [
     title: "Giao dịch",
     icon: <FontAwesomeIcon icon={faMoneyBillWave} />,
     children: [
-      // {
-      //   title: (
-      //     <NavLink to="transactions/hotels" className="nav-linkAdmin">
-      //       Đơn đặt phòng
-      //     </NavLink>
-      //   ),
-      //   icon: (
-      //     <NavLink to="transactions/hotels" className="nav-linkAdmin">
-      //       <FontAwesomeIcon icon={faHotel} />
-      //     </NavLink>
-      //   ),
-      // },
+      {
+        title: (
+          <NavLink to="transactions/hotels" className="nav-linkAdmin">
+            Đơn đặt phòng
+          </NavLink>
+        ),
+        icon: (
+          <NavLink to="transactions/hotels" className="nav-linkAdmin">
+            <FontAwesomeIcon icon={faHotel} />
+          </NavLink>
+        ),
+      },
       {
         title: (
           <NavLink to="transactions/vehicles" className="nav-linkAdmin">
