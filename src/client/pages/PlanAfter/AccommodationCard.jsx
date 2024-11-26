@@ -11,6 +11,7 @@ function AccommodationCard({ className, onClick, accomodation }) {
   const [hotelImage1, setHotelImage1] = useState("");
   const [hotelImage2, setHotelImage2] = useState("");
   const [hotelImage3, setHotelImage3] = useState("");
+  const [hotelAmentities, setHotelAmentities] = useState([]);
 
   const [selectedRooms, setSelectedRooms] = useState([]); // Lưu danh sách phòng được chọn
 
@@ -40,7 +41,9 @@ function AccommodationCard({ className, onClick, accomodation }) {
   const loadHotelImages = async () => {
     try {
       const response = await HotelService.findHotelById(accomodation.hotelId);
+      console.log(response);
       const images = response.images;
+      setHotelAmentities(response.hotelAmenities);
 
       if (images.length > 0) {
         const selectedIndices = new Set();
@@ -65,10 +68,11 @@ function AccommodationCard({ className, onClick, accomodation }) {
   };
 
   useEffect(() => {
-    console.log(accomodation.hotelId);
-    console.log(accomodation);
+    // console.log(accomodation.hotelId);
+    // console.log(accomodation);
 
     loadHotelImages();
+    console.log(hotelAmentities);
   }, [accomodation.hotelId]);
 
   return (
@@ -117,10 +121,11 @@ function AccommodationCard({ className, onClick, accomodation }) {
             />
           </div>
           <div className="amenities">
-            <span className="amenity">Wifi</span>
-            <span className="amenity">Gian bếp</span>
-            <span className="amenity">Điều hòa</span>
-            <span className="amenity">Sân vườn</span>
+            {hotelAmentities.slice(0, 4).map((amenity, index) => (
+              <span className="amenity" key={index}>
+                {amenity.name}
+              </span>
+            ))}
           </div>
           <div className="action-buttons">
             {/* Bắt đầu xem chi tiết nơi ở */}
@@ -228,7 +233,15 @@ function AccommodationCard({ className, onClick, accomodation }) {
 
                   <div className="tripTicket-item">
                     <p>Tiện ích phòng:</p>
-                    <h6>wifi, gian bếp, điều hòa, sân vườn</h6>
+                    {hotelAmentities.slice(0, 4).map((amenity, index) => (
+                      <span
+                        className=""
+                        key={index}
+                        style={{ fontSize: "15px" }}
+                      >
+                        {amenity.name},{" "}
+                      </span>
+                    ))}
                   </div>
                 </div>
 
@@ -249,7 +262,7 @@ function AccommodationCard({ className, onClick, accomodation }) {
                         color: "red",
                       }}
                     >
-                      {accomodation.total}.000 VND
+                      {convertToVND(accomodation.total)}
                     </h5>
                   </div>
                 </div>

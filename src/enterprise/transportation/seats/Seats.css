@@ -1,55 +1,51 @@
   .enterprise-Seats-container {
-  margin: 10px;
-  width: 100%;
-  border-radius: 20px;
-  box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.2);
-  padding: 20px;
-}
-
-.enterprise-Seats-container .enterprise-Seats-container
-.enterprise-Seats-container  .nav-filterCombobox-Seats {
-  display: flex;
- 
-}
-  .enterprise-Seats-container .nav-filterCombobox-Seats{
-    width: 40%;
+    margin: 10px;
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.2);
+    padding: 20px;
   }
 
-.enterprise-Seats-container .Seats-selection {
-  background-color: #fff;
-  display: flex;
-  /* justify-content: center; */
-  align-items: center;
-  margin-top: 25px;
-  /* padding: 262px 70px; */
-}
+  .enterprise-Seats-container .enterprise-Seats-container .enterprise-Seats-container .nav-filterCombobox-Seats {
+    display: flex;
 
-.enterprise-Seats-container .Seats-container {
-  border-radius: 20px;
-  background-color: #f3f3f3;
-  display: flex;
-  width: 80%;
-  gap: 40px 100px;
-  /* flex-wrap: wrap; */
-}
+  }
 
-.enterprise-Seats-container .select-Seats-btn {
-  border-radius: 0 20px 20px 0;
-  background-color: #3b90e0;
-  color: #fff;
-  padding: 64px 70px;
-  font-size: 36px;
-  line-height: 44px;
-  font-weight: 400;
-  border: none;
-  cursor: pointer;
-}
+  .enterprise-Seats-container .Seats-selection {
+    background-color: #fff;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    margin-top: 25px;
+    /* padding: 262px 70px; */
+  }
 
-.enterprise-Seats-container .select-Seats-btn:hover{
-  background-color: #167ad7;
-}
+  .enterprise-Seats-container .Seats-container {
+    border-radius: 20px;
+    background-color: #f3f3f3;
+    display: flex;
+    width: 100%;
+    gap: 40px 100px;
+    /* flex-wrap: wrap; */
+  }
 
-/* @media (max-width: 991px) {
+  .enterprise-Seats-container .select-Seats-btn {
+    border-radius: 0 20px 20px 0;
+    background-color: #3b90e0;
+    color: #fff;
+    padding: 64px 70px;
+    font-size: 36px;
+    line-height: 44px;
+    font-weight: 400;
+    border: none;
+    cursor: pointer;
+  }
+
+  .enterprise-Seats-container .select-Seats-btn:hover {
+    background-color: #167ad7;
+  }
+
+  /* @media (max-width: 991px) {
   .Seats-selection {
     padding: 100px 20px;
   }
@@ -66,142 +62,135 @@
   }
 } */
 
-.enterprise-Seats-container .modal3-footer .modal-footer .pagination{
-  align-items: center;
-}
-.enterprise-Seats-container .modal-dialog{
-  max-width: 800%;
-}
+  .enterprise-Seats-container .modal3-footer .modal-footer .pagination {
+    align-items: center;
+  }
 
-.enterprise-Seats-container .seats-button{
-margin-left: 250px;
-background-color: #167ad7;
-color: #fff;
+  .enterprise-Seats-container .modal-dialog {
+    max-width: 800%;
+  }
 
-}
+  .enterprise-Seats-container .seats-button {
+    background-color: #167ad7;
+    color: #fff;
 
-
-
-
-.enterprise-Seats-container .nav-filterCombobox-Seats{
-  padding: 10px 20px;
-
-}
+  }
 
 
 
-.enterprise-Seats-container .modal3-footer .modal-footer .pagination {
-  align-items: center;
-  justify-content: center; 
-  margin-top: 20px; 
-}
 
-.enterprise-Seats-container .modal-dialog {
-  max-width: 800px;
-}
+  .enterprise-Seats-container .nav-filterCombobox-Seats {
+    padding: 10px 20px;
 
-
-/* ghế */
-.enterprise-Seats-container .modal-header {
-  background-color: #3b90e0;
-  color: #fff;
-  border-bottom: 1px solid #ddd;
-  padding: 15px;
-  font-size: 18px;
-}
-
-.enterprise-Seats-container .modal-body {
-  padding: 20px;
-}
-
-.enterprise-Seats-container .seat-navigation {
-  display: flex;
-  flex-direction: column;
-  gap: 15px; /* Adds space between each row */
-}
-
-.enterprise-Seats-container .seat-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-}
-
-.enterprise-Seats-container .seat-row label {
-  font-weight: bold;
-}
-
-.enterprise-Seats-container .seat-row input {
-  padding: 8px;
-  width: 45%;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
-.enterprise-Seats-container .modal-footer {
-  display: flex;
-  justify-content: flex-end;
-  padding: 15px;
-  background-color: #f8f9fa;
-  border-top: 1px solid #ddd;
-}
-
-.enterprise-Seats-container .modal-footer .btn {
-  padding: 10px 20px;
-}
-
-.enterprise-Seats-container .modal-footer .btn-primary {
-  background-color: #3b90e0;
-  border: none;
-  
-}
-
-.enterprise-Seats-container .modal-footer .btn-secondary {
-  background-color: #6c757d;
-  border: none;
-}
-
-.enterprise-Seats-container .seat-input-wrapper {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-}
+  }
 
 
 
-.enterprise-Seats-container .seat-input:focus {
-  border-color: #0056b3;
-  outline: none;
-}
+  .enterprise-Seats-container .modal3-footer .modal-footer .pagination {
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+  }
 
-.enterprise-Seats-container .mb-3 .form-label {
-  font-weight: bold;
-}
-.enterprise-Seats-container .modal-footer {
-  display: flex;
-  justify-content: center;
-  align-items: center; 
-  padding: 10px 0; 
-}
-
-.nav-filterCombobox-Seats {
-  display: flex;
-  align-items: center;  
-  gap: 10px;  
-}
-.nav-filterCombobox-Seats .btn {
-  margin: 10; 
-  width: 100px; 
-}
-.enterprise-Seats-container .input-field input{
-  padding: 10px 200px;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: solid 1px #cbcbcb;
+  .enterprise-Seats-container .modal-dialog {
+    max-width: 800px;
+  }
 
 
-}
+  /* ghế */
+  .enterprise-Seats-container .modal-header {
+    /* background-color: #3b90e0; */
+    color: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 15px;
+    font-size: 18px;
+  }
+
+  .enterprise-Seats-container .modal-body {
+    padding: 20px;
+  }
+
+  .enterprise-Seats-container .seat-navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    /* Adds space between each row */
+  }
+
+  .enterprise-Seats-container .seat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .enterprise-Seats-container .seat-row label {
+    font-weight: bold;
+  }
+
+  .enterprise-Seats-container .seat-row input {
+    padding: 8px;
+    width: 45%;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+
+  .enterprise-Seats-container .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #ddd;
+  }
+
+  .enterprise-Seats-container .modal-footer .btn {
+    padding: 10px 20px;
+  }
+
+  .enterprise-Seats-container .modal-footer .btn-primary {
+    background-color: #3b90e0;
+    border: none;
+
+  }
+
+  .enterprise-Seats-container .modal-footer .btn-secondary {
+    background-color: #6c757d;
+    border: none;
+  }
+
+  .enterprise-Seats-container .seat-input-wrapper {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
 
 
 
+  .enterprise-Seats-container .seat-input:focus {
+    border-color: #0056b3;
+    outline: none;
+  }
+
+  .enterprise-Seats-container .mb-3 .form-label {
+    font-weight: bold;
+  }
+
+  .enterprise-Seats-container .modal-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+  }
+
+  .nav-filterCombobox-Seats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-filterCombobox-Seats .btn {
+    width: 100px;
+    height: 46px;
+  }

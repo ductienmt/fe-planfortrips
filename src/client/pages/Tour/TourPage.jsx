@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./TourPage.css"; // Đảm bảo bạn đã import file CSS này
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -10,11 +10,11 @@ import {
   faUserTie,
 } from "@fortawesome/free-solid-svg-icons";
 import TourCard from "./TourCard/TourCard";
+import { TourService } from "../../../services/apis/TourService";
+import { Box } from "@mui/system";
+import { CircularProgress } from "@mui/material";
 
 function TourPage() {
-  const [search, setSearch] = useState("");
-  const [filteredDestinations, setFilteredDestinations] = useState([]);
-  const [showDropdown, setShowDropdown] = useState(false);
 
   const tours = [
     {
@@ -122,38 +122,20 @@ function TourPage() {
       hashtags: ["#MộcChâu", "#HoaMùa", "#CaoNguyên"]
     }
   ];
+
+  const [toursData, setToursData] = useState(null);
   
 
-  const destinations = [
-    "Hà Nội",
-    "TP. HCM",
-    "Đà Nẵng",
-    "Bali",
-    "Paris",
-    "Hàn Quốc",
-  ]; // Dữ liệu giả cho điểm đến
+  useEffect(() => {
+    initData();
+  },[]);
 
-  const handleSearch = (e) => {
-    const value = e.target.value;
-    setSearch(value);
-
-    // Lọc dữ liệu điểm đến dựa trên input người dùng
-    if (value) {
-      setFilteredDestinations(
-        destinations.filter((destination) =>
-          destination.toLowerCase().includes(value.toLowerCase())
-        )
-      );
-      setShowDropdown(true);
-    } else {
-      setShowDropdown(false);
-    }
-  };
-
-  const handleSelectDestination = (destination) => {
-    setSearch(destination);
-    setShowDropdown(false); // Ẩn dropdown sau khi chọn điểm đến
-  };
+  const initData = async () => {
+    const res = await TourService.getToursClient();
+    console.log(res);
+    
+    setToursData(res);    
+  }
 
   return (
     <div className="c-tour py-3">
@@ -163,30 +145,14 @@ function TourPage() {
           <div className="tour-header-content">
             <h1>Khám phá thế giới với tour du lịch tuyệt vời</h1>
             <p>Đặt tour ngay hôm nay với giá ưu đãi cực kỳ hấp dẫn!</p>
-            <form className="tour-search-form">
+            {/* <form className="tour-search-form">
               <div className="tour-search-destination">
                 <input
                   type="text"
                   placeholder="Bạn muốn đi đâu?"
                   className="form-control w-100"
-                  value={search}
-                  onChange={handleSearch}
                 />
 
-                {/* Dropdown Search Điểm Đến */}
-                {showDropdown && (
-                  <div className="tour-search-destination-dropdown">
-                    {filteredDestinations.map((destination, index) => (
-                      <div
-                        key={index}
-                        className="dropdown-item"
-                        onClick={() => handleSelectDestination(destination)}
-                      >
-                        {destination}
-                      </div>
-                    ))}
-                  </div>
-                )}
               </div>
 
               <input type="date" />
@@ -196,7 +162,7 @@ function TourPage() {
               <button type="submit" className="btn-search">
                 Tìm
               </button>
-            </form>
+            </form> */}
           </div>
         </header>
         {/* Header */}
@@ -243,9 +209,17 @@ function TourPage() {
                       <h3 className="fw-bold fs-2" style={{fontFamily: 'Italic'}}>#Tour của chúng tôi</h3>
                     </div>  
           <div className="tour-list row gx-3">
-      {tours.map((tour) => (
+      {/* {tours.map((tour) => (
         <TourCard key={tour.id} tour={tour}/>
-      ))}
+      ))} */}
+
+      {(toursData != null) ? toursData?.map((tour) =>
+        (
+          <TourCard key={tour.tourId} tour={tour}/>
+        )
+      ) : <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}>
+      <CircularProgress />
+    </Box>}
     </div>
           
 

@@ -1,4 +1,4 @@
-import { createBrowserRouter, Route } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import LandingPage from "../client/pages/Homepage/LandingPage";
 import Login from "../client/pages/Auth/Login/Login";
@@ -31,13 +31,9 @@ import EnterpriseLogin from "../enterprise/auth/login/EnterpriseLogin";
 // import EnterpriseDashboard from "../enterprise/dashboard/EnterpriseDashboard";
 import Voucher from "../enterprise/voucher/Voucher";
 import Vehicle from "../enterprise/transportation/vehicleManagement/Vehicle";
-import Schedule from "../enterprise/transportation/schedules/Schedules";
-import RouteTrans from "../enterprise/transportation/routehotel/Routehotel";
-
 import Room from "../enterprise/accomodation/roomManagement/Room";
 import HotelManagement from "../enterprise/accomodation/manager/HotelManagement";
 import Sumbitenterprise from "../client/pages/Enterprise/Sumbitenterprise";
-import Tour from "../admin/pages/Tour/Tour";
 import TourAdmin from "../admin/pages/Tour/TourPage";
 import GuestLiving from "../enterprise/accomodation/guest/GuestLiving";
 import RoomVoucher from "../enterprise/accomodation/roomVoucher/RoomVoucher";
@@ -53,8 +49,6 @@ import Hotel from "../client/pages/hotel/hotel";
 import IntroVehicle from "../client/pages/Vehicle/IntroVehicle/IntroVehicle";
 import VehiclePage from "../client/pages/Vehicle/VehiclePage/VehiclePage";
 import VehicleBooking from "../client/pages/Vehicle/VehicleBooking/VehicleBooking";
-
-import { Component } from "react";
 import DetailCard from "../client/pages/hotel/detailHotel/detailCard";
 import Failed from "../client/pages/Payment/Status/Failed";
 import TourPage from "../client/pages/Tour/TourPage";
@@ -68,7 +62,6 @@ import schedules from "../enterprise/transportation/schedules/Schedules";
 import Seats from "../enterprise/transportation/seats/Seats";
 import Guest from "../enterprise/transportation/guest/Guest";
 import Routehotel from "../enterprise/transportation/routehotel/Routehotel";
-import TourForm from "../admin/pages/Tour/Tour";
 
 const routeAdmin = () => [
   {
@@ -235,11 +228,16 @@ const routeClient = () => [
       },
       {
         path: "/hotel-page",
-        Component: Hotel,
-      },
-      {
-        path: "/hotel-page/detail",
-        Component: DetailCard,
+        children: [
+          {
+            path: "",
+            Component: Hotel,
+          },
+          {
+            path: "detail/:id",
+            Component: DetailCard,
+          },
+        ],
       },
       {
         path: "/vehicle-intro",
@@ -302,16 +300,22 @@ const routeClient = () => [
       },
       {
         path: "/check-in",
-        Component: Checkinpage,
+        children: [
+          {
+            path: "",
+            Component: Checkinpage,
+          },
+          {
+            path: "area/:area",
+            Component: ChooseProvinceDetail,
+          },
+          {
+            path: "city/:city",
+            Component: ChooseCheckinFollowArea,
+          },
+        ],
       },
-      {
-        path: "/check-in/mien-bac",
-        Component: ChooseProvinceDetail,
-      },
-      {
-        path: "/check-in/mien-bac/hung-yen",
-        Component: ChooseCheckinFollowArea,
-      },
+
       {
         path: "/tour",
         Component: TourIndex,
