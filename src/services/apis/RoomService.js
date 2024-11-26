@@ -54,4 +54,61 @@ export const RoomService = {
     const response = await Http.delete(`/rooms/delete/${id}`);
     return response;
   },
+  getRoomByStatus: async (
+    hotelId,
+    status,
+    pageNo,
+    pageSize,
+    sortBy,
+    sortType
+  ) => {
+    const params = new URLSearchParams({ hotelId, status });
+    if (pageNo) {
+      params.append("pageNo", pageNo);
+    }
+    if (pageSize) {
+      params.append("pageSize", pageSize);
+    }
+    if (sortBy) {
+      params.append("sortBy", sortBy);
+    }
+    if (sortType) {
+      params.append("sortType", sortType);
+    }
+    const response = await Http.get(
+      `/rooms/getRoomAvailableByHotelId?${params.toString()}`
+    );
+    return response.data;
+  },
+  getFilteredRooms: async (
+    hotelId,
+    roomType,
+    status,
+    pageNo,
+    pageSize,
+    sortBy,
+    sortType
+  ) => {
+    const params = new URLSearchParams({ hotelId });
+    if (roomType) {
+      params.append("roomType", roomType);
+    }
+    if (pageNo) {
+      params.append("pageNo", pageNo);
+    }
+    if (pageSize) {
+      params.append("pageSize", pageSize);
+    }
+    if (sortBy) {
+      params.append("sortBy", sortBy);
+    }
+    if (sortType) {
+      params.append("sortType", sortType);
+    }
+    if (status) {
+      params.append("status", status);
+    }
+    const response = await Http.get(`/rooms/filter?${params.toString()}`);
+    return response.data;
+  },
 };
