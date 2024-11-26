@@ -9,23 +9,35 @@ import PersonReview from "../personReview/PersonReview";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { HotelService } from "../../../../services/apis/HotelService";
+import Loader from "../../../Components/Loading";
 
 const DetailCard = () => {
   const originalPrice = 250000;
   const discountedPrice = 200000;
   const hasDiscount = discountedPrice < originalPrice;
   window.scrollTo(0, 0);
+  const [loading,setLoading] = useState(true);
   const { id } = useParams();
   const [hotel, setHotel] = useState({});
+  const [rooms,setRoom] = useState([]);
   useEffect(() => {
     const fetch = async () => {
       const dataHotel = await HotelService.findHotelById(id);
       if (dataHotel) {
         setHotel(dataHotel);
+        setRoom(dataHotel.rooms);
+        setLoading(false);
       }
     };
     fetch();
-  }, []);
+  }, [hotel]);
+
+  useEffect(() => {
+    console.log("DetailCard id", id);
+  }, [id]);
+ if(loading){
+  return <Loader />
+ }
   return (
     <>
       <div className="conatiner custom-detailCard">
@@ -33,6 +45,7 @@ const DetailCard = () => {
           <div style={{ flexGrow: 8 }} className="nameHotelDetail">
             <div className="name d-flex">
               <h1>{hotel.name}</h1>
+              
             </div>
             <small className="hotel-adr">
               <i className="fa-solid fa-map-pin me-3"></i>
@@ -118,7 +131,17 @@ const DetailCard = () => {
           <hr />
           <div className="room-availible">
             <h3>Phòng hiện có</h3>
-            <RoomCard />
+            {rooms.length > 0 ? 
+              rooms.map((r) => (
+                <RoomCard 
+                  key={r.id} 
+                  img={r.images[0]?.url} 
+                  roomSize={r?.maxSize} 
+                  priceOneNight={r?.price} 
+                  onBook={r?.is_available}
+                />
+              ))
+              : "Hiện tại không có phòng"}
           </div>
         </div>
         <hr className="py-3" />

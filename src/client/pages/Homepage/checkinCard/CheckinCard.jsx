@@ -1,6 +1,6 @@
 import "./CheckinCard.css";
 
-const CheckinCard = ({ img, cityName, checkinName, rating }) => {
+const CheckinCard = ({ img, cityName, checkinName, rating, description }) => {
   const toUpperCase = (str) => str.toUpperCase();
   const renderStars = (rating) => {
     const stars = [];
@@ -40,10 +40,7 @@ const CheckinCard = ({ img, cityName, checkinName, rating }) => {
           <div className="content">
             <p className="city-name">{toUpperCase(cityName)}</p>
             <h4 className="checkin-name">{toUpperCase(checkinName)}</h4>
-            <p className="checkin-description">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-              quos.
-            </p>
+            <p className="checkin-description">{description}</p>
             <div className="rating-badge">{renderStars(rating)}</div>
           </div>
         </div>

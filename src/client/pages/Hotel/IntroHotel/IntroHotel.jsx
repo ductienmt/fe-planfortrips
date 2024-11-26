@@ -5,6 +5,7 @@ import InputOption from "../../../Components/Input/InputOption";
 import { CouponService } from '../../../../services/apis/CouponService';
 import { HotelService } from '../../../../services/apis/HotelService';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 const imgheader = [
@@ -155,6 +156,7 @@ const IntroHotel = () => {
     const handDatechange = (event) => {
         setDate(event.target.value);
     }
+    const navigate = useNavigate();
     const [hotel,setHotel] = useState([]);
     // set up input vị trí class date-night
     const [isOpen, setIsOpen] = useState(false); // Kiểm soát dropdown
@@ -293,7 +295,7 @@ const IntroHotel = () => {
                         </div>
                         <br />
                         <div className='header-button'>
-                            <button>Tìm khách sạn </button>
+                            <button onClick={()=>navigate('/hotel-page')}>Tìm khách sạn </button>
                         </div>
                     </div>
                 </div>
@@ -357,8 +359,8 @@ const IntroHotel = () => {
                                             <p className="card-price-new">{card.newprice}</p>
                                         </div>
                                         <div className='card-button'>
-                                            <Link to={`hotel:${id}`} className="buy-button"> Đặt ngay</Link>
-                                            <button className="details-buttons"> Xem chi tiết</button>
+                                        <Link to={`/hotel/${card.hotel_id}`} className="buy-button">Đặt ngay</Link>
+                                        <button className="details-buttons"> Xem chi tiết</button>
                                         </div>
                                     </div>
 

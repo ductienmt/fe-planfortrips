@@ -2,12 +2,12 @@ import Http from "../Http";
 
 export const PlanServiceApi = {
   getData: async (data) => {
-    return await Http.post("/api/v1/plans/prepare", data);
+    return await Http.post("/plans/prepare", data);
   },
   savePlan: async (data) => {
-    return await Http.post("/api/v1/plans/save", data);
+    return await Http.post("/plans/save", data);
   },
   getPlanById: async () => {
-    return await Http.get(`/api/v1/plans/all`);
+    return await Http.get(`/plans/all`);
   },
 };

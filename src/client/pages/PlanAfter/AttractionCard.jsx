@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import "./AttractionCard.css";
 import { CheckinService } from "../../../services/apis/CheckinService";
 import { convertToVND } from "../../../utils/FormatMoney";
@@ -8,20 +8,16 @@ function AttractionCard({ className, onClick, onNext, onBack, checkin }) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleNext = () => {
-    if (currentIndex < attractions.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    } else {
-      setCurrentIndex(0);
-    }
+    setCurrentIndex((prevIndex) =>
+      prevIndex < attractions.length - 1 ? prevIndex + 1 : 0
+    );
     onNext();
   };
 
   const handleBack = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-    } else {
-      setCurrentIndex(attractions.length - 1);
-    }
+    setCurrentIndex((prevIndex) =>
+      prevIndex > 0 ? prevIndex - 1 : attractions.length - 1
+    );
     onBack();
   };
 
@@ -34,39 +30,35 @@ function AttractionCard({ className, onClick, onNext, onBack, checkin }) {
             const imagesResponse = await CheckinService.getImageById(id);
             console.log(imagesResponse);
 
-            // Kiểm tra dữ liệu có sẵn
-            if (
-              imagesResponse &&
-              imagesResponse.data &&
-              imagesResponse.data.length > 0
-            ) {
+            if (imagesResponse?.data?.length > 0) {
               const randomImage =
                 imagesResponse.data[
                   Math.floor(Math.random() * imagesResponse.data.length)
                 ];
-              console.log(randomImage.url);
               return { ...place, images: randomImage.url };
             }
           }
           return place;
         })
       );
+      // console.log(updatedAttractions);
 
       setAttractions(updatedAttractions);
-      // console.log(updatedAttractions);
     };
 
     fetchImages();
   }, [checkin]);
 
+  const memoizedAttractions = useMemo(() => attractions, [attractions]);
+
   return (
     <article className={`attraction-card ${className}`} onClick={onClick}>
       <img
         src={
-          attractions[currentIndex].images ||
+          memoizedAttractions[currentIndex].images ||
           "https://www.vietfuntravel.com.vn/image/data/dia-diem-vung-tau/diem-du-lich-vung-tau/check-in-top-37-dia-diem-du-lich-o-vung-tau-dep-khong-goc-chet-h26.jpg"
         }
-        alt={attractions[currentIndex].name}
+        alt={memoizedAttractions[currentIndex].name}
         className="attraction-image"
       />
       <div className="attraction-overlay">
@@ -85,12 +77,14 @@ function AttractionCard({ className, onClick, onNext, onBack, checkin }) {
           />
         </div>
         <div className="attraction-info">
-          <h3 className="attraction-name">{attractions[currentIndex].name}</h3>
+          <h3 className="attraction-name">
+            {memoizedAttractions[currentIndex].name}
+          </h3>
           <p className="attraction-entry">
             Vé vào cổng:{" "}
-            {attractions[currentIndex].payFee === 0
+            {memoizedAttractions[currentIndex].payFee === 0
               ? "Miễn phí"
-              : convertToVND(attractions[currentIndex].payFee)}
+              : convertToVND(memoizedAttractions[currentIndex].payFee)}
           </p>
         </div>
       </div>

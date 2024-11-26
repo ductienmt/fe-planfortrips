@@ -81,13 +81,13 @@ function TourForm({ setRows,rows }) {
     try {
       const areaData = await AreaService.getAll();
       setArea(areaData);
-      const hotelData = await HotelService.getHotels(0, 10, "");
+      const hotelData = await HotelService.getHotels("1", "10", "");
       setHotel(hotelData.hotelResponseList);
       const carData = await CarService.getcars(0, 10);
       setCar(carData.listResponse);
       const checkinData = await CheckinService.getCheckins();
       setCheckin(checkinData.data.checkinResponses);
-      const tag = await TagService.getTags(0, 100);
+      const tag = await TagService.getTags(0, 50);
       setTags(tag.listResponse);
     } catch (error) {
       console.error("Lỗi khi lấy dữ liệu khu vực:", error);

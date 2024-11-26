@@ -4,7 +4,7 @@ import { formatMoney } from "../../../utils/FormatMoney";
 
 const PlanSummary = ({ summaryItems }) => {
   useEffect(() => {
-    document.title = "Plan Summary";
+    document.title = "Lập kế hoạch";
 
     // console.log(tripPlan);
   }, []);

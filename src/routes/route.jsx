@@ -237,10 +237,6 @@ const routeClient = () => [
             Component: IntroHotel,
           },
           {
-            path: "/hotel/:id",
-            Component: DetailCard,
-          },
-          {
             path: "/hotel-page",
             Component: Hotel,
           },
