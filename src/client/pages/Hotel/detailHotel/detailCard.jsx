@@ -6,12 +6,41 @@ import img4 from "../../../../assets/beach.jpg";
 import img5 from "../../../../assets/beach.jpg";
 import RoomCard from "../roomCard/roomCard";
 import PersonReview from "../personReview/PersonReview";
+import { useParams, useLocation } from "react-router-dom";
+import { HotelService } from "../../../../services/apis/HotelService";
+import { useEffect, useState } from "react";
 
 const DetailCard = () => {
+
+  const { hotel_id } = useParams();
+  const [hotelDetails, setHotelDetails] = useState(null);
+
+  const fetchHotelDetails = async () => {
+    try {
+      const data = await HotelService.findHotelById(hotel_id);
+      setHotelDetails(data);
+    } catch (error) {
+      console.error("Error fetching hotel details:", error);
+    }
+  };
+
+  useEffect(() => {
+    console.log(hotel_id);
+
+    fetchHotelDetails();
+  }, [hotel_id]);
+
+  if (!hotelDetails) {
+    return <div>Loading...</div>;
+  }
+
   const originalPrice = 250000;
   const discountedPrice = 200000;
   const hasDiscount = discountedPrice < originalPrice;
   window.scrollTo(0, 0);
+
+  const location = useLocation();
+  const { name, rating, address } = location.state || {};
 
   return (
     <>
@@ -19,10 +48,10 @@ const DetailCard = () => {
         <div className="flex-container-header">
           <div style={{ flexGrow: 8 }} className="nameHotelDetail">
             <div className="name d-flex">
-              <h1>Nơi ở 1, Hồ Chí Minh</h1>
+              <h1>{name}</h1>
             </div>
             <small className="hotel-adr">
-              <i className="fa-solid fa-map-pin me-3"></i>Quận 1, Hồ Chí Minh
+              <i className="fa-solid fa-map-pin me-3"></i>{address}
             </small>
             <div className="feed-back-hotel d-flex align-items-center mt-3">
               <div className="start-feedback">
@@ -32,7 +61,7 @@ const DetailCard = () => {
                 <i className="fa-solid fa-star"></i>
                 <i className="fa-solid fa-star"></i>
               </div>
-              <span className="total-customer">43 người đánh giá</span>
+              <span className="total-customer">{rating}</span>
             </div>
           </div>
           <div

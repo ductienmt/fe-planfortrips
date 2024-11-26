@@ -238,7 +238,7 @@ const routeClient = () => [
 
       },
       {
-        path: "/hotel-page/detail",
+        path: "/hotel-page/detail/:id",
         Component: DetailCard,
 
       },
@@ -251,7 +251,7 @@ const routeClient = () => [
         Component: VehiclePage,
       },
       {
-        path: "/vehicle-booking",
+        path: "/vehicle-booking/:id",
         Component: VehicleBooking,
       },
       {
@@ -308,16 +308,16 @@ const routeClient = () => [
       {
         path: "/tour",
         Component: TourIndex,
-        children : [
+        children: [
           {
-            path : "",
-            Component : TourPage
+            path: "",
+            Component: TourPage
           },
           {
-           path : "detail/:tourId",
-           Component: TourDetail
+            path: "detail/:tourId",
+            Component: TourDetail
           }
-         ]
+        ]
       }
     ],
   },

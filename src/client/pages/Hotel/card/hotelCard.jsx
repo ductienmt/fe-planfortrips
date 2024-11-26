@@ -5,7 +5,7 @@ import "./hotelCard.css";
 import imghotel from "../../../../assets/beach.jpg";
 import { Link } from "react-router-dom";
 
-const HotelCard = ({ name }) => {
+const HotelCard = ({ hotel_id, name, address, rating, }) => {
   const originalPrice = 250000;
   const discountedPrice = 200000;
   const hasDiscount = discountedPrice < originalPrice;
@@ -25,8 +25,7 @@ const HotelCard = ({ name }) => {
               <div className="col-md-8">
                 <h5 className="card-title mb-0">{name}</h5>
                 <small className="hotel-adr">
-                  <i className="fa-solid fa-map-pin me-3"></i>Quận 1, Hồ Chí
-                  Minh
+                  <i className="fa-solid fa-map-pin me-3"></i>{address}
                 </small>
                 <p className="card-text amenities d-flex">
                   <small>
@@ -47,7 +46,7 @@ const HotelCard = ({ name }) => {
                     <i className="fa-solid fa-star"></i>
                     <i className="fa-solid fa-star"></i>
                   </div>
-                  <span className="total-customer">43 người đánh giá</span>
+                  <span className="total-customer">{rating}</span>
                 </div>
                 <p className="card-text">
                   <small className="text-muted">Last updated 3 mins ago</small>
@@ -59,7 +58,7 @@ const HotelCard = ({ name }) => {
                     </button>
                   </div>
                   <div className="col-md-9">
-                    <Link to={"./detail"}>Xem chi tiết</Link>
+                    <Link to={`./detail/${hotel_id}`}>Xem chi tiết</Link>
                   </div>
                 </div>
               </div>
@@ -86,7 +85,10 @@ const HotelCard = ({ name }) => {
 };
 
 HotelCard.propTypes = {
+  hotel_id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  address: PropTypes.string.isRequired,
+  rating: PropTypes.number.isRequired,
 };
 
 export default HotelCard;

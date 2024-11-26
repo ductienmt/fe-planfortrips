@@ -11,8 +11,29 @@ import PriceRangeSlider from "./priceRange/PriceRangeSlider";
 import CheckboxGroup from "./checkBox/CheckboxGroup";
 import ServicesCheckboxGroup from "./checkBox/ServicesCheckboxGroup";
 import Loader from "../../Components/Loading";
-
+import { HotelService } from "../../../services/apis/HotelService";
 const Hotel = () => {
+
+  //api
+  const [hotels, setHotels] = useState([]);
+  const fetchHotels = async () => {
+    try {
+      const data = await HotelService.getHotels(1, 10, '');
+      console.log("Hotels data:", data.hotelResponseList);
+      setHotels(data.hotelResponseList);
+
+      sessionStorage.setItem('hotels', JSON.stringify(data.hotelResponseList));
+    } catch (error) {
+      console.error("Error fetching hotels:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchHotels();
+  }, []);
+  // ket thuc api
+
   window.scrollTo(0, 0);
   const [inputValue, setInputValue] = useState("");
   const [filteredProvinces, setFilteredProvinces] = useState([]);
@@ -23,7 +44,7 @@ const Hotel = () => {
   const [children, setChildren] = useState(0);
   const [infants, setInfants] = useState(0);
 
-  const [sliderPosition, setSliderPosition] = useState("hotel");
+  const [sliderPosition, setSliderPositio] = useState("hotel");
 
   const [selectedCategory, setSelectedCategory] = useState("hotel");
 
@@ -80,14 +101,14 @@ const Hotel = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  const hotels = [
-    "Khách sạn A",
-    "Khách sạn B",
-    "Khách sạn C",
-    "Khách sạn D",
-    "Khách sạn E",
-    "Khách sạn F",
-  ];
+  // const hotels = [
+  //   "Khách sạn A",
+  //   "Khách sạn B",
+  //   "Khách sạn C",
+  //   "Khách sạn D",
+  //   "Khách sạn E",
+  //   "Khách sạn F",
+  // ];
   const homestays = [
     "Home stay A",
     "Home stay B",
@@ -116,10 +137,9 @@ const Hotel = () => {
     }
     const paginatedList = paginate(list, itemsPerPage, currentPage);
     return paginatedList.map((item, index) =>
-      HotelCard({ name: item, key: index })
+      HotelCard({ ...item, key: index })
     );
   };
-
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
     setSliderPosition(category);

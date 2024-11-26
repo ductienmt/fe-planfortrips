@@ -32,9 +32,41 @@
     background-color: #F0F0F0;
 }
 
+.input-header .item-3 {
+    display: flex;
+    align-items: center;
+}
+
+.input-header .item-3 button {
+    background-color: #ff5722;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    width: 100%;
+}
+
+.input-header .item-3 button:hover {
+    background-color: #e64a19;
+    transform: scale(1.05);
+}
+
+.input-header .item-3 button:active {
+    transform: scale(0.95);
+}
+
+
 .introvehicle-body .footer-header {}
 
-.introvehicle-body .footer-header .text-footer {}
+.introvehicle-body .footer-header .text-footer {
+    width: 80%;
+    margin: auto;
+}
 
 .introvehicle-body .footer-header .card-footer {
     display: grid;
@@ -45,9 +77,10 @@
 }
 
 .introvehicle-body .footer-header .card-footer .card-map {
+    display: inline-block;
+    position: relative;
     border-radius: 10px;
-
-    background-color: aqua;
+    background-color: #EFEEEE;
 }
 
 .introvehicle-body .footer-header .card-footer .card-map .item-card {
@@ -60,6 +93,19 @@
     width: 100%;
     height: 400px;
     border-radius: 10px;
-
+    display: block;
     object-fit: cover;
+}
+
+.introvehicle-body .footer-header .card-footer .card-map .item-text {
+    position: absolute;
+    top: 375px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: black;
+    background-color: rgba(53, 142, 201, 0.788);
+    width: 70%;
+    padding: 10px;
+    border-radius: 50px;
+    text-align: center;
 }

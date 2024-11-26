@@ -1,5 +1,8 @@
 import React from 'react'
 import "../IntroVehicle/introvehicle.css"
+import InputLocation from "../../../Components/Input/InputOption"
+import Datepicker from "../../../Components/Input/DateForm"
+
 const IntroVehicle = () => {
   const cardfooter = [
     {
@@ -42,10 +45,10 @@ const IntroVehicle = () => {
             </div>
             <div className="input-header">
               <div className='item-1'>
-                <input type="text" name="" id="" />
+                <InputLocation />
               </div>
               <div className="item-2">
-                <input type="date" />
+                <Datepicker />
               </div>
               <div className="item-3">
                 <button>
@@ -56,6 +59,7 @@ const IntroVehicle = () => {
           </div>
         </div>
         {/* CARD  */}
+
         <div className="footer-header">
           <div className="text-footer">
             <h3 style={{ fontWeight: "bold", fontSize: "30px" }}>Các Chuyến Đi Yêu Thích</h3>
@@ -67,7 +71,7 @@ const IntroVehicle = () => {
                   <img src={card.imgURL} alt="" />
                 </div>
                 <div className="item-text">
-                  <b>ưetyui</b>
+                  <b style={{ fontWeight: "bold", fontSize: "20px" }}>Địa điệm A</b>
                 </div>
               </div>
             ))}
