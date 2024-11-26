@@ -19,9 +19,6 @@ const Seats = () => {
     image: "/src/assets/beach.jpg",
   };
 
-
-
-
   const handleClick = () => {
     navigate("/enterprise/accomodation/room-management");
   };
@@ -37,15 +34,11 @@ const Seats = () => {
               textTransform: "uppercase",
               color: "#ADADAD",
             }}
-          >
-          
-          </h1>
+          ></h1>
         </div>
 
         {/* Nội dung tìm kiếm */}
-        <div className="Seats-content mt-3">
-       
-        </div>
+        <div className="Seats-content mt-3"></div>
 
         {/* Lựa chọn khách sạn */}
         <div className="Seats-selection">
@@ -63,23 +56,33 @@ const Seats = () => {
         </div>
 
         {/* Modal */}
-        <div className="modal fade" id="contactModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="contactModalLabel" aria-hidden="true"
+        <div
+          className="modal fade"
+          id="contactModal"
+          data-bs-backdrop="static"
+          data-bs-keyboard="false"
+          tabIndex="-1"
+          aria-labelledby="contactModalLabel"
+          aria-hidden="true"
         >
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
+              <div className="modal-header">
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-toggle="modal"
+                  data-bs-target="#main"
+                ></button>
+              </div>
               <div className="nav-filterCombobox-Seats ">
                 <InputFlied
-                className="seact-search"
+                  className="seact-search"
                   nameInput="search"
                   content="Tìm kiếm"
                   typeInput="text"
                 />
-                <button
-                  className="btn seact-search"
-                
-                >
-                
-                </button>
+
                 <button
                   type="button"
                   className="btn seats-button"
@@ -88,11 +91,9 @@ const Seats = () => {
                 >
                   Thêm ghế
                 </button>
-                
               </div>
 
               {/* Header */}
-
 
               <div className="Seats-nav mt-3">
                 <table className="table table-bordered">
@@ -108,7 +109,10 @@ const Seats = () => {
                       <td></td>
                       <td></td>
                       <td>
-                        <button className="btn seats-btn btn-danger" onClick={() => console.log("Xóa ghế A1")}>
+                        <button
+                          className="btn seats-btn btn-danger"
+                          onClick={() => console.log("Xóa ghế A1")}
+                        >
                           Xóa
                         </button>
                       </td>
@@ -117,7 +121,10 @@ const Seats = () => {
                       <td></td>
                       <td></td>
                       <td>
-                        <button className="btn seats-btn btn-danger" onClick={() => console.log("Xóa ghế A2")}>
+                        <button
+                          className="btn seats-btn btn-danger"
+                          onClick={() => console.log("Xóa ghế A2")}
+                        >
                           Xóa
                         </button>
                       </td>
@@ -126,9 +133,6 @@ const Seats = () => {
                   </tbody>
                 </table>
               </div>
-
-
-
 
               {/* Footer */}
               <div className="modal3-footer">
@@ -145,20 +149,28 @@ const Seats = () => {
               </div>
             </div>
           </div>
-
-
-
-
         </div>
 
-
-        <div className="modal fade" id="addrouteModal" tabIndex="-1" aria-labelledby="addrouteModal" aria-hidden="true">
+        <div
+          className="modal fade"
+          id="addrouteModal"
+          tabIndex="-1"
+          aria-labelledby="addrouteModal"
+          aria-hidden="true"
+        >
           <div className="modal-dialog">
             <div className="modal-content">
               {/* Modal Header */}
               <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLabel">Thông Tin Ghế</h5>
-                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 className="modal-title" id="exampleModalLabel">
+                  Thông Tin Ghế
+                </h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
               </div>
 
               {/* Modal Body */}
@@ -170,7 +182,6 @@ const Seats = () => {
                       Tầng 1
                     </label>
                     <div className="mb-3 seat-input-wrapper">
-
                       <div className="mb-3 ">
                         <label htmlFor="start-seat1" className="form-label">
                           Ghế Bắt Đầu
@@ -196,7 +207,6 @@ const Seats = () => {
                     </div>
                   </div>
 
-
                   {/* Cột 2 */}
 
                   <div className="col-md-6">
@@ -204,7 +214,6 @@ const Seats = () => {
                       Tầng 2
                     </label>
                     <div className="mb-3 seat-input-wrapper">
-
                       <div className="mb-3 ">
                         <label htmlFor="start-seat1" className="form-label">
                           Ghế Bắt Đầu
@@ -234,16 +243,20 @@ const Seats = () => {
 
               {/* Modal Footer */}
               <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                <button type="button" className="btn btn-primary" >Xác Nhận</button>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Đóng
+                </button>
+                <button type="button" className="btn btn-primary">
+                  Xác Nhận
+                </button>
               </div>
             </div>
           </div>
         </div>
-
-
-
-
       </div>
     </>
   );
