@@ -11,7 +11,6 @@ import { DateFormatter } from "../../../utils/DateFormat";
 const TransportationCard = ({
   className,
   onClick,
-  // onNext,
   vehicleCode,
   nameVehicle,
   departureDate,
@@ -130,7 +129,6 @@ const TransportationCard = ({
               type="button"
               data-bs-toggle="modal"
               data-bs-target="#detailModal"
-              // onClick={onNext()}
             >
               Chi tiết vé xe
               <i className="fa-solid fa-chevron-right"></i>

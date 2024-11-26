@@ -10,6 +10,8 @@
 .hotel-adr {
     font-size: 0.9rem;
     font-weight: 600;
+    display: flex;
+    align-items: center;
 }
 
 .price {
@@ -94,26 +96,4 @@
     font-size: 1.5rem;
     color: var(--success-text-color);
     text-wrap: nowrap;
-}
-
-
-@media screen and (max-width: 1230px) {
-    .addFav-viewDe {
-        gap: 10px;
-    }
-
-}
-
-@media screen and (max-width: 1300px) {
-    .addFav-viewDe {
-        gap: 10px;
-    }
-
-    .new-price {
-        font-size: 1.2rem;
-    }
-
-    .price .discounted {
-        font-size: 1rem;
-    }
 }
