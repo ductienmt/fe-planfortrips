@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "../IntroHotel/introhotel.css";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import InputOption from "../../../Components/Input/InputOption";
+import { CouponService } from '../../../../services/apis/CouponService';
+import { HotelService } from '../../../../services/apis/HotelService';
+import { Link } from 'react-router-dom';
 
 
 const imgheader = [
@@ -148,11 +151,11 @@ const IntroHotel = () => {
     const [selectedDeal, setSelectedDeal] = useState(null);
     // setup date
     const [date, setDate] = useState("");
-
+    const [coupon,setCoupon] = useState([]);
     const handDatechange = (event) => {
         setDate(event.target.value);
     }
-
+    const [hotel,setHotel] = useState([]);
     // set up input vị trí class date-night
     const [isOpen, setIsOpen] = useState(false); // Kiểm soát dropdown
     const [inputValue, setInputValue] = useState(''); // Giá trị input
@@ -172,7 +175,18 @@ const IntroHotel = () => {
     const handleInputChange = (e) => {
         setInputValue(e.target.value); // Cập nhật giá trị input
     };
-
+    useEffect(()=>{ 
+        const fetch = async()=>{
+            const dataCoupon = await CouponService.getCoupons(0,6,"");
+            const dataHotel = await HotelService.getHotels(0,10,"");
+            if(dataCoupon){
+                setCoupon(dataCoupon.listResponse);
+            }if(dataHotel){
+                setHotel(dataHotel.hotelResponseList);
+            }
+        };
+        fetch();
+    },[])
     return (
         <>
             <div className='introhotel-container'>
@@ -290,11 +304,11 @@ const IntroHotel = () => {
                         <a style={{ fontSize: "30px", fontWeight: "bold" }}> Mã voucher</a>
                     </div>
                     <div className="voucher-container">
-                        {itemvoucher.map((voucher, index) => (
+                        {coupon.map((voucher, index) => (
                             <div className="voucher-card" key={index}>
                                 <div className="voucher-content">
-                                    <h4 className="voucher-title">{voucher.name}</h4>
-                                    <p className="voucher-details">{voucher.voucherdetails}</p>
+                                    <h4 className="voucher-title">Giảm {voucher.discount_value} {voucher.discount_type ? "%" : "VNĐ"}</h4>
+                                    <p className="voucher-details">từ {voucher.start_date} đến {voucher.end_date}</p>
                                 </div>
                                 <div className="voucher-divider">
                                     <span className="divider-circle left"></span>
@@ -303,7 +317,7 @@ const IntroHotel = () => {
                                 </div>
                                 <div className="voucher-footer">
                                     <button className="voucher-button">
-                                        <span className="voucher-code">{voucher.vouchercode}</span>
+                                        <span className="voucher-code">{voucher.code}</span>
                                         <ContentCopyIcon />
                                     </button>
                                 </div>
@@ -329,10 +343,10 @@ const IntroHotel = () => {
                     </div>
                     <br />
                     <div className="deal-card">
-                        {sampleCards.map((card, index) => (
+                        {hotel.map((card, index) => (
                             <div key={index} className="card">
                                 <div className="image">
-                                    <img src={card.imgURL} alt={card.name} />
+                                    <img src={card.images[0] && card.images[0].url ?card.images[0].url: 'https://images.pexels.com/photos/261102/pexels-photo-261102.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'} alt={card.name} />
                                 </div>
                                 <div className="content">
                                     <div className="content-item">
@@ -343,15 +357,15 @@ const IntroHotel = () => {
                                             <p className="card-price-new">{card.newprice}</p>
                                         </div>
                                         <div className='card-button'>
-                                            <button className="buy-button"> Đặt ngay</button>
+                                            <Link to={`hotel:${id}`} className="buy-button"> Đặt ngay</Link>
                                             <button className="details-buttons"> Xem chi tiết</button>
                                         </div>
                                     </div>
 
                                 </div>
-                                <div className="discount-banner">
+                                {/* <div className="discount-banner">
                                     <p className="discount-text">Giảm giá {card.discount}%</p>
-                                </div>
+                                </div> */}
                             </div>
                         ))}
                     </div>
