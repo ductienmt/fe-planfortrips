@@ -104,8 +104,6 @@ const VehiclePage = () => {
     navigate(`/vehicle-booking/${id}`);
   };
   return (
-
-
     <>
       <div className="vehicle-header">
         <h3 style={{ fontWeight: 'bold', color: '#005293' }}>Tìm chuyến xe</h3>
@@ -116,7 +114,6 @@ const VehiclePage = () => {
             noiDen={formData.destination}
             setNoiDen={(value) => setFormData({ ...formData, destination: value })}
           />
-
           <DateVehicle
             departureDate={formData.startDate}
             setDepartureDate={(value) => setFormData({ ...formData, startDate: value })}

@@ -1,111 +1,132 @@
-.introvehicle-body {}
-
-.introvehicle-body .introvehicle-header {
-    background-image: url('https://img.wallpaper.sc/android/images/2160x1920/android-2160x1920-wallpaper_02909.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 500px;
-    width: 100%;
-}
-
-.introvehicle-body .introvehicle-header .content-header {
+.intro-vehicle-body {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    width: 60%;
-    height: 100%;
-    margin: auto;
+    gap: 40px;
 }
 
-.introvehicle-body .introvehicle-header .content-header .text-header {
-    text-align: center;
-}
-
-.introvehicle-body .introvehicle-header .content-header .input-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 10px;
-    padding: 30px 0px 30px 0px;
-    border-radius: 20px;
-    background-color: #F0F0F0;
-}
-
-.input-header .item-3 {
+/* Header */
+.intro-vehicle-header {
+    background: url("https://img.wallpaper.sc/android/images/2160x1920/android-2160x1920-wallpaper_02909.jpg") center/cover no-repeat;
+    height: 500px;
     display: flex;
     align-items: center;
-}
-
-.input-header .item-3 button {
-    background-color: #ff5722;
-    color: #fff;
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    width: 100%;
-}
-
-.input-header .item-3 button:hover {
-    background-color: #e64a19;
-    transform: scale(1.05);
-}
-
-.input-header .item-3 button:active {
-    transform: scale(0.95);
-}
-
-
-.introvehicle-body .footer-header {}
-
-.introvehicle-body .footer-header .text-footer {
-    width: 80%;
-    margin: auto;
-}
-
-.introvehicle-body .footer-header .card-footer {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    margin: auto;
-    gap: 10px;
-    width: 80%;
-}
-
-.introvehicle-body .footer-header .card-footer .card-map {
-    display: inline-block;
-    position: relative;
-    border-radius: 10px;
-    background-color: #EFEEEE;
-}
-
-.introvehicle-body .footer-header .card-footer .card-map .item-card {
-    display: flex;
     justify-content: center;
-    border-radius: 10px;
+    text-align: center;
+    color: white;
 }
 
-.introvehicle-body .footer-header .card-footer .card-map .item-card img {
+.content-header {
+    max-width: 600px;
+}
+
+.input-item {}
+
+.search-button {
     width: 100%;
-    height: 400px;
+    background-color: #ff5722;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+    background-color: #e64a19;
+}
+
+/* Favorite Trips */
+.intro-vehicle-footer {
+    text-align: center;
+    padding: 20px;
+}
+
+.intro-vehicle-section-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.intro-vehicle-section-subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 0 20px;
+}
+
+.card {
+    background-color: white;
     border-radius: 10px;
-    display: block;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+.card-image {
+    width: 100%;
+    height: 150px;
     object-fit: cover;
 }
 
-.introvehicle-body .footer-header .card-footer .card-map .item-text {
-    position: absolute;
-    top: 375px;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: black;
-    background-color: rgba(53, 142, 201, 0.788);
-    width: 70%;
-    padding: 10px;
-    border-radius: 50px;
+.card-content {
+    padding: 15px;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.card-description {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* CTA Section */
+.intro-vehicle-cta-section {
     text-align: center;
+    padding: 40px 20px;
+    background-color: #ffffff;
+    border-top: 1px solid #ddd;
+}
+
+.intro-vehicle-cta-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.intro-vehicle-cta-subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.intro-vehicle-cta-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.intro-vehicle-cta-button:hover {
+    background-color: #0056b3;
 }

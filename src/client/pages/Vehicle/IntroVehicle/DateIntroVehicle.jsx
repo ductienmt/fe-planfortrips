@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import dayjs from "dayjs";
-import "./datevehicle.css";
+import "./dateintrovehicle.css";
 
-const DateVehicle = ({ departureDate, returnDate, setDepartureDate, setReturnDate }) => {
+const DateIntroVehicle = ({ departureDate, returnDate, setDepartureDate, setReturnDate }) => {
     const [isRoundTrip, setIsRoundTrip] = useState(false);
 
     const handleRoundTripToggle = () => {
@@ -12,6 +12,7 @@ const DateVehicle = ({ departureDate, returnDate, setDepartureDate, setReturnDat
             setReturnDate(nextDay);
         }
     };
+
     return (
         <div className="datevehicle">
             <div className="datevehicle__inputs">
@@ -42,6 +43,4 @@ const DateVehicle = ({ departureDate, returnDate, setDepartureDate, setReturnDat
         </div>
     );
 };
-
-
-export default DateVehicle;
+export default DateIntroVehicle;

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom"; // Import useParams
+import { useParams, useNavigate } from "react-router-dom";  // Import useNavigate
 import "./vehiclebooking.css";
 import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
 import { ScheduleService } from "../../../../services/apis/ScheduleService";
 
 const VehicleBooking = () => {
-    const { id } = useParams(); // Lấy id từ URL
+    const { id } = useParams();
+    const navigate = useNavigate();  // useNavigate hook to navigate
     const [seats, setSeats] = useState([]);
     const [schedules, setSchedules] = useState({
         arrivalName: "",
@@ -17,30 +18,39 @@ const VehicleBooking = () => {
         priceForOneTicket: "",
         scheduleSeat: [],
     });
+    const [selectedSeats, setSelectedSeats] = useState([]);
+    const [totalPrice, setTotalPrice] = useState(0);
 
     useEffect(() => {
         const fetchStations = async () => {
             try {
-                const response = await ScheduleService.getScheduleID(id); // Dùng id từ URL
+                const response = await ScheduleService.getScheduleID(id);
                 setSchedules(response.data);
                 setSeats(response.data.scheduleSeat);
-                console.log(response.data);
             } catch (error) {
                 console.error("Lỗi khi gọi API:", error);
             }
         };
 
         fetchStations();
-    }, [id]); // Gọi lại khi id thay đổi
+    }, [id]);
 
-    // Các hàm xử lý khác
-    const handleSeatClick = (seatId) => {
-        const updateSeats = seats.map((seat) =>
+    const handleSeatClick = (seatId, seatNumber) => {
+        const updatedSeats = seats.map((seat) =>
             seat.id === seatId && seat.status !== "Full"
                 ? { ...seat, status: seat.status === "selected" ? "Empty" : "selected" }
                 : seat
         );
-        setSeats(updateSeats);
+
+        setSeats(updatedSeats);
+
+        if (updatedSeats.find(seat => seat.id === seatId).status === "selected") {
+            setSelectedSeats([...selectedSeats, seatNumber]);
+            setTotalPrice(totalPrice + schedules.priceForOneTicket);
+        } else {
+            setSelectedSeats(selectedSeats.filter(seat => seat !== seatNumber));
+            setTotalPrice(totalPrice - schedules.priceForOneTicket);
+        }
     };
 
     const getHourAndMinutes = (timeString) => {
@@ -60,7 +70,7 @@ const VehicleBooking = () => {
             <button
                 key={seat.id}
                 className={`seat-button ${seat.status}`}
-                onClick={() => handleSeatClick(seat.id)}
+                onClick={() => handleSeatClick(seat.id, seat.seatNumber)}
                 disabled={seat.status === "Full"}
             >
                 {seat.seatNumber}
@@ -68,10 +78,27 @@ const VehicleBooking = () => {
         ));
     };
 
+    const handleContinueClick = () => {
+        // Thực hiện lưu dữ liệu và điều hướng trang
+        const username = sessionStorage.getItem("username");
+
+        const bookingData = {
+            scheduleId: id,
+            totalPrice: totalPrice,
+            status: null,
+            username: username || null,
+            paymentId: null,
+        };
+
+        sessionStorage.setItem("bookingData", JSON.stringify(bookingData));
+
+        // Điều hướng đến trang tiếp theo
+        navigate("/booking/transportation");  // Dùng navigate thay cho history.push
+    };
+
     return (
         <div className="vehiclebooking-body">
             <div className="vehicle-container">
-                {/* Thông tin xe */}
                 <div className="header">
                     <div>
                         <b style={{ fontSize: "25px" }}>{schedules.carCompanyName}</b>
@@ -100,7 +127,6 @@ const VehicleBooking = () => {
                     <input type="text" placeholder="Điểm đến" />
                 </div>
                 <hr />
-                {/* Chọn ghế */}
                 <div className="seats-container">
                     <div className="floor-section">
                         <h4>Tầng 1</h4>
@@ -112,17 +138,16 @@ const VehicleBooking = () => {
                     </div>
                 </div>
                 <div className="price-bus">
-                    <div className="item-1">
-                        <b>{schedules.code}</b>
-                    </div>
                     <div className="item-2">
+                        <h4>Ghế đã chọn:</h4>
+                        <p>{selectedSeats.join(", ")}</p>
                         <b style={{ fontSize: "25px", color: "red" }}>
-                            {Number(schedules.priceForOneTicket).toFixed(2)} VND
+                            {Number(totalPrice).toFixed(2)} VND
                         </b>
                     </div>
                 </div>
                 <div className="item-button">
-                    <button className="continue-button">Tiếp tục</button>
+                    <button className="continue-button" onClick={handleContinueClick}>Tiếp tục</button>
                 </div>
             </div>
         </div>
