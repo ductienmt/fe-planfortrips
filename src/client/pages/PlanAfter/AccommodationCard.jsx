@@ -67,6 +67,20 @@ function AccommodationCard({ className, onClick, accomodation }) {
     }
   };
 
+  const [hotelChangeData, setHotelChangeData] = useState([]);
+
+  const loadHotelChangeData = async () => {
+    try {
+      const response = await HotelService.getHotelSamePrice(
+        accomodation.price_per_night
+      );
+      console.log(response);
+      setHotelChangeData(response);
+    } catch (error) {
+      console.error("Error fetching hotel :", error);
+    }
+  };
+
   useEffect(() => {
     // console.log(accomodation.hotelId);
     // console.log(accomodation);
@@ -146,6 +160,9 @@ function AccommodationCard({ className, onClick, accomodation }) {
               type="button"
               data-bs-toggle="modal"
               data-bs-target="#changeLiveModal"
+              onClick={() => {
+                loadHotelChangeData();
+              }}
             >
               Thay đổi nơi ở<i className="fa-solid fa-chevron-right"></i>
             </button>
@@ -327,14 +344,17 @@ function AccommodationCard({ className, onClick, accomodation }) {
                   <div className="voucher-close-close">Close</div>
                 </button>
               </div>
-              <HotelCard
-                img={imghotel}
-                name="Hotel ABZ"
-                address="Quận 1, Hồ Chí Minh"
-                totalRate="43"
-                originalPrice="400.000"
-                discountedPrice="350.000"
-              />
+              {hotelChangeData?.map((hotel, index) => (
+                <HotelCard
+                  key={index}
+                  img={hotel.hotelImage[0]?.url}
+                  name={hotel.hotelName}
+                  address={hotel.hotelAddress}
+                  originalPrice={hotel.roomPrice}
+                  hotelAmenities={hotel.hotelAmenities}
+                  contentButton={"Chọn khách sạn"}
+                />
+              ))}
             </div>
           </div>
         </div>

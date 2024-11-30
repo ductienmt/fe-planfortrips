@@ -53,7 +53,7 @@ const UserInformation = ({
           autoHideDuration: 2000,
         });
       }
-      console.log(form);
+
       if (!isAgreed) {
         e.preventDefault();
         enqueueSnackbar("Bạn cần đồng ý với điều khoản trước khi tiếp tục.", {
@@ -87,7 +87,7 @@ const UserInformation = ({
     const formattedAmount = amount
       .toString()
       .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return `${formattedAmount}.000VNĐ`;
+    return `${formattedAmount}VNĐ`;
   };
 
   const handleChange = (e) => {
@@ -207,13 +207,29 @@ const UserInformation = ({
                   value={form.gender}
                   onChange={handleChange}
                 /> */}
-                <InputFlied
+                {/* <InputFlied
                   content={"Giới tính"}
                   nameInput={"gender"}
                   value={form.gender}
                   onChange={handleChange}
                   dai={"20%"}
-                />
+                /> */}
+                <select
+                  name="gender"
+                  value={form.gender}
+                  id=""
+                  onChange={handleChange}
+                  style={{
+                    borderRadius: "5px",
+                    border: "1px solid #ccc",
+                    fontSize: "16px",
+                  }}
+                >
+                  <option value="">-- Chọn giới tính --</option>
+                  <option value="Nam">Nam</option>
+                  <option value="Nữ">Nữ</option>
+                  <option value="Khác">Khác</option>
+                </select>
                 {/* <TextField
                   id="outlined-basic"
                   label="Ghi chú"

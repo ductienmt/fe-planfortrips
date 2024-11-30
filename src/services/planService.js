@@ -96,10 +96,10 @@ export const generateTripPlan = async (data) => {
       trả về luôn phòng và id, name, price phòng đó,  các dữ liệu khác là tôi cung cấp, trả về cho tôi theo định dạng json, không thêm bất cứ điều gì khác.
       Chú ý chọn xe dựa vào departure và return, tôi có 2 mảng 1 cái là departute (chuyến đi) chọn chuyến cho departure ở đây, return (chuyến về) chọn chuyến return ở đây. không chọn 2 chuyến return cho departure và return. phải chọn chuyến departure từ dữ liệu departure tôi cung cấp và tương tự cho return. Tuyệt đối không lấy chuyến return cho departure và ngược lại.
       Bạn hãy chọn ghế trong transportation, tôi có để một mảng là seatAvailable chọn ghế từ đây. Trả về theo cú pháp tôi cung cấp như sau.
-      userData, transportation(departure (chọn từ mảng schedule.departure mà tôi cung cấp)[departureTime, arrivalTime,vehicleCode,scheduleId,carName, seatBook, routeId, totalPrice(numberPeople*priceForOnSeat)], 
+      userData, transportation(departure (chọn từ mảng schedule.departure mà tôi cung cấp)[departureTime, arrivalTime,vehicleCode,scheduleId,carName, seatBook, routeId, totalPrice(numberPeople*priceForOnSeat) "trả về theo giá tiền việt nam"], 
       return (chọn từ mảng schedule.return mà tôi cung cấp) [departureTime, arrivalTime,vehicleCode,scheduleId,carName, seatBook(seat_id, seat_number), routeId, totalPrice(numberPeople*priceForOnSeat)]),
-      accomodation(nameHotel, hotelId, price_per_night, total, (mảng chứa room đã book) rooms[nameRoom, checkin, checkout, roomType, roomId, roomSize(maxPeople)](dựa vào numberPeople chỉ đặt vừa đủ không được dư phòng)) , 
-      checkins(dựa vào những nơi tôi cung cấp, ít nhất 5 nơi), estimatedCost, itinerary(trả theo ngày, day1, day2,... đi đâu vào ngày làm gì,...), 
+      accomodation(nameHotel, hotelId, price_per_night, total (trả về theo giá tiền việt nam), (mảng chứa room đã book) rooms[nameRoom, checkin, checkout, roomType, roomId, roomSize(maxPeople)](dựa vào numberPeople chỉ đặt vừa đủ không được dư phòng)) , 
+      checkins(dựa vào những nơi tôi cung cấp, ít nhất 5 nơi), estimatedCost (trả về theo giá tiền việt nam), itinerary(trả theo ngày, day1, day2,... đi đâu vào ngày làm gì,...), 
       để ý số người mà tính toán cho đúng, nếu không đủ số tiền có thể chọn một nơi ở khác giá rẻ hơn, sau đó nếu vẫn chưa đủ thì chọn chuyến xe khác sẽ hơn, làm sao cho 1 kế hoạch tối ưu chi phí nhất\n\n${JSON.stringify(data)}`
     );
     // const expected = cleanedResponse(result.response.text());

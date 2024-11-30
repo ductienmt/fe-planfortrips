@@ -64,8 +64,40 @@ const ServiceBank = {
       }
     } catch (error) {
       console.error("Error:", error);
-      const query = `[Javascript] fix error: ${error.message}`;
-      window.open(`https://chatgpt.com/?q=${encodeURIComponent(query)}`);
+      // const query = `[Javascript] fix error: ${error.message}`;
+      // window.open(`https://chatgpt.com/?q=${encodeURIComponent(query)}`);
+    }
+  },
+  VNPayPlan: async (planId, ticketDeId, ticketReId, bookingid, amount) => {
+    // Thanh toán VnPayment
+    // const vnpay = {
+    //   plan_id: planId,
+    //   departure_ticket_id: ticketDeId,
+    //   return_ticket_id: ticketReId,
+    //   bank_code: "NCB",
+    //   booking_id: bookingid,
+    //   amount: amount,
+    // };
+    try {
+      const response = await PaymentService.createPaymentPlan(
+        planId,
+        ticketDeId,
+        ticketReId,
+        bookingid,
+        amount
+      );
+      if (response) {
+        window.location.href = response.url;
+      } else {
+        enqueueSnackbar("Thanh toán thất bại", {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      // const query = `[Javascript] fix error: ${error.message}`;
+      // window.open(`https://chatgpt.com/?q=${encodeURIComponent(query)}`);
     }
   },
 };
