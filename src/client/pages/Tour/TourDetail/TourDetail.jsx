@@ -84,9 +84,9 @@ function TourDetail() {
       )
         .toString()
         .padStart(2, "0")}-${departureDate
-        .getDate()
-        .toString()
-        .padStart(2, "0")}`;
+          .getDate()
+          .toString()
+          .padStart(2, "0")}`;
 
       return departureDateFormatted === selectedDateFormatted;
     });
@@ -124,9 +124,44 @@ function TourDetail() {
     setActiveStep((prevStep) => (prevStep - 1 + 2) % 2);
   };
 
-  const [showMore, setShowMore] = useState(false);  
-  const shortDescription = tourDetail?.description.slice(0, 150);  
+  const [showMore, setShowMore] = useState(false);
+  const shortDescription = tourDetail?.description.slice(0, 150);
 
+  const [bookTour, setBookTour] = useState({
+    room: [],
+    seatsOrigin: [],
+    seatDes: [],
+  });
+
+  const handleRoomClick = (room) => {
+    setBookTour((prev) => ({
+      ...prev,
+      room: [...prev.room, room], 
+    }));
+  };
+  
+  const handleAddSeatDes = (seat) => {
+    setBookTour((prev) => ({
+      ...prev,
+      seatDes: [...prev.seatDes, seat], 
+    }));
+  };
+  
+  const handleAddSeatOrigin = (seat) => {
+    setBookTour((prev) => ({
+      ...prev,
+      seatsOrigin: [...prev.seatsOrigin, seat],
+    }));
+  };
+  
+  
+  
+  
+  
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const toggleModal = () => setIsModalOpen(!isModalOpen);
 
   return (
     <>
@@ -135,24 +170,35 @@ function TourDetail() {
           <div className="detail-tour-header">
             <h2 className="detail-tour-title">{tourDetail.title}</h2>
             <p className="detail-tour-description">
-        {showMore ? tourDetail.description : shortDescription} 
-        {tourDetail.description.length > 150 && !showMore && (
-          <button 
-            onClick={() => setShowMore(true)} 
-            style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer', outline: 'none', backgroundColor: '#00c6ff', border: 'none' }}
-          >
-            Xem thêm
-          </button>
-        )}
-        {showMore && (
-          <button 
-            onClick={() => setShowMore(false)} 
-            style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
-          >
-            Thu gọn
-          </button>
-        )}
-      </p>
+              {showMore ? tourDetail.description : shortDescription}
+              {tourDetail.description.length > 150 && !showMore && (
+                <button
+                  onClick={() => setShowMore(true)}
+                  style={{
+                    color: "blue",
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                    outline: "none",
+                    backgroundColor: "#00c6ff",
+                    border: "none",
+                  }}
+                >
+                  Xem thêm
+                </button>
+              )}
+              {showMore && (
+                <button
+                  onClick={() => setShowMore(false)}
+                  style={{
+                    color: "blue",
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                  }}
+                >
+                  Thu gọn
+                </button>
+              )}
+            </p>
           </div>
 
           <div className="detail-tour-summary">
@@ -227,7 +273,7 @@ function TourDetail() {
           </div>
 
           {/* Lịch chọn ngày */}
-          <div className="tour-detail-calendar">
+          <div className="tour-detail-calendar bg-info">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <h4>Lịch hoạt động của tour</h4>
               <DateCalendar
@@ -241,7 +287,7 @@ function TourDetail() {
 
           {/* {JSON.stringify(tripData)} */}
           {tripData == null ? (
-            <p>Loading...</p>
+            <p>...</p>
           ) : (
             <>
               <Box sx={{ padding: 3 }}>
@@ -249,14 +295,23 @@ function TourDetail() {
                 <Grid container spacing={3} justifyContent="center">
                   {tripData.rooms.map((room) => (
                     <Grid item xs={12} sm={6} md={4} key={room.id}>
-                      <Card sx={{ boxShadow: 3, borderRadius: 2, padding: 2, height: '20rerm' }}>
+                      <Card className={bookTour.room.includes(room) ? 'room-active' : 'tour-card-hover'}
+                        sx={{
+                          boxShadow: 3,
+                          borderRadius: 2,
+                          padding: 2,
+                          height: "20rerm",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => handleRoomClick(room)}
+                      >
                         <CardContent>
                           <Typography
                             variant="h6"
                             gutterBottom
                             sx={{ fontWeight: "bold" }}
                           >
-                           Phòng {room.roomName}
+                            Phòng {room.roomName}
                           </Typography>
                           <Divider sx={{ marginBottom: 2 }} />
 
@@ -295,9 +350,11 @@ function TourDetail() {
                                 {room.rating} / 5
                               </Typography>
                             </Box>
-                          ) :  <Typography variant="body2" sx={{ fontSize: 14 }}>
+                          ) : (
+                            <Typography variant="body2" sx={{ fontSize: 14 }}>
                               Chưa có đánh giá
-                        </Typography>}
+                            </Typography>
+                          )}
                         </CardContent>
                       </Card>
                     </Grid>
@@ -377,8 +434,8 @@ function TourDetail() {
                                 />
                                 <strong>Thời gian khởi hành:</strong>{" "}
                                 {activeStep === 0
-                                  ? tripData.scheduleDes.departureTime
-                                  : tripData.scheduleOrigin.departureTime}
+                                  ? new Date(tripData.scheduleDes.departureTime).toLocaleString()
+                                  : new Date(tripData.scheduleOrigin.departureTime).toLocaleString()}
                               </Typography>
                             </Grid>
                             <Grid item xs={12}>
@@ -391,8 +448,8 @@ function TourDetail() {
                                 />
                                 <strong>Thời gian đến:</strong>{" "}
                                 {activeStep === 0
-                                  ? tripData.scheduleDes.arrivalTime
-                                  : tripData.scheduleOrigin.arrivalTime}
+                                  ? new Date(tripData.scheduleDes.arrivalTime).toLocaleString()
+                                  : new Date(tripData.scheduleOrigin.arrivalTime).toLocaleString()}
                               </Typography>
                             </Grid>
                             <Grid item xs={12}>
@@ -405,8 +462,8 @@ function TourDetail() {
                                 />
                                 <strong>Giá vé:</strong>{" "}
                                 {activeStep === 0
-                                  ? tripData.scheduleDes.priceForOneTicket
-                                  : tripData.scheduleOrigin.priceForOneTicket}
+                                  ? tripData.scheduleDes.priceForOneTicket + '.000VND'
+                                  : tripData.scheduleOrigin.priceForOneTicket + '.000VND'}
                               </Typography>
                             </Grid>
                             <Grid item xs={12}>
@@ -439,23 +496,28 @@ function TourDetail() {
                           <Grid container spacing={1} justifyContent="center">
                             {activeStep === 0
                               ? tripData.scheduleSeatsDes.map((seat) => (
-                                  <Grid item key={seat.seatId}>
-                                    <Chip
-                                      label={seat.seatNumber}
-                                      color="primary"
-                                      sx={{ margin: 0.5 }}
-                                    />
-                                  </Grid>
-                                ))
+                                <Grid item key={seat.seatId} style={{ cursor: 'pointer' }} onClick={() => handleSeatClick(seat)}
+                                  className={bookTour.seatDes.some(selectedSeat => selectedSeat.seatId === seat.seatId) ? 'seat-active' : ''}
+                                >
+                                  <Chip
+                                    label={seat.seatNumber}
+                                    color="primary"
+                                    onClick={() => handleAddSeatDes(seat)}
+                                    sx={{ margin: 0.5 }}
+                                  />
+                                </Grid>
+                              ))
                               : tripData.scheduleSeatsOrigin.map((seat) => (
-                                  <Grid item key={seat.seatId}>
-                                    <Chip
-                                      label={seat.seatNumber}
-                                      color="primary"
-                                      sx={{ margin: 0.5 }}
-                                    />
-                                  </Grid>
-                                ))}
+                                <Grid item key={seat.seatId} 
+                                className={bookTour.seatsOrigin.includes(seat) ? 'seat-active' : ''}
+                                >
+                                  <Chip
+                                    label={seat.seatNumber}
+                                    onClick={() => handleAddSeatOrigin(seat)}
+                                    sx={{ margin: 0.5 }}
+                                  />
+                                </Grid>
+                              ))}
                           </Grid>
                         </CardContent>
                       </Card>
@@ -484,10 +546,101 @@ function TourDetail() {
               </Box>
             </>
           )}
+          <>
+            <div>
+              {/* Button trigger modal */}
+              <button
+                type="button"
+                className="btn btn-outline-success w-100 fw-bold fs-4"
+                onClick={toggleModal}
+              >
+                Đặt tour
+              </button>
+
+              {/* Modal */}
+              {isModalOpen && (
+                <div
+                  className="modal fade show"
+                  style={{ display: "block" }}
+                  role="dialog"
+                  aria-labelledby="exampleModalLabel"
+                  aria-hidden="true"
+                >
+                  <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h5 className="modal-title" id="exampleModalLabel">
+                          Danh sách đã chọn
+                        </h5>
+                      </div>
+                      <div className="modal-body">
+                        <Box sx={{ marginTop: 3 }}>
+                          <Typography variant="h6">Phòng đã chọn:</Typography>
+                          {bookTour.room.length > 0 ? (
+                            bookTour.room.map((selectedRoom, index) => (
+                              <Typography key={index} variant="body1">
+                                - {selectedRoom.roomName}: {selectedRoom.price} VND
+                              </Typography>
+                            ))
+                          ) : (
+                            <Typography variant="body2">Chưa chọn phòng nào.</Typography>
+                          )}
+
+                          <Typography variant="h6" sx={{ marginTop: 2 }}>Ghế đã chọn:</Typography>
+                          {bookTour.seatsOrigin.length > 0 || bookTour.seatDes.length > 0 ? (
+                            <>
+                              {bookTour.seatsOrigin.length > 0 && (
+                                <>
+                                  <Typography variant="body1">Ghế khởi hành (Đi từ điểm khởi hành):</Typography>
+                                  {bookTour.seatsOrigin.map((seat, index) => (
+                                    <Typography key={index} variant="body1">
+                                      - Ghế {seat.seatNumber}
+                                    </Typography>
+                                  ))}
+                                </>
+                              )}
+                              {bookTour.seatDes.length > 0 && (
+                                <>
+                                  <Typography variant="body1" sx={{ marginTop: 1 }}>Ghế điểm đến (Đi đến điểm đến):</Typography>
+                                  {bookTour.seatDes.map((seat, index) => (
+                                    <Typography key={index} variant="body1">
+                                      - Ghế {seat.seatNumber}
+                                    </Typography>
+                                  ))}
+                                </>
+                              )}
+                            </>
+                          ) : (
+                            <Typography variant="body2">Chưa chọn ghế nào.</Typography>
+                          )}
+                        </Box>
+
+
+                      </div>
+                      <div className="modal-footer">
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          onClick={toggleModal}
+                        >
+                          Hủy
+                        </button>
+                        <button type="button" className="btn btn-primary">
+                          Đồng ý và thanh toán
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </>
         </div>
-      ) : <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}>
-      <CircularProgress />
-    </Box>}
+      ) : (
+        <Box sx={{ display: "flex", justifyContent: "center", marginTop: 4 }}>
+          <CircularProgress />
+        </Box>
+      )}
     </>
   );
 }

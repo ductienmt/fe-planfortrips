@@ -38,7 +38,7 @@ function TourCard({ tour }) {
     <div className="tour-content-data-item col-12 col-md-6 col-lg-4 mb-4">
       <img
         className="c-tour-item-img"
-        src={tourData.image}
+        src={tourData.urlImage}
         alt={tourData.tourTitle}
       />
       <div className="c-tour-item-content">

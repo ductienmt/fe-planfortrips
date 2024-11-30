@@ -1,5 +1,7 @@
 import { AdminPanelSettings, ListOutlined, AccountCircle, HelpCenterRounded } from '@mui/icons-material';
 import './CardStatistical.css';
+
+
 function CardStatistical({ number, title, percent, typeIcon }) {
     let Icon;
     const lowerCaseTypeIcon = typeIcon.toLowerCase();
