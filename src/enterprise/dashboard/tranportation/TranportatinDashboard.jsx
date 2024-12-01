@@ -18,7 +18,7 @@ const TranportatinDashboard = () => {
       color: "orange",
       icon: "fa-solid fa-ticket-simple",
       title: "Voucher",
-      status: "Đang hữu dụng",  
+      status: "Đang hữu dụng",
       count: 10,
     },
     {
@@ -99,33 +99,6 @@ const TranportatinDashboard = () => {
               <section className="comment-content-t">
                 <CommentCardt commentCount={100} />
               </section>
-            </div>
-          </div>
-          <div className="card5-container-t mt-3">
-            {/* Card5 */}
-            <h1
-              style={{
-                fontSize: "30px",
-                textTransform: "uppercase",
-                color: "#ADADAD",
-              }}
-            >
-              Quản lý phòng
-            </h1>
-            <div className="table-card5-t ">
-              <Table
-                dataSource={transData}
-                columns={columns}
-                // pagination={{
-                //   current: currentPage,
-                //   pageSize: pageSize,
-                //   total: dataSource.length,
-                //   onChange: (page, pageSize) => {
-                //     setCurrentPage(page);
-                //     setPageSize(pageSize);
-                //   },
-                // }}
-              />
             </div>
           </div>
         </div>

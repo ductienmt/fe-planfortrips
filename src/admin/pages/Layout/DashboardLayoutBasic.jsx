@@ -263,7 +263,7 @@ function DashboardLayoutBasic({ window }) {
       "a.MuiButtonBase-root.MuiListItemButton-root"
     );
     listItemButtons.forEach((item) => {
-      item.style.backgroundColor = "transparent"; // Loại bỏ background
+      // item.style.backgroundColor = "transparent";
     });
   }, []);
 

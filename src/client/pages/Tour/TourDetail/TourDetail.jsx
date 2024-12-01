@@ -99,11 +99,12 @@ function TourDetail() {
   const renderDay = (date, selectedDate, dayInCurrentMonth, dayComponent) => {
     const formattedDate = format(date, "yyyy-MM-dd");
     const isAvailable = isDateAvailable(date);
+  
     return React.cloneElement(dayComponent, {
       style: {
         ...dayComponent.props.style,
-        backgroundColor: isAvailable ? "#4caf50" : "#f44336",
-        color: isAvailable ? "#fff" : "#000",
+        backgroundColor: isAvailable ? "#90ee90" : "#ffcccb", 
+        color: isAvailable ? "#333" : "#777", 
         cursor: isAvailable ? "pointer" : "not-allowed",
       },
       onClick: () => {
@@ -113,6 +114,7 @@ function TourDetail() {
       },
     });
   };
+  
 
   const [activeStep, setActiveStep] = useState(0);
 
@@ -273,7 +275,7 @@ function TourDetail() {
           </div>
 
           {/* Lịch chọn ngày */}
-          <div className="tour-detail-calendar bg-info">
+          <div className="tour-detail-calendar">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <h4>Lịch hoạt động của tour</h4>
               <DateCalendar

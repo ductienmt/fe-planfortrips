@@ -59,14 +59,18 @@
     margin: 10px 0;
 }
 
+
 .customButton {
-    font-size: 20px !important;
+    width: 100%;
+    font-size: 25px !important;
     height: 55px;
     font-weight: 600 !important;
     background-color: transparent !important;
     border: 2px solid #27648c !important;
     box-shadow: none !important;
     text-transform: capitalize !important;
+    color: white !important;
+    border-radius: 4px;
 }
 
 .customButton:hover {

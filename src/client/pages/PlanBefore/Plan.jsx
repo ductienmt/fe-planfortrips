@@ -796,6 +796,66 @@ function PlanBefore() {
             Plan for Trips, Nơi những chuyến đi tạo nên những ký ức đẹp.
           </h3>
           <div className="form-container p-4 bg-light rounded">
+            {/* <div className="row mb-3">
+              <div className="col-md-6 mb-3 mb-md-0 d-flex flex-column">
+                <label htmlFor="current-city" className="form-label">
+                  Vị trí hiện tại
+                </label>
+                <input
+                  type="text"
+                  id="current-city"
+                  value={state.queryCurrentCity}
+                  onChange={handleInputChangeCurrentCity}
+                  placeholder="Nhập tỉnh hoặc thành phố nơi bạn sống"
+                  className="homepage-input"
+                />
+                {state.filteredCurrentCities.length > 0 && (
+                  <ul className="suggestions-list">
+                    {state.filteredCurrentCities.map((province) => (
+                      <li
+                        key={province.province_id}
+                        onClick={() =>
+                          handleCurrentCitySuggestionClick(
+                            province.province_name
+                          )
+                        }
+                      >
+                        {province.province_name}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              <div className="col-md-6 d-flex flex-column">
+                <label htmlFor="destination" className="form-label">
+                  Điểm đến
+                </label>
+                <input
+                  type="text"
+                  id="destination"
+                  value={state.queryDestination}
+                  onChange={handleInputChangeDestination}
+                  placeholder="Nhập thành phố hoặc địa điểm du lịch"
+                  className="homepage-input"
+                />
+                {state.filteredDestinations.length > 0 && (
+                  <ul className="suggestions-list">
+                    {state.filteredDestinations.map((province) => (
+                      <li
+                        key={province.province_id}
+                        onClick={() =>
+                          handleDestinationSuggestionClick(
+                            province.province_name
+                          )
+                        }
+                      >
+                        {province.province_name}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div> */}
             <div className="row mb-3">
               <div className="col-md-6 mb-3 mb-md-0 d-flex flex-column">
                 <label htmlFor="current-city" className="form-label">

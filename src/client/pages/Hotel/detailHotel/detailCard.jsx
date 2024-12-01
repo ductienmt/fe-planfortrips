@@ -6,12 +6,19 @@ import img4 from "../../../../assets/beach.jpg";
 import img5 from "../../../../assets/beach.jpg";
 import RoomCard from "../roomCard/roomCard";
 import PersonReview from "../personReview/PersonReview";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
 
 const DetailCard = () => {
+  const { id } = useParams();
   const originalPrice = 250000;
   const discountedPrice = 200000;
   const hasDiscount = discountedPrice < originalPrice;
   window.scrollTo(0, 0);
+
+  useEffect(() => {
+    console.log("DetailCard id", id);
+  }, [id]);
 
   return (
     <>
@@ -19,7 +26,7 @@ const DetailCard = () => {
         <div className="flex-container-header">
           <div style={{ flexGrow: 8 }} className="nameHotelDetail">
             <div className="name d-flex">
-              <h1>Nơi ở 1, Hồ Chí Minh</h1>
+              <h1 style={{ color: "black" }}>Nơi ở 1, Hồ Chí Minh</h1>
             </div>
             <small className="hotel-adr">
               <i className="fa-solid fa-map-pin me-3"></i>Quận 1, Hồ Chí Minh
@@ -129,7 +136,7 @@ const DetailCard = () => {
               }}
               allowfullscreen=""
               loading="lazy"
-            // referrerpolicy="no-referrer-when-downgrade"
+              // referrerpolicy="no-referrer-when-downgrade"
             ></iframe>
           </div>
         </div>

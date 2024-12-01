@@ -1,14 +1,56 @@
-.ticket-transport-card{
-    display: flex;
-    gap: 60px;
+.ticket-transport-card {
+  /* width: 500px; */
+  display: flex;
+  justify-content: space-between;
+  /* gap: 50px; */
+  border: none;
+  border-radius: 10px;
+  background-color: rgb(255, 255, 255);
+  padding: 10px 10px 10px 10px;
 }
 
-.ticket-transport-time-destination{
-    display: flex;
-    justify-items: center;
-    gap: 60px;
+.ticket-transport-time-destination {
+  display: flex;
+  justify-items: center;
+  gap: 60px;
 }
 
-.ticket-transport-price-seat{
-    text-align: end;
+.ticket-transport-price-seat {
+  text-align: end;
+}
+
+.ticket-price-transport {
+  color: red;
+}
+
+.book-ticket-transport {
+  background-color: #0976cf;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.book-ticket-transport:hover {
+  background-color: #0c5b9c;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.ticket-transport-price-seat {
+  margin-bottom: 65px;
+}
+
+.ticket-Voucher-items {
+  width: 30%;
+  border: 1px solid orangered;
+  border-radius: 50px;
+  text-align: center;
+  background-color: rgb(236, 163, 137);
+  color: rgb(46, 46, 46);
 }

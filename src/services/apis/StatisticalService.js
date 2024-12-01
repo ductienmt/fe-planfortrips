@@ -2,23 +2,23 @@ import Http from "../Http";
 
 export const StatisticalService = {
   getCountUser: async () => {
-    const response = await Http.get('/api/v1/statistical/user');
+    const response = await Http.get('/statistical/user');
     return response.data;
   },
   getCountAdmin: async () => {
-    const response = await Http.get('/api/v1/statistical/admin');
+    const response = await Http.get('/statistical/admin');
     return response.data;
   },
   getCountEnterprise: async () => {
-    const response = await Http.get('/api/v1/statistical/enterprise');
+    const response = await Http.get('/statistical/enterprise');
     return response.data;
   },
   getCountPlan : async () => {
-    const response = await Http.get('/api/v1/statistical/plan');
+    const response = await Http.get('/statistical/plan');
     return response.data;
   },
   BookingHotelDetailByYear: async (year) => {
-    const response = await Http.get(`/api/v1/statistical/year/bookingHotelDetail/${year}`);
+    const response = await Http.get(`/statistical/year/bookingHotelDetail/${year}`);
     return response.data;
   }
 };

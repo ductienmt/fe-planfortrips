@@ -1,7 +1,11 @@
 import { format } from "date-fns";
 
 export const DateFormatter = (date) => {
-  return format(date, "dd-MM-yyyy HH:mm:ss");
+  if (!date || isNaN(new Date(date))) {
+    console.error("Invalid date value:", date); 
+    return "Invalid Date"; 
+  }
+  return format(new Date(date), "dd-MM-yyyy HH:mm:ss"); 
 };
 
 export const formatDateTimeUtils = (input) => {
