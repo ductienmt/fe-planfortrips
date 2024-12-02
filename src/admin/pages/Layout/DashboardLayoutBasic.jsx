@@ -53,6 +53,7 @@ const NAVIGATION = [
         <FontAwesomeIcon icon={faUser} />
       </NavLink>
     ),
+    segment: 'users',
   },
   {
     title: (
@@ -274,7 +275,7 @@ function DashboardLayoutBasic({ window }) {
       authentication={authentication}
       theme={demoTheme}
       window={demoWindow}
-      router={router.basename}
+      router={router}
       branding={{
         logo: <img src={logo} alt="Plan For Trips logo" />,
         title: "",

@@ -63,33 +63,20 @@ import Seats from "../enterprise/transportation/seats/Seats";
 import Guest from "../enterprise/transportation/guest/Guest";
 import Routehotel from "../enterprise/transportation/routehotel/Routehotel";
 import React from "react";
+import { useAuth } from "../context/AuthContext/AuthProvider";
 
-// Enum for user roles
 const ROLES = {
   CLIENT: 'ROLE_USER',
   ADMIN: 'ROLE_ADMIN',
   ENTERPRISE: 'ROLE_ENTERPRISE'
 };
 
-// Central authentication check with role validation
-const isAuthenticated = (requiredRole = null) => {
-  const token = sessionStorage.getItem("token");
-  const userRole = sessionStorage.getItem("role");
-
-  if (!token) return false;
-  
-  if (requiredRole && userRole !== requiredRole) return false;
-
-  return true;
-};
-
-// Protected Route Component with Role-based Access Control
 const ProtectedRoute = ({ allowedRoles }) => {
-  const token = sessionStorage.getItem("token");
+  const { token } = useAuth();
   const userRole = sessionStorage.getItem("role");
 
   if (!token) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="login" replace />;
   }
 
   if (allowedRoles && !allowedRoles.includes(userRole)) {

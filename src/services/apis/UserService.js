@@ -17,7 +17,7 @@ export const UserService = {
   },
 
   findUserById: async (id) => {
-    const response = await Http.get(`api/v1/users/getDetail?id=${id}`);
+    const response = await Http.get(`users/getDetail?id=${id}`);
     return response.data;
   },
   getImage: async () => {

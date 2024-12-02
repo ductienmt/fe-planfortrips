@@ -59,10 +59,6 @@
     margin: 10px 0;
 }
 
-.MuiButtonBase-root{
-    color: white !important;
-}
-
 .customButton {
     width: 100%;
     font-size: 25px !important;
