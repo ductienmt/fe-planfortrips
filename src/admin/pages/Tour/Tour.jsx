@@ -24,6 +24,9 @@ import { enqueueSnackbar } from "notistack";
 import { PlusOutlined } from "@ant-design/icons";
 import { Image, Upload } from "antd";
 import TextArea from "antd/es/input/TextArea";
+import { Combobox } from "react-widgets";
+import { RouteService } from "../../../services/apis/RouteService";
+import { useAuth } from "../../../context/AuthContext/AuthProvider";
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -31,13 +34,9 @@ const getBase64 = (file) =>
     reader.onload = () => resolve(reader.result);
     reader.onerror = (error) => reject(error);
   });
-function TourForm({ setRows,rows }) {
-  const token = sessionStorage.getItem("token");
-  const userName = token ? parseJwt(token).sub : "";
+function TourForm({ setRows, rows }) {
+  const {username} = useAuth();
   const [hidden, setHidden] = useState(false);
-  const [area, setArea] = useState([]);
-  const [areaDepartSelected, setAreaDepartSelected] = useState([]);
-  const [areaArriveSelected, setAreaArriveSelected] = useState([]);
   const [hotel, setHotel] = useState([]);
   const [car, setCar] = useState([]);
   const [checkin, setCheckin] = useState([]);
@@ -45,6 +44,7 @@ function TourForm({ setRows,rows }) {
   const [tags, setTags] = useState([]);
   const [tagNew, setTagNew] = useState([]);
   const [errors, setErrors] = useState({});
+  const [route, setRoute] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [tagErrors, setTagErrors] = useState("");
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -52,8 +52,7 @@ function TourForm({ setRows,rows }) {
   const [fileList, setFileList] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
-    city_depart_id: "",
-    city_arrive_id: "",
+    route_id: "",
     number_people: 0,
     total_price: 0,
     day: 0,
@@ -64,7 +63,7 @@ function TourForm({ setRows,rows }) {
     hotel_id: "",
     car_company_id: "",
     checkin_id: "",
-    admin_username: userName,
+    admin_username: username,
   });
 
   const handleSelectTags = (tagNames) => {
@@ -76,34 +75,40 @@ function TourForm({ setRows,rows }) {
   useEffect(() => {
     fetchDataInit();
   }, []);
-
+  const handleComboChange = (name, selected) => {
+    console.log(selected);
+    console.log(name);
+    var selectedId = "";
+    if (name == "id") {
+      name = "checkin_id";
+      selectedId = selected.id;
+    } else {
+      selectedId = selected[name] || "";
+    }
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: selectedId,
+    }));
+    console.log(formData);
+  };
   const fetchDataInit = async () => {
     try {
-      const areaData = await AreaService.getAll();
-      setArea(areaData);
-      const hotelData = await HotelService.getHotels(0, 10, "");
+      const routeData = await RouteService.getAll(0, 100);
+      setRoute(routeData.listResponse);
+      console.log(route);
+      const hotelData = await HotelService.getHotels("1", "10", "");
       setHotel(hotelData.hotelResponseList);
       const carData = await CarService.getcars(0, 10);
       setCar(carData.listResponse);
       const checkinData = await CheckinService.getCheckins();
       setCheckin(checkinData.data.checkinResponses);
-      const tag = await TagService.getTags(0, 100);
+      const tag = await TagService.getTags(0, 50);
       setTags(tag.listResponse);
     } catch (error) {
       console.error("Lỗi khi lấy dữ liệu khu vực:", error);
     }
   };
 
-  const handleAreaDepChange = (e) => {
-    const selectedArea = area.find((a) => a.id === e.target.value);
-    setAreaDepartSelected(selectedArea?.cities || []);
-    document.getElementById("endPoint").value = "";
-  };
-  const handleAreaArriveChange = (e) => {
-    const selectedArea = area.find((a) => a.id === e.target.value);
-    setAreaArriveSelected(selectedArea?.cities || []);
-    document.getElementById("endPoint").value = "";
-  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -118,9 +123,11 @@ function TourForm({ setRows,rows }) {
       console.log("Validation errors:", errors);
       return;
     }
+    console.log(formData);
+
     const response = await TourService.createTour(formData);
     if (response) {
-      if(fileList.length > 0){
+      if (fileList.length > 0) {
         uploadEncodedImage(response.tour_id, fileList);
       }
       setHidden(false);
@@ -182,11 +189,9 @@ function TourForm({ setRows,rows }) {
     if (!data.title.trim()) {
       errors.title = "Bắt buộc nhập tiêu đề.";
     }
-    if (!data.city_depart_id.trim()) {
-      errors.city_depart_id = "Bắt buộc chọn thành phố đi.";
-    }
-    if (!data.city_arrive_id.trim()) {
-      errors.city_arrive_id = "Bắt buộc chọn thành phố đến.";
+
+    if (!data.route_id.trim()) {
+      errors.route_id = "Bắt buộc chọn chuyến đi.";
     }
     if (data.number_people <= 0) {
       errors.number_people = "Số người phải lớn hơn 0.";
@@ -197,13 +202,13 @@ function TourForm({ setRows,rows }) {
     if (data.night < 0) {
       errors.night = "Số đêm phải lớn hơn 0.";
     }
-    if (!data.hotel_id.trim()) {
+    if (!data.hotel_id) {
       errors.hotel_id = "Bắt buộc chọn khách sạn.";
     }
-    if (!data.car_company_id.trim()) {
+    if (!data.car_company_id) {
       errors.car_company_id = "Bắt buộc chọn nhà xe.";
     }
-    if (!data.checkin_id.trim()) {
+    if (!data.checkin_id) {
       errors.checkin_id = "Bắt buộc chọn điểm tham quan.";
     }
     return errors;
@@ -223,7 +228,7 @@ function TourForm({ setRows,rows }) {
     try {
       const formData = new FormData();
       encodedImageUrl.forEach((file) => {
-        formData.append("files", file.originFileObj); 
+        formData.append("files", file.originFileObj);
       });
       const uploadResponse = await TourService.uploadImage(id, formData);
       console.log("Upload successful:", uploadResponse.data);
@@ -308,107 +313,40 @@ function TourForm({ setRows,rows }) {
                 </div>
 
                 {/* Điểm bắt đầu + Điểm đến */}
-                <div className="col-md-6">
-                  <label htmlFor="startPoint" className="form-label">
-                    Điểm đi
+                <div className="col-md-12">
+                  <label htmlFor="route_id" className="form-label">
+                    Tuyến đi
                   </label>
                   <select
-                    id="startPoint"
+                    id="route_id"
                     className="form-select"
-                    name="startPoint"
+                    name="route_id"
                     defaultValue=""
+                    value={formData.route_id}
                     onChange={(e) => {
-                      handleAreaDepChange(e);
-                      handleChange();
+                      const selectedId = e.target.value;
+                      setFormData((prev) => ({
+                        ...prev,
+                        route_id: selectedId,
+                      }));
                     }}
                   >
                     <option value="" disabled>
-                      Chọn khu vực
+                      Chọn tuyến
                     </option>
-                    {area.map((a) => (
-                      <option key={a.id} value={a.id}>
-                        {a.name}
-                      </option>
-                    ))}
+                    {route &&
+                      route.map((r) => (
+                        <option key={r.route_id} value={r.route_id}>
+                          {r.origin_station_id.name} --{" "}
+                          {r.destination_station_id.name}
+                        </option>
+                      ))}
                   </select>
-                </div>
-                <div className="col-md-6">
-                  <label
-                    htmlFor="city_depart_id"
-                    className="form-label"
-                  ></label>
-                  <select
-                    id="city_depart_id"
-                    className="form-select"
-                    name="city_depart_id"
-                    defaultValue=""
-                    onChange={handleChange}
-                  >
-                    <option value="" disabled>
-                      Chọn thành phố
-                    </option>
-                    {areaDepartSelected.map((city) => (
-                      <option key={city.id} value={city.id}>
-                        {city.nameCity}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.city_depart_id && (
-                    <p className="text-danger">{errors.city_depart_id}</p>
+
+                  {errors.route_id && (
+                    <p className="text-danger">{errors.route_id}</p>
                   )}
                 </div>
-
-                {/* Điểm bắt đầu + Điểm đến */}
-                <div className="col-md-6">
-                  <label htmlFor="end-point" className="form-label">
-                    Điểm đến
-                  </label>
-                  <select
-                    id="end-point"
-                    className="form-select"
-                    name="end-point"
-                    defaultValue=""
-                    onChange={(e) => {
-                      handleAreaArriveChange(e);
-                      handleChange();
-                    }}
-                  >
-                    <option value="" disabled>
-                      Chọn khu vực
-                    </option>
-                    {area.map((a) => (
-                      <option key={a.id} value={a.id}>
-                        {a.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="col-md-6">
-                  <label
-                    htmlFor="city_arrive_id"
-                    className="form-label"
-                  ></label>
-                  <select
-                    id="city_arrive_id"
-                    name="city_arrive_id"
-                    className="form-select"
-                    defaultValue=""
-                    onChange={handleChange}
-                  >
-                    <option value="" disabled>
-                      Chọn thành phố
-                    </option>
-                    {areaArriveSelected.map((city) => (
-                      <option key={city.id} value={city.id}>
-                        {city.nameCity}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.city_arrive_id && (
-                    <p className="text-danger">{errors.city_arrive_id}</p>
-                  )}
-                </div>
-
                 {/* Số người, số ngày, số đêm */}
                 <div className="col-md-4">
                   <label htmlFor="peopleCount" className="form-label">
@@ -468,26 +406,18 @@ function TourForm({ setRows,rows }) {
                       <label htmlFor="transport" className="form-label">
                         Nhà xe
                       </label>
-                      <select
-                        id="transport"
-                        className="form-select"
+                      <Combobox
+                        data={car}
+                        dataKey="id"
+                        textField="name"
                         name="car_company_id"
-                        defaultValue=""
-                        value={formData.car_company_id}
-                        onChange={handleChange}
-                      >
-                        <option value="" disabled selected>
-                          Chọn phương tiện
-                        </option>
-                        {car.map((c) => (
-                          <option
-                            key={c.car_company_id}
-                            value={c.car_company_id}
-                          >
-                            {c.name}
-                          </option>
-                        ))}
-                      </select>
+                        onChange={(selected) =>
+                          handleComboChange("car_company_id", selected)
+                        }
+                        defaultValue={car.find(
+                          (car) => car.id === formData.car_company_id
+                        )}
+                      />
                       {errors.car_company_id && (
                         <p className="text-danger">{errors.car_company_id}</p>
                       )}
@@ -496,23 +426,16 @@ function TourForm({ setRows,rows }) {
                       <label htmlFor="accommodation" className="form-label">
                         Khách sạn
                       </label>
-                      <select
-                        id="hotel"
-                        className="form-select"
+                      <Combobox
+                        data={hotel}
+                        dataKey="id"
+                        textField="name"
                         name="hotel_id"
-                        defaultValue=""
-                        value={formData.hotel_id}
-                        onChange={handleChange}
-                      >
-                        <option value="" disabled selected>
-                          Chọn nơi ở
-                        </option>
-                        {hotel.map((h) => (
-                          <option key={h.hotel_id} value={h.hotel_id}>
-                            {h.name}
-                          </option>
-                        ))}
-                      </select>
+                        onChange={(selected) =>
+                          handleComboChange("hotel_id", selected)
+                        }
+                        defaultValue={formData.hotel_id}
+                      />
                       {errors.hotel_id && (
                         <p className="text-danger">{errors.hotel_id}</p>
                       )}
@@ -521,23 +444,16 @@ function TourForm({ setRows,rows }) {
                       <label htmlFor="checkin" className="form-label">
                         Điểm tham quan
                       </label>
-                      <select
-                        id="checkin"
-                        className="form-select"
+                      <Combobox
+                        data={checkin}
+                        dataKey="id"
+                        textField="name"
                         name="checkin_id"
-                        defaultValue=""
-                        value={formData.checkin_id}
-                        onChange={handleChange}
-                      >
-                        <option value="" disabled selected>
-                          Chọn điểm tham quan
-                        </option>
-                        {checkin.map((h) => (
-                          <option key={h.id} value={h.id}>
-                            {h.name}
-                          </option>
-                        ))}
-                      </select>
+                        onChange={(selected) =>
+                          handleComboChange("id", selected)
+                        }
+                        defaultValue={formData.checkin_id}
+                      />
                       {errors.checkin_id && (
                         <p className="text-danger">{errors.checkin_id}</p>
                       )}

@@ -5,10 +5,12 @@ export const HotelService = {
     const response = await Http.get(
       `/hotels/all?page=${page}&limit=${limit}&keyword=${keyword}`
     );
+    console.log(response);
     return response.data;
   },
   findHotelById: async (id) => {
     const response = await Http.get(`/hotels/getById/${id}`);
+    console.log(response);
     return response.data;
   },
   update: async (hotelId, data) => {

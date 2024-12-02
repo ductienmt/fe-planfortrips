@@ -17,11 +17,11 @@ export const TourService = {
 
   getTours: async (page, limit) => {
     const response = await Http.get(`/tours/all?page=${page}&limit=${limit}`);
-    console.log(response);
     return response.data;
   },
   findTourById: async (id) => {
     const response = await Http.get(`/tours/findById/${id}`);
+    console.log(response);
     return response.data;
   },
   createTour: async (data) => {
@@ -43,6 +43,10 @@ export const TourService = {
   },
   uploadImage: async (id, formData) => {
     const response = await Http.post(`/tours/uploads/${id}`, formData);
+    return response.data;
+  }, 
+  deleteImage: async (id, formData) => {
+    const response = await Http.post(`/tours/deleteImages/${id}`, formData);
     return response.data;
   },
 };
