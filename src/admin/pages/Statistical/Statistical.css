@@ -26,13 +26,12 @@
     border: 1px solid black;
     border-radius: 100%;
     background-color: white;
-    transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .admin__card-statistical__icon-container:hover {
     background-color: #ffd700; /* Đổi màu nền của icon container */
     transform: scale(1.1); /* Phóng to nhẹ icon container */
-    color: black; /* Đổi màu icon */
 }
 
 .admin__card-statistical__icon-container i {

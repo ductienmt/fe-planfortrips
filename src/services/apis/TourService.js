@@ -3,11 +3,15 @@ import Http from "../Http";
 export const TourService = {
 
   getToursClient : async () => {
-        const response = await Http.get('api/v1/tours/client/');
+        const response = await Http.get('/tours/client/');
         return response.data;
   },
   getTourDetail : async (tourId) => {
-    const response = await Http.get(`api/v1/tours/available/${tourId}`);    
+    const response = await Http.get(`/tours/available/${tourId}`);    
+    return response.data;
+  },
+  getTourByOriginAndDes : async (cityOriginId, cityDesId) => {
+    const response = await Http.get(`tours/route/${cityOriginId}/${cityDesId}`);
     return response.data;
   },
 

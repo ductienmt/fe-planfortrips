@@ -249,3 +249,73 @@ h1 {
   align-items: center;
   height: 300px;
 }
+
+
+
+.tour-page-city-card-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+.tour-page-city-card-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.tour-page-city-card-item {
+  flex: 1;
+  border-radius: 15px;
+  text-align: center;
+  overflow: hidden; /* Đảm bảo các góc tròn không bị lộ ra ngoài */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Thêm hiệu ứng chuyển động */
+  background-color: #fff; /* Màu nền của thẻ */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Tạo bóng đổ nhẹ */
+}
+
+.tour-page-city-card-item:hover {
+  transform: translateY(-10px); /* Dịch chuyển lên khi hover */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Tăng độ bóng khi hover */
+}
+
+.tour-page-city-card-img img {
+  width: 100%;
+  height: 15rem;
+  border-radius: 50%; /* Hình tròn */
+  object-fit: cover;
+  transition: transform 0.3s ease; /* Thêm hiệu ứng cho ảnh */
+}
+
+.tour-page-city-card-img img:hover {
+  transform: scale(1.1); /* Phóng to hình ảnh khi hover */
+}
+
+.tour-page-city-card-id h4 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  margin-top: 10px;
+  transition: color 0.3s ease; /* Thêm hiệu ứng thay đổi màu chữ */
+}
+
+.tour-page-city-card-id h4:hover {
+  color: #007BFF; /* Thay đổi màu khi hover */
+}
+
+.tour-page-city-page-des p {
+  font-size: 1rem;
+  color: #666;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+.tour-page-city-card-item .tour-page-city-page-des p {
+  transition: color 0.3s ease; /* Thêm hiệu ứng thay đổi màu chữ */
+}
+
+.tour-page-city-card-item:hover .tour-page-city-page-des p {
+  color: #555; /* Thay đổi màu khi hover */
+}
+
+
