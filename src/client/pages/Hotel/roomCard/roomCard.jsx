@@ -17,6 +17,14 @@ const RoomCard = ({
   // Define the openSnackbar state
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
+  const handleClick = (e) => {
+    if (onBook) {
+      onBook(e);
+    } else {
+      handleBookTicket(e);
+    }
+  };
+
   const handleBookTicket = () => {
     // onBook();
     setOpenSnackbar(true);
@@ -88,7 +96,7 @@ const RoomCard = ({
             <button
               type="button"
               className="book-ticket-transport"
-              onClick={handleBookTicket}
+              onClick={handleClick}
             >
               Đặt ngay
             </button>
