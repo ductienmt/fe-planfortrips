@@ -58,7 +58,7 @@ const HotelCard = ({
                     {hotelAmenities?.map((ha, index) => (
                       <small key={index}>
                         <img
-                          src={ha.icon[0]?.url}
+                          src={ha.icon?.url}
                           alt=""
                           width={"20px"}
                           height={"20px"}
@@ -92,7 +92,6 @@ const HotelCard = ({
                     </div>
                     <div className="col-md-9">
                       <button
-                        className="book-ticket-transport"
                         type="button"
                         {...(onClick && { onClick })}
                         {...(modalTarget && { "data-bs-target": modalTarget })}
