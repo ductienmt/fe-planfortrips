@@ -6,38 +6,58 @@ import img4 from "../../../../assets/beach.jpg";
 import img5 from "../../../../assets/beach.jpg";
 import RoomCard from "../roomCard/roomCard";
 import PersonReview from "../personReview/PersonReview";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { HotelService } from "../../../../services/apis/HotelService";
+import Loader from "../../../Components/Loading";
 
 const DetailCard = () => {
-  const { id } = useParams();
   const originalPrice = 250000;
   const discountedPrice = 200000;
   const hasDiscount = discountedPrice < originalPrice;
   window.scrollTo(0, 0);
+  const [loading,setLoading] = useState(true);
+  const { id } = useParams();
+  const [hotel, setHotel] = useState({});
+  const [rooms,setRoom] = useState([]);
+  useEffect(() => {
+    const fetch = async () => {
+      const dataHotel = await HotelService.findHotelById(id);
+      if (dataHotel) {
+        setHotel(dataHotel);
+        setRoom(dataHotel.rooms);
+        setLoading(false);
+      }
+    };
+    fetch();
+  }, [hotel]);
 
   useEffect(() => {
     console.log("DetailCard id", id);
   }, [id]);
-
+ if(loading){
+  return <Loader />
+ }
   return (
     <>
       <div className="conatiner custom-detailCard">
         <div className="flex-container-header">
           <div style={{ flexGrow: 8 }} className="nameHotelDetail">
             <div className="name d-flex">
-              <h1 style={{ color: "black" }}>Nơi ở 1, Hồ Chí Minh</h1>
+              <h1>{hotel.name}</h1>
+              
             </div>
             <small className="hotel-adr">
-              <i className="fa-solid fa-map-pin me-3"></i>Quận 1, Hồ Chí Minh
+              <i className="fa-solid fa-map-pin me-3"></i>
+              {hotel.address}
             </small>
             <div className="feed-back-hotel d-flex align-items-center mt-3">
               <div className="start-feedback">
-                <i className="fa-solid fa-star"></i>
-                <i className="fa-solid fa-star"></i>
-                <i className="fa-solid fa-star"></i>
-                <i className="fa-solid fa-star"></i>
-                <i className="fa-solid fa-star"></i>
+                {Array(hotel.rating)
+                  .fill(0)
+                  .map((_, index) => (
+                    <i key={index} className="fa-solid fa-star"></i>
+                  ))}
               </div>
               <span className="total-customer">43 người đánh giá</span>
             </div>
@@ -91,12 +111,7 @@ const DetailCard = () => {
           <div className="col-6">
             <h4 className="text-center">Giới thiệu về khách sạn</h4>
             <p>
-              Nơi ở 1 là một nơi cung cấp tốt về vấn đề nghỉ ngơi, giải trí và
-              hơn hết còn có nhiều tiện ích thêm. <br />
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Voluptate pariatur eaque mollitia iure ab, dolore ea ratione
-              repudiandae maxime quas! Iure accusantium qui accusamus inventore
-              tenetur, error molestiae? Natus, mollitia.
+              {hotel.description}
             </p>
           </div>
           <div className="col-6" id="room-availible">
@@ -116,7 +131,17 @@ const DetailCard = () => {
           <hr />
           <div className="room-availible">
             <h3>Phòng hiện có</h3>
-            <RoomCard />
+            {rooms.length > 0 ? 
+              rooms.map((r) => (
+                <RoomCard 
+                  key={r.id} 
+                  img={r.images[0]?.url} 
+                  roomSize={r?.maxSize} 
+                  priceOneNight={r?.price} 
+                  onBook={r?.is_available}
+                />
+              ))
+              : "Hiện tại không có phòng"}
           </div>
         </div>
         <hr className="py-3" />

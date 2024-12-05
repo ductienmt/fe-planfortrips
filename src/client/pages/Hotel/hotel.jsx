@@ -81,12 +81,12 @@ const Hotel = () => {
   const itemsPerPage = 5;
 
   const hotels = [
-    "Khách sạn A",
-    "Khách sạn B",
-    "Khách sạn C",
-    "Khách sạn D",
-    "Khách sạn E",
-    "Khách sạn F",
+    "Khách sạn Cà Mau",
+    "Khách sạn Quy nhơn",
+    "Khách sạn dalas",
+    "Khách sạn Spa",
+    "Khách sạn Phúc Khải",
+    "Khách sạn ABC",
   ];
   const homestays = [
     "Home stay A",
@@ -104,7 +104,14 @@ const Hotel = () => {
     "Resort E",
     "Resort F",
   ];
-
+  // const images = {
+  //   'https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  //   'https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=600',
+  //   'https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  //   'https://images.pexels.com/photos/262047/pexels-photo-262047.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  //   'https://images.pexels.com/photos/70441/pexels-photo-70441.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  //   'https://images.pexels.com/photos/262047/pexels-photo-262047.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  // }
   const renderList = () => {
     let list = [];
     if (selectedCategory === "hotel") {

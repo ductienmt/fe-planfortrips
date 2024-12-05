@@ -259,7 +259,6 @@ export default function TourAdmin() {
       />
       <TourFormUpdate
         setRows={setRows}
-        rows={rows}
         selectedTourId={selectedTourId}
       />
     </Box>
