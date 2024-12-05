@@ -3,6 +3,7 @@ import "../IntroVehicle/introvehicle.css";
 import DateIntroVehicle from "./DateIntroVehicle";
 import InputIntroVehicle from "./InputIntroVehicle";
 import { ScheduleService } from "../../../../services/apis/ScheduleService";
+import { useNavigate } from "react-router-dom";
 
 const cardFooter = [
   {
@@ -35,18 +36,20 @@ const IntroVehicle = () => {
 
   const [schedules, setSchedules] = useState([]);
 
+  const navigate = useNavigate();
+
   const handleSearch = async () => {
     try {
       const response = await ScheduleService.getSchedules(formData);
       const fetchedSchedules = response.data.data || [];
       setSchedules(fetchedSchedules);
       console.log(fetchedSchedules);
-      localStorage.setItem('schedules', JSON.stringify(fetchedSchedules));
+      sessionStorage.setItem('schedules', JSON.stringify(fetchedSchedules));
+      navigate('/vehicle-page')
     } catch (error) {
       console.error('Error fetching schedules:', error);
     }
   };
-
 
   const updateFormData = (field, value) => {
     setFormData((prev) => ({

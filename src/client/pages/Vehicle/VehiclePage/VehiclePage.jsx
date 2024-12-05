@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import InfoIcon from '@mui/icons-material/Info';
 import InputVehicle from './InputVehicle';
@@ -67,6 +67,13 @@ const VehiclePage = () => {
     endDate: '',
   });
   const [schedules, setSchedules] = useState([]);
+
+  useEffect(() => {
+    const storedSchedules = sessionStorage.getItem('schedules');
+    if (storedSchedules) {
+      setSchedules(JSON.parse(storedSchedules));
+    }
+  }, []);
 
   const handleStarClick = (stars) => {
     setSelectedStars(stars);
