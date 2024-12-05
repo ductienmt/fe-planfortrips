@@ -55,22 +55,17 @@ const HotelCard = ({
                     <small>
                       <i className="fa-solid fa-person-swimming"></i>Hồ bơi
                     </small> */}
-                    {hotelAmenities?.map(
-                      (ha, index) => (
-                        console.log("icon", ha),
-                        (
-                          <small key={index}>
-                            <img
-                              src={ha.icon?.url}
-                              alt=""
-                              width={"20px"}
-                              height={"20px"}
-                            />
-                            {ha.name}
-                          </small>
-                        )
-                      )
-                    )}
+                    {hotelAmenities?.map((ha, index) => (
+                      <small key={index}>
+                        <img
+                          src={ha.icon?.url}
+                          alt=""
+                          width={"20px"}
+                          height={"20px"}
+                        />
+                        {ha.name}
+                      </small>
+                    ))}
                   </p>
                   <div className="feed-back-hotel d-flex">
                     <div className="start-feedback">

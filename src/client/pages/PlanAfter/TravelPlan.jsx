@@ -88,7 +88,6 @@ function TravelPlan() {
 
   const handleCardClick = (card) => {
     setSelectedCard(card === selectedCard ? null : card); // Nếu click lại thì bỏ chọn
-    console.log(card);
     if (card == "attraction") handleAttractionSelected();
     // if (card == "transportation") handleTransportationSelected();
   };

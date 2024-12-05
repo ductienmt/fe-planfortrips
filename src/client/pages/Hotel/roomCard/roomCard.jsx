@@ -1,14 +1,18 @@
-import { convertToVND } from "../../../../utils/FormatMoney";
+import { convertToVND, convertToVNDDB } from "../../../../utils/FormatMoney";
 import "./roomCard.css";
 import { Link } from "react-router-dom";
 
-const RoomCard = ({ img, roomSize, priceOneNight, onBook }) => {
+const RoomCard = ({
+  img,
+  roomSize,
+  priceOneNight,
+  onBook,
+  typeRoom,
+  amenities,
+}) => {
   return (
     <>
       <div className="flex-container-room-card">
-
-
-
         <div className="card-room-type align-items-center">
           <div className="d-flex align-items-center custom-img-room-type">
             <img style={{ width: "500px" }} src={img} alt="" />
@@ -16,17 +20,24 @@ const RoomCard = ({ img, roomSize, priceOneNight, onBook }) => {
           </div>
           <div className="price-room-type text-end">
             <p className="amenities d-flex justify-content-center mt-3">
-              <small>
-                <i className="fa-solid fa-bowl-food"></i>Nước và đồ ăn
-              </small>
-              <small>
-                <i className="fa-solid fa-wifi"></i>Wifi
-              </small>
-              <small>
-                <i className="fa-solid fa-toilet-paper"></i>Dụng cụ vệ sinh
-              </small>
+              {amenities?.map((ha, index) => (
+                <small key={index}>
+                  <img
+                    src={ha.icon?.url}
+                    alt=""
+                    width={"20px"}
+                    height={"20px"}
+                    style={{ marginRight: "5px" }}
+                  />
+                  {ha.name}
+                </small>
+              ))}
             </p>
-            <span>{convertToVND(priceOneNight)} / 1 đêm</span>
+
+            <div className="d-flex justify-content-between">
+              <span>Loại phòng: {typeRoom}</span>
+              <span>{convertToVNDDB(priceOneNight)} / 1 đêm</span>
+            </div>
             <button
               type="button"
               className="book-ticket-transport"
