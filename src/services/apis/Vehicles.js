@@ -18,6 +18,9 @@ export const VehiclesService = {
   },
   findVehicleById: async (id) => {
     return await Http.get(`/api/v1/vehicles/getById/${id}`);
+  },
+  getVehicleByEnterpriseId: async () => {
+    return await Http.get("/api/v1/vehicles/getByEnterpriseId")
   }
   // getVehicleTypes: async () => {
   //   return await Http.get("/api/v1/vehicles/types");

@@ -50,6 +50,11 @@ const TranportatinDashboard = () => {
       key: "",
     },
     {
+      title: "Biển số",
+      dataIndex: "",
+      key: "",
+    },
+    {
       title: "Giá vé",
       dataIndex: "",
       key: "",
@@ -86,7 +91,7 @@ const TranportatinDashboard = () => {
 
             {/* Card2 */}
             <div className="card-2-container-t">
-              <ChartReportCardt amount="5.000.000" />
+              <ChartReportCardt/>
             </div>
 
             {/* Card3 */}
@@ -110,7 +115,7 @@ const TranportatinDashboard = () => {
                 color: "#ADADAD",
               }}
             >
-              Quản lý phòng
+              Quản lý xe
             </h1>
             <div className="table-card5-t ">
               <Table

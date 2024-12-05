@@ -13,7 +13,7 @@ const RoomStatusCardt = ({ color, icon, title, status, count }) => {
         <h3 className="room-status-card__title">{title}</h3>
       </div>
       <p className="room-status-card__status">{status}</p>
-      <p className="room-status-card__count">{count} phòng</p>
+      <p className="room-status-card__count">{count} xe</p>
       </center>
     </article>
     </>

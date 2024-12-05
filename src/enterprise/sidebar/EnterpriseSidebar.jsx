@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/planfortrips-logo_1.png";
 import { useEnterprise } from "../../context/EnterpriseContext/EnterpriseProvider";
 import { useAuth } from "../../context/AuthContext/AuthProvider";
+import Account from "../transportation/account/Account";
 
 const EnterpriseSidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -119,6 +120,17 @@ const EnterpriseSidebar = () => {
                     {!collapsed && <span>Mã giảm giá</span>}
                   </Link>
                 </li>
+                <li
+                  className={selectedItem === "account" ? "isActive" : ""}
+                  onClick={() => handleSelect("account")}
+                  data-bs-toggle="modal"
+                  data-bs-target="#accountModal"
+                >
+                  <Link to="transportation/vehicle-account">
+                    <i className="fa-solid fa-user"></i>{" "}
+                    {!collapsed && <span>Account</span>}
+                  </Link>
+                </li>
               </>
             )}
 
@@ -133,7 +145,7 @@ const EnterpriseSidebar = () => {
                     {!collapsed && <span>Thống kê</span>}
                   </Link>
                 </li>
-            
+
                 <li
                   className={selectedItem === "Guest" ? "isActive" : ""}
                   onClick={() => handleSelect("Guest")}
@@ -159,20 +171,22 @@ const EnterpriseSidebar = () => {
                   onClick={() => handleSelect("Seats")}
                 >
                   <Link to="transportation/Seats">
-                    <i className="fa-solid fa-route"></i>{" "}
+                    <i className="fa-solid fa-couch"></i>{" "}
                     {!collapsed && <span>Seats</span>}
                   </Link>
                 </li>
                 <li
                   className={selectedItem === "Route" ? "isActive" : ""}
-                  onClick={() => handleSelect("Route")}
+                  onClick={(e) => {
+                    e.preventDefault(), handleSelect("Route");
+                  }}
                 >
                   <Link to="transportation/Routehotel">
-                    <i className="fa-solid fa-Routehotel"></i>{" "}
+                    <i className="fa-solid fa-route"></i>{" "}
                     {!collapsed && <span>Tuyến</span>}
                   </Link>
                 </li>
-                
+
                 <li
                   className={selectedItem === "vouchers" ? "isActive" : ""}
                   onClick={() => handleSelect("vouchers")}
@@ -182,21 +196,23 @@ const EnterpriseSidebar = () => {
                     {!collapsed && <span>Mã giảm giá</span>}
                   </Link>
                 </li>
-                  <li
-                    className={selectedItem === "schedules" ? "isActive" : ""}
-                    onClick={() => handleSelect("schedules")}
-                  >
-                    <Link to="transportation/vehicle-schedules">
-                      <i className="fa-solid fa-ticket"></i>{" "}
-                      {!collapsed && <span>Lịch trình</span>}
-                    </Link>
-                  </li>
+                <li
+                  className={selectedItem === "schedules" ? "isActive" : ""}
+                  onClick={() => handleSelect("schedules")}
+                >
+                  <Link to="transportation/vehicle-schedules">
+                    <i className="fa-regular fa-calendar-days"></i>{" "}
+                    {!collapsed && <span>Lịch trình</span>}
+                  </Link>
+                </li>
                 <li
                   className={selectedItem === "account" ? "isActive" : ""}
                   onClick={() => handleSelect("account")}
+                  data-bs-toggle="modal"
+                  data-bs-target="#accountModal"
                 >
                   <Link to="transportation/vehicle-account">
-                    <i className="fa-solid fa-ticket"></i>{" "}
+                    <i className="fa-solid fa-user"></i>{" "}
                     {!collapsed && <span>Account</span>}
                   </Link>
                 </li>

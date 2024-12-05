@@ -14,4 +14,7 @@ export const ScheduleService = {
   getScheduleID: async (scheduleId) => {
     return await Http.get(`/api/v1/schedules/getById/${scheduleId}`);
   },
+  getScheduleByEnterpriseId: async() =>{
+    return await Http.get("/api/v1/schedules/getByEnterpriseId")
+  }
 };

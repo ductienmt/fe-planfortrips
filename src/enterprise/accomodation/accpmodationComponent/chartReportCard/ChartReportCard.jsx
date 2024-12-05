@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState, useMemo } from "react";
 import "./ChartReportCard.css";
 import { Column } from "@ant-design/charts";
 
-const ChartReportCard = ({ amount }) => {
-  const data = [
+const ChartReportCard = () => {
+  const [reportType, setReportType] = useState("week");
+
+  // Dữ liệu theo loại báo cáo
+  const weeklyData = [
     { day: "Thứ 2", revenue: 250000 },
     { day: "Thứ 3", revenue: 300000 },
     { day: "Thứ 4", revenue: 200000 },
@@ -12,6 +15,38 @@ const ChartReportCard = ({ amount }) => {
     { day: "Thứ 7", revenue: 500000 },
     { day: "Chủ nhật", revenue: 450000 },
   ];
+
+  const monthlyData = [
+    { day: "Tuần 1", revenue: 1200000 },
+    { day: "Tuần 2", revenue: 1500000 },
+    { day: "Tuần 3", revenue: 1100000 },
+    { day: "Tuần 4", revenue: 1700000 },
+  ];
+
+  const quarterlyData = [
+    { day: "Tháng 1", revenue: 4500000 },
+    { day: "Tháng 2", revenue: 4700000 },
+    { day: "Tháng 3", revenue: 4900000 },
+  ];
+
+  // Xác định dữ liệu hiển thị dựa trên loại báo cáo
+  const data = useMemo(() => {
+    switch (reportType) {
+      case "week":
+        return weeklyData;
+      case "month":
+        return monthlyData;
+      case "quarter":
+        return quarterlyData;
+      default:
+        return [];
+    }
+  }, [reportType]);
+
+  // Tính tổng doanh thu
+  const totalRevenue = useMemo(() => {
+    return data.reduce((total, item) => total + item.revenue, 0);
+  }, [data]);
 
   const config = {
     data,
@@ -36,6 +71,11 @@ const ChartReportCard = ({ amount }) => {
     },
   };
 
+  // Xử lý thay đổi loại báo cáo
+  const handleReportChange = (event) => {
+    setReportType(event.target.value);
+  };
+
   return (
     <>
       <div className="chart-report-dashboard">
@@ -49,13 +89,14 @@ const ChartReportCard = ({ amount }) => {
           DOANH THU
         </h1>
         <div className="chart-report-dashboard-content d-flex justify-content-between">
-          <div className="chart-report-total-amount">Tổng: {amount}đ</div>
+          <div className="chart-report-total-amount">
+            Tổng doanh thu: {totalRevenue.toLocaleString()} VNĐ
+          </div>
           <section className="chart-report-section">
-            <select>
+            <select onChange={handleReportChange} value={reportType}>
               <option value="week">Báo cáo tuần</option>
-              <option value="today">Báo cáo hôm nay</option>
               <option value="month">Báo cáo tháng này</option>
-              <option value="">Báo cáo quý</option>
+              <option value="quarter">Báo cáo quý</option>
             </select>
           </section>
         </div>
@@ -68,4 +109,5 @@ const ChartReportCard = ({ amount }) => {
     </>
   );
 };
+
 export default ChartReportCard;

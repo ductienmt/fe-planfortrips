@@ -7,6 +7,7 @@ import nhaxe from "../../../assets/caurong.webp";
 import TicketTransportationCard from "../../Components/ticketTransportation/TicketTransportationCard";
 import { convertToVND } from "../../../utils/FormatMoney";
 import { DateFormatter } from "../../../utils/DateFormat";
+import ChooseTicket from "../../Components/ChooseTicket/ChooseTicket";
 
 const TransportationCard = ({
   className,
@@ -330,6 +331,7 @@ const TransportationCard = ({
           </div>
         </div>
       </div>
+      <ChooseTicket numPeople={3}/>
     </>
   );
 };
