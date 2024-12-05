@@ -5,13 +5,14 @@ import imghotel from "../../../assets/beach.jpg";
 import nhaxe from "../../../assets/caurong.webp";
 import HotelCard from "../Hotel/card/hotelCard";
 import RoomCard from "../Hotel/roomCard/roomCard";
-import { convertToVND } from "../../../utils/FormatMoney";
+import { convertToVND, convertToVNDDB } from "../../../utils/FormatMoney";
 
-function AccommodationCard({ className, onClick, accomodation }) {
+function AccommodationCard({ className, onClick, accomodation, destination }) {
   const [hotelImage1, setHotelImage1] = useState("");
   const [hotelImage2, setHotelImage2] = useState("");
   const [hotelImage3, setHotelImage3] = useState("");
   const [hotelAmentities, setHotelAmentities] = useState([]);
+  // console.log(accomodation);
 
   const [selectedRooms, setSelectedRooms] = useState([]); // Lưu danh sách phòng được chọn
 
@@ -41,7 +42,7 @@ function AccommodationCard({ className, onClick, accomodation }) {
   const loadHotelImages = async () => {
     try {
       const response = await HotelService.findHotelById(accomodation.hotelId);
-      console.log(response);
+      // console.log(response);
       const images = response.images;
       setHotelAmentities(response.hotelAmenities);
 
@@ -71,10 +72,12 @@ function AccommodationCard({ className, onClick, accomodation }) {
 
   const loadHotelChangeData = async () => {
     try {
+      // console.log(destination);
+
       const response = await HotelService.getHotelSamePrice(
-        accomodation.price_per_night
+        accomodation.price_per_night / 1000,
+        destination
       );
-      console.log(response);
       setHotelChangeData(response);
     } catch (error) {
       console.error("Error fetching hotel :", error);
@@ -86,7 +89,7 @@ function AccommodationCard({ className, onClick, accomodation }) {
     // console.log(accomodation);
 
     loadHotelImages();
-    console.log(hotelAmentities);
+    // console.log(hotelAmentities);
   }, [accomodation.hotelId]);
 
   return (
@@ -353,6 +356,9 @@ function AccommodationCard({ className, onClick, accomodation }) {
                   originalPrice={hotel.roomPrice}
                   hotelAmenities={hotel.hotelAmenities}
                   contentButton={"Chọn khách sạn"}
+                  modalTarget={"#changeRoomModal"}
+                  modalToogle={"modal"}
+                  onClick={() => {}}
                 />
               ))}
             </div>
@@ -441,25 +447,35 @@ function AccommodationCard({ className, onClick, accomodation }) {
                         <strong className="d-flex justify-content-center">
                           Tên phòng:
                         </strong>
-
                         <p>{room.roomSize}</p>
                       </p>
                       <div className="d-flex align-items-center">
                         <button
                           className="btn btn-link px-2"
                           onClick={() => {
-                            // Giảm số lượng phòng nếu số lượng > 1
-                            setSelectedRooms((prevRooms) =>
-                              prevRooms.map((r) =>
-                                r.id === room.id && r.quantity > 1
-                                  ? { ...r, quantity: r.quantity - 1 }
-                                  : r
-                              )
-                            );
+                            setSelectedRooms((prevRooms) => {
+                              const updatedRooms = prevRooms
+                                .map((r) =>
+                                  r.id === room.id && r.quantity >= 1
+                                    ? { ...r, quantity: r.quantity - 1 } // Giảm số lượng nếu > 1
+                                    : r
+                                )
+                                .filter(
+                                  (r) => r.id !== room.id || r.quantity > 0
+                                ); // Xóa phòng nếu số lượng = 0
+
+                              // Ẩn card nếu không còn phòng
+                              if (updatedRooms.length === 0) {
+                                setShowCard(false);
+                              }
+
+                              return updatedRooms;
+                            });
                           }}
                         >
                           <i className="fas fa-minus"></i>
                         </button>
+
                         <span>{room.quantity}</span>
                         <button
                           className="btn btn-link px-2"
@@ -489,7 +505,7 @@ function AccommodationCard({ className, onClick, accomodation }) {
                   <div className="total-price d-flex justify-content-end mb-3">
                     <h5>
                       Tổng tiền:{" "}
-                      {convertToVND(
+                      {convertToVNDDB(
                         selectedRooms.reduce(
                           (total, room) =>
                             total +

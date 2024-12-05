@@ -23,9 +23,10 @@ export const HotelService = {
     const response = await Http.get(`/hotels/detail`);
     return response.data;
   },
-  getHotelSamePrice: async (price) => {
+  getHotelSamePrice: async (price, destination) => {
+    const params = new URLSearchParams({ price, destination });
     const response = await Http.get(
-      `/hotels/getHotelsSamePrice?price=${price}`
+      `/hotels/getHotelsSamePrice?${params.toString()}`
     );
     return response.data;
   },

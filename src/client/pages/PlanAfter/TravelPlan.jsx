@@ -205,7 +205,7 @@ function TravelPlan() {
 
   useEffect(() => {
     if (tripData) {
-      console.log(tripData.userData?.budget);
+      // console.log(tripData.userData?.budget);
 
       setSummaryItems(newSummaryItems);
     }
@@ -234,8 +234,12 @@ function TravelPlan() {
                 departureTime={formatTime(
                   tripData.transportation.departure.departureTime
                 )}
-                departureDate={formatDateT(tripData.transportation.departure.departureTime)}
-                arrivalDate={formatDateT(tripData.transportation.departure.arrivalTime)}
+                departureDate={formatDateT(
+                  tripData.transportation.departure.departureTime
+                )}
+                arrivalDate={formatDateT(
+                  tripData.transportation.departure.arrivalTime
+                )}
                 arrivalTime={formatTime(
                   tripData.transportation.departure.arrivalTime
                 )}
@@ -250,6 +254,7 @@ function TravelPlan() {
                 routeId={tripData.transportation?.departure?.routeId}
                 originalLocation={tripData.userData?.location}
                 destination={tripData.userData?.destination}
+                re={tripData.transportation?.return}
               />
               <AccommodationCard
                 className={
@@ -261,6 +266,7 @@ function TravelPlan() {
                 }
                 onClick={() => handleCardClick("accommodation")}
                 accomodation={tripData.accomodation}
+                destination={tripData.userData.destination}
               />
               <AttractionCard
                 className={

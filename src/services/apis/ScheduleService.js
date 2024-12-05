@@ -12,4 +12,13 @@ export const ScheduleService = {
   getScheduleID: async (scheduleId) => {
     return await Http.get(`/schedules/getById/${scheduleId}`);
   },
+  getSamePrice: async (price, originalLocation, destination, departureDate) => {
+    const params = new URLSearchParams({
+      price,
+      originalLocation,
+      destination,
+      departureDate,
+    });
+    return await Http.get(`/schedules/getSamePrice?${params.toString()}`);
+  },
 };

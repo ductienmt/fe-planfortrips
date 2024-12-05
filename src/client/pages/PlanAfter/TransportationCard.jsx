@@ -7,6 +7,7 @@ import nhaxe from "../../../assets/caurong.webp";
 import TicketTransportationCard from "../../Components/ticketTransportation/TicketTransportationCard";
 import { convertToVND } from "../../../utils/FormatMoney";
 import { DateFormatter } from "../../../utils/DateFormat";
+import { RouteService } from "../../../services/apis/RouteService";
 
 const TransportationCard = ({
   className,
@@ -23,14 +24,25 @@ const TransportationCard = ({
   total,
   destination,
   originalLocation,
+  re,
 }) => {
+  // console.log("return", re);
+  const [reData, setReData] = useState({
+    departureStation: "",
+    arrivalStation: "",
+    driverPhoneNumber: "",
+    type_vehicle: "",
+    plateNumber: "",
+    img: "",
+  });
+
   const [departureStationData, setDepartureStationData] = useState("");
   const [arrivalStationData, setArrivalStationData] = useState("");
   const [vehicleData, setvehicleData] = useState({});
   const loadStation = async (id) => {
     try {
       const response = await ScheduleService.getStation(id);
-      console.log("station", response.data);
+      // console.log("station", response.data);
 
       setDepartureStationData(response.data.data.departureStation);
       setArrivalStationData(response.data.data.arrivalStation);
@@ -44,11 +56,50 @@ const TransportationCard = ({
     const response = await VehiclesService.getVehicleById(vehicleCode);
     // console.log(response.data);
     setvehicleData(response.data);
-    console.log(vehicleData);
+    // console.log(vehicleData);
 
     // console.log("response", response.data.car_company.images[0]);
     setImg(response.data.car_company.images[0].url);
     // console.log("vehicleCode", response.data.car_company.images[0].url);
+  };
+
+  const getDataReturn = async (vehicleCode, routeId) => {
+    const response = await VehiclesService.getVehicleById(vehicleCode);
+    // console.log("vehicle data", response.data);
+    const res = await ScheduleService.getStation(routeId);
+    // console.log("route data", res.data.data);
+    setReData({
+      departureStation: res.data.data.departureStation,
+      arrivalStation: res.data.data.arrivalStation,
+      driverPhoneNumber: response.data.driverPhone,
+      type_vehicle: response.data.type_vehicle,
+      plateNumber: response.data.plateNumber,
+      img: response.data.car_company.images[0].url,
+    });
+  };
+
+  const [dataChange, setDataChange] = useState([]);
+
+  const loadScheduleChange = async (
+    price,
+    originalLocation,
+    destination,
+    departureDate
+  ) => {
+    try {
+      console.log(price, destination, originalLocation, departureDate);
+
+      const response = await ScheduleService.getSamePrice(
+        price,
+        destination,
+        originalLocation,
+        departureDate
+      );
+      console.log(response.data);
+      setDataChange(response.data.data);
+    } catch (error) {
+      console.error("Error fetching schedule data", error);
+    }
   };
 
   useEffect(() => {
@@ -58,6 +109,9 @@ const TransportationCard = ({
     // console.log("vehicleCode", vehicleCode);
     if (vehicleCode) {
       getImg(vehicleCode);
+    }
+    if (re) {
+      getDataReturn(re.vehicleCode, re.scheduleId);
     }
   }, [scheduleId]);
   // console.log(TransportationCard);
@@ -141,6 +195,14 @@ const TransportationCard = ({
               type="button"
               data-bs-toggle="modal"
               data-bs-target="#changeModal"
+              onClick={() => {
+                loadScheduleChange(
+                  total / 1000 / 2,
+                  destination,
+                  originalLocation,
+                  departureDate
+                );
+              }}
             >
               Thay đổi vé xe
               <i className="fa-solid fa-chevron-right"></i>
@@ -254,6 +316,138 @@ const TransportationCard = ({
                     </h5>
                   </div>
                 </div>
+                <div className="d-flex justify-content-end">
+                  <button
+                    className="btn btn-warning"
+                    data-bs-toggle="modal"
+                    data-bs-target="#detailModalReturn"
+                  >
+                    Xem chuyến về
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        className="modal fade"
+        id="detailModalReturn"
+        tabIndex="-1"
+        aria-labelledby="detailLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered" role="document">
+          <div className="modal-content">
+            <div className="modal-body detail-ticket-color">
+              <div className="d-flex justify-content-lg-between">
+                <h5
+                  style={{
+                    fontSize: "25px",
+                    textTransform: "uppercase",
+                    color: "black",
+                  }}
+                  id="detailLabel"
+                >
+                  {re.carName}
+                </h5>
+
+                {/* Sử dụng css của RoomVoucher   */}
+                <button
+                  className="voucher-close-button"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span className="voucher-close-X"></span>
+                  <span className="voucher-close-Y"></span>
+                  <div className="voucher-close-close">Close</div>
+                </button>
+              </div>
+
+              {/* Form chi tiết vé */}
+              <div className="ticket-detail">
+                {/* Ảnh nhà xe */}
+                <div className="ticket-detail-image mt-4">
+                  <img src={reData.img} />
+                </div>
+
+                <h5>Thông tin chuyến về</h5>
+                <div className="tripTicket-info mb-3">
+                  <div className="tripTicket-item">
+                    <p>Tuyến:</p>
+                    <h6>
+                      {destination} - {originalLocation}
+                    </h6>
+                  </div>
+                  <div className="tripTicket-item">
+                    <p>Xuất phát:</p>
+                    <h6>{reData.departureStation}</h6>
+                  </div>
+                  <div className="tripTicket-item">
+                    <p>Điểm đến:</p>
+                    <h6>{reData.arrivalStation}</h6>
+                  </div>
+                  <div className="tripTicket-item">
+                    <p>Khởi hành:</p>
+                    <h6>
+                      {re.departureTime.split("T")[1].slice(0, 5)} -{" "}
+                      {re.departureTime.split("T")[0]}{" "}
+                    </h6>
+                  </div>
+                  <div className="tripTicket-item">
+                    <p>Liên hệ:</p>
+                    <h6>{reData.driverPhoneNumber}</h6>
+                  </div>
+                  <div className="tripTicket-item">
+                    <p>Loại xe:</p>
+                    <h6>{reData.type_vehicle}</h6>
+                  </div>
+                  <div className="tripTicket-item">
+                    <p>Chỗ đã đặt:</p>
+                    <h6>
+                      {re.seatBook.map((seat) => seat.seat_number).join(", ")}
+                    </h6>
+                  </div>
+                  <div className="tripTicket-item">
+                    <p>Biển số xe:</p>
+                    <h6>{reData.plateNumber}</h6>
+                  </div>
+                </div>
+
+                {/* Tổng tiền */}
+                <div className="totalTicket-container d-flex justify-content-md-between">
+                  <h3
+                    style={{
+                      fontWeight: 450,
+                    }}
+                  >
+                    Tổng tiền:
+                  </h3>
+                  <div className="totalTicket-amount">
+                    <h5
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: "25px",
+                        color: "red",
+                      }}
+                    >
+                      {convertToVND(re.totalPrice)}
+                    </h5>
+                  </div>
+                </div>
+                <div className="d-flex justify-content-between">
+                  <button
+                    className="btn btn-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#detailModal"
+                  >
+                    Quay lại
+                  </button>
+                  <button className="btn btn-warning" data-bs-dismiss="modal">
+                    Xác nhận
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -271,7 +465,7 @@ const TransportationCard = ({
         <div
           className="modal-dialog modal-dialog-centered"
           style={{
-            width: "700px",
+            width: "800px",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -281,7 +475,7 @@ const TransportationCard = ({
           <div
             className="modal-content"
             style={{
-              width: "700px",
+              width: "800px",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
@@ -290,7 +484,7 @@ const TransportationCard = ({
             <div
               className="modal-body change-ticket-color2"
               style={{
-                width: "700px"
+                width: "800px",
               }}
             >
               <div className="d-flex justify-content-lg-between mb-3">
@@ -315,7 +509,24 @@ const TransportationCard = ({
                   <div className="voucher-close-close">Close</div>
                 </button>
               </div>
-              <TicketTransportationCard
+              {dataChange.map((data) => (
+                <TicketTransportationCard
+                  key={data.scheduleId}
+                  start={data.departureLocation}
+                  destination={data.arrivalLocation}
+                  departTime={data.departureTime.split(" ")[1]}
+                  arrivalTime={data.arrivalTime.split(" ")[1]}
+                  // totalTime={calu}
+                  companyName={data.vehicleName}
+                  typeSeat={data.vehicleType}
+                  price={data.priceForOneSeat}
+                  leftSeat={data.totalSeat}
+                  rating={data.rating}
+                  modalTarget={"#detailModal"}
+                  modalToogle="modal"
+                />
+              ))}
+              {/* <TicketTransportationCard
                 start="Hồ Chí Minh"
                 destination="Vũng Tàu"
                 departTime="12h00"
@@ -325,7 +536,7 @@ const TransportationCard = ({
                 typeSeat="Standard"
                 price="180.000 VND"
                 leftSeat="Còn lại 10"
-              />
+              /> */}
             </div>
           </div>
         </div>
