@@ -8,7 +8,7 @@ export const HotelService = {
     return response.data;
   },
   findHotelById: async (id) => {
-    const response = await Http.get(`api/v1/hotels/getById/${id}`);
+    const response = await Http.get(`/hotels/getById/${id}`);
     return response.data;
   },
   update: async (hotelId, data) => {

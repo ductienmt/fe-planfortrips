@@ -8,48 +8,57 @@ export const EnterpriseLayout = () => {
 
   const isLoginPage = location.pathname === "/enterprise/login";
   return (
-    <>
-      <EnterpriseProvider>
+    <div
+      className="enterprise-layout"
+      style={{
+        display: "flex",
+        height: "100vh",
+      }}
+    >
+      {!isLoginPage && <EnterpriseSidebar />}
+      <div
+        className="enterprise-main-content"
+        style={{
+          flexGrow: 1,
+          flexBasis: "30%",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        {!isLoginPage && <EnterpriseTopbar />}
         <div
-          className="enterprise-layout"
+          className="content"
           style={{
             display: "flex",
-            height: "100vh",
+            flexBasis: isLoginPage ? "auto" : "70%",
+            flexGrow: 2,
+            overflowY: "auto",
           }}
         >
-          {!isLoginPage && <EnterpriseSidebar />}
-          <div
-            className="enterprise-main-content"
-            style={{
-              flexGrow: 1,
-              flexBasis: "30%",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            {!isLoginPage && <EnterpriseTopbar />}
-            {!isLoginPage && (
-              <div
-                className="content"
-                style={{
-                  display: "flex",
-                  flexBasis: "70%",
-
-                  flexGrow: 2,
-                  overflowY: "auto",
-                }}
-              >
-                <Outlet />
-              </div>
-            )}
-            {isLoginPage && (
-              <div className="login-content">
-                <Outlet />
-              </div>
-            )}
-          </div>
+          <Outlet />
         </div>
-      </EnterpriseProvider>
-    </>
+      </div>
+    </div>
   );
+};
+
+export const ProtectedRouteEnterprise = ({ allowedRoles }) => {
+  const { token, role } = useAuth();
+  const location = useLocation();
+
+  if (!token) {
+    return (
+      <Navigate to="/enterprise/login" state={{ from: location }} replace />
+    );
+  }
+
+  if (
+    allowedRoles &&
+    !Array.isArray(allowedRoles) &&
+    !allowedRoles.includes(role)
+  ) {
+    return <Navigate to="/unauthorized" replace />;
+  }
+
+  return <Outlet />;
 };
