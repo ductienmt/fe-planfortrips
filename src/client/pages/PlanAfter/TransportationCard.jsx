@@ -8,6 +8,7 @@ import TicketTransportationCard from "../../Components/ticketTransportation/Tick
 import { convertToVND } from "../../../utils/FormatMoney";
 import { DateFormatter } from "../../../utils/DateFormat";
 import { RouteService } from "../../../services/apis/RouteService";
+import ChooseTicket from "../../Components/ChooseTicket/ChooseTicket";
 
 const TransportationCard = ({
   className,
@@ -522,7 +523,7 @@ const TransportationCard = ({
                   price={data.priceForOneSeat}
                   leftSeat={data.totalSeat}
                   rating={data.rating}
-                  modalTarget={"#detailModal"}
+                  modalTarget={"#chooseTicket"}
                   modalToogle="modal"
                 />
               ))}
@@ -541,6 +542,7 @@ const TransportationCard = ({
           </div>
         </div>
       </div>
+      <ChooseTicket numPeople={3} />
     </>
   );
 };

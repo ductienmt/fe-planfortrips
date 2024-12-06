@@ -26,10 +26,7 @@ import ChangePassword from "../client/pages/Profile/ChangePass/ChangePassword";
 import InfoDetails from "../client/pages/Profile/InfoDetails/InfoDetails";
 import YourTripsQuery from "../client/pages/Profile/YourTripQuery/YourTripsQuery";
 import PlacePageAdmin from "../admin/pages/Travel/PlacePage";
-import {
-  EnterpriseLayout,
-  ProtectedRouteEnterprise,
-} from "../layout/EnterpriseLayout";
+import { EnterpriseLayout } from "../layout/EnterpriseLayout";
 import EnterpriseLogin from "../enterprise/auth/login/EnterpriseLogin";
 // import EnterpriseDashboard from "../enterprise/dashboard/EnterpriseDashboard";
 import Voucher from "../enterprise/voucher/Voucher";
@@ -120,7 +117,7 @@ const routeAdmin = () => [
 const routeEnterprise = () => [
   {
     path: "/enterprise",
-    element: <ProtectedRouteEnterprise allowedRoles={[ROLES.ENTERPRISE]} />,
+    element: <ProtectedRoute allowedRoles={[ROLES.ENTERPRISE]} />,
     children: [
       {
         path: "",

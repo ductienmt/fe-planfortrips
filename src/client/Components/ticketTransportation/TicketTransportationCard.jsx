@@ -3,6 +3,7 @@ import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 
 import React from "react";
 import { convertToVNDDB } from "../../../utils/FormatMoney";
+import ChooseTicket from "../ChooseTicket/ChooseTicket";
 
 const TicketTransportationCard = ({
   departTime,
