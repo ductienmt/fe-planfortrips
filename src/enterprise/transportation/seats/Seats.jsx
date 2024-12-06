@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Seats.css";
 import SeatsCard from "../seatscard/Seatscard";
 import { InputFlied } from "../../../client/Components/Input/InputFlied";
 import { useNavigate } from "react-router-dom";
+import VehicleBooking from "../../../client/pages/Vehicle/VehicleBooking/VehicleBooking";
 
 const Seats = () => {
   const navigate = useNavigate();
@@ -21,6 +22,76 @@ const Seats = () => {
 
   const handleClick = () => {
     navigate("/enterprise/accomodation/room-management");
+  };
+
+  // Dữ liệu ghế cố định (gộp cả tầng 1 và tầng 2 vào một mảng duy nhất)
+  const initialSeats = [
+    { id: "A1", status: "available" },
+    { id: "A2", status: "booked" },
+    { id: "A3", status: "available" },
+    { id: "A4", status: "available" },
+    { id: "A5", status: "booked" },
+    { id: "A6", status: "available" },
+    { id: "A7", status: "available" },
+    { id: "A8", status: "booked" },
+    { id: "A9", status: "available" },
+    { id: "A10", status: "available" },
+    { id: "A11", status: "available" },
+    { id: "A12", status: "booked" },
+    { id: "A13", status: "available" },
+    { id: "A14", status: "available" },
+    { id: "A15", status: "booked" },
+    { id: "A16", status: "available" },
+    { id: "A17", status: "available" },
+    { id: "B1", status: "available" },
+    { id: "B2", status: "booked" },
+    { id: "B3", status: "available" },
+    { id: "B4", status: "available" },
+    { id: "B5", status: "available" },
+    { id: "B6", status: "booked" },
+    { id: "B7", status: "available" },
+    { id: "B8", status: "available" },
+    { id: "B9", status: "booked" },
+    { id: "B10", status: "available" },
+    { id: "B11", status: "available" },
+    { id: "B12", status: "available" },
+    { id: "B13", status: "booked" },
+    { id: "B14", status: "available" },
+    { id: "B15", status: "available" },
+  ];
+
+  const [seats, setSeats] = useState(initialSeats);
+
+  // Hàm xử lý chọn hoặc hủy chọn ghế
+  const handleSeatClick = (seatId) => {
+    const updateSeats = seats.map((seat) =>
+      seat.id === seatId && seat.status !== "booked"
+        ? {
+            ...seat,
+            status: seat.status === "selected" ? "available" : "selected",
+          }
+        : seat
+    );
+    setSeats(updateSeats);
+  };
+
+  // Hàm phân loại ghế theo tầng
+  const getSeatsByFloor = (floor) => {
+    return seats.filter((seat) => seat.id.charAt(0) === floor);
+  };
+
+  // Hàm render ghế
+  const renderSeats = (seats) => {
+    return seats.map((seat) => (
+      <button
+        key={seat.id}
+        className={`seat-button ${seat.status}`}
+        onClick={() => handleSeatClick(seat.id)}
+        disabled={seat.status === "booked"}
+      >
+        {seat.id}
+      </button>
+    ));
   };
 
   return (
@@ -59,91 +130,57 @@ const Seats = () => {
         <div
           className="modal fade"
           id="contactModal"
-          data-bs-backdrop="static"
-          data-bs-keyboard="false"
+          // data-bs-backdrop="static"
+          // data-bs-keyboard="false"
           tabIndex="-1"
           aria-labelledby="contactModalLabel"
           aria-hidden="true"
         >
           <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-header">
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-toggle="modal"
-                  data-bs-target="#main"
-                ></button>
-              </div>
-              <div className="nav-filterCombobox-Seats ">
-                <InputFlied
-                  className="seact-search"
-                  nameInput="search"
-                  content="Tìm kiếm"
-                  typeInput="text"
-                />
-
-                <button
-                  type="button"
-                  className="btn seats-button"
-                  data-bs-toggle="modal"
-                  data-bs-target="#addrouteModal"
-                >
-                  Thêm ghế
-                </button>
-              </div>
-
-              {/* Header */}
-
-              <div className="Seats-nav mt-3">
-                <table className="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th>Mã Xe</th>
-                      <th>Mã Ghế</th>
-                      <th>Hành Động</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td>
-                        <button
-                          className="btn seats-btn btn-danger"
-                          onClick={() => console.log("Xóa ghế A1")}
-                        >
-                          Xóa
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td>
-                        <button
-                          className="btn seats-btn btn-danger"
-                          onClick={() => console.log("Xóa ghế A2")}
-                        >
-                          Xóa
-                        </button>
-                      </td>
-                    </tr>
-                    {/* Thêm các hàng khác nếu cần */}
-                  </tbody>
-                </table>
+            <div className="modal-content p-3">
+              <div className="transport-topBar-items mb-3">
+                <div className="nav-filter">
+                  <InputFlied
+                    className="seact-search"
+                    nameInput="search"
+                    content="Tìm kiếm"
+                    typeInput="text"
+                  />
+                </div>
+                <div className="right-close-add-seat">
+                  <button
+                    type="button"
+                    className="btn seats-button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#addrouteModal"
+                  >
+                    Thêm ghế
+                  </button>
+                  {/* Sử dụng css của RoomVoucher   */}
+                  <button
+                    className="voucher-close-button"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span className="voucher-close-X"></span>
+                    <span className="voucher-close-Y"></span>
+                    <div className="voucher-close-close">Close</div>
+                  </button>
+                </div>
               </div>
 
-              {/* Footer */}
-              <div className="modal3-footer">
-                <div className="modal-footer ">
-                  <div className="pagination">
-                    <button className="btn btn-light">1</button>
-                    <button className="btn btn-light">2</button>
-                    <button className="btn btn-light">3</button>
-                    <button className="btn btn-light">4</button>
-                    <button className="btn btn-light">5</button>
-                    <button className="btn btn-primary">Next</button>
+              {/* Chọn ghế */}
+              <div className="seats-container">
+                <div className="floor-section">
+                  <h4>Tầng 1</h4>
+                  <div className="seat-grid">
+                    {renderSeats(getSeatsByFloor("A"))}
+                  </div>
+                </div>
+                <div className="floor-section">
+                  <h4>Tầng 2</h4>
+                  <div className="seat-grid">
+                    {renderSeats(getSeatsByFloor("B"))}
                   </div>
                 </div>
               </div>
@@ -158,7 +195,7 @@ const Seats = () => {
           aria-labelledby="addrouteModal"
           aria-hidden="true"
         >
-          <div className="modal-dialog">
+          <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
               {/* Modal Header */}
               <div className="modal-header">

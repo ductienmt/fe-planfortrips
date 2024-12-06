@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import "./AccommodationCard.css";
 import { HotelService } from "../../../services/apis/HotelService";
 import imghotel from "../../../assets/beach.jpg";
-import nhaxe from "../../../assets/caurong.webp";
 import HotelCard from "../Hotel/card/hotelCard";
 import RoomCard from "../Hotel/roomCard/roomCard";
 import { convertToVND, convertToVNDDB } from "../../../utils/FormatMoney";

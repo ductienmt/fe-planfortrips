@@ -1,14 +1,36 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Rate, Tag, Progress } from "antd";
 import "./RateCard.css";
 
 const RateCard = () => {
   const criteria = [
-    { label: "Chất lượng", score: 5.0, color: "blue" },
-    { label: "Giá cả", score: 4.5, color: "green" },
-    { label: "Phục vụ", score: 4.3, color: "orange" },
-    { label: "Vị trí", score: 3.9, color: "red" },
+    { label: "Chất lượng", score: 1.0, color: "blue" },
+    { label: "Giá cả", score: 1.5, color: "green" },
+    { label: "Phục vụ", score: 1.3, color: "orange" },
+    { label: "Vị trí", score: 1.9, color: "red" },
   ];
+
+  // Dữ liệu lượt đánh giá cho các sao từ 1 đến 5
+  const ratings = {
+    5: 100, 
+    4: 80,  
+    3: 50,  
+    2: 30,  
+    1: 20,  
+  };
+
+  // Tính tổng và trung bình điểm
+  const totalScore = useMemo(
+    () => criteria.reduce((sum, item) => sum + item.score, 0),
+    [criteria]
+  );
+  const averageScore = useMemo(
+    () => (totalScore / criteria.length).toFixed(1),
+    [totalScore, criteria]
+  );
+
+  // Tính phần trăm để hiển thị trong Progress
+  const percent = useMemo(() => (averageScore / 5) * 100, [averageScore]);
 
   return (
     <>
@@ -30,7 +52,7 @@ const RateCard = () => {
           {[5, 4, 3, 2, 1].map((star) => (
             <div key={star} className="star-row">
               <Rate disabled defaultValue={star} style={{ color: "#FFD700" }} />
-              <span>(100)</span>
+              <span>({ratings[star]})</span>
             </div>
           ))}
         </div>
@@ -49,8 +71,8 @@ const RateCard = () => {
         <div className="overall-rating">
           <Progress
             type="circle"
-            percent={98} // Ví dụ: 4.9/5.0 = 98%
-            format={() => `4.0/5.0`}
+            percent={percent}
+            format={() => `${averageScore}/5.0`}
             width={150}
             strokeColor="#FFA500"
           />

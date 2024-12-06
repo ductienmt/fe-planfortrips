@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/planfortrips-logo_1.png";
 import { useEnterprise } from "../../context/EnterpriseContext/EnterpriseProvider";
 import { useAuth } from "../../context/AuthContext/AuthProvider";
+import Account from "../transportation/account/Account";
 
 const EnterpriseSidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -42,7 +43,7 @@ const EnterpriseSidebar = () => {
         path: `${typeEnterprise === "Xe khách" ? "transportation" : "accomodation"}/dashboard`,
       },
       {
-        key: "vouchers",
+        key: "voucher-manager",
         icon: "fa-ticket",
         label: "Mã giảm giá",
         path: `${typeEnterprise === "Xe khách" ? "transportation" : "accomodation"}/voucher-manager`,
@@ -57,7 +58,7 @@ const EnterpriseSidebar = () => {
         path: "accomodation/accomodation-manager",
       },
       {
-        key: "guest-management",
+        key: "guest-manager",
         icon: "fa-user-check",
         label: "Khách hàng",
         path: "accomodation/guest-manager",
@@ -67,6 +68,11 @@ const EnterpriseSidebar = () => {
         icon: "fa-bed",
         label: "Quản lý phòng",
         path: "accomodation/choose-hotel",
+      },
+      {
+        key: "aco-account",
+        icon: "fa-ticket",
+        label: "Account",
       },
     ];
 
@@ -90,22 +96,21 @@ const EnterpriseSidebar = () => {
         path: "transportation/Seats",
       },
       {
-        key: "Route",
+        key: "Routehotel",
         icon: "fa-route",
         label: "Tuyến",
         path: "transportation/Routehotel",
       },
       {
-        key: "schedules",
+        key: "vehicle-schedules",
         icon: "fa-ticket",
         label: "Lịch trình",
         path: "transportation/vehicle-schedules",
       },
       {
-        key: "account",
+        key: "vehicle-account",
         icon: "fa-ticket",
         label: "Account",
-        path: "transportation/vehicle-account",
       },
     ];
 
