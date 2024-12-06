@@ -1,12 +1,22 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import EnterpriseSidebar from "../enterprise/sidebar/EnterpriseSidebar";
 import EnterpriseTopbar from "../enterprise/topbar/EnterpriseTopbar";
 import { EnterpriseProvider } from "../context/EnterpriseContext/EnterpriseProvider";
+import { useAuth } from "../context/AuthContext/AuthProvider";
+import { useEffect } from "react";
 
 export const EnterpriseLayout = () => {
   const location = useLocation();
-
+  const navigate = useNavigate();
   const isLoginPage = location.pathname === "/enterprise/login";
+  const { username, role } = useAuth();
+
+  useEffect(() => {
+    if (!isLoginPage && (!username || role !== "ROLE_ENTERPRISE")) {
+      navigate("/enterprise/login");
+    }
+  }, [isLoginPage, username, role, navigate]);
+
   return (
     <>
       <EnterpriseProvider>

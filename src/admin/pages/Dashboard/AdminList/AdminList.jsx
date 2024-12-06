@@ -1,95 +1,85 @@
-import './AdminList.css'
+import { useEffect, useState } from 'react';
+import './AdminList.css';
+import AccountEtpService from '../../../../services/apis/AccountEnterprise';
+import { format } from 'date-fns';  
 
-function AdminList({ title }) {
+function AdminList() {
+    const [enterprises, setEnterprise] = useState([]);
+    const [loading, setLoading] = useState(false);  
+    const [message, setMessage] = useState('');  
 
-    const adminListData = [
-        {
-            id: 1,
-            imgUrl: "https://images.pexels.com/photos/1692984/pexels-photo-1692984.jpeg?auto=compress&cs=tinysrgb&w=600",
-            title: "Phương Trang",
-            category: "Vận Tải"
-        },
-        {
-            id: 2,
-            imgUrl: "https://images.pexels.com/photos/370473/pexels-photo-370473.jpeg?auto=compress&cs=tinysrgb&w=600",
-            title: "Mai Linh",
-            category: "Taxi"
-        },
-        {
-            id: 3,
-            imgUrl: "https://images.pexels.com/photos/106885/pexels-photo-106885.jpeg?auto=compress&cs=tinysrgb&w=600",
-            title: "Sài Gòn Tour",
-            category: "Du Lịch"
-        },
-        {
-            id: 4,
-            imgUrl: "https://images.pexels.com/photos/1276553/pexels-photo-1276553.jpeg?auto=compress&cs=tinysrgb&w=600",
-            title: "Vietnam Airlines",
-            category: "Hàng Không"
-        },
-        {
-            id: 5,
-            imgUrl: "https://images.pexels.com/photos/39811/pexels-photo-39811.jpeg?auto=compress&cs=tinysrgb&w=600",
-            title: "Grab",
-            category: "Vận Tải Công Nghệ"
-        },
-        {
-            id: 6,
-            imgUrl: "https://images.pexels.com/photos/386009/pexels-photo-386009.jpeg?auto=compress&cs=tinysrgb&w=600",
-            title: "Hãng Xe Hoàng Long",
-            category: "Vận Tải"
-        },
-        {
-            id: 7,
-            imgUrl: "https://images.pexels.com/photos/167491/pexels-photo-167491.jpeg?auto=compress&cs=tinysrgb&w=600",
-            title: "Futa Bus Lines",
-            category: "Xe Khách"
-        },
-        {
-            id: 8,
-            imgUrl: "https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&w=600",
-            title: "Vinasun Taxi",
-            category: "Taxi"
+    useEffect(() => {
+        const fetchEnterprises = async () => {
+            setLoading(true);  
+            try {
+                const res = await AccountEtpService.getAccountEnterpriseNeedAccept();
+                setEnterprise(res.data);
+            } catch (error) {
+                console.error('Error fetching enterprises:', error);
+            } finally {
+                setLoading(false);  
+            }
+        };
+
+        fetchEnterprises();
+    }, []);
+
+    const handleAccept = async (id) => {
+        try {
+            setLoading(true);  
+            await AccountEtpService.toggleStage(id); 
+            setMessage('Xét duyệt thành công!');  
+
+            setEnterprise(prevEnterprises => 
+                prevEnterprises.filter(etp => etp.accountEnterpriseId !== id)
+            );
+        } catch (error) {
+            console.error('Error accepting enterprise:', error);
+            setMessage('Đã có lỗi xảy ra. Vui lòng thử lại!');
+        } finally {
+            setLoading(false);  
         }
-    ];
-    
+    };
 
     return (
         <>
-  <div className="admin__list m-2">
-            <div className="admin__list-title ">
-                <h4>{title}</h4>
-            </div>
+            {message && <div className="alert alert-info">{message}</div>}
 
-            <div className="admin__list-data">
-                <div className="admin__list-container">
-                    {adminListData.map((item) => (
-                        <div key={item.id} className="admin__list-item d-flex">
-                            <div className="admin__list-item-img admin__w-20">
-                                <img
-                                    className="img-fluid rounded"
-                                    src={item.imgUrl}
-                                    alt={item.title}
-                                />
-                            </div>
-                            <div className="admin__list-item-info admin__w-50">
-                                <span className="admin__list-item-info-title">{item.title}</span>
-                                <p className="admin__list-item-info-type">
-                                    Thể loại: <span className="text-warning text-uppercase">{item.category}</span>
-                                </p>
-                            </div>
-
-                            <div className="admin__list-item-operation admin__w-30">
-                                <div className="admin__list-item-operation-container">
-                                    <button className="btn btn-primary me-2">Thêm</button>
-                                    <button className="btn btn-danger">Xóa</button>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+            {loading ? (
+                <div className="spinner-border" role="status">
+                    <span className="sr-only">Loading...</span>
                 </div>
-            </div>
-            </div>
+            ) : (
+                <div style={{ maxHeight: '20rem', overflow: 'auto' }}>
+                    <table className="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Thời gian tạo</th>
+                                <th scope="col">Tên doanh nghiệp</th>
+                                <th scope="col">Loại doanh nghiệp</th>
+                                <th>Duyệt</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {enterprises.map((etp) => (
+                                <tr key={etp.id}>
+                                    <td>{format(new Date(etp.createAt), 'dd/MM/yyyy HH:mm')}</td>
+                                    <td>{etp.enterpriseName}</td>
+                                    <td>{etp.typeEnterpriseDetailName}</td>
+                                    <td>
+                                        <button
+                                            className="btn btn-info"
+                                            onClick={() => handleAccept(etp.accountEnterpriseId)}
+                                        >
+                                            Cho phép
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
         </>
     );
 }

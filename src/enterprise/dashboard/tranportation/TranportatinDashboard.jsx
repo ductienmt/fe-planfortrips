@@ -18,7 +18,7 @@ const TranportatinDashboard = () => {
       color: "orange",
       icon: "fa-solid fa-ticket-simple",
       title: "Voucher",
-      status: "Đang hữu dụng",  
+      status: "Đang hữu dụng",
       count: 10,
     },
     {

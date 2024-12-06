@@ -23,6 +23,11 @@ const Room = () => {
   const [sortField, setSortField] = useState(null);
   const [roomId, setRoomId] = useState(null);
   const [roomDeleteId, setRoomDeleteId] = useState(null);
+  const [filters, setFilters] = useState({
+    roomType: null,
+    status: null,
+  });
+
   const [roomFormData, setRoomFormData] = useState({
     roomName: "",
     typeOfRoom: "Standard",
@@ -33,23 +38,55 @@ const Room = () => {
     hotelId: "",
   });
 
+  const handleFilterChange = (key, value) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [key]: value,
+    }));
+    fetchFilteredRoomData({ ...filters, [key]: value });
+  };
+
   const items = [
     {
       key: "1",
       label: "Loại phòng",
       children: [
-        { key: "Standard", label: "Standard" },
-        { key: "Superior", label: "Superior" },
-        { key: "Deluxe", label: "Deluxe" },
-        { key: "Suite", label: "Suite" },
+        {
+          key: "Standard",
+          label: "Standard",
+          onClick: () => handleFilterChange("roomType", "Standard"),
+        },
+        {
+          key: "Superior",
+          label: "Superior",
+          onClick: () => handleFilterChange("roomType", "Superior"),
+        },
+        {
+          key: "Deluxe",
+          label: "Deluxe",
+          onClick: () => handleFilterChange("roomType", "Deluxe"),
+        },
+        {
+          key: "Suite",
+          label: "Suite",
+          onClick: () => handleFilterChange("roomType", "Suite"),
+        },
       ],
     },
     {
       key: "2",
       label: "Trạng thái",
       children: [
-        { key: "true", label: "Đang hoạt động" },
-        { key: "false", label: "Ngưng hoạt động" },
+        {
+          key: "true",
+          label: "Đang hoạt động",
+          onClick: () => handleFilterChange("status", "1"),
+        },
+        {
+          key: "false",
+          label: "Ngưng hoạt động",
+          onClick: () => handleFilterChange("status", "0"),
+        },
       ],
     },
   ];
@@ -86,9 +123,9 @@ const Room = () => {
         key: "description",
         render: (text) => {
           const maxLength = 30;
-          return text.length > maxLength
+          return text?.length > maxLength
             ? `${text.substring(0, maxLength)}...`
-            : text;
+            : text || "Không có mô tả";
         },
       },
       {
@@ -121,7 +158,8 @@ const Room = () => {
             <ButtonDelete
               toogleModal={"modal"}
               tagertModal={"#deleteRoom"}
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
                 setRoomDeleteId(record.id);
               }}
             />
@@ -131,6 +169,24 @@ const Room = () => {
     ],
     []
   );
+
+  const fetchFilteredRoomData = async (filterParams) => {
+    try {
+      const response = await RoomService.getFilteredRooms(
+        getQueryParams(),
+        filterParams.roomType,
+        filterParams.status
+      );
+      setRoomsData(response.content || []);
+      setTotalRecords(response.totalElements || 0);
+      setFilters({
+        roomType: null,
+        status: null,
+      });
+    } catch (error) {
+      console.error("Error fetching filtered room data", error);
+    }
+  };
 
   const handleReset = () => {
     setRoomFormData({
@@ -242,8 +298,8 @@ const Room = () => {
           sortField,
           sortOrder
         );
-        setRoomsData(response.content);
-        setTotalRecords(response.totalElements);
+        setRoomsData(response.content || null);
+        setTotalRecords(response.totalElements || 0);
       } catch (error) {
         console.error("Error fetching room data", error);
       }
@@ -275,10 +331,36 @@ const Room = () => {
     setSelectedItem(item);
   }, []);
 
+  const handleGetRoomByStatus = useCallback(
+    async (pageNo = 0, pageSize = 10, sortField = null, sortOrder = null) => {
+      const status = selectedItem === "available" ? 1 : 0;
+      try {
+        const response = await RoomService.getRoomByStatus(
+          getQueryParams(),
+          status,
+          pageNo,
+          pageSize,
+          sortField,
+          sortOrder
+        );
+        setRoomsData(response.content || []);
+        setTotalRecords(response.totalElements || 0);
+      } catch (error) {
+        console.error("Error fetching room data", error);
+        enqueueSnackbar("Có lỗi xảy ra khi lấy dữ liệu phòng", {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      }
+    },
+    [selectedItem, getQueryParams]
+  );
+
   useEffect(() => {
+    document.title = "Quản lý phòng";
     const id = getQueryParams();
     setRoomFormData((prevFormData) => ({ ...prevFormData, hotelId: id }));
-    fetchRoomData(id, currentPage - 1, pageSize, sortField, sortOrder, true);
+    fetchRoomData(id, currentPage - 1, pageSize, sortField, sortOrder);
   }, [
     location.search,
     currentPage,
@@ -313,13 +395,17 @@ const Room = () => {
               Tất cả
             </button>
             <button
-              onClick={() => handleSelectItem("available")}
+              onClick={() => {
+                handleSelectItem("available"), handleGetRoomByStatus();
+              }}
               className={selectedItem === "available" ? "isActive" : ""}
             >
               Còn phòng
             </button>
             <button
-              onClick={() => handleSelectItem("unavailable")}
+              onClick={() => {
+                handleSelectItem("unavailable"), handleGetRoomByStatus();
+              }}
               className={selectedItem === "unavailable" ? "isActive" : ""}
             >
               Đã đặt
@@ -849,7 +935,11 @@ const Room = () => {
                   Hủy
                 </button>
                 <span className="w-50">
-                  <ButtonDeleteRoom onClick={handleDeleteRoom(roomDeleteId)} />
+                  <ButtonDeleteRoom
+                    onClick={() => {
+                      handleDeleteRoom(roomDeleteId);
+                    }}
+                  />
                 </span>
               </div>
             </div>

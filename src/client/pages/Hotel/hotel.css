@@ -1,4 +1,4 @@
-.background-hotel {
+.container-hotel .background-hotel {
     background-image: url('../../../assets/beach.jpg');
     background-repeat: no-repeat;
     background-size: cover;
@@ -14,7 +14,7 @@
     text-align: center;
 }
 
-.form-hotel {
+.container-hotel .form-hotel {
     display: flex;
     justify-content: space-between;
     gap: 10px;
@@ -24,13 +24,13 @@
     width: 80%;
 }
 
-.form-hotel .input-custom-hotel {
+.container-hotel .form-hotel .input-custom-hotel {
     display: flex;
     align-items: center;
     position: relative;
 }
 
-.form-hotel .input-custom-hotel input {
+.container-hotel .form-hotel .input-custom-hotel input {
     width: 100%;
     height: 60px;
     border-radius: 13px;
@@ -40,25 +40,24 @@
     background-color: var(--background-color);
 }
 
-.form-hotel .input-custom-hotel input:focus {
+.container-hotel .form-hotel .input-custom-hotel input:focus {
     outline: var(--success-btn-color) solid 3px;
     transition: 0.3 ease-in-out;
 }
 
 
 
-.form-hotel .input-custom-hotel i {
+.container-hotel .form-hotel .input-custom-hotel i {
     color: var(--success-btn-color);
     padding-right: 1rem;
     font-size: 1.5rem;
 }
 
-.suggestions-list {
+.container-hotel .suggestions-list {
     position: absolute;
     top: 100%;
     left: 30px;
     width: 90%;
-    /* border: 1px solid #ccc; */
     border: none;
     border-radius: 13px;
     max-height: 150px;
@@ -71,7 +70,7 @@
     z-index: 1111;
 }
 
-.suggestions-list li {
+.container-hotel .suggestions-list li {
     padding: 10px;
     cursor: pointer;
     color: var(--success-text-color);
@@ -79,15 +78,15 @@
     font-weight: 500;
 }
 
-.suggestions-list li:hover {
+.container-hotel .suggestions-list li:hover {
     background-color: #f0f0f0;
 }
 
-.form-hotel .input-custom-hotel .suggestions-list {
+.container-hotel .form-hotel .input-custom-hotel .suggestions-list {
     display: block;
 }
 
-.guest-options {
+.container-hotel .guest-options {
     position: absolute;
     top: 100%;
     left: 42px;
@@ -102,18 +101,18 @@
 
 }
 
-.guest-option {
+.container-hotel .guest-option {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
 }
 
-.guest-option span {
+.container-hotel .guest-option span {
     flex: 1;
 }
 
-.guest-option button {
+.container-hotel .guest-option button {
     background-color: var(--success-btn-color);
     border: none;
     color: white;
@@ -123,12 +122,12 @@
     cursor: pointer;
 }
 
-.guest-option button:disabled {
+.container-hotel .guest-option button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
 }
 
-.custom-list-hotel {
+.container-hotel .custom-list-hotel {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -136,7 +135,7 @@
     flex-direction: column;
 }
 
-.select-category {
+.container-hotel .select-category {
     background-color: var(--background-color);
     justify-content: space-between;
     display: flex;
@@ -152,18 +151,18 @@
     position: relative;
 }
 
-.select-category .col-md-4 {
+.container-hotel .select-category .col-md-4 {
     padding: 1rem;
     position: relative;
     z-index: 2;
 }
 
-.select-category .col-md-4.active {
+.container-hotel .select-category .col-md-4.active {
     color: var(--success-btn-color);
 }
 
 /* Style for the slider bar */
-.slider-bar {
+.container-hotel .slider-bar {
     height: 4px;
     background-color: var(--success-btn-color);
     /* Change to match your theme */
@@ -173,25 +172,25 @@
 }
 
 /* Adjust the width and initial position based on your layout */
-.slider-bar.hotel {
+.container-hotel .slider-bar.hotel {
     width: 33.33%;
     left: 0.5%;
     border-radius: 0 0 0 15px;
 }
 
-.slider-bar.homestay {
+.container-hotel .slider-bar.homestay {
     width: 33.33%;
     left: 33.33%;
 }
 
-.slider-bar.resort {
+.container-hotel .slider-bar.resort {
     width: 33.33%;
     left: 66%;
     border-radius: 0 0 15px 0;
 
 }
 
-.hotel-list {
+.container-hotel .hotel-list {
     list-style: none;
     padding: 0;
     margin-top: 20px;
@@ -199,14 +198,14 @@
     margin-top: 2rem;
 }
 
-.hotel-list li {
+.container-hotel .hotel-list li {
     background-color: #f0f0f0;
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 5px;
 }
 
-.column-sort {
+.container-hotel .column-sort {
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: center;
@@ -214,23 +213,23 @@
     margin-top: 2rem;
 }
 
-.column-sort h4 {
+.container-hotel .column-sort h4 {
     margin: 0;
 }
 
-.column-sort .btn {
+.container-hotel .column-sort .btn {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.pagination {
+.container-hotel .pagination {
     display: flex;
     justify-content: center;
     margin-top: 20px;
 }
 
-.pagination button {
+.container-hotel .pagination button {
     margin: 0 5px;
     padding: 5px 10px;
     border: none;
@@ -238,16 +237,16 @@
     cursor: pointer;
 }
 
-.pagination button.active {
+.container-hotel .pagination button.active {
     background-color: #007bff;
     color: white;
 }
 
-.pagination button:hover:not(.active) {
+.container-hotel .pagination button:hover:not(.active) {
     background-color: #ddd;
 }
 
-.custom-btn-hotel {
+.container-hotel .custom-btn-hotel {
     color: white !important;
     background-color: var(--success-btn-color) !important;
     display: flex;
@@ -261,12 +260,12 @@
     transition: background-color 0.3s ease;
 }
 
-.custom-btn-hotel:hover {
+.container-hotel .custom-btn-hotel:hover {
     color: white;
     background-color: var(--dark-color);
 }
 
-.hide-text-search-hotel {
+.container-hotel .hide-text-search-hotel {
     display: none;
     font-size: 1.2rem;
     font-weight: 600;
@@ -279,90 +278,90 @@
 
 } */
 
-.custom-btn-hotel i {
+.container-hotel .custom-btn-hotel i {
     margin-right: 0.5rem;
     /* Space between icon and text */
 }
 
 
-.custom-filter h1 {
+.container-hotel .custom-filter h1 {
     font-size: 2rem;
     font-weight: 600;
 }
 
-.price-range {
+.container-hotel .price-range {
     font-weight: 600;
 }
 
-.form-check-label {
+.container-hotel .form-check-label {
     font-size: 1rem;
     font-weight: 600;
 }
 
 @media screen and (max-width: 1230px) {
-    .form-hotel {
+    .container-hotel .form-hotel {
         flex-direction: column;
         gap: 1rem;
     }
 
-    .form-hotel .input-custom-hotel {
+    .container-hotel .form-hotel .input-custom-hotel {
         width: 100%;
     }
 
-    .form-hotel .input-custom-hotel input {
+    .container-hotel .form-hotel .input-custom-hotel input {
         width: 100%;
     }
 
-    .form-hotel .input-custom-hotel .suggestions-list {
+    .container-hotel .form-hotel .input-custom-hotel .suggestions-list {
         width: 100%;
     }
 
-    .guest-options {
+    .container-hotel .guest-options {
         width: 100%;
     }
 
-    .select-category {
+    .container-hotel .select-category {
         width: 100%;
     }
 
-    .select-category .col-md-4 {
+    .container-hotel .select-category .col-md-4 {
         padding: 0.5rem;
     }
 
-    .hotel-list {
+    .container-hotel .hotel-list {
         width: 100%;
     }
 
-    .column-sort {
+    .container-hotel .column-sort {
         width: 100%;
     }
 
-    .pagination {
+    .container-hotel .pagination {
         width: 100%;
     }
 
-    .custom-btn-hotel {
+    .container-hotel .custom-btn-hotel {
         display: flex;
         flex-direction: row;
     }
 
-    .hide-text-search-hotel {
+    .container-hotel .hide-text-search-hotel {
         display: block;
     }
 
-    .custom-filter h1 {
+    .container-hotel .custom-filter h1 {
         font-size: 1.5rem;
     }
 
-    .price-range {
+    .container-hotel .price-range {
         font-size: 1rem;
     }
 
-    .form-check-label {
+    .container-hotel .form-check-label {
         font-size: 0.9rem;
     }
 
-    .guest-options {
+    .container-hotel .guest-options {
         width: 92%;
     }
 }

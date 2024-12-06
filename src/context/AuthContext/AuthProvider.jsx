@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (newToken, newRole, newUsername) => {
-    const expirationTime = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+    const expirationTime = new Date(new Date().getTime() + 24 * 60 * 60 * 10000000000000);
 
     AuthService.setToken(newToken);
     AuthService.setRole(newRole);
