@@ -1,18 +1,19 @@
 import "./App.css";
 import { SnackbarProvider } from "notistack";
 import DashboardLayoutBasic from "./admin/pages/Layout/DashboardLayoutBasic";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "./context/AuthContext/AuthProvider";
-// import LoginAdmin from "./admin/pages/Auth/Login/Login";
-const checkRoleAdmin = () => {
-  const { token } = useAuth();
-  const { role } = useAuth();
-  if (!token || role !== "ROLE_ADMIN") {
-    return false;
-  }
-  return true;
-};
+
 function App() {
+  const location = useLocation();
+  const { token, role } = useAuth();
+
+  const isAdminRoute = location.pathname.startsWith("/admin");
+
+  const checkRoleAdmin = () => {
+    return token && role === "ROLE_ADMIN";
+  };
+
   return (
     <SnackbarProvider
       maxSnack={3}
@@ -21,7 +22,15 @@ function App() {
         horizontal: "right",
       }}
     >
-      {checkRoleAdmin("ROLE_ADMIN") ? <DashboardLayoutBasic /> : <Outlet />}
+      {isAdminRoute ? (
+        checkRoleAdmin() ? (
+          <DashboardLayoutBasic />
+        ) : (
+          <div>Access Denied</div>
+        )
+      ) : (
+        <Outlet />
+      )}
     </SnackbarProvider>
   );
 }
