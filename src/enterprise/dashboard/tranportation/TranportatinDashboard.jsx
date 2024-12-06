@@ -91,7 +91,7 @@ const TranportatinDashboard = () => {
 
             {/* Card2 */}
             <div className="card-2-container-t">
-              <ChartReportCardt/>
+              <ChartReportCardt />
             </div>
 
             {/* Card3 */}

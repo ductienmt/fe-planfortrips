@@ -1,16 +1,15 @@
 import Http from "../Http";
 
 export const TourService = {
-
-  getToursClient : async () => {
-        const response = await Http.get('/tours/client/');
-        return response.data;
-  },
-  getTourDetail : async (tourId) => {
-    const response = await Http.get(`/tours/available/${tourId}`);    
+  getToursClient: async () => {
+    const response = await Http.get("/tours/client/");
     return response.data;
   },
-  getTourByOriginAndDes : async (cityOriginId, cityDesId) => {
+  getTourDetail: async (tourId) => {
+    const response = await Http.get(`/tours/available/${tourId}`);
+    return response.data;
+  },
+  getTourByOriginAndDes: async (cityOriginId, cityDesId) => {
     const response = await Http.get(`tours/route/${cityOriginId}/${cityDesId}`);
     return response.data;
   },
@@ -21,7 +20,6 @@ export const TourService = {
   },
   findTourById: async (id) => {
     const response = await Http.get(`/tours/findById/${id}`);
-    console.log(response);
     return response.data;
   },
   createTour: async (data) => {
@@ -44,7 +42,7 @@ export const TourService = {
   uploadImage: async (id, formData) => {
     const response = await Http.post(`/tours/uploads/${id}`, formData);
     return response.data;
-  }, 
+  },
   deleteImage: async (id, formData) => {
     const response = await Http.post(`/tours/deleteImages/${id}`, formData);
     return response.data;

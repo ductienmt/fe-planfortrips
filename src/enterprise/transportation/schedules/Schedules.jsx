@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./Schedules.css";
 import { Table } from "antd";
 import { ScheduleService } from "../../../services/apis/ScheduleService";
+import { DateFormatter } from "../../../utils/DateFormat";
+import { convertToVNDDB } from "../../../utils/FormatMoney";
 const schedules = () => {
   const [schedulesData, setScheduleData] = useState([]);
   const columns = [
@@ -24,16 +26,19 @@ const schedules = () => {
       title: "Ngày/Giờ Xuất Phát",
       dataIndex: "departureTime",
       key: "departureTime",
+      render: (text) => DateFormatter(text),
     },
     {
       title: "Ngày/Giờ Đến",
       dataIndex: "arrivalTime",
       key: "arrivalTime",
+      render: (text) => DateFormatter(text),
     },
     {
       title: "Giá Vé",
       dataIndex: "priceForOneTicket",
       key: "priceForOneTicket",
+      render: (text) => convertToVNDDB(text),
     },
     {
       title: "Hành Động",

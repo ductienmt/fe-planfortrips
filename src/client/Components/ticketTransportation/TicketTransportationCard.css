@@ -38,7 +38,7 @@
 
 .book-ticket-transport:hover {
   background-color: #0c5b9c;
-  transform: translateY(-3px);
+  /* transform: translateY(-3px); */
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
@@ -53,4 +53,27 @@
   text-align: center;
   background-color: rgb(236, 163, 137);
   color: rgb(46, 46, 46);
+}
+
+.ticket-transport-card .rating-badge .star.full {
+  color: rgb(255, 222, 32);
+}
+
+.ticket-transport-card .rating-badge .star.empty {
+  color: transparent;
+}
+
+.ticket-transport-card .rating-badge .star.half {
+  position: relative;
+  display: inline-block;
+  color: rgb(210, 234, 241);
+}
+
+.ticket-transport-card .rating-badge .star.half::before {
+  content: '★';
+  position: absolute;
+  left: 0;
+  width: 50%;
+  overflow: hidden;
+  color: rgb(255, 222, 32);
 }

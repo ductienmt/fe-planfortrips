@@ -5,8 +5,8 @@ import { Outlet } from "react-router-dom";
 import { useAuth } from "./context/AuthContext/AuthProvider";
 // import LoginAdmin from "./admin/pages/Auth/Login/Login";
 const checkRoleAdmin = () => {
-  const {token } = useAuth();
-  const { role} =useAuth();
+  const { token } = useAuth();
+  const { role } = useAuth();
   if (!token || role !== "ROLE_ADMIN") {
     return false;
   }

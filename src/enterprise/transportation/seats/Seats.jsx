@@ -106,7 +106,6 @@ const Seats = () => {
               color: "#ADADAD",
             }}
           ></h1>
-          ></h1>
         </div>
 
         {/* Nội dung tìm kiếm */}
@@ -315,8 +314,8 @@ const Seats = () => {
             </div>
           </div>
         </div>
-      </div>
-    </>
+      </div>    
+      </>
   );
 };
 
