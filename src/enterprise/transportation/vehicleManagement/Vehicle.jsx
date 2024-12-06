@@ -1,50 +1,63 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from "react";
 import "./Vehicle.css";
 import { Table } from "antd";
+import { VehiclesService } from "../../../services/apis/Vehicles";
 const Vehicle = () => {
   const [roomsData, setRoomsData] = useState([]);
   const columns = [
     {
       title: "Biển Số",
-      dataIndex: "",
-      key: "",
+      dataIndex: "plateNumber",
+      key: "plateNumber",
+    },
+
+    {
+      title: "Loại xe",
+      dataIndex: "type_vehicle",
+      key: "type_vehicle",
     },
     {
-      title: "Tên Tài Xế",
-      dataIndex: "",
-      key: "",
+      title: "Tên tài xế",
+      dataIndex: "driverName",
+      key: "driverName",
     },
     {
-      title: "Loại Xe",
-      dataIndex: "",
-      key: "",
+      title: "Sđt tài xế",
+      dataIndex: "driverPhone",
+      key: "driverPhone",
     },
-    {
-      title: "Số Điện Thoại",
-      dataIndex: "",
-      key: "",
-    },
-    {
-      title: "Hoạt Động",
-      dataIndex: "",
-      key: "",
-    },
+
     {
       title: "Số ghế",
+      dataIndex: "capacity",
+      key: "capacity",
+    },
+    {
+      title: "Trạng thái",
       dataIndex: "",
       key: "",
     },
     {
-      title: "Công Ty Xe",
-      dataIndex: "",
-      key: "",
-    },
-    {
-      title: "Trạng Thái",
+      title: "Hành động",
       dataIndex: "",
       key: "",
     },
   ];
+
+  const [vehicleData, setVehicleData] = useState([]);
+
+  const loadVehicleData = async () => {
+    try {
+      const res = await VehiclesService.getVehicleByEnterpriseId();
+      setVehicleData(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    loadVehicleData();
+  }, []);
 
   const [selectedItem, setSelectedItem] = useState("all");
 
@@ -75,7 +88,7 @@ const Vehicle = () => {
               >
                 Tất cả
               </button>
-              <button
+              {/* <button
                 onClick={() => handleSelectItem("available")}
                 className={selectedItem === "available" ? "isActive" : ""}
               >
@@ -86,7 +99,7 @@ const Vehicle = () => {
                 className={selectedItem === "unavailable" ? "isActive" : ""}
               >
                 Đã đặt
-              </button>
+              </button> */}
             </div>
 
             <div className="nav-add-vehicle">
@@ -102,17 +115,24 @@ const Vehicle = () => {
                 data-bs-toggle="modal"
                 data-bs-target="#contactModal"
               >
-               Thêm Xe
+                Thêm Xe
               </button>
             </div>
 
             {/* Contact Info Modal */}
-            <div className="modal fade" id="contactModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+            <div
+              className="modal fade"
+              id="contactModal"
+              data-bs-backdrop="static"
+              data-bs-keyboard="false"
+              tabIndex="-1"
+              aria-labelledby="contactModalLabel"
+              aria-hidden="true"
+            >
               <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
-
                   <div className="modal-header">
-                    <h3> Danh Sách  Xe</h3>
+                    <h3> Danh Sách Xe</h3>
                     <button
                       type="button"
                       className="btn-close"
@@ -121,15 +141,17 @@ const Vehicle = () => {
                     ></button>
                   </div>
 
-
-                  <div className="modal-nav">
+                  <div className="modal-nav p-4">
                     <div className="row">
-
                       <div className="col-12 mb-3">
                         <label htmlFor="routeCode" className="form-label">
                           Mã Tuyến
                         </label>
-                        <select className="form-control" id="routeCode" name="routeCode">
+                        <select
+                          className="form-control"
+                          id="routeCode"
+                          name="routeCode"
+                        >
                           <option value="">Chọn Mã Tuyến</option>
                           <option value="route1">Tuyến 1</option>
                           <option value="route2">Tuyến 2</option>
@@ -139,13 +161,15 @@ const Vehicle = () => {
                         </select>
                       </div>
 
-
-
                       <div className="col-6 mb-3">
                         <label htmlFor="busCode" className="form-label">
                           Mã Xe
                         </label>
-                        <select className="form-control" id="busCode" name="busCode">
+                        <select
+                          className="form-control"
+                          id="busCode"
+                          name="busCode"
+                        >
                           <option value="">Chọn Mã Xe</option>
                           <option value="bus1">Xe 1</option>
                           <option value="bus2">Xe 2</option>
@@ -159,7 +183,10 @@ const Vehicle = () => {
                         <label htmlFor="Price" className="form-label">
                           Giá Vé (VNĐ)
                         </label>
-                        <input className="form-control" placeholder="Nhập giá vé" />
+                        <input
+                          className="form-control"
+                          placeholder="Nhập giá vé"
+                        />
                       </div>
 
                       <div className="col-6 mb-3">
@@ -183,10 +210,8 @@ const Vehicle = () => {
                           className="form-control"
                         />
                       </div>
-
                     </div>
                   </div>
-
 
                   <div className="modal3-footer">
                     <button className="btn footer-btn" type="button">
@@ -196,37 +221,26 @@ const Vehicle = () => {
                 </div>
               </div>
             </div>
-
-
-
-
-
-
-
-
-
-
-
           </div>
           <div className="content-table mt-4">
             <Table
-              dataSource={roomsData}
+              dataSource={vehicleData}
               columns={columns}
-            // pagination={{
-            //   current: currentPage,
-            //   pageSize: pageSize,
-            //   total: dataSource.length,
-            //   onChange: (page, pageSize) => {
-            //     setCurrentPage(page);
-            //     setPageSize(pageSize);
-            //   },
-            // }}
+              // pagination={{
+              //   current: currentPage,
+              //   pageSize: pageSize,
+              //   total: dataSource.length,
+              //   onChange: (page, pageSize) => {
+              //     setCurrentPage(page);
+              //     setPageSize(pageSize);
+              //   },
+              // }}
             />
           </div>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Vehicle
+export default Vehicle;

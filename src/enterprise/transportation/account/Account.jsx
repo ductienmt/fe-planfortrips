@@ -6,17 +6,6 @@ const Account = () => {
   return (
     <>
       <div className="transportation-account-container">
-        <div className="container">
-          <button
-            type="button"
-            className="btn account-btn"
-            data-bs-toggle="modal"
-            data-bs-target="#accountModal"
-          >
-            Tài khoản
-          </button>
-        </div>
-
         {/* Account Modal */}
         <div
           className="modal fade"
@@ -27,7 +16,7 @@ const Account = () => {
           aria-labelledby="accountModalLabel"
           aria-hidden="true"
         >
-          <div className="modal-dialog custom-modal">
+          <div className="modal-dialog modal-dialog-centered custom-modal">
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" id="accountModalLabel">
@@ -137,6 +126,8 @@ const Account = () => {
                   type="button"
                   className="btn btn-secondary"
                   data-bs-dismiss="modal"
+                  data-bs-toggle="modal"
+                  data-bs-target="#accountModal"
                 >
                   Quay Lại
                 </button>
@@ -229,6 +220,8 @@ const Account = () => {
                   type="button"
                   className="btn btn-secondary"
                   data-bs-dismiss="modal"
+                  data-bs-toggle="modal"
+                  data-bs-target="#accountModal"
                 >
                   Quay Lại
                 </button>
@@ -281,6 +274,8 @@ const Account = () => {
                   type="button"
                   className="btn btn-secondary"
                   data-bs-dismiss="modal"
+                  data-bs-toggle="modal"
+                  data-bs-target="#accountModal"
                 >
                   Quay Lại
                 </button>

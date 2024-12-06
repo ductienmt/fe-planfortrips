@@ -42,24 +42,3 @@ export const EnterpriseLayout = () => {
     </div>
   );
 };
-
-export const ProtectedRouteEnterprise = ({ allowedRoles }) => {
-  const { token, role } = useAuth();
-  const location = useLocation();
-
-  if (!token) {
-    return (
-      <Navigate to="/enterprise/login" state={{ from: location }} replace />
-    );
-  }
-
-  if (
-    allowedRoles &&
-    !Array.isArray(allowedRoles) &&
-    !allowedRoles.includes(role)
-  ) {
-    return <Navigate to="/unauthorized" replace />;
-  }
-
-  return <Outlet />;
-};
