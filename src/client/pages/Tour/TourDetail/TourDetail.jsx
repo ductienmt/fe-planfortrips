@@ -58,7 +58,6 @@ function TourDetail() {
 
       setAvailableDates(departureDates);
 
-      // Kiểm tra lại dữ liệu ngày để đảm bảo nó được tải đúng
       console.log("Available Dates:", departureDates);
     } catch (error) {
       console.error("Error fetching tour data:", error);
@@ -99,12 +98,12 @@ function TourDetail() {
   const renderDay = (date, selectedDate, dayInCurrentMonth, dayComponent) => {
     const formattedDate = format(date, "yyyy-MM-dd");
     const isAvailable = isDateAvailable(date);
-  
+
     return React.cloneElement(dayComponent, {
       style: {
         ...dayComponent.props.style,
-        backgroundColor: isAvailable ? "#90ee90" : "#ffcccb", 
-        color: isAvailable ? "#333" : "#777", 
+        backgroundColor: isAvailable ? "#90ee90" : "#ffcccb",
+        color: isAvailable ? "#333" : "#777",
         cursor: isAvailable ? "pointer" : "not-allowed",
       },
       onClick: () => {
@@ -114,7 +113,7 @@ function TourDetail() {
       },
     });
   };
-  
+
 
   const [activeStep, setActiveStep] = useState(0);
 
@@ -135,35 +134,57 @@ function TourDetail() {
     seatDes: [],
   });
 
-  const handleRoomClick = (room) => {
-    setBookTour((prev) => ({
-      ...prev,
-      room: [...prev.room, room], 
-    }));
-  };
-  
+
   const handleAddSeatDes = (seat) => {
+    const seatExist = bookTour.seatDes.find((s) => s.seatId == seat.seatId);
+
+
+    if (seatExist) {
+      const newBookSeat = bookTour.seatDes.filter((s) => s.seatId !== seat.seatId);
+      setBookTour((prev) => ({
+        ...prev,
+        seatDes: newBookSeat,
+      }));
+      return;
+    }
     setBookTour((prev) => ({
       ...prev,
-      seatDes: [...prev.seatDes, seat], 
+      seatDes: [...prev.seatDes, seat],
     }));
   };
-  
+
   const handleAddSeatOrigin = (seat) => {
+    const seatExist = bookTour.seatsOrigin.find((s) => s.seatId == seat.seatId);
+
+    if (seatExist) {
+      const newBookSeat = bookTour.seatsOrigin.filter((s) => s.seatId !== seat.seatId);
+      setBookTour((prev) => ({
+        ...prev,
+        seatsOrigin: newBookSeat,
+      }));
+      return;
+    }
     setBookTour((prev) => ({
       ...prev,
       seatsOrigin: [...prev.seatsOrigin, seat],
     }));
   };
-  
-  
-  
-  
-  
+
+
+
+
+
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const toggleModal = () => setIsModalOpen(!isModalOpen);
+  const toggleModal = () => {
+    if (!tripData) {
+      alert("Chưa chọn ngày");
+      return;
+    }
+
+    setIsModalOpen(!isModalOpen);
+  }
 
   return (
     <>
@@ -320,6 +341,41 @@ function TourDetail() {
                           <Typography variant="body1" sx={{ marginBottom: 1 }}>
                             <strong>Loại phòng:</strong> {room.typeOfRoom}
                           </Typography>
+
+                          <Typography variant="body1" sx={{ marginBottom: 1 }}>
+                            <strong>Thời gian CheckIn (dự kiến):</strong> <br />
+                            <span className="text-danger fw-bold">
+                              {room.checkInTime.replace('T', ' ')}
+                            </span>
+                          </Typography>
+
+                          <Typography variant="body1" sx={{ marginBottom: 1 }}>
+                            <strong>Thời gian CheckOut (dự kiến):</strong> <br />
+                            <span className="text-danger fw-bold">
+                              {room.checkOutTime.replace('T', ' ')}
+                            </span>
+                          </Typography>
+
+                          <Typography variant="body1" sx={{ marginBottom: 1 }}>
+                            <div className="d-flex flex-wrap align-items-center">
+                              <span className="fs-5 fw-bold me-3">Trang thiết bị:</span>
+                              {room.roomAmenities && room.roomAmenities.length > 0 ? (
+                                room.roomAmenities.map((rA) => (
+                                  <div
+                                    className="badge bg-light text-info border me-2 mb-2 fs-6"
+                                    style={{ whiteSpace: 'nowrap' }}
+                                    key={rA.id}
+                                  >
+                                    {rA.name}
+                                  </div>
+                                ))
+                              ) : (
+                                <span>Không có dữ liệu</span>
+                              )}
+                            </div>
+                          </Typography>
+
+
                           <Typography variant="body1" sx={{ marginBottom: 1 }}>
                             <strong>Giá:</strong> {room.price} VND
                           </Typography>
@@ -498,7 +554,7 @@ function TourDetail() {
                           <Grid container spacing={1} justifyContent="center">
                             {activeStep === 0
                               ? tripData.scheduleSeatsDes.map((seat) => (
-                                <Grid item key={seat.seatId} style={{ cursor: 'pointer' }} onClick={() => handleSeatClick(seat)}
+                                <Grid item key={seat.seatId} style={{ cursor: 'pointer' }}
                                   className={bookTour.seatDes.some(selectedSeat => selectedSeat.seatId === seat.seatId) ? 'seat-active' : ''}
                                 >
                                   <Chip
@@ -510,8 +566,8 @@ function TourDetail() {
                                 </Grid>
                               ))
                               : tripData.scheduleSeatsOrigin.map((seat) => (
-                                <Grid item key={seat.seatId} 
-                                className={bookTour.seatsOrigin.includes(seat) ? 'seat-active' : ''}
+                                <Grid item key={seat.seatId}
+                                  className={bookTour.seatsOrigin.includes(seat) ? 'seat-active' : ''}
                                 >
                                   <Chip
                                     label={seat.seatNumber}
