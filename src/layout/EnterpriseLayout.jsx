@@ -1,12 +1,13 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, Navigate } from "react-router-dom";
 import EnterpriseSidebar from "../enterprise/sidebar/EnterpriseSidebar";
 import EnterpriseTopbar from "../enterprise/topbar/EnterpriseTopbar";
 import { EnterpriseProvider } from "../context/EnterpriseContext/EnterpriseProvider";
+import { useAuth } from "../context/AuthContext/AuthProvider";
 
 export const EnterpriseLayout = () => {
   const location = useLocation();
-
   const isLoginPage = location.pathname === "/enterprise/login";
+
   return (
     <div
       className="enterprise-layout"

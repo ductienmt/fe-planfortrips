@@ -3,7 +3,7 @@ import Http from "../Http";
 export const HotelService = {
   getHotels: async (page, limit, keyword) => {
     const response = await Http.get(
-      `api/v1/hotels/all?page=${page}&limit=${limit}&keyword=${keyword}`
+      `/hotels/all?page=${page}&limit=${limit}&keyword=${keyword}`
     );
     return response.data;
   },
@@ -12,15 +12,22 @@ export const HotelService = {
     return response.data;
   },
   update: async (hotelId, data) => {
-    const response = await Http.put(`api/v1/hotels/update/${hotelId}`, data);
+    const response = await Http.put(`/hotels/update/${hotelId}`, data);
     return response.data;
   },
   delete: async (id) => {
-    const response = await Http.delete(`api/v1/users/delete/${id}`);
+    const response = await Http.delete(`/users/delete/${id}`);
     return response.data;
   },
   detail: async () => {
-    const response = await Http.get(`api/v1/hotels/detail`);
+    const response = await Http.get(`/hotels/detail`);
+    return response.data;
+  },
+  getHotelSamePrice: async (price, destination) => {
+    const params = new URLSearchParams({ price, destination });
+    const response = await Http.get(
+      `/hotels/getHotelsSamePrice?${params.toString()}`
+    );
     return response.data;
   },
 };

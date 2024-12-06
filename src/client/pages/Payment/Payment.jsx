@@ -21,13 +21,14 @@ import { ArrowForwardIosRounded } from "@mui/icons-material";
 import { InputFlied } from "../../Components/Input/InputFlied";
 import { CouponService } from "../../../services/apis/CouponService";
 import Loader from "../../Components/Loading";
+import { VietQRPaymentService } from "../../../services/apis/VietQRPayment";
 
 // Hàm sinh mã ngẫu nhiên
 const generateRandomString = () => {
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let result = "";
-  const length = 6; // Độ dài chuỗi ngẫu nhiên
+  const length = 6;
 
   for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * characters.length));
@@ -46,6 +47,16 @@ const Payment = () => {
   const amount = sessionStorage.getItem("totalPrice");
   const tripData = JSON.parse(sessionStorage.getItem("tripData"));
   const [isLoading, setIsLoading] = useState(false);
+  const [planId, setPlanId] = useState("");
+
+  let type = null;
+  if (planData) {
+    type = "plan";
+  } else if (tranData) {
+    type = "tran";
+  } else if (acoData) {
+    type = "aco";
+  }
 
   const [randomCode, setRanDomCode] = useState("");
   const [activeMethod, setActiveMethod] = useState("");
@@ -54,7 +65,10 @@ const Payment = () => {
     Description: "Thanh toán cho dịch vụ",
   });
 
-  const [bookingHotelId, setBookingHotelId] = useState("");
+  const [bookingHotelIdToPayment, setBookingHotelIdToPayment] = useState(null);
+  const [ticketDepartureIdToPayment, setTicketDepartureIdToPayment] =
+    useState(null);
+  const [ticketReturnIdToPayment, setTicketReturnIdToPayment] = useState(null);
   const [qrCode, setQrCode] = useState("");
   const navi = useNavigate();
 
@@ -80,21 +94,24 @@ const Payment = () => {
     if (finalPlanData) {
       try {
         const res = await PlanServiceApi.savePlan(finalPlanData);
+        setPlanId(res.data.planId);
         console.log(res.data);
+
         enqueueSnackbar("Tạo kế hoạch thành công", {
           variant: "success",
           autoHideDuration: 2000,
-          onExit: () => {
-            sessionStorage.removeItem("planData");
-            sessionStorage.removeItem("checkin");
-            sessionStorage.removeItem("checkout");
-            sessionStorage.removeItem("priceAc");
-            sessionStorage.removeItem("priceTr");
-            sessionStorage.removeItem("totalPrice");
-            sessionStorage.removeItem("userInformation");
-            sessionStorage.removeItem("tripData");
-          },
+          // onExit: () => {
+          //   sessionStorage.removeItem("planData");
+          //   sessionStorage.removeItem("checkin");
+          //   sessionStorage.removeItem("checkout");
+          //   sessionStorage.removeItem("priceAc");
+          //   sessionStorage.removeItem("priceTr");
+          //   sessionStorage.removeItem("totalPrice");
+          //   sessionStorage.removeItem("userInformation");
+          //   sessionStorage.removeItem("tripData");
+          // },
         });
+        return res.data;
       } catch (e) {
         console.error(e);
       }
@@ -109,8 +126,6 @@ const Payment = () => {
 
     try {
       const res = await BookingHotelService.create(dataToSendBooking);
-      console.log(res);
-      setBookingHotelId(res.data.bookingHotelId);
       const updatedPlanData = { ...planData };
       let updated = false;
 
@@ -127,6 +142,7 @@ const Payment = () => {
       } else {
         console.log("No hotel found to update ticketId.");
       }
+      return res.data;
     } catch (error) {
       console.error("Error creating booking:", error);
     }
@@ -147,12 +163,13 @@ const Payment = () => {
       payment_id: paymentId,
       status: "PENDING",
     };
+    console.log(dataToSend);
 
     try {
       const res = await TicketService.create(dataToSend, seatsId, codeCoupon);
       console.log(res.data);
 
-      const ticketId = res.data.ticketId;
+      const ticketId = res.data.ticket_id;
 
       const updatedPlanData = { ...planData };
       let updated = false;
@@ -160,32 +177,36 @@ const Payment = () => {
       updatedPlanData.planDetails.forEach((detail) => {
         if (detail.carId === carId) {
           detail.ticketId = ticketId;
+          console.log("Updated PlanDetails with TicketId:", detail.ticketId);
+
           updated = true;
         }
       });
 
       if (updated) {
-        console.log("Updated PlanData with TicketId:", updatedPlanData);
+        // console.log("Updated PlanData with TicketId:", updatedPlanData);
         sessionStorage.setItem("planData", JSON.stringify(updatedPlanData));
       } else {
         console.log("No matching carId found in PlanDetails.");
       }
+
+      return res.data;
     } catch (error) {
       console.error("Error creating ticket:", error);
+      throw error;
     }
   };
 
-  const getSeats = (seatsBook) => {
-    const seats = seatsBook
+  const getSeats = (seatsBook) =>
+    seatsBook
       ? seatsBook.map((seat) => seat.seat_id).join(",")
       : "Chưa có dữ liệu chỗ ngồi";
 
-    return seats.toString();
-  };
-
-  const handleSubmit = async () => {
-    const tData = JSON.parse(sessionStorage.getItem("tripData"));
-    console.log(getSeats(tData?.transportation?.return?.seatBook));
+  const convertToVNDD = (vndD) => {
+    if (vndD == null) {
+      return "0 VNĐ";
+    }
+    return vndD.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " VNĐ";
   };
 
   const handlePayment = async () => {
@@ -234,26 +255,46 @@ const Payment = () => {
 
         try {
           setIsLoading(true);
-          await handleCreateBooking(bookingDetails, 3);
-          await handleCreateTicket(
-            scheduleIdDe,
-            totalPriceTrDe,
-            3,
-            voucherRes ? voucherRes.code : "",
-            getSeats(tData?.transportation?.departure?.seatBook),
-            tData?.transportation?.departure?.carId
-          );
-          await handleCreateTicket(
-            scheduleIdRe,
-            totalPriceTrRe,
-            3,
-            voucherRes ? voucherRes.code : "",
-            getSeats(tData?.transportation?.return?.seatBook),
-            tData?.transportation?.return?.carId
-          );
-          sessionStorage.setItem("planData", JSON.stringify(planData));
-          await handleCreatePlan();
-          setQrCode(qrCode);
+          const bookingResponse = await handleCreateBooking(bookingDetails, 3);
+          const bookingHotelId = bookingResponse.bookingHotelId;
+          setBookingHotelIdToPayment(bookingHotelId);
+
+          try {
+            const ticketDeparture = await handleCreateTicket(
+              scheduleIdDe,
+              totalPriceTrDe,
+              3,
+              voucherRes ? voucherRes.code : "",
+              getSeats(tData?.transportation?.departure?.seatBook),
+              tData?.transportation?.departure?.vehicleCode
+            );
+            const ticketDepartureId = ticketDeparture.ticket_id;
+            setTicketDepartureIdToPayment(ticketDepartureId);
+
+            try {
+              const ticketReturn = await handleCreateTicket(
+                scheduleIdRe,
+                totalPriceTrRe,
+                3,
+                voucherRes ? voucherRes.code : "",
+                getSeats(tData?.transportation?.return?.seatBook),
+                tData?.transportation?.return?.vehicleCode
+              );
+              const ticketReturnId = ticketReturn.ticket_id;
+              setTicketReturnIdToPayment(ticketReturnId);
+
+              sessionStorage.setItem("planData", JSON.stringify(planData));
+              await handleCreatePlan();
+
+              setQrCode(qrCode);
+            } catch (error) {
+              console.error("Error creating return ticket:", error);
+              throw error;
+            }
+          } catch (error) {
+            console.error("Error creating departure ticket:", error);
+            throw error;
+          }
         } catch (error) {
           console.error("Error creating booking:", error);
         } finally {
@@ -269,7 +310,6 @@ const Payment = () => {
 
         const bookingDetails = tripData.accomodation.rooms.map((room) => ({
           roomId: room.roomId,
-
           checkInTime: checkinHours ? checkinHours : "",
           checkOutTime: checkoutHours ? checkoutHours : "",
           price: tData?.accomodation?.price_per_night || 0,
@@ -287,26 +327,50 @@ const Payment = () => {
 
         try {
           setIsLoading(true);
-          await handleCreateBooking(bookingDetails, 3);
-          await handleCreateTicket(
-            scheduleIdDe,
-            totalPriceTrDe,
-            3,
-            voucherRes ? voucherRes.code : "",
-            getSeats(tData?.transportation?.departure?.seatBook),
-            tData?.transportation?.departure?.carId
-          );
-          await handleCreateTicket(
-            scheduleIdRe,
-            totalPriceTrRe,
-            3,
-            voucherRes ? voucherRes.code : "",
-            getSeats(tData?.transportation?.return?.seatBook),
-            tData?.transportation?.return?.carId
-          );
-          sessionStorage.setItem("planData", JSON.stringify(planData));
-          await handleCreatePlan();
-          await BankService.VNPay();
+          const bookingResponse = await handleCreateBooking(bookingDetails, 2);
+          const bookingHotelId = bookingResponse.bookingHotelId;
+
+          try {
+            const ticketDeparture = await handleCreateTicket(
+              scheduleIdDe,
+              totalPriceTrDe,
+              3,
+              voucherRes ? voucherRes.code : "",
+              getSeats(tData?.transportation?.departure?.seatBook),
+              tData?.transportation?.departure?.vehicleCode
+            );
+            const ticketDepartureId = ticketDeparture.ticket_id;
+
+            try {
+              const ticketReturn = await handleCreateTicket(
+                scheduleIdRe,
+                totalPriceTrRe,
+                3,
+                voucherRes ? voucherRes.code : "",
+                getSeats(tData?.transportation?.return?.seatBook),
+                tData?.transportation?.return?.vehicleCode
+              );
+              const ticketReturnId = ticketReturn.ticket_id;
+
+              sessionStorage.setItem("planData", JSON.stringify(planData));
+              const planCall = await handleCreatePlan();
+              const planCallId = planCall.planId;
+
+              await BankService.VNPayPlan(
+                planCallId,
+                ticketDepartureId,
+                ticketReturnId,
+                bookingHotelId,
+                planData.finalPrice
+              );
+            } catch (error) {
+              console.error("Error creating return ticket:", error);
+              throw error;
+            }
+          } catch (error) {
+            console.error("Error creating departure ticket:", error);
+            throw error;
+          }
         } catch (error) {
           console.error("Error creating booking:", error);
         } finally {
@@ -341,11 +405,15 @@ const Payment = () => {
 
   const calculateTotalAmount = () => {
     let total = sessionStorage.getItem("totalPrice");
-    if (voucherRes.discount_type === "FIXED_AMOUNT") {
-      total -= voucherRes.discount_value;
-    } else if (voucherRes.discount_type === "PERCENT") {
-      total -= (total * voucherRes.discount_value) / 100;
+
+    if (voucherRes) {
+      if (voucherRes.discount_type === "FIXED_AMOUNT") {
+        total -= voucherRes.discount_value;
+      } else if (voucherRes.discount_type === "PERCENT") {
+        total -= (total * voucherRes.discount_value) / 100;
+      }
     }
+
     return Math.max(total, 0);
   };
 
@@ -353,11 +421,14 @@ const Payment = () => {
     let total = 0;
     const totalPrice = sessionStorage.getItem("totalPrice");
 
-    if (voucherRes.discount_type === "FIXED_AMOUNT") {
-      total += voucherRes.discount_value;
-    } else if (voucherRes.discount_type === "PERCENT") {
-      total += (totalPrice * voucherRes.discount_value) / 100;
+    if (voucherRes) {
+      if (voucherRes.discount_type === "FIXED_AMOUNT") {
+        total += voucherRes.discount_value;
+      } else if (voucherRes.discount_type === "PERCENT") {
+        total += (totalPrice * voucherRes.discount_value) / 100;
+      }
     }
+
     return Math.max(total, 0);
   };
 
@@ -373,16 +444,58 @@ const Payment = () => {
           console.log(status);
 
           if (status) {
-            PaymentService.paymentVietQr(bookingHotelId).then(() => {
-              // alert("Thanh toán thành công");\
-              enqueueSnackbar("Thanh toán thành công", {
-                variant: "success",
-                autoHideDuration: 2000,
-                onExit: () => {
-                  navi("/success");
-                },
+            if (type === "plan") {
+              const params = new URLSearchParams();
+              if (planId) {
+                params.append("planId", planId);
+              }
+              if (bookingHotelIdToPayment) {
+                params.append("bookingHotelId", bookingHotelIdToPayment);
+              }
+              if (ticketDepartureIdToPayment) {
+                params.append("departureTicketId", ticketDepartureIdToPayment);
+              }
+              if (ticketReturnIdToPayment) {
+                params.append("returnTicketId", ticketReturnIdToPayment);
+              }
+              PaymentService.paymentVietQrPlan(params).then(() => {
+                // alert("Thanh toán thành công");\
+                enqueueSnackbar("Thanh toán thành công", {
+                  variant: "success",
+                  autoHideDuration: 2000,
+                  onExit: () => {
+                    navi("/success");
+                  },
+                });
               });
-            });
+            } else if (type === "tran") {
+              const params = new URLSearchParams({
+                ticketDepartureIdToPayment,
+              });
+              PaymentService.paymentVietQrPlan(params).then(() => {
+                // alert("Thanh toán thành công");\
+                enqueueSnackbar("Thanh toán thành công", {
+                  variant: "success",
+                  autoHideDuration: 2000,
+                  onExit: () => {
+                    navi("/success");
+                  },
+                });
+              });
+            } else if (type === "aco") {
+              PaymentService.paymentVietQrBookingHotel(
+                bookingHotelIdToPayment
+              ).then(() => {
+                // alert("Thanh toán thành công");\
+                enqueueSnackbar("Thanh toán thành công", {
+                  variant: "success",
+                  autoHideDuration: 2000,
+                  onExit: () => {
+                    navi("/success");
+                  },
+                });
+              });
+            }
           }
         });
       }, 3000);
@@ -390,11 +503,6 @@ const Payment = () => {
       return () => clearInterval(intervalId);
     }
   }, [qrCode]);
-
-  // Chuyển đổi số tiền sang định dạng VND
-  const convertToVND = (amount) => {
-    return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} VNĐ`;
-  };
 
   return (
     <>
@@ -455,7 +563,7 @@ const Payment = () => {
                         <div className="content-item">
                           <div className="content-item-left">Tạm tính</div>
                           <div className="content-item-right">
-                            {convertToVND(sessionStorage.getItem("priceTr"))}
+                            {convertToVNDD(sessionStorage.getItem("priceTr"))}
                           </div>
                         </div>
                         <hr />
@@ -469,7 +577,7 @@ const Payment = () => {
                         <div className="content-item">
                           <div className="content-item-left">Tạm tính</div>
                           <div className="content-item-right">
-                            {convertToVND(sessionStorage.getItem("priceAc"))}
+                            {convertToVNDD(sessionStorage.getItem("priceAc"))}
                           </div>
                         </div>
                       </>
@@ -487,7 +595,7 @@ const Payment = () => {
                             <div className="content-item">
                               <div className="content-item-left">Tạm tính</div>
                               <div className="content-item-right">
-                                {convertToVND(1000)}
+                                {convertToVNDD(1000)}
                               </div>
                             </div>
                           </>
@@ -504,7 +612,7 @@ const Payment = () => {
                             <div className="content-item">
                               <div className="content-item-left">Tạm tính</div>
                               <div className="content-item-right">
-                                {convertToVND(infoBank.Amount)}
+                                {convertToVNDD(infoBank.Amount)}
                               </div>
                             </div>
                           </>
@@ -523,7 +631,7 @@ const Payment = () => {
                         Số tiền thanh toán
                       </div>
                       <div className="content-item-right">
-                        {convertToVND(sessionStorage.getItem("totalPrice"))}
+                        {convertToVNDD(sessionStorage.getItem("totalPrice"))}
                       </div>
                     </div>
                     {voucherApply ? (
@@ -533,7 +641,7 @@ const Payment = () => {
                           <div className="content-item-right">
                             {voucherApply
                               ? voucherApply.discount_type === "FIXED_AMOUNT"
-                                ? `-${convertToVND(voucherApply.discount_value)}`
+                                ? `-${convertToVNDD(voucherApply.discount_value)}`
                                 : `-${voucherApply.discount_value}%`
                               : "0"}
                           </div>
@@ -543,7 +651,7 @@ const Payment = () => {
                             Tổng tiền thanh toán
                           </div>
                           <div className="content-item-right">
-                            {convertToVND(infoBank.Amount)}
+                            {convertToVNDD(infoBank.Amount)}
                           </div>
                         </div>
                       </>
@@ -583,7 +691,7 @@ const Payment = () => {
                         <p className="text-2">Đã bao gồm thuế và phí</p>
                       </div>
                       <div className="price">
-                        <p>{convertToVND(infoBank.Amount)}</p>
+                        <p>{convertToVNDD(infoBank.Amount)}</p>
                       </div>
                     </div>
                     <div className="button-next">
@@ -708,7 +816,7 @@ const Payment = () => {
                           {voucherRes &&
                             voucherRes.discount_type === "FIXED_AMOUNT" && (
                               <p className="m-0">
-                                Giảm {convertToVND(voucherRes.discount_value)}{" "}
+                                Giảm {convertToVNDD(voucherRes.discount_value)}{" "}
                                 cho tổng tiền thanh toán
                               </p>
                             )}

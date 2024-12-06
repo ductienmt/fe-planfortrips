@@ -16,7 +16,6 @@ const address = [
 
 const InputLocation = () => {
     const [noiDi, setNoiDi] = useState("");
-    const [noiDen, setNoiDen] = useState("");
     const [suggestions, setSuggestions] = useState([]);
     const [activeField, setActiveField] = useState("");
 
@@ -29,10 +28,7 @@ const InputLocation = () => {
         if (type === "departure") {
             setNoiDi(value);
             setActiveField("departure");
-        } else {
-            setNoiDen(value);
-            setActiveField("destination");
-        }
+        } 
 
         setSuggestions(filteredSuggestions);
     };
@@ -40,17 +36,9 @@ const InputLocation = () => {
     const handleSuggestionClick = (suggestion) => {
         if (activeField === "departure") {
             setNoiDi(suggestion);
-        } else {
-            setNoiDen(suggestion);
-        }
+        } 
         setSuggestions([]);
         setActiveField("");
-    };
-
-    const swapDestination = () => {
-        const temp = noiDi;
-        setNoiDi(noiDen);
-        setNoiDen(temp);
     };
 
     return (
@@ -62,21 +50,6 @@ const InputLocation = () => {
                     value={noiDi}
                     onChange={(e) => handleInputChange(e, "departure")}
                     placeholder="Điểm đi"
-                />
-                <button className="swap-btn" onClick={swapDestination}>
-                    <img
-                        src="https://d1785e74lyxkqq.cloudfront.net/_next/static/v2/3/331a92149a02dc615986206c588d6642.svg"
-                        alt="Swap"
-                        width={24}
-                        height={24}
-                    />
-                </button>
-                <input
-                    type="text"
-                    className="location-input"
-                    value={noiDen}
-                    onChange={(e) => handleInputChange(e, "destination")}
-                    placeholder="Điểm đến"
                 />
             </div>
 

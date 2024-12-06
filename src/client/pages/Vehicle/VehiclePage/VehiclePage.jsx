@@ -81,28 +81,28 @@ const VehiclePage = () => {
           <b style={{ fontSize: "18px" }}>Sắp xếp theo</b>
           <hr />
           <div className="filter-sort">
-            <label class="custom-checkbox">
+            <label className="custom-checkbox">
               Giá tăng dần
               <input type="checkbox" />
-              <span class="checkmark"></span>
+              <span className="checkmark"></span>
             </label>
             <hr />
-            <label class="custom-checkbox">
+            <label className="custom-checkbox">
               Giá giảm dần
               <input type="checkbox" />
-              <span class="checkmark"></span>
+              <span className="checkmark"></span>
             </label>
             <hr />
-            <label class="custom-checkbox">
+            <label className="custom-checkbox">
               Giờ khởi hành sớm nhất
               <input type="checkbox" />
-              <span class="checkmark"></span>
+              <span className="checkmark"></span>
             </label>
             <hr />
-            <label class="custom-checkbox">
+            <label className="custom-checkbox">
               Giờ khởi hành muộn nhấ
               <input type="checkbox" />
-              <span class="checkmark"></span>
+              <span className="checkmark"></span>
             </label>
           </div>
           <b style={{ fontSize: "18px" }}>Bộ lọc  </b>
@@ -111,7 +111,7 @@ const VehiclePage = () => {
           <div className="filter-date">
             <div>
               Từ <br />
-              <select class="option-to" >
+              <select className="option-to" >
                 <option selected>Open this select menu</option>
                 <option value="1">One</option>
                 <option value="2">Two</option>
@@ -120,7 +120,7 @@ const VehiclePage = () => {
             </div>
             <div>
               Đến <br />
-              <select class="option-form">
+              <select className="option-form">
                 <option selected>Open this select menu</option>
                 <option value="1">One</option>
                 <option value="2">Two</option>
