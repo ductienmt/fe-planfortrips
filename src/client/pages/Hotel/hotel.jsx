@@ -6,27 +6,63 @@ import provinces from "./provinces";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import "flatpickr/dist/flatpickr.min.js"; // Import CSS for flatpickr
-import HotelCard from "./card/hotelCard";
 import PriceRangeSlider from "./priceRange/PriceRangeSlider";
 import CheckboxGroup from "./checkBox/CheckboxGroup";
-import ServicesCheckboxGroup from "./checkBox/ServicesCheckboxGroup";
+import RatingCheckboxGroup from "./checkBox/ServicesCheckboxGroup";
 import Loader from "../../Components/Loading";
+import { useLocation } from "react-router-dom";
+import { HotelService } from "../../../services/apis/HotelService";
+import { Pagination } from "@mui/material";
+import HotelCard from "./card/hotelCard";
 
 const Hotel = () => {
   window.scrollTo(0, 0);
-  const [inputValue, setInputValue] = useState("");
+  const location = useLocation();
+  const { keyword, date, days } = location.state || {};
+  const [selectedAmenities, setSelectedAmenities] = useState([]);
+  const [inputValue, setInputValue] = useState(keyword);
   const [filteredProvinces, setFilteredProvinces] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-
   const [showGuestOptions, setShowGuestOptions] = useState(false);
   const [adults, setAdults] = useState(0);
   const [children, setChildren] = useState(0);
   const [infants, setInfants] = useState(0);
-
   const [sliderPosition, setSliderPosition] = useState("hotel");
-
+  const [selectedRating,setSelectedRating] = useState([])
   const [selectedCategory, setSelectedCategory] = useState("hotel");
-
+  const [page, setPage] = useState(0);
+  const [limit, setLimit] = useState(10);
+  const [hotelAvailable, setHotelAvailable] = useState([]);
+  const [totalPage, setTotalPage] = useState(0);
+  const [dateDepart, setDateDepart] = useState();
+  const [dateReturn, setDateReturn] = useState();
+  useEffect(() => {
+    const fetch = async () => {
+      const response = await HotelService.getAvailableHotels(
+        keyword,
+        date,
+        days,
+        page,
+        limit
+      );
+      if (response) {
+        setHotelAvailable(response.hotelResponseList);
+        setTotalPage(response.totalPage);
+      }
+    };
+    fetch();
+  }, [setPage]);
+  // const filteredHotels = hotelAvailable.filter((hotel) =>
+  //   hotel.hotelAmenities.some((amenity) =>
+  //     selectedAmenities.includes(amenity.name)
+  //   )
+  // );
+  // const filteredHotelsByRating = selectedRating
+  // ? hotelAvailable.filter((hotel) => hotel.rating <= selectedRating)
+  // : hotelAvailable;
+  const handlePageChange = (e, value) => {
+    setPage(value);
+  };
   const handleInputChange = (event) => {
     const query = event.target.value;
     setInputValue(query);
@@ -78,53 +114,25 @@ const Hotel = () => {
   };
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
-
-  const hotels = [
-    "Khách sạn Cà Mau",
-    "Khách sạn Quy nhơn",
-    "Khách sạn dalas",
-    "Khách sạn Spa",
-    "Khách sạn Phúc Khải",
-    "Khách sạn ABC",
-  ];
-  const homestays = [
-    "Home stay A",
-    "Home stay B",
-    "Home stay C",
-    "Home stay D",
-    "Home stay E",
-    "Home stay F",
-  ];
-  const resorts = [
-    "Resort A",
-    "Resort B",
-    "Resort C",
-    "Resort D",
-    "Resort E",
-    "Resort F",
-  ];
-  // const images = {
-  //   'https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-  //   'https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=600',
-  //   'https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-  //   'https://images.pexels.com/photos/262047/pexels-photo-262047.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-  //   'https://images.pexels.com/photos/70441/pexels-photo-70441.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-  //   'https://images.pexels.com/photos/262047/pexels-photo-262047.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-  // }
   const renderList = () => {
-    let list = [];
-    if (selectedCategory === "hotel") {
-      list = hotels;
-    } else if (selectedCategory === "homestay") {
-      list = homestays;
-    } else if (selectedCategory === "resort") {
-      list = resorts;
-    }
-    const paginatedList = paginate(list, itemsPerPage, currentPage);
-    return paginatedList.map((item, index) =>
-      HotelCard({ name: item, key: index })
-    );
+    const filteredHotels = hotelAvailable.filter((hotel) => {
+      const matchesAmenities =
+        selectedAmenities.length === 0 ||
+        selectedAmenities.some((amenity) =>
+          hotel.hotelAmenities.some((hotelAmenity) => hotelAmenity.name === amenity)
+        );
+  
+      const matchesRating =
+        !selectedRating || hotel.rating <= selectedRating;
+  
+      return matchesAmenities || matchesRating;
+    });
+  
+    return filteredHotels.map((item, index) => (
+      <li key={index}>
+        <HotelCard item={item} />
+      </li>
+    ));
   };
 
   const handleCategoryClick = (category) => {
@@ -132,24 +140,6 @@ const Hotel = () => {
     setSliderPosition(category);
     setCurrentPage(1);
   };
-
-  const getTotalLocations = (category) => {
-    if (category === "hotel") {
-      return hotels.length;
-    } else if (category === "homestay") {
-      return homestays.length;
-    } else if (category === "resort") {
-      return resorts.length;
-    }
-    return 0;
-  };
-
-  const paginate = (array, page_size, page_number) => {
-    return array.slice((page_number - 1) * page_size, page_number * page_size);
-  };
-
-  const totalItems = getTotalLocations(selectedCategory);
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const today = new Date();
   const maxDate = new Date(new Date().setFullYear(today.getFullYear() + 1)); // Tính toán ngày 12 tháng sau
@@ -210,6 +200,24 @@ const Hotel = () => {
     },
   };
 
+  function addDaysToDate(dateStr, days) {
+    const [day, month, year] = dateStr.split("-").map(Number);
+    const date = new Date(year, month - 1, day);
+
+    date.setDate(date.getDate() + days);
+
+    const newDateStr = date.toISOString().split("T")[0];
+    console.log(newDateStr);
+
+    return newDateStr;
+  }
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Thêm 1 vào tháng vì `getMonth()` trả về tháng từ 0-11
+    const day = String(date.getDate()).padStart(2, "0"); // Đảm bảo ngày luôn có 2 chữ số
+    return `${year}-${month}-${day}`; // Trả về chuỗi theo định dạng yyyy-mm-dd
+  };
+
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
 
@@ -218,6 +226,10 @@ const Hotel = () => {
       const returnInputHotel = document.getElementById("date-return-hotel");
 
       if (departInputHotel && returnInputHotel) {
+        // Tính toán ngày về mặc định từ ngày đi
+        const defaultReturnDate = addDaysToDate(date, days);
+
+        // Khởi tạo departPicker với ngày đi
         const departPicker = flatpickr(departInputHotel, {
           altInput: true,
           altFormat: "d-m-Y",
@@ -225,16 +237,17 @@ const Hotel = () => {
           locale: VietnameseHotel,
           minDate: today,
           maxDate: maxDate,
+          defaultDate: date, 
           onChange: function (selectedDates, dateStr, instance) {
-            const minReturnDate = selectedDates[0]; // Ngày đi đã chọn
-            const returnDate = returnPicker.selectedDates[0]; // Ngày về đã chọn
+            const departDate = selectedDates[0]; 
+            const returnDate = returnPicker.selectedDates[0]; 
 
-            if (returnDate < minReturnDate) {
-              returnPicker.setDate(minReturnDate);
+            if (returnDate && returnDate < departDate) {
+              returnPicker.setDate(departDate); 
             }
+            setDateDepart(formatDate(departDate)); 
           },
         });
-
         const returnPicker = flatpickr(returnInputHotel, {
           altInput: true,
           altFormat: "d-m-Y",
@@ -242,23 +255,22 @@ const Hotel = () => {
           locale: VietnameseHotel,
           minDate: today,
           maxDate: maxDate,
+          defaultDate: defaultReturnDate, 
           onChange: function (selectedDates, dateStr, instance) {
-            const departDate = departPicker.selectedDates[0]; // Ngày đi đã chọn
-            const maxDepartDate = selectedDates[0]; // Ngày về đã chọn
-
-            if (departDate > maxDepartDate) {
-              departPicker.setDate(maxDepartDate);
+            const returnDate = selectedDates[0]; 
+            const departDate = departPicker.selectedDates[0];
+            if (departDate && returnDate < departDate) {
+              departPicker.setDate(returnDate); 
             }
+            setDateReturn(formatDate(returnDate));
           },
         });
 
-        departPicker.config.onChange.push(function (
-          selectedDates,
-          dateStr,
-          instance
-        ) {
-          returnPicker.open();
-        });
+        departPicker.config.onChange.push(
+          function (selectedDates, dateStr, instance) {
+            returnPicker.open();
+          }
+        );
 
         return () => {
           departPicker.destroy();
@@ -266,17 +278,50 @@ const Hotel = () => {
         };
       }
     }
-
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 800);
 
-    // Cleanup function để hủy bỏ các instance của flatpickr khi component unmount
     return () => {
       clearTimeout(timer);
       document.removeEventListener("click", handleClickOutside);
     };
   }, [isLoading]);
+
+  const convertToDate = (dateStr) => {
+    console.log(dateDepart);
+    console.log(dateReturn);
+    if (!dateStr || typeof dateStr !== "string") {
+      throw new Error("Ngày không hợp lệ");
+    }
+
+    const [day, month, year] = dateStr.split("-").map(Number);
+
+    if (isNaN(day) || isNaN(month) || isNaN(year)) {
+      throw new Error("Ngày, tháng hoặc năm không hợp lệ");
+    }
+
+    return new Date(year, month - 1, day);
+  };
+
+  const handleSearchHotel = async (e) => {
+    e.preventDefault();
+    const departDate = convertToDate(dateDepart);
+    const returnDate = convertToDate(dateReturn);
+    const day = (returnDate - departDate) / (1000 * 3600 * 24);
+    const resposne = await HotelService.getAvailableHotels(
+      inputValue,
+      dateDepart,
+      day,
+      0,
+      10
+    );
+    if (resposne) {
+      setHotelAvailable(resposne.hotelResponseList);
+      console.log(hotelAvailable);
+      setTotalPage(resposne.totalPage);
+    }
+  };
 
   return (
     <>
@@ -382,7 +427,10 @@ const Hotel = () => {
                   </div>
                 )}
               </div>
-              <button type="submit" className="btn custom-btn-hotel">
+              <button
+                className="btn custom-btn-hotel"
+                onClick={(e) => handleSearchHotel(e)}
+              >
                 <i className="fa-solid fa-magnifying-glass"></i>
                 <span className="hide-text-search-hotel"> Tìm</span>
               </button>
@@ -399,38 +447,23 @@ const Hotel = () => {
               </div>
               <div className="row mt-5 ms-2">
                 <h4 className="price-range">Tiện ích</h4>
-                <CheckboxGroup />
+                <CheckboxGroup setSelectedAmenities={setSelectedAmenities} />
               </div>
               <div className="row mt-5 ms-2">
-                <h4 className="price-range">Dịch vụ đi kèm</h4>
-                <ServicesCheckboxGroup />
+                <h4 className="price-range">Đánh giá</h4>
+                <RatingCheckboxGroup setSelectedRating={setSelectedRating}/>
               </div>
             </div>
             <div className="col-md-9 custom-list-hotel">
               <div className="select-category">
                 <div
-                  className={`col-md-4 ${selectedCategory === "hotel" ? "active" : ""
-                    }`}
+                  className={`col-md-12 ${
+                    selectedCategory === "hotel" ? "active" : ""
+                  }`}
                   onClick={() => handleCategoryClick("hotel")}
                 >
                   <h5>Khách sạn</h5>
-                  <small>Tổng nơi ở: {getTotalLocations("hotel")}</small>
-                </div>
-                <div
-                  className={`col-md-4 ${selectedCategory === "homestay" ? "active" : ""
-                    }`}
-                  onClick={() => handleCategoryClick("homestay")}
-                >
-                  <h5>Home stay</h5>
-                  <small>Tổng nơi ở: {getTotalLocations("homestay")}</small>
-                </div>
-                <div
-                  className={`col-md-4 ${selectedCategory === "resort" ? "active" : ""
-                    }`}
-                  onClick={() => handleCategoryClick("resort")}
-                >
-                  <h5>Resort</h5>
-                  <small>Tổng nơi ở: {getTotalLocations("resort")}</small>
+                  <small>Tổng nơi ở: {hotelAvailable.length}</small>
                 </div>
                 <div className={`slider-bar ${sliderPosition}`}></div>
               </div>
@@ -449,17 +482,15 @@ const Hotel = () => {
               </div>
               <ul className="hotel-list">{renderList()}</ul>
               <br />
-              <div className="pagination">
-                {Array.from({ length: totalPages }, (_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentPage(index + 1)}
-                    className={index + 1 === currentPage ? "active" : ""}
-                  >
-                    {index + 1}
-                  </button>
-                ))}
-              </div>
+              <Pagination
+                count={totalPage}
+                page={page}
+                onChange={handlePageChange}
+                variant="outlined"
+                color="primary"
+                showFirstButton
+                showLastButton
+              />
             </div>
           </div>
         </section>

@@ -14,4 +14,8 @@ export const CityService = {
     const response = await Http.get(`/cities/getByAreaId?${params.toString()}`);
     return response.data;
   },
+  searchCityByName: async(name)=>{
+    const response = await Http.get(`/cities/findCityByName?name=${name}`);
+    return response.data;
+  }
 };

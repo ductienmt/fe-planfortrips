@@ -280,8 +280,73 @@ const routeClient = () => [
             Component: InfoDetails,
           },
           {
-            path: "trip",
-            Component: YourTripsQuery,
+            path: "/booking/:type",
+            Component: Booking,
+          },
+          {
+            path: "/hotel",
+            Component: IntroHotel,
+          },
+          {
+            path: "/hotel-page",
+            Component: Hotel,
+          },
+          {
+            path: "/hotel-page/:id",
+            Component: DetailCard,
+          },
+          {
+            path: "/vehicle-intro",
+            Component: IntroVehicle,
+          },
+          {
+            path: "/vehicle-page",
+            Component: VehiclePage,
+          },
+          {
+            path: "/vehicle-booking",
+            Component: VehicleBooking,
+          },
+          {
+            path: "/payment",
+            Component: Payment,
+          },
+          {
+            path: "/success",
+            Component: Success,
+            exact: true,
+          },
+          {
+            path: "/failed",
+            Component: Failed,
+          },
+          {
+            path: "/profile",
+            Component: Profile,
+            children: [
+              {
+                path: "",
+                Component: ProfileDetail,
+              },
+              {
+                path: "change-password",
+                Component: ChangePassword,
+              },
+              {
+                path: "detail",
+                Component: InfoDetails,
+              },
+              {
+                path: "trip",
+                Component: YourTripsQuery,
+              },
+              // {
+              //   path: "trip-save",
+              //   Component: YourSavedTrips, // Ensure you have this Component
+              // },
+            ],
+            // path: "trip",
+            // Component: YourTripsQuery,
           },
           // {
           //   path: "trip-save",

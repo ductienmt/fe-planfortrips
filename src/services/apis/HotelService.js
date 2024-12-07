@@ -30,4 +30,9 @@ export const HotelService = {
     );
     return response.data;
   },
+  getAvailableHotels: async (keyword,date,days,page,limit)=>{
+    const response = await Http.get(`/hotels/findHotelAvailable?keyword=${keyword}&date=${date}&days=${days}&page=${page}&limit=${limit}`);
+    console.log(response);
+    return response.data;
+  }
 };

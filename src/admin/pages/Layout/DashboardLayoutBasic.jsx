@@ -275,7 +275,7 @@ function DashboardLayoutBasic({ window }) {
       authentication={authentication}
       theme={demoTheme}
       window={demoWindow}
-      router={router}
+      router={router.basename}
       branding={{
         logo: <img src={logo} alt="Plan For Trips logo" />,
         title: "",
