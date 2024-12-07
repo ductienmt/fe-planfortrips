@@ -1,6 +1,4 @@
-import { convertToVND } from "../../../../utils/FormatMoney";
 import "./roomCard.css";
-import { useNavigate } from "react-router-dom";
 import { Snackbar, Alert, Tooltip, IconButton } from "@mui/material";
 import { useEffect, useState } from "react";
 import { RoomService } from "../../../../services/apis/RoomService";
@@ -75,6 +73,7 @@ const RoomCard = ({ room_id,setSelectedRoom,selectedRoom}) => {
               type="button"
               className="book-hotel mb-3"
               onClick={handleBookTicket}
+
             >
               Đặt ngay
             </button>

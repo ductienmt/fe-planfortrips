@@ -25,7 +25,6 @@ const HotelCard = ({ item }) => {
               alt={item.name}
             />
           </div>
-
           {/* Phần Tên và Amenities */}
           <div className="col-md-6 d-flex flex-column justify-content-between">
             <div className="px-3 mt-2">

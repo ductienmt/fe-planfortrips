@@ -54,3 +54,10 @@ export const convertToVND = (amount) => {
   }
   return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " VND";
 };
+
+export const convertToVNDDB = (amount) => {
+  if (amount === undefined || amount === null) {
+    return "0 VND";
+  }
+  return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ".000 VND";
+};

@@ -2,16 +2,17 @@ import { useEffect, useState } from "react";
 import "./AccommodationCard.css";
 import { HotelService } from "../../../services/apis/HotelService";
 import imghotel from "../../../assets/beach.jpg";
-import nhaxe from "../../../assets/caurong.webp";
 import HotelCard from "../Hotel/card/hotelCard";
 import RoomCard from "../Hotel/roomCard/roomCard";
-import { convertToVND } from "../../../utils/FormatMoney";
+import { convertToVND, convertToVNDDB } from "../../../utils/FormatMoney";
+import { RoomService } from "../../../services/apis/RoomService";
 
-function AccommodationCard({ className, onClick, accomodation }) {
+function AccommodationCard({ className, onClick, accomodation, destination }) {
   const [hotelImage1, setHotelImage1] = useState("");
   const [hotelImage2, setHotelImage2] = useState("");
   const [hotelImage3, setHotelImage3] = useState("");
   const [hotelAmentities, setHotelAmentities] = useState([]);
+  // console.log(accomodation);
 
   const [selectedRooms, setSelectedRooms] = useState([]); // Lưu danh sách phòng được chọn
 
@@ -41,7 +42,7 @@ function AccommodationCard({ className, onClick, accomodation }) {
   const loadHotelImages = async () => {
     try {
       const response = await HotelService.findHotelById(accomodation.hotelId);
-      console.log(response);
+      // console.log(response);
       const images = response.images;
       setHotelAmentities(response.hotelAmenities);
 
@@ -71,13 +72,40 @@ function AccommodationCard({ className, onClick, accomodation }) {
 
   const loadHotelChangeData = async () => {
     try {
+      // console.log(destination);
+
       const response = await HotelService.getHotelSamePrice(
-        accomodation.price_per_night
+        accomodation.price_per_night / 1000,
+        destination
       );
       console.log(response);
+
       setHotelChangeData(response);
     } catch (error) {
       console.error("Error fetching hotel :", error);
+    }
+  };
+
+  const [rooms, setRooms] = useState([]);
+
+  const loadRooms = async (
+    id,
+    pageNo = 0,
+    pageSize = 5,
+    sortBy = null,
+    sortType = null
+  ) => {
+    try {
+      const response = await RoomService.getRoomsByHotelId(
+        id,
+        pageNo,
+        pageSize
+      );
+      console.log(response.content);
+
+      setRooms(response.content);
+    } catch (error) {
+      console.error("Error fetching room data", error);
     }
   };
 
@@ -86,7 +114,7 @@ function AccommodationCard({ className, onClick, accomodation }) {
     // console.log(accomodation);
 
     loadHotelImages();
-    console.log(hotelAmentities);
+    // console.log(hotelAmentities);
   }, [accomodation.hotelId]);
 
   return (
@@ -344,15 +372,20 @@ function AccommodationCard({ className, onClick, accomodation }) {
                   <div className="voucher-close-close">Close</div>
                 </button>
               </div>
-              {hotelChangeData?.map((hotel, index) => (
+              {hotelChangeData?.map((hotel) => (
                 <HotelCard
-                  key={index}
+                  key={hotel.hotelId}
                   img={hotel.hotelImage[0]?.url}
                   name={hotel.hotelName}
                   address={hotel.hotelAddress}
                   originalPrice={hotel.roomPrice}
                   hotelAmenities={hotel.hotelAmenities}
                   contentButton={"Chọn khách sạn"}
+                  modalTarget={"#changeRoomModal"}
+                  modalToogle={"modal"}
+                  onClick={() => {
+                    loadRooms(hotel.hotelId);
+                  }}
                 />
               ))}
             </div>
@@ -441,25 +474,35 @@ function AccommodationCard({ className, onClick, accomodation }) {
                         <strong className="d-flex justify-content-center">
                           Tên phòng:
                         </strong>
-
                         <p>{room.roomSize}</p>
                       </p>
                       <div className="d-flex align-items-center">
                         <button
                           className="btn btn-link px-2"
                           onClick={() => {
-                            // Giảm số lượng phòng nếu số lượng > 1
-                            setSelectedRooms((prevRooms) =>
-                              prevRooms.map((r) =>
-                                r.id === room.id && r.quantity > 1
-                                  ? { ...r, quantity: r.quantity - 1 }
-                                  : r
-                              )
-                            );
+                            setSelectedRooms((prevRooms) => {
+                              const updatedRooms = prevRooms
+                                .map((r) =>
+                                  r.id === room.id && r.quantity >= 1
+                                    ? { ...r, quantity: r.quantity - 1 } // Giảm số lượng nếu > 1
+                                    : r
+                                )
+                                .filter(
+                                  (r) => r.id !== room.id || r.quantity > 0
+                                ); // Xóa phòng nếu số lượng = 0
+
+                              // Ẩn card nếu không còn phòng
+                              if (updatedRooms.length === 0) {
+                                setShowCard(false);
+                              }
+
+                              return updatedRooms;
+                            });
                           }}
                         >
                           <i className="fas fa-minus"></i>
                         </button>
+
                         <span>{room.quantity}</span>
                         <button
                           className="btn btn-link px-2"
@@ -489,7 +532,7 @@ function AccommodationCard({ className, onClick, accomodation }) {
                   <div className="total-price d-flex justify-content-end mb-3">
                     <h5>
                       Tổng tiền:{" "}
-                      {convertToVND(
+                      {convertToVNDDB(
                         selectedRooms.reduce(
                           (total, room) =>
                             total +
@@ -513,8 +556,10 @@ function AccommodationCard({ className, onClick, accomodation }) {
                   <RoomCard
                     key={room.id} // Key là duy nhất trong danh sách
                     img={room.img}
-                    roomSize={room.roomSize}
-                    priceOneNight={room.priceOneNight}
+                    typeRoom={room.typeOfRoom}
+                    amenities={room.roomAmenities.slice(0, 4)}
+                    roomSize={room.maxSize}
+                    priceOneNight={room.price}
                     onBook={() => handleSelectRoom(room)} // Truyền callback đúng cách
                   />
                 ))}
@@ -581,26 +626,26 @@ function AccommodationCard({ className, onClick, accomodation }) {
   );
 }
 
-const rooms = [
-  {
-    id: 1,
-    img: imghotel,
-    roomSize: "Phòng đơn 1 người",
-    priceOneNight: "200,000",
-  },
-  {
-    id: 2,
-    img: imghotel,
-    roomSize: "Phòng đôi 2 người",
-    priceOneNight: "350,000",
-  },
-  {
-    id: 3,
-    img: imghotel,
-    roomSize: "Phòng gia đình 4 người",
-    priceOneNight: "500,000",
-  },
-];
+// const rooms = [
+//   {
+//     id: 1,
+//     img: imghotel,
+//     roomSize: "Phòng đơn 1 người",
+//     priceOneNight: "200,000",
+//   },
+//   {
+//     id: 2,
+//     img: imghotel,
+//     roomSize: "Phòng đôi 2 người",
+//     priceOneNight: "350,000",
+//   },
+//   {
+//     id: 3,
+//     img: imghotel,
+//     roomSize: "Phòng gia đình 4 người",
+//     priceOneNight: "500,000",
+//   },
+// ];
 
 function CheckInOut({ checkIn, checkOut }) {
   return (

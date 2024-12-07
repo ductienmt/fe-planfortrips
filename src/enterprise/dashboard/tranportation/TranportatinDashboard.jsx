@@ -50,6 +50,11 @@ const TranportatinDashboard = () => {
       key: "",
     },
     {
+      title: "Biển số",
+      dataIndex: "",
+      key: "",
+    },
+    {
       title: "Giá vé",
       dataIndex: "",
       key: "",
@@ -86,7 +91,7 @@ const TranportatinDashboard = () => {
 
             {/* Card2 */}
             <div className="card-2-container-t">
-              <ChartReportCardt amount="5.000.000" />
+              <ChartReportCardt />
             </div>
 
             {/* Card3 */}
@@ -99,6 +104,33 @@ const TranportatinDashboard = () => {
               <section className="comment-content-t">
                 <CommentCardt commentCount={100} />
               </section>
+            </div>
+          </div>
+          <div className="card5-container-t mt-3">
+            {/* Card5 */}
+            <h1
+              style={{
+                fontSize: "30px",
+                textTransform: "uppercase",
+                color: "#ADADAD",
+              }}
+            >
+              Quản lý xe
+            </h1>
+            <div className="table-card5-t ">
+              <Table
+                dataSource={transData}
+                columns={columns}
+                // pagination={{
+                //   current: currentPage,
+                //   pageSize: pageSize,
+                //   total: dataSource.length,
+                //   onChange: (page, pageSize) => {
+                //     setCurrentPage(page);
+                //     setPageSize(pageSize);
+                //   },
+                // }}
+              />
             </div>
           </div>
         </div>

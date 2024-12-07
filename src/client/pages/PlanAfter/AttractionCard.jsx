@@ -28,7 +28,7 @@ function AttractionCard({ className, onClick, onNext, onBack, checkin }) {
           if (!place.images) {
             const id = place.id;
             const imagesResponse = await CheckinService.getImageById(id);
-            console.log(imagesResponse);
+            // console.log(imagesResponse);
 
             if (imagesResponse?.data?.length > 0) {
               const randomImage =
