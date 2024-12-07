@@ -228,7 +228,7 @@ const routeClient = () => [
             Component: Hotel,
           },
           {
-            path: "/hotel-page/detail",
+            path: "/hotel-page/:id",
             Component: DetailCard,
           },
           {

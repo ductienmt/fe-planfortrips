@@ -46,7 +46,7 @@ export const UserService = {
   },
   findUserByUsername: async (userName) => {
     const response = await Http.get(
-      `api/v1/users/findByUsername?username=${userName}`
+      `users/findByUsername?username=${userName}`
     );
     return response.data;
   },

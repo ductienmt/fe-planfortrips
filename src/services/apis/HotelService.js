@@ -10,7 +10,6 @@ export const HotelService = {
   },
   findHotelById: async (id) => {
     const response = await Http.get(`/hotels/getById/${id}`);
-    console.log(response);
     return response.data;
   },
   update: async (hotelId, data) => {
@@ -31,4 +30,9 @@ export const HotelService = {
     );
     return response.data;
   },
+  getAvailableHotels: async (keyword,date,days,page,limit)=>{
+    const response = await Http.get(`/hotels/findHotelAvailable?keyword=${keyword}&date=${date}&days=${days}&page=${page}&limit=${limit}`);
+    console.log(response);
+    return response.data;
+  }
 };
