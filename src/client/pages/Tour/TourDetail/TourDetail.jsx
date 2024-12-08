@@ -69,6 +69,16 @@ function TourDetail() {
     return availableDates.includes(formattedDate);
   };
 
+  const [activeStep, setActiveStep] = useState(0);
+
+  const handleNext = () => {
+    setActiveStep((prevStep) => (prevStep + 1) % 2);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevStep) => (prevStep - 1 + 2) % 2);
+  };
+
   const handleDateChange = (date) => {
     setSelectedDate(date);
 
@@ -114,188 +124,288 @@ function TourDetail() {
     });
   };
 
-
-  const [activeStep, setActiveStep] = useState(0);
-
-  const handleNext = () => {
-    setActiveStep((prevStep) => (prevStep + 1) % 2);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevStep) => (prevStep - 1 + 2) % 2);
-  };
-
   const [showMore, setShowMore] = useState(false);
   const shortDescription = tourDetail?.description.slice(0, 150);
 
-  const [bookTour, setBookTour] = useState({
-    room: [],
-    seatsOrigin: [],
-    seatDes: [],
+  // Phòng
+  const [rooms, setRooms] = useState([]);
+
+  const [messageErrorRoom, setMessageErrorRoom] = useState({
+    message: "Vui lòng chọn phòng",
+    status: 'Not Selected',
+    size : 0
   });
 
+  useEffect(() => {
+    effectRoom();
+  }, [rooms])
 
-  const handleAddSeatDes = (seat) => {
-    const seatExist = bookTour.seatDes.find((s) => s.seatId == seat.seatId);
-
-
-    if (seatExist) {
-      const newBookSeat = bookTour.seatDes.filter((s) => s.seatId !== seat.seatId);
-      setBookTour((prev) => ({
-        ...prev,
-        seatDes: newBookSeat,
-      }));
-      return;
+  const effectRoom = () => {
+    if (tourDetail) {
+      const maxSizeRoom = rooms.reduce((accumulator, room) => {
+        return accumulator + room.maxSize
+      }, 0);
+      if (maxSizeRoom > tourDetail.numberPeople) {
+        setMessageErrorRoom({
+          message: "Sức chứa hiện tại đang vượt quá số người cần thiết",
+          status: "Excessive",
+          size : maxSizeRoom
+        });
+        return;s
+      }
+      else if (maxSizeRoom == tourDetail.numberPeople) {
+        setMessageErrorRoom({
+          message: "Tuyệt vời, bạn đã chọn vừa đủ với số lượng người",
+          status: "Sufficient",
+          size : maxSizeRoom
+        });
+        return;
+      }
+      else {
+        setMessageErrorRoom({
+          message: "Chưa chọn đủ số phòng",
+          status: "Not Enough",
+          size : maxSizeRoom
+        });
+        return;
+      }
     }
-    setBookTour((prev) => ({
-      ...prev,
-      seatDes: [...prev.seatDes, seat],
-    }));
-  };
+  }
+
+  const handleAddRoom = (rAdd) => {
+    setRooms([...rooms, rAdd]);
+  }
+
+  const handleRemoveRoom = (rRemove) => {
+    const newRooms = rooms.filter(r => r.id != rRemove.id);
+    setRooms(newRooms);
+  }
+
+  
+
+
+  // Ghế khởi hành
+  const [seatOrigin, setSeatOrigin] = useState([]);
+
+  // Ghế trở về
+  const [seatDes, setSeatDes] = useState([])
 
   const handleAddSeatOrigin = (seat) => {
-    const seatExist = bookTour.seatsOrigin.find((s) => s.seatId == seat.seatId);
-
-    if (seatExist) {
-      const newBookSeat = bookTour.seatsOrigin.filter((s) => s.seatId !== seat.seatId);
-      setBookTour((prev) => ({
-        ...prev,
-        seatsOrigin: newBookSeat,
-      }));
-      return;
+    if (seatOrigin.some(existingSeat => existingSeat.seatId === seat.seatId)) {
+      setSeatOrigin(seatOrigin.filter(existingSeat => existingSeat.seatId !== seat.seatId));
+    } else {
+      setSeatOrigin([...seatOrigin, seat]);
     }
-    setBookTour((prev) => ({
-      ...prev,
-      seatsOrigin: [...prev.seatsOrigin, seat],
-    }));
+  };
+  
+  const handleAddSeatDes = (seat) => {
+    if (seatDes.some(existingSeat => existingSeat.seatId === seat.seatId)) {
+      setSeatDes(seatDes.filter(existingSeat => existingSeat.seatId !== seat.seatId));
+    } else {
+      setSeatDes([...seatDes, seat]);
+    }
+  };
+
+  const [messageErrorSeatDes, setMessageErrorSeatDes] = useState({
+    message: "Vui lòng chọn ghế cho chuyến đi",
+    status: "Not Selected",
+    size: 0
+  });
+  
+  const [messageErrorSeatOrigin, setMessageErrorSeatOrigin] = useState({
+    message: "Vui lòng chọn ghế cho chuyến về",
+    status: "Not Selected",
+    size: 0
+  });
+
+  useEffect(() => {
+    effectSeats();
+  }, [seatDes, seatOrigin]);
+
+  const effectSeats = () => {
+    const totalSeatsDes = seatDes.length;
+    const totalSeatsOrigin = seatOrigin.length;
+    
+    if (tourDetail) {
+      if (totalSeatsDes > tourDetail.numberPeople) {
+        setMessageErrorSeatDes({
+          message: "Số ghế đã chọn vượt quá số người cần thiết cho chuyến đi",
+          status: "Excessive",
+          size: totalSeatsDes
+        });
+      } else if (totalSeatsDes === tourDetail.numberPeople) {
+        setMessageErrorSeatDes({
+          message: "Tuyệt vời, bạn đã chọn vừa đủ ghế cho chuyến đi",
+          status: "Sufficient",
+          size: totalSeatsDes
+        });
+      } else {
+        setMessageErrorSeatDes({
+          message: "Chưa chọn đủ số ghế cho chuyến đi",
+          status: "Not Enough",
+          size: totalSeatsDes
+        });
+      }
+  
+      // Kiểm tra ghế cho chuyến về
+      if (totalSeatsOrigin > tourDetail.numberPeople) {
+        setMessageErrorSeatOrigin({
+          message: "Số ghế đã chọn vượt quá số người cần thiết cho chuyến về",
+          status: "Excessive",
+          size: totalSeatsOrigin
+        });
+      } else if (totalSeatsOrigin === tourDetail.numberPeople) {
+        setMessageErrorSeatOrigin({
+          message: "Tuyệt vời, bạn đã chọn vừa đủ ghế cho chuyến về",
+          status: "Sufficient",
+          size: totalSeatsOrigin
+        });
+      } else {
+        setMessageErrorSeatOrigin({
+          message: "Chưa chọn đủ số ghế cho chuyến về",
+          status: "Not Enough",
+          size: totalSeatsOrigin
+        });
+      }
+    }
   };
 
 
+  const [messageError, setMessageError] = useState(""); 
+useEffect(() => {
+ if (tourDetail) {
+  checkSeatsAndRooms();
+ }
+}, [seatOrigin, rooms]);
 
+const checkSeatsAndRooms = () => {
+  const selectedSeats = seatOrigin.length;
+  const maxSeats = tourDetail.numberPeople;
 
+  const roomSize = rooms.reduce((accumulator, room) => {
+    return accumulator + room.maxSize
+  }, 0);;
+  const maxRooms = tourDetail.numberPeople;
 
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const toggleModal = () => {
-    if (!tripData) {
-      alert("Chưa chọn ngày");
-      return;
-    }
-
-    setIsModalOpen(!isModalOpen);
+  if (selectedSeats < maxSeats && roomSize < maxRooms) {
+    setMessageError("Chưa chọn đủ ghế và phòng.");
+  } else if (selectedSeats < maxSeats) {
+    setMessageError("Chưa chọn đủ ghế.");
+  } else if (roomSize < maxRooms) {
+    setMessageError("Chưa chọn đủ phòng.");
+  } else {
+    setMessageError(""); 
   }
+};
+
+const handleSubmit = () => {
+  
+  if (!messageError) {
+      sessionStorage.setItem('tourData', JSON.stringify({
+        carCompany : tourDetail.carCompanyResponse,
+        seat : {
+          seatDes,
+          seatOrigin
+        },
+        scheduleDes : tourDetail.scheduleDes,
+        scheduleOrigin : tourDetail.scheduleOrigin,
+        room : rooms,
+        Hotel : tourDetail.hotelResponse
+      }));
+      alert("Đặt tour thành công")
+  }
+};
+  
+
 
   return (
     <>
       {tourDetail ? (
         <div className="detail-tour-info">
+          {/* Header */}
           <div className="detail-tour-header">
             <h2 className="detail-tour-title">{tourDetail.title}</h2>
             <p className="detail-tour-description">
               {showMore ? tourDetail.description : shortDescription}
-              {tourDetail.description.length > 150 && !showMore && (
+              {tourDetail.description.length > 150 && (
                 <button
-                  onClick={() => setShowMore(true)}
-                  style={{
-                    color: "blue",
-                    textDecoration: "underline",
-                    cursor: "pointer",
-                    outline: "none",
-                    backgroundColor: "#00c6ff",
-                    border: "none",
-                  }}
+                  onClick={() => setShowMore(!showMore)}
+                  className="toggle-description-btn"
                 >
-                  Xem thêm
-                </button>
-              )}
-              {showMore && (
-                <button
-                  onClick={() => setShowMore(false)}
-                  style={{
-                    color: "blue",
-                    textDecoration: "underline",
-                    cursor: "pointer",
-                  }}
-                >
-                  Thu gọn
+                  {showMore ? "Thu gọn" : "Xem thêm"}
                 </button>
               )}
             </p>
           </div>
 
+          {/* Summary */}
           <div className="detail-tour-summary">
             <div className="detail-summary-item text-center">
-              <div className="" style={{ margin: "auto" }}>
-                <span className="detail-icon">👥</span>
-                <span className="detail-text">
-                  <b>{tourDetail.numberPeople}</b> Người
-                </span>
-              </div>
+              <span className="detail-icon">👥</span>
+              <span className="detail-text">
+                <b>{tourDetail.numberPeople}</b> Người
+              </span>
             </div>
             <div className="detail-summary-item">
-              <div className="" style={{ margin: "auto" }}>
-                <span className="detail-icon">⭐</span>
-                <span className="detail-text">
-                  {tourDetail.rating} Đánh giá
-                </span>
-              </div>
+              <span className="detail-icon">⭐</span>
+              <span className="detail-text">{tourDetail.rating} Đánh giá</span>
             </div>
             <div className="detail-summary-item">
-              <div className="" style={{ margin: "auto" }}>
-                <span className="detail-icon">⏳</span>
-                <span className="detail-text">
-                  {tourDetail.day} ngày {tourDetail.night} đêm
-                </span>
+              <span className="detail-icon">⏳</span>
+              <span className="detail-text">
+                {tourDetail.day} ngày {tourDetail.night} đêm
+              </span>
+            </div>
+          </div>
+
+          {/* Car Info */}
+          {tourDetail.carCompanyResponse && (
+            <div className="detail-car-info">
+              <h4 className="detail-section-title">Thông tin Nhà xe</h4>
+              <div className="detail-info-item">
+                🚍 {tourDetail.carCompanyResponse.carCompanyName}
+              </div>
+              <div className="detail-info-item">
+                Mã: {tourDetail.carCompanyResponse.carCompanyId}
               </div>
             </div>
-          </div>
+          )}
 
-          {/* Thông tin Nhà xe */}
-          <div className="detail-car-info">
-            <h4 className="detail-section-title">Thông tin Nhà xe</h4>
-            <div className="detail-info-item">
-              🚍 {tourDetail.carCompanyResponse.carCompanyName}
-            </div>
-            <div className="detail-info-item">
-              Mã: {tourDetail.carCompanyResponse.carCompanyId}
-            </div>
-          </div>
-
-          {/* Thông tin Khách sạn */}
-          <div className="detail-hotel-info">
-            <h4 className="detail-section-title">Thông tin Khách sạn</h4>
-            <div className="detail-info-item">
-              🏨 {tourDetail.hotelResponse.name}
-            </div>
-            <div className="detail-info-item">
-              📍 {tourDetail.hotelResponse.address}
-            </div>
-            <div className="detail-info-item">
-              📞 {tourDetail.hotelResponse.phoneNumber}
-            </div>
-            <div className="detail-info-item">
-              📜 {tourDetail.hotelResponse.description}
-            </div>
-            <div className="detail-info-item">
-              ⭐ Đánh giá: {tourDetail.hotelResponse.rating}
-            </div>
-
-            {tourDetail.hotelResponse.images.length > 0 && (
-              <div className="detail-hotel-images">
-                {tourDetail.hotelResponse.images.map((img, index) => (
-                  <img
-                    key={index}
-                    className="detail-hotel-image"
-                    src={img.url}
-                    alt={`Hình ảnh khách sạn ${index}`}
-                  />
-                ))}
+          {/* Hotel Info */}
+          {tourDetail.hotelResponse && (
+            <div className="detail-hotel-info">
+              <h4 className="detail-section-title">Thông tin Khách sạn</h4>
+              <div className="detail-info-item">
+                🏨 {tourDetail.hotelResponse.name}
               </div>
-            )}
-          </div>
+              <div className="detail-info-item">
+                📍 {tourDetail.hotelResponse.address}
+              </div>
+              <div className="detail-info-item">
+                📞 {tourDetail.hotelResponse.phoneNumber}
+              </div>
+              <div className="detail-info-item">
+                📜 {tourDetail.hotelResponse.description}
+              </div>
+              <div className="detail-info-item">
+                ⭐ Đánh giá: {tourDetail.hotelResponse.rating}
+              </div>
+              {tourDetail.hotelResponse.images?.length > 0 && (
+                <div className="detail-hotel-images">
+                  {tourDetail.hotelResponse.images.map((img, index) => (
+                    <img
+                      key={`hotel-image-${index}`}
+                      className="detail-hotel-image"
+                      src={img.url}
+                      alt={`Hình ảnh khách sạn ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
-          {/* Lịch chọn ngày */}
+          {/* Calendar */}
           <div className="tour-detail-calendar">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <h4>Lịch hoạt động của tour</h4>
@@ -308,399 +418,306 @@ function TourDetail() {
             </LocalizationProvider>
           </div>
 
-          {/* {JSON.stringify(tripData)} */}
-          {tripData == null ? (
-            <p>...</p>
-          ) : (
-            <>
-              <Box sx={{ padding: 3 }}>
-                {/* Rooms List */}
-                <Grid container spacing={3} justifyContent="center">
-                  {tripData.rooms.map((room) => (
-                    <Grid item xs={12} sm={6} md={4} key={room.id}>
-                      <Card className={bookTour.room.includes(room) ? 'room-active' : 'tour-card-hover'}
+          <div className="tour-detail-date">
+
+          {tripData && 
+           <>
+             {/* Chọn phòng */}
+             <h4>Select Room</h4>
+
+{/* Status Room */}
+  <span
+    className={`tour-detail-notification ${messageErrorRoom.status === "Not Selected"
+        ? "not-selected"
+        : messageErrorRoom.status === "Excessive"
+          ? "excessive"
+          : messageErrorRoom.status === "Sufficient"
+            ? "sufficient"
+            : "not-enough"
+      }`}
+  >
+    {messageErrorRoom.message}  
+    <span className="fs-4 ms-2 text-danger">{messageErrorRoom.size}</span> /{" "}
+    <span className="text-info fs-4 fw-bold">
+      {tourDetail?.numberPeople} người
+    </span>
+  </span>
+
+
+  <div className="tour-detail-date-room">
+    {tripData?.rooms.map((room, index) => (
+      <div
+        key={room.id}
+        className={`tour-detail-room-card d-flex flex-column justify-content-between ${rooms.includes(room) ? 'tour-detail-room-selected' : ''}`}
+      >
+        <div className="tour-detail-room-card-info">
+          <h3 className="tour-detail-room-name">{room.roomName}</h3>
+          <p className="tour-detail-room-type">Loại phòng: {room.typeOfRoom}</p>
+          <p className="tour-detail-room-price">Giá: {room.price} VND</p>
+          <p className="tour-detail-room-rating">Đánh giá: {room.rating}</p>
+          <p className="tour-detail-room-max-size">Số người tối đa: {room.maxSize}</p>
+          <p className=""><span className="text-info fw-bold">Check In Time:</span> {new Date(room.checkInTime).toISOString().slice(0, 19).replace("T", " ")}</p>
+          <p className=""><span className="text-info fw-bold">Check Out Time:</span> {new Date(room.checkOutTime).toISOString().slice(0, 19).replace("T", " ")}</p>
+        </div>
+
+        {/* Tiện nghi phòng (chỉ hiển thị tên) */}
+        {room.roomAmenities.length > 0 ? (
+          <div className="tour-detail-room-amenities">
+            <h4>Tiện nghi</h4>
+            <ul>
+              {room.roomAmenities.map((amenity) => (
+                <li key={amenity.id}>{amenity.name}</li>
+              ))}
+            </ul>
+          </div>
+        ) : <span className="text-danger">**Không có thông tin về tiện nghi**</span>}
+
+        <div className="tour-detail-room-card-footer mt-4">
+          {/* Nút chọn phòng */}
+          {rooms.includes(room) ? (
+            <button className="btn btn-success w-100" onClick={() => handleRemoveRoom(room)}>Hủy</button>
+          ) : <button className="btn btn-outline-success w-100" onClick={() => handleAddRoom(room)}>Chọn phòng</button>}
+        </div>
+
+        {/* Lớp phủ nếu phòng đã được chọn */}
+        {rooms.includes(room) && (
+          <div className="tour-detail-room-overlay">
+            <span className="tour-detail-overlay-text">Đã chọn</span>
+          </div>
+        )}
+      </div>
+    ))}
+  </div>
+
+  {/* Chọn tuyến đi */}
+
+
+
+       <Box sx={{ width: "100%", padding: 3 }}>
+        <Stepper activeStep={activeStep} alternativeLabel>
+          <Step>
+            <StepLabel>Chuyến đi</StepLabel>
+          </Step>
+          <Step>
+            <StepLabel>Chuyến về</StepLabel>
+          </Step>
+        </Stepper>
+
+        <Grid container spacing={3} justifyContent="center">
+          {/* Trip Detail Card */}
+          <Grid item xs={12} md={5}>
+            <Card sx={{ boxShadow: 3, borderRadius: 2 }}>
+              <CardContent>
+                <Typography variant="h5" color="primary" gutterBottom>
+                  {activeStep === 0 ? "Chuyến đi" : "Chuyến về"}
+                </Typography>
+                <Divider sx={{ marginBottom: 2 }} />
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <Typography variant="body1">
+                      <LocationOn
                         sx={{
-                          boxShadow: 3,
-                          borderRadius: 2,
-                          padding: 2,
-                          height: "20rerm",
-                          cursor: "pointer",
+                          verticalAlign: "middle",
+                          marginRight: 1,
                         }}
-                        onClick={() => handleRoomClick(room)}
-                      >
-                        <CardContent>
-                          <Typography
-                            variant="h6"
-                            gutterBottom
-                            sx={{ fontWeight: "bold" }}
-                          >
-                            Phòng {room.roomName}
-                          </Typography>
-                          <Divider sx={{ marginBottom: 2 }} />
-
-                          <Typography variant="body1" sx={{ marginBottom: 1 }}>
-                            <strong>Loại phòng:</strong> {room.typeOfRoom}
-                          </Typography>
-
-                          <Typography variant="body1" sx={{ marginBottom: 1 }}>
-                            <strong>Thời gian CheckIn (dự kiến):</strong> <br />
-                            <span className="text-danger fw-bold">
-                              {room.checkInTime.replace('T', ' ')}
-                            </span>
-                          </Typography>
-
-                          <Typography variant="body1" sx={{ marginBottom: 1 }}>
-                            <strong>Thời gian CheckOut (dự kiến):</strong> <br />
-                            <span className="text-danger fw-bold">
-                              {room.checkOutTime.replace('T', ' ')}
-                            </span>
-                          </Typography>
-
-                          <Typography variant="body1" sx={{ marginBottom: 1 }}>
-                            <div className="d-flex flex-wrap align-items-center">
-                              <span className="fs-5 fw-bold me-3">Trang thiết bị:</span>
-                              {room.roomAmenities && room.roomAmenities.length > 0 ? (
-                                room.roomAmenities.map((rA) => (
-                                  <div
-                                    className="badge bg-light text-info border me-2 mb-2 fs-6"
-                                    style={{ whiteSpace: 'nowrap' }}
-                                    key={rA.id}
-                                  >
-                                    {rA.name}
-                                  </div>
-                                ))
-                              ) : (
-                                <span>Không có dữ liệu</span>
-                              )}
-                            </div>
-                          </Typography>
-
-
-                          <Typography variant="body1" sx={{ marginBottom: 1 }}>
-                            <strong>Giá:</strong> {room.price} VND
-                          </Typography>
-                          <Typography variant="body1" sx={{ marginBottom: 1 }}>
-                            <strong>Chỗ ở tối đa:</strong> {room.maxSize} người
-                          </Typography>
-                          <Typography
-                            variant="body1"
-                            color={room.available ? "green" : "red"}
-                            sx={{ marginBottom: 2 }}
-                          >
-                            <strong>Trạng thái:</strong>{" "}
-                            {room.available ? "Có sẵn" : "Hết phòng"}
-                          </Typography>
-
-                          {room.rating > 0 ? (
-                            <Box
-                              sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                marginTop: 1,
-                              }}
-                            >
-                              <Rating
-                                value={room.rating}
-                                readOnly
-                                sx={{ marginRight: 1 }}
-                              />
-                              <Typography variant="body2" sx={{ fontSize: 14 }}>
-                                {room.rating} / 5
-                              </Typography>
-                            </Box>
-                          ) : (
-                            <Typography variant="body2" sx={{ fontSize: 14 }}>
-                              Chưa có đánh giá
-                            </Typography>
-                          )}
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                  ))}
-                </Grid>
-
-                {/* Trip Details Stepper */}
-                <Box sx={{ width: "100%", padding: 3 }}>
-                  <Stepper activeStep={activeStep} alternativeLabel>
-                    <Step>
-                      <StepLabel>Chuyến đi</StepLabel>
-                    </Step>
-                    <Step>
-                      <StepLabel>Chuyến về</StepLabel>
-                    </Step>
-                  </Stepper>
-
-                  <Grid container spacing={3} justifyContent="center">
-                    {/* Trip Detail Card */}
-                    <Grid item xs={12} md={5}>
-                      <Card sx={{ boxShadow: 3, borderRadius: 2 }}>
-                        <CardContent>
-                          <Typography variant="h5" color="primary" gutterBottom>
-                            {activeStep === 0 ? "Chuyến đi" : "Chuyến về"}
-                          </Typography>
-                          <Divider sx={{ marginBottom: 2 }} />
-                          <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                              <Typography variant="body1">
-                                <LocationOn
-                                  sx={{
-                                    verticalAlign: "middle",
-                                    marginRight: 1,
-                                  }}
-                                />
-                                <strong>Lộ trình:</strong>{" "}
-                                {activeStep === 0
-                                  ? tripData.scheduleDes.routeId
-                                  : tripData.scheduleOrigin.routeId}
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                              <Typography variant="body1">
-                                <DirectionsBus
-                                  sx={{
-                                    verticalAlign: "middle",
-                                    marginRight: 1,
-                                  }}
-                                />
-                                <strong>Điểm đi:</strong>{" "}
-                                {activeStep === 0
-                                  ? tripData.scheduleDes.departureName
-                                  : tripData.scheduleOrigin.departureName}
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                              <Typography variant="body1">
-                                <LocationOn
-                                  sx={{
-                                    verticalAlign: "middle",
-                                    marginRight: 1,
-                                  }}
-                                />
-                                <strong>Điểm đến:</strong>{" "}
-                                {activeStep === 0
-                                  ? tripData.scheduleDes.arrivalName
-                                  : tripData.scheduleOrigin.arrivalName}
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                              <Typography variant="body1">
-                                <Schedule
-                                  sx={{
-                                    verticalAlign: "middle",
-                                    marginRight: 1,
-                                  }}
-                                />
-                                <strong>Thời gian khởi hành:</strong>{" "}
-                                {activeStep === 0
-                                  ? new Date(tripData.scheduleDes.departureTime).toLocaleString()
-                                  : new Date(tripData.scheduleOrigin.departureTime).toLocaleString()}
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                              <Typography variant="body1">
-                                <Schedule
-                                  sx={{
-                                    verticalAlign: "middle",
-                                    marginRight: 1,
-                                  }}
-                                />
-                                <strong>Thời gian đến:</strong>{" "}
-                                {activeStep === 0
-                                  ? new Date(tripData.scheduleDes.arrivalTime).toLocaleString()
-                                  : new Date(tripData.scheduleOrigin.arrivalTime).toLocaleString()}
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                              <Typography variant="body1">
-                                <AttachMoney
-                                  sx={{
-                                    verticalAlign: "middle",
-                                    marginRight: 1,
-                                  }}
-                                />
-                                <strong>Giá vé:</strong>{" "}
-                                {activeStep === 0
-                                  ? tripData.scheduleDes.priceForOneTicket + '.000VND'
-                                  : tripData.scheduleOrigin.priceForOneTicket + '.000VND'}
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                              <Typography variant="body1">
-                                <People
-                                  sx={{
-                                    verticalAlign: "middle",
-                                    marginRight: 1,
-                                  }}
-                                />
-                                <strong>Số ghế trống:</strong>{" "}
-                                {activeStep === 0
-                                  ? tripData.scheduleSeatsDes.length
-                                  : tripData.scheduleSeatsOrigin.length}
-                              </Typography>
-                            </Grid>
-                          </Grid>
-                        </CardContent>
-                      </Card>
-                    </Grid>
-
-                    {/* Available Seats */}
-                    <Grid item xs={12} md={5}>
-                      <Card sx={{ boxShadow: 3, borderRadius: 2 }}>
-                        <CardContent>
-                          <Typography variant="h5" color="primary" gutterBottom>
-                            Ghế trống
-                          </Typography>
-                          <Divider sx={{ marginBottom: 2 }} />
-                          <Grid container spacing={1} justifyContent="center">
-                            {activeStep === 0
-                              ? tripData.scheduleSeatsDes.map((seat) => (
-                                <Grid item key={seat.seatId} style={{ cursor: 'pointer' }}
-                                  className={bookTour.seatDes.some(selectedSeat => selectedSeat.seatId === seat.seatId) ? 'seat-active' : ''}
-                                >
-                                  <Chip
-                                    label={seat.seatNumber}
-                                    color="primary"
-                                    onClick={() => handleAddSeatDes(seat)}
-                                    sx={{ margin: 0.5 }}
-                                  />
-                                </Grid>
-                              ))
-                              : tripData.scheduleSeatsOrigin.map((seat) => (
-                                <Grid item key={seat.seatId}
-                                  className={bookTour.seatsOrigin.includes(seat) ? 'seat-active' : ''}
-                                >
-                                  <Chip
-                                    label={seat.seatNumber}
-                                    onClick={() => handleAddSeatOrigin(seat)}
-                                    sx={{ margin: 0.5 }}
-                                  />
-                                </Grid>
-                              ))}
-                          </Grid>
-                        </CardContent>
-                      </Card>
-                    </Grid>
+                      />
+                      <strong>Lộ trình:</strong>{" "}
+                      {activeStep === 0
+                        ? tripData.scheduleDes.routeId
+                        : tripData.scheduleOrigin.routeId}
+                    </Typography>
                   </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body1">
+                      <DirectionsBus
+                        sx={{
+                          verticalAlign: "middle",
+                          marginRight: 1,
+                        }}
+                      />
+                      <strong>Điểm đi:</strong>{" "}
+                      {activeStep === 0
+                        ? tripData.scheduleDes.departureName
+                        : tripData.scheduleOrigin.departureName}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body1">
+                      <LocationOn
+                        sx={{
+                          verticalAlign: "middle",
+                          marginRight: 1,
+                        }}
+                      />
+                      <strong>Điểm đến:</strong>{" "}
+                      {activeStep === 0
+                        ? tripData.scheduleDes.arrivalName
+                        : tripData.scheduleOrigin.arrivalName}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body1">
+                      <Schedule
+                        sx={{
+                          verticalAlign: "middle",
+                          marginRight: 1,
+                        }}
+                      />
+                      <strong>Thời gian khởi hành:</strong>{" "}
+                      {activeStep === 0
+                        ? new Date(tripData.scheduleDes.departureTime).toLocaleString()
+                        : new Date(tripData.scheduleOrigin.departureTime).toLocaleString()}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body1">
+                      <Schedule
+                        sx={{
+                          verticalAlign: "middle",
+                          marginRight: 1,
+                        }}
+                      />
+                      <strong>Thời gian đến:</strong>{" "}
+                      {activeStep === 0
+                        ? new Date(tripData.scheduleDes.arrivalTime).toLocaleString()
+                        : new Date(tripData.scheduleOrigin.arrivalTime).toLocaleString()}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body1">
+                      <AttachMoney
+                        sx={{
+                          verticalAlign: "middle",
+                          marginRight: 1,
+                        }}
+                      />
+                      <strong>Giá vé:</strong>{" "}
+                      {activeStep === 0
+                        ? tripData.scheduleDes.priceForOneTicket + '.000VND'
+                        : tripData.scheduleOrigin.priceForOneTicket + '.000VND'}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body1">
+                      <People
+                        sx={{
+                          verticalAlign: "middle",
+                          marginRight: 1,
+                        }}
+                      />
+                      <strong>Số ghế trống:</strong>{" "}
+                      {activeStep === 0
+                        ? tripData.scheduleSeatsDes.length
+                        : tripData.scheduleSeatsOrigin.length}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
+          </Grid>
 
-                  <Box sx={{ mt: 2, textAlign: "center" }}>
-                    <Button
-                      variant="outlined"
-                      color="secondary"
-                      onClick={handleBack}
-                      disabled={activeStep === 0}
-                    >
-                      Quay lại
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      sx={{ ml: 2 }}
-                      onClick={handleNext}
-                    >
-                      {activeStep === 0 ? "Chuyến về" : "Chuyến đi"}
-                    </Button>
-                  </Box>
-                </Box>
-              </Box>
-            </>
-          )}
-          <>
-            <div>
-              {/* Button trigger modal */}
-              <button
-                type="button"
-                className="btn btn-outline-success w-100 fw-bold fs-4"
-                onClick={toggleModal}
-              >
-                Đặt tour
-              </button>
-
-              {/* Modal */}
-              {isModalOpen && (
-                <div
-                  className="modal fade show"
-                  style={{ display: "block" }}
-                  role="dialog"
-                  aria-labelledby="exampleModalLabel"
-                  aria-hidden="true"
-                >
-                  <div className="modal-dialog" role="document">
-                    <div className="modal-content">
-                      <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">
-                          Danh sách đã chọn
-                        </h5>
+          {/* Available Seats */}
+          <Grid item xs={12} md={5}>
+            <Card sx={{ boxShadow: 3, borderRadius: 2 }}>
+              <CardContent>
+                <Typography variant="h5" color="primary" gutterBottom>
+                  Ghế trống
+                </Typography>
+                <Divider sx={{ marginBottom: 2 }} />
+                <Grid container spacing={1} justifyContent="center">
+                  {activeStep === 0
+                    ? <>
+                      {tripData.scheduleSeatsDes.map((seat) => (
+                      <div item key={seat.seatId} style={{ cursor: 'pointer', marginRight : '10px' }} onClick={() => handleAddSeatDes(seat)}  
+                      >
+                        <Chip
+                          label={seat.seatNumber}
+                          onClick={() => handleAddSeatDes(seat)}
+                          sx={{ margin: 0.5, borderRadius: '5px', fontSize: '1rem' }}
+                          className={seatDes.includes(seat) ? 'tour-detail-seat-active' : ''}
+                          disabled={seatDes.length >= tourDetail.numberPeople && !seatOrigin.includes(seat)}
+                          
+                        />
                       </div>
-                      <div className="modal-body">
-                        <Box sx={{ marginTop: 3 }}>
-                          <Typography variant="h6">Phòng đã chọn:</Typography>
-                          {bookTour.room.length > 0 ? (
-                            bookTour.room.map((selectedRoom, index) => (
-                              <Typography key={index} variant="body1">
-                                - {selectedRoom.roomName}: {selectedRoom.price} VND
-                              </Typography>
-                            ))
-                          ) : (
-                            <Typography variant="body2">Chưa chọn phòng nào.</Typography>
-                          )}
+                    ))}
+                    </>
+                    : tripData.scheduleSeatsOrigin.map((seat) => (
+                      <Grid item key={seat.seatId} 
+                      >
+                        <Chip
+                          label={seat.seatNumber}
+                          onClick={() => handleAddSeatOrigin(seat)}
+                          sx={{ margin: 0.5, borderRadius: '5px', fontSize: '1rem' }}
+                          className={seatOrigin.includes(seat) ? 'tour-detail-seat-active' : ''}
+                          disabled={seatOrigin.length >= tourDetail.numberPeople && !seatOrigin.includes(seat)}
+                        />
+                      </Grid>
+                    ))}
+                </Grid>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+        <div className="tour-detail-schedule-notification d-flex justify-content-around mt-3">
+  {/* Thông báo trạng thái ghế cho chuyến đi */}
+  <div className={`seat-status-message ${messageErrorSeatDes.status.toLowerCase()}`}>
+    <span>{messageErrorSeatDes.message}</span>
+  </div>
 
-                          <Typography variant="h6" sx={{ marginTop: 2 }}>Ghế đã chọn:</Typography>
-                          {bookTour.seatsOrigin.length > 0 || bookTour.seatDes.length > 0 ? (
-                            <>
-                              {bookTour.seatsOrigin.length > 0 && (
-                                <>
-                                  <Typography variant="body1">Ghế khởi hành (Đi từ điểm khởi hành):</Typography>
-                                  {bookTour.seatsOrigin.map((seat, index) => (
-                                    <Typography key={index} variant="body1">
-                                      - Ghế {seat.seatNumber}
-                                    </Typography>
-                                  ))}
-                                </>
-                              )}
-                              {bookTour.seatDes.length > 0 && (
-                                <>
-                                  <Typography variant="body1" sx={{ marginTop: 1 }}>Ghế điểm đến (Đi đến điểm đến):</Typography>
-                                  {bookTour.seatDes.map((seat, index) => (
-                                    <Typography key={index} variant="body1">
-                                      - Ghế {seat.seatNumber}
-                                    </Typography>
-                                  ))}
-                                </>
-                              )}
-                            </>
-                          ) : (
-                            <Typography variant="body2">Chưa chọn ghế nào.</Typography>
-                          )}
-                        </Box>
+  {/* Thông báo trạng thái ghế cho chuyến về */}
+  <div className={`seat-status-message ${messageErrorSeatOrigin.status.toLowerCase()}`}>
+    <span>{messageErrorSeatOrigin.message}</span>
+  </div>
+</div>
 
 
-                      </div>
-                      <div className="modal-footer">
-                        <button
-                          type="button"
-                          className="btn btn-secondary"
-                          onClick={toggleModal}
-                        >
-                          Hủy
-                        </button>
-                        <button type="button" className="btn btn-primary">
-                          Đồng ý và thanh toán
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </>
+        <Box sx={{ mt: 2, textAlign: "center" }}>
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={handleBack}
+            disabled={activeStep === 0}
+          >
+            Quay lại
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ ml: 2 }}
+            onClick={handleNext}
+          >
+            {activeStep === 0 ? "Chuyến về" : "Chuyến đi"}
+          </Button>
+        </Box>
+      </Box>
+      <div>
+      <div>
+  <div className="tour-detail-schedule-notification">
+    <span>{messageError}</span>
+  </div>
+
+  <button
+    className="w-100 btn btn-primary fs-4"
+    disabled={messageError !== ""} 
+    onClick={handleSubmit}
+  >
+    Đặt tour
+  </button>
+</div>
+</div>
+          </>}
+
+          </div>
+
+
+
         </div>
       ) : (
-        <Box sx={{ display: "flex", justifyContent: "center", marginTop: 4 }}>
-          <CircularProgress />
-        </Box>
+        <p>Loading...</p>
       )}
     </>
   );
+
 }
 
 export default TourDetail;
