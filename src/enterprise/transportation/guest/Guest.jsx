@@ -85,7 +85,7 @@ const Guest = () => {
               >
                 Tất cả
               </button>
-              <button
+              {/* <button
                 onClick={() => handleSelectItem("available")}
                 className={selectedItem === "available" ? "isActive" : ""}
               >
@@ -96,7 +96,7 @@ const Guest = () => {
                 className={selectedItem === "unavailable" ? "isActive" : ""}
               >
                 Đã đặt
-              </button>
+              </button> */}
             </div>
 
             <div className="nav-add-Route">

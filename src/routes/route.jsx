@@ -62,13 +62,13 @@ import schedules from "../enterprise/transportation/schedules/Schedules";
 import Seats from "../enterprise/transportation/seats/Seats";
 import Guest from "../enterprise/transportation/guest/Guest";
 import Routehotel from "../enterprise/transportation/routehotel/Routehotel";
-import React from "react";
 import { useAuth } from "../context/AuthContext/AuthProvider";
+import { EnterpriseProvider } from "../context/EnterpriseContext/EnterpriseProvider";
 
 const ROLES = {
-  CLIENT: 'ROLE_USER',
-  ADMIN: 'ROLE_ADMIN',
-  ENTERPRISE: 'ROLE_ENTERPRISE'
+  CLIENT: "ROLE_USER",
+  ADMIN: "ROLE_ADMIN",
+  ENTERPRISE: "ROLE_ENTERPRISE",
 };
 
 const ProtectedRoute = ({ allowedRoles }) => {
@@ -111,7 +111,7 @@ const routeAdmin = () => [
   {
     path: "/admin/login",
     element: <LoginAdmin />,
-  }
+  },
 ];
 
 const routeEnterprise = () => [
@@ -121,15 +121,24 @@ const routeEnterprise = () => [
     children: [
       {
         path: "",
-        element: <EnterpriseLayout />,
+        element: (
+          <EnterpriseProvider>
+            <EnterpriseLayout />
+          </EnterpriseProvider>
+        ),
         children: [
-          { path: "accomodation/dashboard", element: <AccomodationDashboard /> },
-          { path: "transportation/dashboard", element: <TranportatinDashboard /> },
+          {
+            path: "accomodation/dashboard",
+            Component: AccomodationDashboard,
+          },
+          {
+            path: "transportation/dashboard",
+            Component: TranportatinDashboard,
+          },
           {
             path: ":type/vouchers",
             Component: Voucher,
           },
-
           {
             path: "transportation/vehicle-schedules",
             Component: Schedules,
@@ -142,7 +151,6 @@ const routeEnterprise = () => [
             path: "transportation/vehicle-management",
             Component: Vehicle,
           },
-
           {
             path: "transportation/vehicle-account",
             Component: Account,
@@ -151,7 +159,6 @@ const routeEnterprise = () => [
             path: "transportation/Guest",
             Component: Guest,
           },
-
           {
             path: "transportation/vouchers",
             Component: TransportationVouchers,
@@ -190,30 +197,87 @@ const routeEnterprise = () => [
   },
   {
     path: "/enterprise/login",
-    element: <EnterpriseLogin />,
-  }
+    element: (
+      <EnterpriseProvider>
+        <EnterpriseLogin />
+      </EnterpriseProvider>
+    ),
+  },
 ];
 
 const routeClient = () => [
   {
-    path: "/",
-    element: <ProtectedRoute allowedRoles={[ROLES.CLIENT]} />,
+    path: "",
+    element: <ClientLayout />,
     children: [
       {
         path: "",
-        element: <ClientLayout />,
+        Component: LandingPage,
+      },
+      {
+        path: "/plan",
+        Component: PlanBefore,
+      },
+      {
+        path: "/plan/trip",
+        Component: TravelPlan,
+      },
+      {
+        path: "/booking/:type",
+        Component: Booking,
+      },
+      {
+        path: "/hotel",
+        Component: IntroHotel,
+      },
+      {
+        path: "/hotel-page",
+        Component: Hotel,
+      },
+      {
+        path: "/hotel-page/detail",
+        Component: DetailCard,
+      },
+      {
+        path: "/vehicle-intro",
+        Component: IntroVehicle,
+      },
+      {
+        path: "/vehicle-page",
+        Component: VehiclePage,
+      },
+      {
+        path: "/vehicle-booking",
+        Component: VehicleBooking,
+      },
+      {
+        path: "/payment",
+        Component: Payment,
+      },
+      {
+        path: "/success",
+        Component: Success,
+        exact: true,
+      },
+      {
+        path: "/failed",
+        Component: Failed,
+      },
+      {
+        path: "/profile",
+        Component: Profile,
         children: [
           {
             path: "",
-            Component: LandingPage,
+            Component: ProfileDetail,
           },
           {
-            path: "/plan",
-            Component: PlanBefore,
+            path: "change-password",
+            Component: ChangePassword,
           },
           {
-            path: "/plan/trip",
-            Component: TravelPlan,
+            path: "detail",
+            Component: InfoDetails,
           },
           {
             path: "/booking/:type",
@@ -228,7 +292,7 @@ const routeClient = () => [
             Component: Hotel,
           },
           {
-            path: "/hotel-page/detail",
+            path: "/hotel-page/:id",
             Component: DetailCard,
           },
           {
@@ -281,40 +345,46 @@ const routeClient = () => [
               //   Component: YourSavedTrips, // Ensure you have this Component
               // },
             ],
+            // path: "trip",
+            // Component: YourTripsQuery,
           },
           // {
-          //   path: "/vehicle",
-          //   Component: TransportSelectionPage,
+          //   path: "trip-save",
+          //   Component: YourSavedTrips, // Ensure you have this Component
           // },
+        ],
+      },
+      // {
+      //   path: "/vehicle",
+      //   Component: TransportSelectionPage,
+      // },
+      {
+        path: "/submit-enterprise",
+        Component: Sumbitenterprise,
+      },
+      {
+        path: "/check-in",
+        Component: Checkinpage,
+      },
+      {
+        path: "/check-in/mien-bac",
+        Component: ChooseProvinceDetail,
+      },
+      {
+        path: "/check-in/mien-bac/hung-yen",
+        Component: ChooseCheckinFollowArea,
+      },
+      {
+        path: "/tour",
+        Component: TourIndex,
+        children: [
           {
-            path: "/submit-enterprise",
-            Component: Sumbitenterprise,
+            path: "",
+            Component: TourPage,
           },
           {
-            path: "/check-in",
-            Component: Checkinpage,
-          },
-          {
-            path: "/check-in/mien-bac",
-            Component: ChooseProvinceDetail,
-          },
-          {
-            path: "/check-in/mien-bac/hung-yen",
-            Component: ChooseCheckinFollowArea,
-          },
-          {
-            path: "/tour",
-            Component: TourIndex,
-            children: [
-              {
-                path: "",
-                Component: TourPage,
-              },
-              {
-                path: "detail/:tourId",
-                Component: TourDetail,
-              },
-            ],
+            path: "detail/:tourId",
+            Component: TourDetail,
           },
         ],
       },
@@ -327,12 +397,12 @@ const routeClient = () => [
   {
     path: "/register",
     element: <Register />,
-  }
+  },
 ];
 
 export const router = createBrowserRouter([
   {
     element: <App />,
-    children: [...routeAdmin(), ...routeClient(), ...routeEnterprise()]
-  }
+    children: [...routeAdmin(), ...routeClient(), ...routeEnterprise()],
+  },
 ]);

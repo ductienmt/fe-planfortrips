@@ -70,7 +70,7 @@ const TransportationVouchers = () => {
               >
                 Tất cả
               </button>
-              <button
+              {/* <button
                 onClick={() => handleSelectItem("available")}
                 className={selectedItem === "available" ? "isActive" : ""}
               >
@@ -81,7 +81,7 @@ const TransportationVouchers = () => {
                 className={selectedItem === "unavailable" ? "isActive" : ""}
               >
                 Đã đặt
-              </button>
+              </button> */}
             </div>
 
             <div className="nav-add-TransportationVouchers">

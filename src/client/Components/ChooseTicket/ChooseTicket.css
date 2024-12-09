@@ -1,0 +1,177 @@
+/* vehiclebooking.css */
+.vehiclebooking-body {
+    background-color: #f4f7fa;
+    padding: 20px;
+}
+
+.vehiclebooking-body .vehicle-container {
+    /* max-width: 1200px; */
+    margin: auto;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.vehiclebooking-body .vehicle-container .header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.vehiclebooking-body .vehicle-container .details-bus {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.vehiclebooking-body .vehicle-container .local-bus {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.vehiclebooking-body .vehicle-container .local-bus input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: border 0.3s, box-shadow 0.3s;
+}
+
+.vehiclebooking-body .vehicle-container .local-bus input:focus {
+    border: 1px solid #005AA1;
+    box-shadow: 0 2px 6px rgba(0, 90, 161, 0.3);
+}
+
+.vehiclebooking-body .vehicle-container .local-bus input::placeholder {
+    color: #888;
+    font-style: italic;
+}
+
+
+.vehiclebooking-body .vehicle-container .seats-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.vehiclebooking-body .vehicle-container .seats-container .floor-section {
+    flex: 1;
+    margin: 0 10px;
+    padding: 10px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.vehiclebooking-body .vehicle-container .seats-container .seat-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.vehiclebooking-body .vehicle-container .seats-container .seat-button {
+    background: #ffffff;
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.vehiclebooking-body .vehicle-container .seats-container .seat-button.available {
+    border-color: #0c7fda;
+}
+
+.vehiclebooking-body .vehicle-container .seats-container .seat-button.booked {
+    background: #f2f2f2;
+    color: #a0a0a0;
+    cursor: not-allowed;
+}
+
+.vehiclebooking-body .vehicle-container .seats-container .seat-button.selected {
+    border-color: #ff7f0e;
+    background-color: #fff3e0;
+}
+
+.vehiclebooking-body .vehicle-container .seats-container .chair-icon {
+    font-size: 20px;
+}
+
+.vehiclebooking-body .vehicle-container .price-bus {
+    display: flex;
+}
+
+.vehiclebooking-body .vehicle-container .price-bus .item-1 {
+    width: 100%;
+}
+
+.vehiclebooking-body .vehicle-container .item-2 {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.vehiclebooking-body .vehicle-container .item-button {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.continue-button {
+    background-color: #005AA1;
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.continue-button:hover {
+    background-color: #003c6d;
+    transform: scale(1.05);
+}
+
+.continue-button:focus {
+    outline: none;
+}
+
+.continue-button1 {
+    background-color: #ffffff;
+    color: #8b8b8b;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.continue-button1:hover {
+    background-color: #8b8b8b;
+    color: #ffffff;
+    transform: scale(1.05);
+}
+
+.continue-button1:focus {
+    outline: none;
+}

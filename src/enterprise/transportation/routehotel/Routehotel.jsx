@@ -70,7 +70,7 @@ const Routehotel = () => {
               >
                 Tất cả
               </button>
-              <button
+              {/* <button
                 onClick={() => handleSelectItem("available")}
                 className={selectedItem === "available" ? "isActive" : ""}
               >
@@ -81,7 +81,7 @@ const Routehotel = () => {
                 className={selectedItem === "unavailable" ? "isActive" : ""}
               >
                 Đã đặt
-              </button>
+              </button> */}
             </div>
 
             <div className="nav-add-Route">
@@ -100,92 +100,91 @@ const Routehotel = () => {
               >
                 Thêm Tuyến
               </button>
-
-              {/* Contact Info Modal */}
-              <div className="modal fade" id="addrouteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="addrouteModal  " aria-hidden="true">
-                <div className="modal-dialog modal-dialog-centered">
-                  <div className="modal-content">
-
-                    <div className="modal-header">
-                      <h3>Thêm Tuyến</h3>
-                      <button
-                        type="button"
-                        className="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-
-
-                    <div className="modal-nav">
-                      <div className="row">
-
-                      
-                      <div className="col-12 mb-3 ">
-                        <label htmlFor="routeCode" className="form-label">
-                          Mã Tuyến
-                        </label>
-                        <select className="form-control" id="routeCode" name="routeCode">
-                          <option value="">Chọn Mã Tuyến</option>
-                          <option value="route1">Tuyến 1</option>
-                          <option value="route2">Tuyến 2</option>
-                          <option value="route3">Tuyến 3</option>
-                          <option value="route4">Tuyến 4</option>
-                          {/* Thêm các lựa chọn khác nếu cần */}
-                        </select>
-                      </div>
-
-                        <div className="col-6 mb-3">
-                          <label htmlFor="Price" className="form-label">
-                         bến xe xuất phát
-                          </label>
-                          <input className="form-control" placeholder="bến xe xuất phát" />
-                        </div>
-                        <div className="col-6 mb-3">
-                          <label htmlFor="Price" className="form-label">
-                           Bến xe đến
-                          </label>
-                          <input className="form-control" placeholder="Bến xe đến" />
-                        </div>
-
-                        
-
-
-
-
-
-                       
-
-                      </div>
-                    </div>
-
-
-                    <div className="modal3-footer">
-                      <button className="btn footer-btn" type="button">
-                        Xác Nhận
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-
             </div>
           </div>
           <div className="content-table mt-4">
             <Table
               dataSource={roomsData}
               columns={columns}
-            // pagination={{
-            //   current: currentPage,
-            //   pageSize: pageSize,
-            //   total: dataSource.length,
-            //   onChange: (page, pageSize) => {
-            //     setCurrentPage(page);
-            //     setPageSize(pageSize);
-            //   },
-            // }}
+              // pagination={{
+              //   current: currentPage,
+              //   pageSize: pageSize,
+              //   total: dataSource.length,
+              //   onChange: (page, pageSize) => {
+              //     setCurrentPage(page);
+              //     setPageSize(pageSize);
+              //   },
+              // }}
             />
+          </div>
+        </div>
+      </div>
+
+      {/* Contact Info Modal */}
+      <div
+        className="modal fade"
+        id="addrouteModal"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabIndex="-1"
+        aria-labelledby="addrouteModal  "
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3>Thêm Tuyến</h3>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+
+            <div className="modal-nav">
+              <div className="row">
+                <div className="col-12 mb-3 ">
+                  <label htmlFor="routeCode" className="form-label">
+                    Mã Tuyến
+                  </label>
+                  <select
+                    className="form-control"
+                    id="routeCode"
+                    name="routeCode"
+                  >
+                    <option value="">Chọn Mã Tuyến</option>
+                    <option value="route1">Tuyến 1</option>
+                    <option value="route2">Tuyến 2</option>
+                    <option value="route3">Tuyến 3</option>
+                    <option value="route4">Tuyến 4</option>
+                    {/* Thêm các lựa chọn khác nếu cần */}
+                  </select>
+                </div>
+
+                <div className="col-6 mb-3">
+                  <label htmlFor="Price" className="form-label">
+                    bến xe xuất phát
+                  </label>
+                  <input
+                    className="form-control"
+                    placeholder="bến xe xuất phát"
+                  />
+                </div>
+                <div className="col-6 mb-3">
+                  <label htmlFor="Price" className="form-label">
+                    Bến xe đến
+                  </label>
+                  <input className="form-control" placeholder="Bến xe đến" />
+                </div>
+              </div>
+            </div>
+
+            <div className="modal3-footer">
+              <button className="btn footer-btn" type="button">
+                Xác Nhận
+              </button>
+            </div>
           </div>
         </div>
       </div>

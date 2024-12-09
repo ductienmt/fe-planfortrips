@@ -1,99 +1,209 @@
 .custom-card-hotel .custom-img-hotel-card {
-    height: 100%;
-    /* Chiều cao của hình ảnh sẽ bằng với chiều cao của card */
-    width: 100%;
-    /* Đảm bảo hình ảnh rộng 100% */
-    object-fit: cover;
-    /* Đảm bảo hình ảnh sẽ điều chỉnh sao cho vừa với kích thước mà không bị căng ra */
+  height: 100%;
+  /* Chiều cao của hình ảnh sẽ bằng với chiều cao của card */
+  width: 100%;
+  /* Đảm bảo hình ảnh rộng 100% */
+  object-fit: cover;
+  /* Đảm bảo hình ảnh sẽ điều chỉnh sao cho vừa với kích thước mà không bị căng ra */
 }
 
 .hotel-adr {
-    font-size: 0.9rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
 }
 
 .price {
-    color: var(--success-text-color);
-    font-size: 1.5rem;
-    font-weight: 600;
+  color: var(--success-text-color);
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 .addFav-viewDe button {
-    border: none;
-    width: 100%;
-    height: 50px;
-    font-size: 1.2rem;
-    color: var(--background-color);
-    background-color: var(--success-btn-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  border: none;
+  width: 100%;
+  height: 50px;
+  font-size: 1.2rem;
+  color: var(--background-color);
+  background-color: var(--success-btn-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-
 .addFav-viewDe a {
-    background-color: var(--success-btn-color);
-    color: var(--background-color);
-    width: 100%;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    font-weight: 600;
+  background-color: var(--success-btn-color);
+  color: var(--background-color);
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
 .addFav-viewDe a:hover {
-    background-color: var(--success-text-color);
-    color: var(--background-color);
-    transition: background-color 0.3s ease;
+  background-color: var(--success-text-color);
+  color: var(--background-color);
+  transition: background-color 0.3s ease;
 }
 
 .amenities {
-    justify-content: start;
-    gap: 1rem;
-    margin-top: 0.5rem;
+  justify-content: start;
+  gap: 1rem;
+  margin-top: 0.5rem;
 }
 
 .amenities small i {
-    margin-right: 0.5rem;
+  margin-right: 0.5rem;
 }
 
 .amenities small {
-    background-color: rgb(230, 230, 230);
-    padding: 8px;
-    border-radius: 10px;
+  background-color: rgb(230, 230, 230);
+  padding: 8px;
+  border-radius: 10px;
 }
 
 .feed-back-hotel i {
-    color: salmon;
-
+  color: salmon;
 }
 
 .feed-back-hotel {
-    gap: 10px;
+  gap: 10px;
 }
 
-
 .feed-back-hotel span {
-    font-size: 0.6rem;
+  font-size: 0.6rem;
 }
 
 .discounted {
-    text-decoration: line-through;
-    color: gray;
-    font-size: 1.2rem;
-    text-wrap: nowrap;
+  text-decoration: line-through;
+  color: gray;
+  font-size: 1.2rem;
+  text-wrap: nowrap;
 }
 
 .new-price {
-    font-size: 1.5rem;
-    color: var(--success-text-color);
-    text-wrap: nowrap;
+  font-size: 1.5rem;
+  color: var(--success-text-color);
+  text-wrap: nowrap;
 }
+.custom-img-hotel-card {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.card-text.amenities.grid-icons {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Chia 2 cột bằng nhau */
+    gap: 10px; /* Khoảng cách giữa các mục */
+  }
+  
+  .amenity-item {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Khoảng cách giữa icon và text */
+    font-size: 14px; /* Cỡ chữ nhỏ hơn một chút */
+  }
+  
+  .amenity-item svg {
+    width: 20px;
+    height: 20px;
+  }
+  .amenities small {
+    background-color: rgb(230, 230, 230);
+    padding: 5px;
+    border-radius: 10px;
+}
+/* From Uiverse.io by mrhyddenn */ 
+.btn-booking {
+  position: relative;
+  margin: 0;
+  padding: 0.8em 1em;
+  outline: none;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+  text-transform: uppercase;
+  background-color: #333;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 300;
+  font-size: 18px;
+  font-family: inherit;
+  z-index: 0;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.02, 0.01, 0.47, 1);
+}
+
+.btn-booking:hover {
+  animation: sh0 0.5s ease-in-out both;
+}
+
+@keyframes sh0 {
+  0% {
+    transform: rotate(0deg) translate3d(0, 0, 0);
+  }
+
+  25% {
+    transform: rotate(7deg) translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: rotate(-7deg) translate3d(0, 0, 0);
+  }
+
+  75% {
+    transform: rotate(1deg) translate3d(0, 0, 0);
+  }
+
+  100% {
+    transform: rotate(0deg) translate3d(0, 0, 0);
+  }
+}
+
+.btn-booking:hover span {
+  animation: storm 0.7s ease-in-out both;
+  animation-delay: 0.06s;
+}
+
+.btn-booking::before,
+.btn-booking::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0;
+  transition: transform 0.15s cubic-bezier(0.02, 0.01, 0.47, 1), opacity 0.15s cubic-bezier(0.02, 0.01, 0.47, 1);
+  z-index: -1;
+  transform: translate(100%, -25%) translate3d(0, 0, 0);
+}
+
+.btn-booking:hover::before,
+.btn-booking:hover::after {
+  opacity: 0.15;
+  transition: transform 0.2s cubic-bezier(0.02, 0.01, 0.47, 1), opacity 0.2s cubic-bezier(0.02, 0.01, 0.47, 1);
+}
+
+.btn-booking:hover::before {
+  transform: translate3d(50%, 0, 0) scale(0.9);
+}
+
+.btn-booking:hover::after {
+  transform: translate(50%, 0) scale(1.1);
+}
+

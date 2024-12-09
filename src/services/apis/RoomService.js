@@ -14,11 +14,10 @@ export const RoomService = {
     }
 
     const response = await Http.get(`/rooms?${params.toString()}`);
-    console.log(response);
     return response.data;
   },
   findRoomById: async (id) => {
-    const response = await Http.get(`/rooms/${id}`);
+    const response = await Http.get(`/rooms/getById/${id}`);
     return response.data;
   },
   getRoomsByHotelId: async (id, pageNo, pageSize, sortBy, sortType) => {
@@ -109,6 +108,14 @@ export const RoomService = {
       params.append("status", status);
     }
     const response = await Http.get(`/rooms/filter?${params.toString()}`);
+    return response.data;
+  },
+  uploadRoomImage: async (file, roomId) => {
+    const response = await Http.post(`/rooms/upload-image/${roomId}`, file, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return response.data;
   },
 };

@@ -1,73 +1,79 @@
-import { convertToVND } from "../../../../utils/FormatMoney";
 import "./roomCard.css";
-import { useNavigate } from 'react-router-dom';
-import { Snackbar, Alert } from '@mui/material';
-import { useState } from 'react';
-
-const RoomCard = ({ img, roomSize, priceOneNight, onBook }) => {
-  const navigate = useNavigate();
-  
-  // Define the openSnackbar state
-  const [openSnackbar, setOpenSnackbar] = useState(false);
+import { Snackbar, Alert, Tooltip, IconButton } from "@mui/material";
+import { useEffect, useState } from "react";
+import { RoomService } from "../../../../services/apis/RoomService";
+import SvgIcon from "../card/svgIcon";
+import { regexUrlIcon } from "../../../../utils/regex";
+import { Image } from "antd";
+import NotesIcon from "@mui/icons-material/Notes";
+const RoomCard = ({ room_id,setSelectedRoom,selectedRoom}) => {
+  const [room, setRoom] = useState({});
 
   const handleBookTicket = () => {
-    // onBook();
-    setOpenSnackbar(true);
-    setTimeout(() => navigate('/payment'), 1500); 
+    const isRoomAlreadySelected = selectedRoom.find(selected => selected.id === room.id);
+    if(!isRoomAlreadySelected){
+      setSelectedRoom([...selectedRoom, room])
+    }
   };
-
+  useEffect(() => {
+    const fetch = async () => {
+      const response = await RoomService.findRoomById(room_id);
+      if (response) {
+        setRoom(response);
+      }
+    };
+    fetch();
+  }, room_id);
+  const convertToVNDDB = (price) => {
+    return price + ".000VND ";
+  };
   return (
     <>
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={3000}  // Keeps the snackbar open for 3 seconds
-        onClose={() => setOpenSnackbar(false)}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        sx={{
-          width: '100%',
-          '& .MuiSnackbarContent-root': {
-            backgroundColor: '#4caf50', // Green color for success
-            borderRadius: '8px', // Rounded corners
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Shadow effect
-            padding: '16px 32px', // Larger padding
-            fontSize: '18px', // Larger font size
-            color: '#fff', // White text color
-            fontWeight: 'bold', // Bold text
-          }
-        }}
-      >
-        <Alert onClose={() => setOpenSnackbar(false)} severity="success" sx={{ width: '100%' }}>
-          Đặt vé thành công! Bạn sẽ được chuyển đến trang thanh toán.
-        </Alert>
-      </Snackbar>
-
       <div className="flex-container-room-card">
         <div className="card-room-type align-items-center">
           <div className="d-flex align-items-center custom-img-room-type">
-            <img 
-              style={{ width: "500px" }} 
-              src={img ?? "https://images.pexels.com/photos/1457842/pexels-photo-1457842.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"} 
-              alt="" 
+            <Image
+              src={
+                room?.images?.length > 0
+                  ? room.images[0]?.url
+                  : "../src/assets/imageRoomNotExist.jpeg"
+              }
+              alt="Room Image"
             />
-            <p className="content-type ms-3">{roomSize}</p>
+          </div>
+          <div className="bg-room-description" style={{ height: "auto" }}>
+            <span><p style={{ fontWeight:"bolder" }}>Tên phòng: {room.roomName}</p></span>
+            <span>Hạng : {room?.typeOfRoom}</span>
+            <span><NotesIcon style={{ cursor:"pointer" }}/> {room.description}</span>
           </div>
           <div className="price-room-type text-end">
             <p className="amenities d-flex justify-content-center mt-3">
-              <small>
-                <i className="fa-solid fa-bowl-food"></i>Nước và đồ ăn
-              </small>
-              <small>
-                <i className="fa-solid fa-wifi"></i>Wifi
-              </small>
-              <small>
-                <i className="fa-solid fa-toilet-paper"></i>Dụng cụ vệ sinh
-              </small>
+              {room?.roomAmenities && room?.roomAmenities?.length > 0 ? (
+                room.roomAmenities.map((ha, index) => (
+                  <small
+                    className="amenity-item d-flex align-items-center justify-content-center gap-2"
+                    key={index}
+                  >
+                    <Tooltip title={ha.name}>
+                      <IconButton>
+                        <SvgIcon url={regexUrlIcon(ha.icon)} />
+                      </IconButton>
+                    </Tooltip>
+                  </small>
+                ))
+              ) : (
+                <small>No amenities available</small>
+              )}
             </p>
-            <span>{convertToVND(priceOneNight)} / 1 đêm</span>
+            <span className="content-type ms-3">
+              Phòng tối đa {room?.maxSize} người
+            </span>
+            <span>{convertToVNDDB(room?.price)} / 1 đêm</span>
             <button
               type="button"
-              className="book-ticket-transport"
+              className="book-hotel mb-3"
               onClick={handleBookTicket}
+
             >
               Đặt ngay
             </button>

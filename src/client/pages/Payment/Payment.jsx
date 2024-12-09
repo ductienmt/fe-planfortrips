@@ -224,7 +224,7 @@ const Payment = () => {
 
       const contentWithCode = `${infoBank.Description} ${code}`;
       const qrCode = BankService.generateVietQR(
-        infoBank.Amount * 10,
+        infoBank.Amount,
         contentWithCode
       );
 
@@ -437,7 +437,7 @@ const Payment = () => {
     if (qrCode) {
       const intervalId = setInterval(() => {
         BankService.checkPaidVietQR(
-          infoBank.Amount * 10,
+          infoBank.Amount,
           infoBank.Description,
           randomCode
         ).then((status) => {
