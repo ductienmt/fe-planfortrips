@@ -427,6 +427,7 @@ const IntroHotel = () => {
                         <Link
                           to={`/hotel/${card.hotel_id}`}
                           className="buy-button"
+                          style={{ textDecoration:"none" }}
                         >
                           Đặt ngay
                         </Link>

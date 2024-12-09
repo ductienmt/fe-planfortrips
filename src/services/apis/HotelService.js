@@ -11,6 +11,10 @@ export const HotelService = {
     const response = await Http.get(`/hotels/getById/${id}`);
     return response.data;
   },
+  findHotelByRoomId: async (id) => {
+    const response = await Http.get(`/hotels/getByRoomId/${id}`);
+    return response.data;
+  },
   update: async (hotelId, data) => {
     const response = await Http.put(`/hotels/update/${hotelId}`, data);
     return response.data;
