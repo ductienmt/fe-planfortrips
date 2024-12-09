@@ -152,19 +152,184 @@
     font-size: 16px; /* Điều chỉnh kích thước chữ khi thu nhỏ */
   }
 }
+.tour-detail-date-room {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Hiển thị 4 phòng mỗi hàng */
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.tour-detail-room-card {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin: 0;
+  border-radius: 8px;
+}
+
+.tour-detail-room-name {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.tour-detail-room-type, 
+.tour-detail-room-price, 
+.tour-detail-room-rating, 
+.tour-detail-room-max-size {
+  margin: 5px 0;
+}
 
 
-.tour-card-hover:hover {
-  background-color: rgb(144, 122, 122);
+.tour-detail-room-status {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.tour-detail-room-status.available {
+  color: green;
+}
+
+.tour-detail-room-status.unavailable {
+  color: red;
+}
+
+.tour-detail-select-room-btn {
+  padding: 10px 15px;
+  background-color: #4CAF50;
   color: white;
-  transition: background-color 0.5s ease-in-out, color 0.3s ease-in;
+  border: none;
+  cursor: pointer;
 }
 
-.room-active {
-  background-color: black !important;
+.tour-detail-select-room-btn:hover {
+  background-color: #45a049;
+}
+.tour-detail-room-amenities {
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+.tour-detail-room-amenities h4 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.tour-detail-room-amenities ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Khoảng cách giữa các thẻ tiện nghi */
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.tour-detail-room-amenities li {
+  background-color: #f0f0f0;
+  border-radius: 20px;
+  padding: 8px 15px;
+  font-size: 14px;
+  color: #333;
+  border: 1px solid #ddd;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.tour-detail-room-amenities li:hover {
+  background-color: #4CAF50; /* Màu nền khi hover */
+  color: white; /* Màu chữ khi hover */
+  border-color: #4CAF50; /* Viền khi hover */
+}
+
+
+.tour-detail-room-selected {
+  background-color: rgba(72, 152, 75, 0.234); 
+  font-weight: bold;
+}
+
+.tour-detail-room-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Màu nền mờ cho lớp phủ */
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+}
+
+.tour-detail-overlay-text {
+  font-weight: bold;
+}
+
+
+/* Định dạng chung cho thông báo */
+.tour-detail-notification {
+  font-size: 1rem;
+  margin-top: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+/* Trạng thái 'Not Selected' */
+.tour-detail-notification.not-selected {
+  color: #ff9900;
+  background-color: #fff4e5;
+  border: 1px solid #ffcc80;
+}
+
+/* Trạng thái 'Excessive' */
+.tour-detail-notification.excessive {
+  color: #ff0000;
+  background-color: #ffe5e5;
+  border: 1px solid #ff8080;
+  font-weight: bold;
+}
+
+/* Trạng thái 'Sufficient' */
+.tour-detail-notification.sufficient {
+  color: #006600;
+  background-color: #e5ffe5;
+  border: 1px solid #80ff80;
+  font-weight: bold;
+}
+
+/* Trạng thái 'Not Enough' */
+.tour-detail-notification.not-enough {
+  color: #0044cc;
+  background-color: #e5f2ff;
+  border: 1px solid #80bfff;
+}
+
+.tour-detail-seat-active {
+  border-radius: 15px !important;
+  background-color: #006600 !important;
+  scale: 1.2 !important;
   color: white !important;
+  font-weight: bold !important;
+  padding: 5px !important;
 }
 
-.seat-active {
-  border: 1px solid red;
+/* CSS cho thông báo trạng thái ghế */
+.seat-status-message {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.seat-status-message.not-selected {
+  color: gray;
+}
+
+.seat-status-message.excessive {
+  color: red;
+}
+
+.seat-status-message.sufficient {
+  color: green;
+}
+
+.seat-status-message.not-enough {
+  color: orange;
 }
