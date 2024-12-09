@@ -65,6 +65,7 @@ function TourPage() {
           <div className="tour-header-content">
             <h1>Khám phá thế giới với tour du lịch tuyệt vời</h1>
             <p>Đặt tour ngay hôm nay với giá ưu đãi cực kỳ hấp dẫn!</p>
+            <p className="">Nội tỉnh: Tỉnh - Tỉnh. vd: Bình Thuận - Bình Thuận</p>
             <form className="tour-search-form">
               <div className="tour-search-destination">
                 <input
@@ -109,7 +110,7 @@ function TourPage() {
             </form>
             <div className="tour-page-city-card mt-4">
               <div className="tour-page-city-card-row">
-                {cityOrigin && (
+                {/* {cityOrigin && (
                   <div className="tour-page-city-card-item bg-white">
                     <div className="tour-page-city-card-id text-info">
                       <h4>{cities.find(city => city.id === cityOrigin)?.nameCity || 'N/A'}</h4>
@@ -124,13 +125,13 @@ function TourPage() {
                       <p>{cities.find(city => city.id === cityOrigin)?.description || "Thông tin mô tả thành phố."}</p>
                     </div>
                   </div>
-                )}
+                )} */}
 
-                <div className="d-flex fs-3" style={{alignItems : 'center'}}>
+                {/* <div className="d-flex fs-3" style={{alignItems : 'center'}}>
                   <FontAwesomeIcon icon={faJetFighter} />
-                </div>
+                </div> */}
 
-                {cityDes && (
+                {/* {cityDes && (
                   <div className="tour-page-city-card-item bg-white">
                     <div className="tour-page-city-card-id text-danger">
                       <h4>{cities.find(city => city.id === cityDes)?.nameCity || 'N/A'}</h4>
@@ -145,7 +146,7 @@ function TourPage() {
                       <p>{cities.find(city => city.id === cityDes)?.description || "Thông tin mô tả thành phố."}</p>
                     </div>
                   </div>
-                )}
+                )} */}
               </div>
             </div>
           </div>

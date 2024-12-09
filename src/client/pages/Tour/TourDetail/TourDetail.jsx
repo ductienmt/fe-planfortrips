@@ -301,14 +301,17 @@ const checkSeatsAndRooms = () => {
 const handleSubmit = () => {
   
   if (!messageError) {
+    console.log(tourDetail);
+    
       sessionStorage.setItem('tourData', JSON.stringify({
+        tourId : tourDetail.id,
         carCompany : tourDetail.carCompanyResponse,
         seat : {
           seatDes,
           seatOrigin
         },
-        scheduleDes : tourDetail.scheduleDes,
-        scheduleOrigin : tourDetail.scheduleOrigin,
+        scheduleDes : tripData.scheduleDes,
+        scheduleOrigin : tripData.scheduleOrigin,
         room : rooms,
         Hotel : tourDetail.hotelResponse
       }));
