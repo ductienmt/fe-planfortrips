@@ -9,7 +9,7 @@ const Account = () => {
         {/* Account Modal */}
         <div
           className="modal fade"
-          id="accountModal"
+          id="accountModalEnterprise"
           data-bs-backdrop="static"
           data-bs-keyboard="false"
           tabIndex="-1"
@@ -39,7 +39,6 @@ const Account = () => {
                         data-bs-target="#contactModal"
                       >
                         <span>Liên lạc</span>
-
                       </button>
                     </li>
                     <li>
@@ -49,7 +48,6 @@ const Account = () => {
                         data-bs-target="#businessInfoModal"
                       >
                         <span>Thông Tin </span>
-
                       </button>
                     </li>
                     <li>
@@ -59,7 +57,6 @@ const Account = () => {
                         data-bs-target="#avatarModal"
                       >
                         <span>Thay Đổi Hình đại diện</span>
-
                       </button>
                     </li>
                   </ul>
@@ -264,7 +261,7 @@ const Account = () => {
                       type="file"
                       className="form-control"
                       name="avatar"
-                    // onChange={handleAvatarChange}
+                      // onChange={handleAvatarChange}
                     />
                   </div>
                 </form>

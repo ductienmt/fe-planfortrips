@@ -4,14 +4,14 @@ export const AccountEtpService = {
   getAll: async () => {
     return await Http.get("/api/v1/account-enterprises/all");
   },
-  getAccountEnterpriseNeedAccept: async() => {
-      return await Http.get('/api/v1/account-enterprises/accept');
+  getAccountEnterpriseNeedAccept: async () => {
+    return await Http.get("/api/v1/account-enterprises/accept");
   },
   toggleStage: async (id) => {
     return await Http.patch(`/api/v1/account-enterprises/stage/${id}`);
   },
   create: async (data) => {
-    return await Http.post("/api/v1/account-enterprises/create", data);
+    return await Http.post("/account-enterprises/create", data);
   },
   checkUsername: async (username) => {
     const params = new URLSearchParams({ username });

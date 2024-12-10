@@ -19,20 +19,29 @@ const EnterpriseSidebar = () => {
     setCollapsed(!collapsed);
   };
 
-  const handleSelect = (item) => {
+  const handleSelect = (item, path) => {
     setSelectedItem(item);
     sessionStorage.setItem("selectedItem", item);
+
+    if (item === "aco-account" || item === "vehicle-account") {
+      const accountElement = document.getElementById("accountModal");
+      if (accountElement) {
+        accountElement.click();
+      }
+      return;
+    }
+
+    // Điều hướng bình thường nếu không phải là Account
+    navigate(`/enterprise/${path}`);
   };
 
   useEffect(() => {
-    const basePath =
-      typeEnterprise === "Xe khách" ? "transportation" : "accomodation";
     const itemFromURL = location.pathname.split("/").pop();
     if (itemFromURL !== selectedItem) {
       setSelectedItem(itemFromURL);
       sessionStorage.setItem("selectedItem", itemFromURL);
     }
-  }, [typeEnterprise, location.pathname]);
+  }, [location.pathname]);
 
   const menuItems = useMemo(() => {
     const commonItems = [
@@ -120,52 +129,56 @@ const EnterpriseSidebar = () => {
   }, [typeEnterprise]);
 
   return (
-    <div className={`sidebar-container ${collapsed ? "collapsed" : ""}`}>
-      <div className="top">
-        <div className="sidebar-header">
-          <img
-            src={logo}
-            alt="Logo"
-            className="logo"
-            style={{ width: "80%", cursor: "pointer" }}
-            onClick={toggleSidebar}
-          />
+    <>
+      <div className={`sidebar-container ${collapsed ? "collapsed" : ""}`}>
+        <div className="top">
+          <div className="sidebar-header">
+            <img
+              src={logo}
+              alt="Logo"
+              className="logo"
+              style={{ width: "80%", cursor: "pointer" }}
+              onClick={toggleSidebar}
+            />
+          </div>
+          <ul className="sidebar-menu">
+            {menuItems.map((item) => (
+              <li
+                key={item.key}
+                className={selectedItem === item.key ? "isActive" : ""}
+                onClick={() => handleSelect(item.key, item.path)}
+              >
+                <Link to={item.path ? `/enterprise/${item.path}` : "#"}>
+                  <i className={`fa-solid ${item.icon}`}></i>{" "}
+                  {!collapsed && <span>{item.label}</span>}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
-        <ul className="sidebar-menu">
-          {menuItems.map((item) => (
-            <li
-              key={item.key}
-              className={
-                selectedItem === item.key &&
-                location.pathname.includes(item.path)
-                  ? "isActive"
-                  : ""
-              }
-              onClick={() => handleSelect(item.key)}
+        <div className="bottom">
+          <div className="sidebar-footer">
+            <button
+              style={{ border: "none", backgroundColor: "transparent" }}
+              onClick={() => {
+                logout();
+                navigate("/enterprise/login");
+              }}
             >
-              <Link to={`/enterprise/${item.path}`}>
-                <i className={`fa-solid ${item.icon}`}></i>{" "}
-                {!collapsed && <span>{item.label}</span>}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="bottom">
-        <div className="sidebar-footer">
-          <button
-            style={{ border: "none", backgroundColor: "transparent" }}
-            onClick={() => {
-              logout();
-              navigate("/enterprise/login");
-            }}
-          >
-            <i className="fa-solid fa-right-from-bracket"></i>{" "}
-            {!collapsed && "Logout"}
-          </button>
+              <i className="fa-solid fa-right-from-bracket"></i>{" "}
+              {!collapsed && "Logout"}
+            </button>
+          </div>
         </div>
+        <button
+          className="d-none"
+          data-bs-toggle="modal"
+          data-bs-target="#accountModalEnterprise"
+          id="accountModal"
+        ></button>
       </div>
-    </div>
+      <Account />
+    </>
   );
 };
 
