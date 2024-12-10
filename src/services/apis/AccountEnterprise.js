@@ -2,13 +2,13 @@ import Http from "../Http";
 
 export const AccountEtpService = {
   getAll: async () => {
-    return await Http.get("/api/v1/account-enterprises/all");
+    return await Http.get("/account-enterprises/all");
   },
   getAccountEnterpriseNeedAccept: async () => {
-    return await Http.get("/api/v1/account-enterprises/accept");
+    return await Http.get("/account-enterprises/accept");
   },
   toggleStage: async (id) => {
-    return await Http.patch(`/api/v1/account-enterprises/stage/${id}`);
+    return await Http.patch(`/account-enterprises/stage/${id}`);
   },
   create: async (data) => {
     return await Http.post("/account-enterprises/create", data);
