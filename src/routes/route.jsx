@@ -64,6 +64,7 @@ import Guest from "../enterprise/transportation/guest/Guest";
 import Routehotel from "../enterprise/transportation/routehotel/Routehotel";
 import { useAuth } from "../context/AuthContext/AuthProvider";
 import { EnterpriseProvider } from "../context/EnterpriseContext/EnterpriseProvider";
+import ForgotPassword from "../client/pages/Auth/ForgotPassword/ForgotPassword";
 
 const ROLES = {
   CLIENT: "ROLE_USER",
@@ -323,16 +324,21 @@ const routeClient = () => [
           },
         ],
       },
+      {
+        path: "/forgot-password",
+        Component: ForgotPassword,
+      },
+      {
+        path: "/login",
+        Component: Login,
+      },
+      {
+        path: "/register",
+        Component: Register,
+      },
     ],
   },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/register",
-    element: <Register />,
-  },
+  
 ];
 
 export const router = createBrowserRouter([

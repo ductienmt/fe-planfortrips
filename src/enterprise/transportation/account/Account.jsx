@@ -9,7 +9,7 @@ const Account = () => {
         {/* Account Modal */}
         <div
           className="modal fade"
-          id="accountModal"
+          id="accountModalEnterprise"
           data-bs-backdrop="static"
           data-bs-keyboard="false"
           tabIndex="-1"
