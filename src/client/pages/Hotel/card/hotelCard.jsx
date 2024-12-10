@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { regexUrlIcon } from "../../../../utils/regex";
 const HotelCard = ({ item }) => {
   console.log(item);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // const originalPrice = 250000;
   // const discountedPrice = 200000;
   const convertToVNDDB = (price) => {

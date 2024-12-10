@@ -254,7 +254,7 @@ export default function PlaceDialog({
           <TextField
             id="name"
             name="name"
-            label="Name"
+            label="Tên địa điểm"
             variant="outlined"
             value={formData.name}
             onChange={handleInputChange}
@@ -269,7 +269,7 @@ export default function PlaceDialog({
           <TextField
             id="address"
             name="address"
-            label="Address"
+            label="Địa chỉ"
             variant="outlined"
             value={formData.address}
             onChange={handleInputChange}
@@ -284,7 +284,7 @@ export default function PlaceDialog({
           <TextField
             id="payFee"
             name="payFee"
-            label="Pay Fee"
+            label="Phí tham quan"
             type="number"
             variant="outlined"
             value={formData.payFee}

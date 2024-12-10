@@ -80,7 +80,7 @@ export default function FeedbackPage() {
           const fetchUser = async () => {
             try {
               const response = await UserService.findUserByUsername(
-                params.value
+                params.row.userName
               );
               setUserName(response.fullName);
             } catch (error) {

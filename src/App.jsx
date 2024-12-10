@@ -3,6 +3,8 @@ import { SnackbarProvider } from "notistack";
 import DashboardLayoutBasic from "./admin/pages/Layout/DashboardLayoutBasic";
 import { Outlet } from "react-router-dom";
 import { useAuth } from "./context/AuthContext/AuthProvider";
+import ChatbotComponent from "./client/Components/ChatBotAI/ChatBox";
+import MessengerChat from "./client/Components/ChatBotAI/ChatMessenger";
 // import LoginAdmin from "./admin/pages/Auth/Login/Login";
 const checkRoleAdmin = () => {
   const { token } = useAuth();
@@ -21,7 +23,13 @@ function App() {
         horizontal: "right",
       }}
     >
-      {checkRoleAdmin("ROLE_ADMIN") ? <DashboardLayoutBasic /> : <Outlet />}
+      {checkRoleAdmin("ROLE_ADMIN") ? (
+        <DashboardLayoutBasic />
+      ) : (
+        <>
+          <Outlet /> <ChatbotComponent /> <MessengerChat/>
+        </>
+      )}
     </SnackbarProvider>
   );
 }

@@ -64,7 +64,7 @@ import Guest from "../enterprise/transportation/guest/Guest";
 import Routehotel from "../enterprise/transportation/routehotel/Routehotel";
 import { useAuth } from "../context/AuthContext/AuthProvider";
 import { EnterpriseProvider } from "../context/EnterpriseContext/EnterpriseProvider";
-
+import NotFoundPage from "../notFound/notFoundPage";
 const ROLES = {
   CLIENT: "ROLE_USER",
   ADMIN: "ROLE_ADMIN",
@@ -104,6 +104,7 @@ const routeAdmin = () => [
           { path: "transactions/vehicles", element: <OrderCarPage /> },
           { path: "travel", element: <PlacePageAdmin /> },
           { path: "feedbacks", element: <FeedbackPage /> },
+          { path: "*", element: <NotFoundPage /> },
         ],
       },
     ],
@@ -191,6 +192,7 @@ const routeEnterprise = () => [
             path: "accomodation/choose-hotel",
             Component: ChooseHotel,
           },
+          { path: "*", element: <NotFoundPage /> },
         ],
       },
     ],
@@ -214,6 +216,7 @@ const routeClient = () => [
         path: "",
         Component: LandingPage,
       },
+      { path: "*", element: <NotFoundPage /> },
       {
         path: "/plan",
         Component: PlanBefore,
@@ -235,7 +238,7 @@ const routeClient = () => [
         Component: Hotel,
       },
       {
-        path: "/hotel-page/detail",
+        path: "/hotel-page/:id",
         Component: DetailCard,
       },
       {
@@ -332,6 +335,10 @@ const routeClient = () => [
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "*",
+    element: <NotFoundPage />,
   },
 ];
 
