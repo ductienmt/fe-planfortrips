@@ -16,6 +16,8 @@ import HotelCart from "../hotelCart/hotelCart";
 import OpenStreetMapEmbed from "../mapCheckin/mapHotel";
 import { FeedbackService } from "../../../../services/apis/FeedbackService";
 import ReviewHeader from "../personReview/reviewHeader";
+import { enqueueSnackbar } from "notistack";
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -89,7 +91,7 @@ const DetailCard = () => {
     navigator.clipboard
       .writeText(currentUrl)
       .then(() => {
-        alert("Link đã được sao chép vào clipboard!"); 
+        enqueueSnackbar("Link đã được sao chép", { variant: "success",autoHideDuration: 2000});
       })
       .catch((err) => {
         console.error("Không thể sao chép link:", err);
@@ -189,7 +191,7 @@ const DetailCard = () => {
               src={hotel.images[0].url ?? "src/assets/placeNotFound.webp"}
               alt=""
               style={{ height: "500px" }}
-              className="img1"
+              className="img11"
             />
           </div>
           <div className="img-col-2">

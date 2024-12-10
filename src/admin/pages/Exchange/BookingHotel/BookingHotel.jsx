@@ -2,16 +2,20 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { UserService } from "../../../../services/apis/UserService";
-import { OrderCarService } from "../../../../services/apis/OrderCarService";
 import { Pending, RemoveRedEye } from "@mui/icons-material";
 import { BookingDetailHotelService } from "../../../../services/apis/BookingDetailHotelService";
-import { width } from "@mui/system";
 import { HotelService } from "../../../../services/apis/HotelService";
 import { RoomService } from "../../../../services/apis/RoomService";
+import BookingHotelDetail from "./BookingHotelDetail/BookingHotelDetail";
 export default function BookingHotel() {
   const [bookingHotel, setBookingHotel] = React.useState([]);
+  const [selectedBookingHotel, setSelectedBookingHotel] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(true);
   const [open, setOpen] = React.useState(false);
+  const handleClick = (selected) => {
+    setSelectedBookingHotel(selected);
+    setOpen(true);
+  };
   React.useEffect(() => {
     const fetchCoupons = async () => {
       try {
@@ -19,8 +23,7 @@ export default function BookingHotel() {
 
         if (bookingData) {
           setBookingHotel(bookingData);
-          console.log(bookingHotel);
-
+          console.log(bookingData);
           setIsLoading(false);
         } else {
           console.warn(
@@ -113,11 +116,12 @@ export default function BookingHotel() {
             const dataRoom = await RoomService.findRoomById(params.row.roomId);
             if (dataHotel && dataRoom) {
               setHotel(dataHotel);
-              setRoom(dataRoom)
+              setRoom(dataRoom);
             }
-          };fetch();
+          };
+          fetch();
         }, []);
-        return hotel.name + ' - phòng ' + room.roomName; 
+        return hotel.name + " - phòng " + room.roomName;
       },
     },
     {
@@ -204,9 +208,9 @@ export default function BookingHotel() {
       getActions: (params) => [
         <RemoveRedEye
           key="view"
-          // onClick={() => {
-          //   handleClick(params.row);
-          // }}
+          onClick={() => {
+            handleClick(params.row);
+          }}
         />,
       ],
     },
@@ -245,11 +249,11 @@ export default function BookingHotel() {
           boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
         }}
       />
-      {/* <OrderCarDetail
+      <BookingHotelDetail
         open={open}
         setOpen={setOpen}
-        selectedTicket={selectedTicket}
-      /> */}
+        selectedBookingHotel={selectedBookingHotel}
+      />
     </Box>
   );
 }

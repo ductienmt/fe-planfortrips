@@ -14,6 +14,7 @@ export const RoomService = {
     }
 
     const response = await Http.get(`/rooms?${params.toString()}`);
+    console.log(response);
     return response.data;
   },
   findRoomById: async (id) => {
