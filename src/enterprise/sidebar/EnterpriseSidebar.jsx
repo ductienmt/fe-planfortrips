@@ -50,12 +50,12 @@ const EnterpriseSidebar = () => {
         label: "Thống kê",
         path: `${typeEnterprise === "Xe khách" ? "transportation" : "accomodation"}/dashboard`,
       },
-      {
-        key: "voucher-manager",
-        icon: "fa-ticket",
-        label: "Mã giảm giá",
-        path: `${typeEnterprise === "Xe khách" ? "transportation" : "accomodation"}/voucher-manager`,
-      },
+      // {
+      //   key: "voucher-manager",
+      //   icon: "fa-ticket",
+      //   label: "Mã giảm giá",
+      //   path: `${typeEnterprise === "Xe khách" ? "transportation" : "accomodation"}/voucher-manager`,
+      // },
     ];
 
     const accomodationItems = [
@@ -78,9 +78,19 @@ const EnterpriseSidebar = () => {
         path: "accomodation/choose-hotel",
       },
       {
-        key: "aco-account",
+        key: "voucher-manager",
         icon: "fa-ticket",
+        label: "Quản lý voucher",
+        path: "accomodation/voucher-manager",
+      },
+      {
+        key: "aco-account",
+        icon: "fa-solid fa-user",
         label: "Account",
+        path: "",
+        onClick: () => {
+          document.getElementById("acco").click();
+        },
       },
     ];
 
@@ -99,8 +109,8 @@ const EnterpriseSidebar = () => {
       },
       {
         key: "Seats",
-        icon: "fa-route",
-        label: "Seats",
+        icon: "fa-solid fa-couch",
+        label: "Quản lý ghế",
         path: "transportation/Seats",
       },
       {
@@ -111,14 +121,24 @@ const EnterpriseSidebar = () => {
       },
       {
         key: "vehicle-schedules",
-        icon: "fa-ticket",
+        icon: "fa-solid fa-calendar-days",
         label: "Lịch trình",
         path: "transportation/vehicle-schedules",
       },
       {
-        key: "vehicle-account",
+        key: "vouchers",
         icon: "fa-ticket",
-        label: "Account",
+        label: "Khuyến mãi",
+        path: "transportation/vouchers",
+      },
+      {
+        key: "vehicle-account",
+        icon: "fa-solid fa-user",
+        label: "Tài khoản",
+        path: "",
+        onClick: () => {
+          document.getElementById("acco").click();
+        },
       },
     ];
 
