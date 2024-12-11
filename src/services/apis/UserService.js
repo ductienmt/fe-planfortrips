@@ -35,6 +35,9 @@ export const UserService = {
   changePassword: async (data) => {
     return await Http.patch("/users/changePassword", data);
   },
+  resetPassword: async ( email, newPass ) => {
+    return await Http.patch(`/users/resetPassword?email=${email}&newPass=${newPass}`);
+  },
   sendOTP: async (email, content) => {
     return await Http.post(`/email/send?email=${email}&content=${content}`);
   },
