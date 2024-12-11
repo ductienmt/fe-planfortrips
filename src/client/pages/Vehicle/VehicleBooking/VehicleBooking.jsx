@@ -1,111 +1,125 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
 import "./vehiclebooking.css";
+import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
+import { ScheduleService } from "../../../../services/apis/ScheduleService";
 
 const VehicleBooking = () => {
-  // Dữ liệu đặt xe mẫu
-  const booking = {
-    code: "A004",
-    name: "Phương Trang",
-    rating: 5,
-    ariveltime: "2:00",
-    Departur: "5:00",
-    ariveladdres: "Cao Lãnh",
-    Departuraddres: "Hồ Chí Minh",
-    price: "140.000",
-  };
+  const { id } = useParams();
+  const navigate = useNavigate(); // useNavigate hook to navigate
+  const [seats, setSeats] = useState([]);
+  const [schedules, setSchedules] = useState({
+    arrivalName: "",
+    arrivalTime: "",
+    carCompanyName: "",
+    carCompanyRating: "",
+    departureName: "",
+    departureTime: "",
+    priceForOneTicket: "",
+    scheduleSeat: [],
+  });
+  const [selectedSeats, setSelectedSeats] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
 
-  // Dữ liệu ghế cố định (gộp cả tầng 1 và tầng 2 vào một mảng duy nhất)
-  const initialSeats = [
-    { id: "A1", status: "available" },
-    { id: "A2", status: "booked" },
-    { id: "A3", status: "available" },
-    { id: "A4", status: "available" },
-    { id: "A5", status: "booked" },
-    { id: "A6", status: "available" },
-    { id: "A7", status: "available" },
-    { id: "A8", status: "booked" },
-    { id: "A9", status: "available" },
-    { id: "A10", status: "available" },
-    { id: "A11", status: "available" },
-    { id: "A12", status: "booked" },
-    { id: "A13", status: "available" },
-    { id: "A14", status: "available" },
-    { id: "A15", status: "booked" },
-    { id: "A16", status: "available" },
-    { id: "A17", status: "available" },
-    { id: "B1", status: "available" },
-    { id: "B2", status: "booked" },
-    { id: "B3", status: "available" },
-    { id: "B4", status: "available" },
-    { id: "B5", status: "available" },
-    { id: "B6", status: "booked" },
-    { id: "B7", status: "available" },
-    { id: "B8", status: "available" },
-    { id: "B9", status: "booked" },
-    { id: "B10", status: "available" },
-    { id: "B11", status: "available" },
-    { id: "B12", status: "available" },
-    { id: "B13", status: "booked" },
-    { id: "B14", status: "available" },
-    { id: "B15", status: "available" },
-  ];
+  useEffect(() => {
+    const fetchStations = async () => {
+      try {
+        const response = await ScheduleService.getScheduleID(id);
+        setSchedules(response.data);
+        setSeats(response.data.scheduleSeat);
+      } catch (error) {
+        console.error("Lỗi khi gọi API:", error);
+      }
+    };
 
-  const [seats, setSeats] = useState(initialSeats);
+    fetchStations();
+  }, [id]);
 
-  // Hàm xử lý chọn hoặc hủy chọn ghế
-  const handleSeatClick = (seatId) => {
-    const updateSeats = seats.map((seat) =>
-      seat.id === seatId && seat.status !== "booked"
-        ? {
-            ...seat,
-            status: seat.status === "selected" ? "available" : "selected",
-          }
+  const handleSeatClick = (seatId, seatNumber) => {
+    const updatedSeats = seats.map((seat) =>
+      seat.id === seatId && seat.status !== "Full"
+        ? { ...seat, status: seat.status === "selected" ? "Empty" : "selected" }
         : seat
     );
-    setSeats(updateSeats);
+
+    setSeats(updatedSeats);
+
+    if (updatedSeats.find((seat) => seat.id === seatId).status === "selected") {
+      setSelectedSeats([...selectedSeats, seatNumber]);
+      setTotalPrice(totalPrice + schedules.priceForOneTicket);
+    } else {
+      setSelectedSeats(selectedSeats.filter((seat) => seat !== seatNumber));
+      setTotalPrice(totalPrice - schedules.priceForOneTicket);
+    }
   };
 
-  // Hàm phân loại ghế theo tầng
-  const getSeatsByFloor = (floor) => {
-    return seats.filter((seat) => seat.id.charAt(0) === floor);
+  const getHourAndMinutes = (timeString) => {
+    if (!timeString) return "";
+    const date = new Date(timeString);
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    return `${hours}:${minutes}`;
   };
-  // Hàm render ghế
+
+  const getSeatsByFloor = (floor) => {
+    return seats.filter((seat) => seat.seatNumber.charAt(0) === floor);
+  };
+
   const renderSeats = (seats) => {
     return seats.map((seat) => (
       <button
         key={seat.id}
         className={`seat-button ${seat.status}`}
-        onClick={() => handleSeatClick(seat.id)}
-        disabled={seat.status === "booked"}
+        onClick={() => handleSeatClick(seat.id, seat.seatNumber)}
+        disabled={seat.status === "Full"}
       >
-        {seat.id}
+        {seat.seatNumber}
       </button>
     ));
   };
+
+  const handleContinueClick = () => {
+    // Thực hiện lưu dữ liệu và điều hướng trang
+    const username = sessionStorage.getItem("username");
+
+    const bookingData = {
+      scheduleId: id,
+      totalPrice: totalPrice,
+      status: null,
+      username: username || null,
+      paymentId: null,
+    };
+
+    sessionStorage.setItem("bookingData", JSON.stringify(bookingData));
+
+    // Điều hướng đến trang tiếp theo
+    navigate("/booking/transportation"); // Dùng navigate thay cho history.push
+  };
+
   return (
     <div className="vehiclebooking-body">
       <div className="vehicle-container">
-        {/* Thông tin xe */}
         <div className="header">
           <div>
-            <b style={{ fontSize: "25px" }}>{booking.name}</b>
-            <b style={{ fontSize: "20px" }}>⭐{booking.rating}/5</b>
+            <b style={{ fontSize: "25px" }}>{schedules.carCompanyName}</b>
+            <b style={{ fontSize: "20px" }}>⭐{schedules.carCompanyRating}/5</b>
           </div>
           <h3 style={{ color: "#005AA1", fontWeight: "bold" }}>Thông tin xe</h3>
         </div>
         <hr />
         <div className="details-bus">
           <div>
-            <b style={{ color: "gray" }}>{booking.ariveladdres}</b> ➡️{" "}
-            <b style={{ color: "gray" }}>{booking.Departuraddres}</b>
+            <b style={{ color: "gray" }}>{schedules.arrivalName}</b>{" "}
+            <TrendingFlatIcon />{" "}
+            <b style={{ color: "gray" }}>{schedules.departureName}</b>
           </div>
           <div>
             <b style={{ fontWeight: "bold", fontSize: "25px" }}>
-              {booking.ariveltime}
+              {getHourAndMinutes(schedules.arrivalTime)}
             </b>{" "}
-            -{" "}
+            ───{" "}
             <b style={{ fontWeight: "bold", fontSize: "25px" }}>
-              {booking.Departur}
+              {getHourAndMinutes(schedules.departureTime)}
             </b>
           </div>
         </div>
@@ -114,7 +128,6 @@ const VehicleBooking = () => {
           <input type="text" placeholder="Điểm đến" />
         </div>
         <hr />
-        {/* Chọn ghế */}
         <div className="seats-container">
           <div className="floor-section">
             <h4>Tầng 1</h4>
@@ -126,15 +139,18 @@ const VehicleBooking = () => {
           </div>
         </div>
         <div className="price-bus">
-          <div className="item-1">
-            <b>{booking.code}</b>
-          </div>
           <div className="item-2">
-            <b style={{ fontSize: "25px", color: "red" }}>{booking.price}</b>
+            <h4>Ghế đã chọn:</h4>
+            <p>{selectedSeats.join(", ")}</p>
+            <b style={{ fontSize: "25px", color: "red" }}>
+              {Number(totalPrice).toFixed(2)} VND
+            </b>
           </div>
         </div>
         <div className="item-button">
-          <button className="continue-button">Tiếp tục</button>
+          <button className="continue-button" onClick={handleContinueClick}>
+            Tiếp tục
+          </button>
         </div>
       </div>
     </div>

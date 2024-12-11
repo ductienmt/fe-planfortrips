@@ -1,0 +1,64 @@
+.input-vehicle {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+.input-vehicle__group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 2px solid #ccc;
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.input-vehicle__group .input-vehicle__input {
+    flex: 1;
+    padding: 10px 12px;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s ease;
+}
+
+.input-vehicle__group .input-vehicle__input:focus {
+    background-color: #fff;
+    box-shadow: 0 0 5px #007bff;
+}
+
+.input-vehicle__group .input-vehicle__swap-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.input-vehicle__suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 5px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.input-vehicle__suggestions .input-vehicle__suggestion-item {
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.input-vehicle__suggestions .input-vehicle__suggestion-item:hover {
+    background-color: #f0f8ff;
+}

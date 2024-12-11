@@ -109,8 +109,8 @@ const Booking = () => {
   const loadTripData = useCallback(() => {
     const seatsDe = tripData?.transportation?.departure?.seatBook
       ? tripData.transportation.departure.seatBook
-          .map((seat) => seat.seat_number)
-          .join(", ")
+        .map((seat) => seat.seat_number)
+        .join(", ")
       : "Chưa có dữ liệu chỗ ngồi";
 
     const { time: departureTime, date: departureDate } = formatDateTime(
@@ -224,23 +224,36 @@ const Booking = () => {
         </div>
         <div className="booking-body-right">
           <UserInformation
-            totalPrice={totalPriceTransportation + priceAc}
-            totalPriceTransportation={totalPriceTransportation}
-            priceOneSeatDe={tripData.transportation?.departure?.totalPrice / 2}
-            priceOneSeatRe={tripData.transportation?.return?.totalPrice / 2}
+            // totalPrice={totalPriceTransportation + priceAc}
+            // totalPriceTransportation={totalPriceTransportation}
+            // priceOneSeatDe={tripData.transportation?.departure?.totalPrice / 2}
+            // priceOneSeatRe={tripData.transportation?.return?.totalPrice / 2}
+            // totalSeat={
+            //   tripData.transportation?.departure?.seatBook.length +
+            //   tripData.transportation?.return?.seatBook.length
+            // }
+            // priceOneNight={tripData.accomodation?.price_per_night}
+            // totalPriceAccommodation={priceAc}
+            // totalRoom={tripData.accomodation?.rooms.length}
+            // nights={calculateNights(
+            //   tripData.transportation?.departure?.departureTime,
+            //   tripData.transportation?.return?.departureTime
+            // )}
+            // checkinHours={formatDateTimeUtils(checkinHours)}
+            // checkoutHours={formatDateTimeUtils(checkoutHours)}
+            totalPrice={"456"}
+            totalPriceTransportation={"456"}
+            priceOneSeatDe={"456"}
+            priceOneSeatRe={"456"}
             totalSeat={
-              tripData.transportation?.departure?.seatBook.length +
-              tripData.transportation?.return?.seatBook.length
+              "5"
             }
-            priceOneNight={tripData.accomodation?.price_per_night}
-            totalPriceAccommodation={priceAc}
-            totalRoom={tripData.accomodation?.rooms.length}
-            nights={calculateNights(
-              tripData.transportation?.departure?.departureTime,
-              tripData.transportation?.return?.departureTime
-            )}
-            checkinHours={formatDateTimeUtils(checkinHours)}
-            checkoutHours={formatDateTimeUtils(checkoutHours)}
+            priceOneNight={"7"}
+            totalPriceAccommodation={"8"}
+            totalRoom={"9"}
+            nights={"7"}
+            checkinHours={"6"}
+            checkoutHours={"7"}
             type={type}
           />
         </div>

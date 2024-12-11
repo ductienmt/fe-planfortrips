@@ -72,7 +72,6 @@ const ForgotPassword = ({ initialEmail }) => {
             autoHideDuration: 1000,
           }
         );
-        setEmail(null);
       }
     }, 300),
     [email]
