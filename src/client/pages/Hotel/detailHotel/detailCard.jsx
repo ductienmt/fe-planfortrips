@@ -56,6 +56,28 @@ const contentStyle = {
   margin: "0 auto",
 };
 const DetailCard = () => {
+  const { hotel_id } = useParams();
+  const [hotelDetails, setHotelDetails] = useState(null);
+
+  const fetchHotelDetails = async () => {
+    try {
+      const data = await HotelService.findHotelById(hotel_id);
+      setHotelDetails(data);
+    } catch (error) {
+      console.error("Error fetching hotel details:", error);
+    }
+  };
+
+  useEffect(() => {
+    console.log(hotel_id);
+
+    fetchHotelDetails();
+  }, [hotel_id]);
+
+  if (!hotelDetails) {
+    return <div>Loading...</div>;
+  }
+
   const originalPrice = 250000;
   const discountedPrice = 200000;
   const hasDiscount = discountedPrice < originalPrice;
@@ -91,7 +113,10 @@ const DetailCard = () => {
     navigator.clipboard
       .writeText(currentUrl)
       .then(() => {
-        enqueueSnackbar("Link đã được sao chép", { variant: "success",autoHideDuration: 2000});
+        enqueueSnackbar("Link đã được sao chép", {
+          variant: "success",
+          autoHideDuration: 2000,
+        });
       })
       .catch((err) => {
         console.error("Không thể sao chép link:", err);
@@ -154,7 +179,10 @@ const DetailCard = () => {
                     <i key={index} className="fa-solid fa-star"></i>
                   ))}
               </div>
-              <span className="total-customer">{feedbacks?.length > 0 ?feedbacks?.length:"Chưa có "} người đánh giá</span>
+              <span className="total-customer">
+                {feedbacks?.length > 0 ? feedbacks?.length : "Chưa có "} người
+                đánh giá
+              </span>
             </div>
           </div>
           <div
@@ -179,7 +207,10 @@ const DetailCard = () => {
                 <i className="fa-solid fa-share-nodes"></i>{" "}
               </button>
               {/* <button style={{ flexGrow: 6 }}>Đặt phòng</button> */}
-              <a href="#room-availible" style={{ flexGrow: 6 ,textDecoration:"none"}}>
+              <a
+                href="#room-availible"
+                style={{ flexGrow: 6, textDecoration: "none" }}
+              >
                 Đặt phòng
               </a>
             </div>

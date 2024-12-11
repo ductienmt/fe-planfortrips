@@ -252,7 +252,7 @@ const routeClient = () => [
         Component: VehiclePage,
       },
       {
-        path: "/vehicle-booking",
+        path: "/vehicle-booking/:id",
         Component: VehicleBooking,
       },
       {
