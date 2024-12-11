@@ -31,7 +31,6 @@ const EnterpriseSidebar = () => {
       return;
     }
 
-    // Điều hướng bình thường nếu không phải là Account
     navigate(`/enterprise/${path}`);
   };
 

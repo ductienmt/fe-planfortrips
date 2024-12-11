@@ -61,7 +61,7 @@ export default function OrderCarDetail({ open, setOpen, selectedTicket }) {
             />
             <div className="product-infoTicket">
               <div className="priceTicket">
-                Giá sản phẩm: <span>{selectedTicket && selectedTicket.payment?.total_price ? selectedTicket?.payment.total_price : 0} VNĐ</span>
+                Giá sản phẩm: <span>{selectedTicket && selectedTicket?.total_price ? selectedTicket?.total_price : 0} VNĐ</span>
               </div>
               <div className="payment-methodsTicket">
                 <p>Phương thức thanh toán:</p>
@@ -108,6 +108,7 @@ export default function OrderCarDetail({ open, setOpen, selectedTicket }) {
                     selectedTicket.seats.map((seat) => (
                       <span key={seat.seatNumber} className="seat-number">
                         Số ghế: {seat.seatNumber}
+                        <br />
                       </span>
                     ))
                   ) : (
@@ -164,6 +165,7 @@ export default function OrderCarDetail({ open, setOpen, selectedTicket }) {
                     selectedTicket.seats.map((seat) => (
                       <span key={seat.seatNumber} className="seat-number">
                         Số ghế: {seat.seatNumber}
+                        <br />
                       </span>
                     ))
                   ) : (

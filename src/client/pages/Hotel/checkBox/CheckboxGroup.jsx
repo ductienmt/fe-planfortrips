@@ -1,25 +1,29 @@
 import { useState } from "react";
 
 const amenitiesList = [
-  "Wi-Fi miễn phí",
   "Hồ bơi",
-  "Spa",
+  "Bãi giữ xe",
+  "Dịch vụ đưa đón sân bay",
+  "Dịch vụ giặt ủi, giặt khô",
+  "Khu vực hút thuốc riêng biệt",
+  "Phòng gym",
   "Nhà hàng",
-  "Phòng tập thể dục",
-  "Bãi đỗ xe",
-  "Dịch vụ phòng",
 ];
 
-const CheckboxGroup = () => {
-  const [selectedAmenities, setSelectedAmenities] = useState([]);
+const CheckboxGroup = ({ setSelectedAmenities }) => {
+  const [selectedAmenities, setSelectedAmenitiesState] = useState([]);
 
   const handleCheckboxChange = (event) => {
     const { name, checked } = event.target;
+    let newSelectedAmenities = [...selectedAmenities];
+
     if (checked) {
-      setSelectedAmenities([...selectedAmenities, name]);
+      newSelectedAmenities.push(name);
     } else {
-      setSelectedAmenities(selectedAmenities.filter((item) => item !== name));
+      newSelectedAmenities = newSelectedAmenities.filter((item) => item !== name);
     }
+    setSelectedAmenitiesState(newSelectedAmenities);
+    setSelectedAmenities(newSelectedAmenities);
   };
 
   return (

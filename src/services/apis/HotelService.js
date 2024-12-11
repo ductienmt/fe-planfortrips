@@ -5,10 +5,16 @@ export const HotelService = {
     const response = await Http.get(
       `/hotels/all?page=${page}&limit=${limit}&keyword=${keyword}`
     );
+    console.log(response);
+    
     return response.data;
   },
   findHotelById: async (id) => {
     const response = await Http.get(`/hotels/getById/${id}`);
+    return response.data;
+  },
+  findHotelByRoomId: async (id) => {
+    const response = await Http.get(`/hotels/getByRoomId/${id}`);
     return response.data;
   },
   update: async (hotelId, data) => {
@@ -30,4 +36,9 @@ export const HotelService = {
     );
     return response.data;
   },
+  getAvailableHotels: async (keyword,date,days,page,limit)=>{
+    const response = await Http.get(`/hotels/findHotelAvailable?keyword=${keyword}&date=${date}&days=${days}&page=${page}&limit=${limit}`);
+    console.log(response);
+    return response.data;
+  }
 };
