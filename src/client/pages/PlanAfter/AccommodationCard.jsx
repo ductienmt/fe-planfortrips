@@ -375,12 +375,13 @@ function AccommodationCard({ className, onClick, accomodation, destination }) {
               {hotelChangeData?.map((hotel) => (
                 <HotelCard
                   key={hotel.hotelId}
-                  img={hotel.hotelImage[0]?.url}
-                  name={hotel.hotelName}
-                  address={hotel.hotelAddress}
-                  originalPrice={hotel.roomPrice}
-                  hotelAmenities={hotel.hotelAmenities}
-                  contentButton={"Chọn khách sạn"}
+                  // img={hotel.hotelImage[0]?.url}
+                  // name={hotel.hotelName}
+                  // address={hotel.hotelAddress}
+                  // originalPrice={hotel.roomPrice}
+                  // hotelAmenities={hotel.hotelAmenities}
+                  // contentButton={"Chọn khách sạn"}
+                  item={hotel}
                   modalTarget={"#changeRoomModal"}
                   modalToogle={"modal"}
                   onClick={() => {

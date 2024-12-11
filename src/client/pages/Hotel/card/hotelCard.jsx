@@ -4,7 +4,7 @@ import { Star } from "../../../../admin/pages/Components/Star";
 import SvgIcon from "./svgIcon";
 import { Link, useNavigate } from "react-router-dom";
 import { regexUrlIcon } from "../../../../utils/regex";
-const HotelCard = ({ item }) => {
+const HotelCard = ({ item, onClick }) => {
   console.log(item);
   // const navigate = useNavigate();
   // const originalPrice = 250000;
@@ -63,7 +63,11 @@ const HotelCard = ({ item }) => {
                   {/* <button className="btn-booking bg-warning mb-2 ">
                     <span>Lưu</span>
                   </button> */}
-                  <Link to={ `/hotel-page/${item.hotel_id}`} className="btn-booking mb-2" style={{ textDecoration:'none' }}>
+                  <Link
+                    to={`/hotel-page/${item.hotel_id}`}
+                    className="btn-booking mb-2"
+                    style={{ textDecoration: "none" }}
+                  >
                     <span>Đặt ngay</span>
                   </Link>
                 </div>
