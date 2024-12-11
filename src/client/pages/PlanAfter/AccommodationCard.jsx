@@ -95,6 +95,8 @@ function AccommodationCard({ className, onClick, accomodation, destination }) {
     sortBy = null,
     sortType = null
   ) => {
+    console.log(id);
+
     try {
       const response = await RoomService.getRoomsByHotelId(
         id,
@@ -373,15 +375,34 @@ function AccommodationCard({ className, onClick, accomodation, destination }) {
                 </button>
               </div>
               {hotelChangeData?.map((hotel) => (
+                // <HotelCard
+                //   key={hotel.hotelId}
+                //   img={hotel.hotelImage[0]?.url}
+                //   name={hotel.hotelName}
+                //   address={hotel.hotelAddress}
+                //   originalPrice={hotel.roomPrice}
+                //   hotelAmenities={hotel.hotelAmenities}
+                //   contentButton={"Chọn khách sạn"}
+                //   item={{
+
+                //   }}
+                //   modalTarget={"#changeRoomModal"}
+                //   modalToogle={"modal"}
+                //   onClick={() => {
+                //     loadRooms(hotel.hotelId);
+                //   }}
+                // />
                 <HotelCard
                   key={hotel.hotelId}
-                  // img={hotel.hotelImage[0]?.url}
-                  // name={hotel.hotelName}
-                  // address={hotel.hotelAddress}
-                  // originalPrice={hotel.roomPrice}
-                  // hotelAmenities={hotel.hotelAmenities}
-                  // contentButton={"Chọn khách sạn"}
-                  item={hotel}
+                  contentButton={"Chọn khách sạn"}
+                  item={{
+                    name: hotel.hotelName,
+                    address: hotel.hotelAddress,
+                    price: hotel.roomPrice,
+                    hotelAmenities: hotel.hotelAmenities,
+                    images: hotel.hotelImage[0]?.url,
+                    rating: hotel.rating,
+                  }}
                   modalTarget={"#changeRoomModal"}
                   modalToogle={"modal"}
                   onClick={() => {

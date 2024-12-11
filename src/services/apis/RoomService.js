@@ -38,7 +38,7 @@ export const RoomService = {
     const response = await Http.get(
       `/rooms/getRoomByHotelId?${params.toString()}`
     );
-    console.log(params.toString());
+    console.log(response.data);
 
     return response.data;
   },

@@ -15,6 +15,7 @@ import { HotelService } from "../../../services/apis/HotelService";
 import { Pagination } from "@mui/material";
 import HotelCard from "./card/hotelCard";
 import { enqueueSnackbar } from "notistack";
+import { flatpickrConfig } from "../../../utils/ConfigFlatpickr";
 
 const Hotel = () => {
   window.scrollTo(0, 0);
@@ -149,59 +150,6 @@ const Hotel = () => {
 
   const [isLoading, setIsLoading] = useState(true); // Thêm trạng thái isLoading
 
-  const VietnameseHotel = {
-    weekdays: {
-      shorthand: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
-      longhand: [
-        "Chủ Nhật",
-        "Thứ Hai",
-        "Thứ Ba",
-        "Thứ Tư",
-        "Thứ Năm",
-        "Thứ Sáu",
-        "Thứ Bảy",
-      ],
-    },
-    months: {
-      shorthand: [
-        "Th1",
-        "Th2",
-        "Th3",
-        "Th4",
-        "Th5",
-        "Th6",
-        "Th7",
-        "Th8",
-        "Th9",
-        "Th10",
-        "Th11",
-        "Th12",
-      ],
-      longhand: [
-        "Tháng 1",
-        "Tháng 2",
-        "Tháng 3",
-        "Tháng 4",
-        "Tháng 5",
-        "Tháng 6",
-        "Tháng 7",
-        "Tháng 8",
-        "Tháng 9",
-        "Tháng 10",
-        "Tháng 11",
-        "Tháng 12",
-      ],
-    },
-    firstDayOfWeek: 1, // tuần bắt đầu từ thứ 2
-    rangeSeparator: " đến ",
-    weekAbbreviation: "Tuần",
-    scrollTitle: "Cuộn để tăng giảm",
-    toggleTitle: "Nhấp để chuyển đổi",
-    ordinal: (nth) => {
-      if (nth > 1) return "th";
-      return "";
-    },
-  };
   const validation = () => {
     const today = new Date();
     if (!dateReturn) setError("Ngày về không được để trống");
@@ -230,6 +178,8 @@ const Hotel = () => {
   };
 
   useEffect(() => {
+    document.title = "Khách sạn";
+
     document.addEventListener("click", handleClickOutside);
 
     if (!isLoading) {
@@ -245,7 +195,7 @@ const Hotel = () => {
           altInput: true,
           altFormat: "d-m-Y",
           dateFormat: "Y-m-d",
-          locale: VietnameseHotel,
+          locale: flatpickrConfig,
           minDate: today,
           maxDate: maxDate,
           defaultDate: date,
@@ -264,7 +214,7 @@ const Hotel = () => {
           altInput: true,
           altFormat: "d-m-Y",
           dateFormat: "Y-m-d",
-          locale: VietnameseHotel,
+          locale: flatpickrConfig,
           minDate: today,
           maxDate: maxDate,
           defaultDate: defaultReturnDate,
