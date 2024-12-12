@@ -346,10 +346,6 @@ const routeClient = () => [
     path: "*",
     element: <NotFoundPage />,
   },
-  {
-    path: "test",
-    element: <NotFoundPage />,
-  },
 ];
 
 export const router = createBrowserRouter([
