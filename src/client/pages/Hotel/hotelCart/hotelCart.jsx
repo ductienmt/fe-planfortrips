@@ -7,7 +7,7 @@ import { Delete, RemoveCircle } from "@mui/icons-material";
 import InfoIcon from "@mui/icons-material/Info";
 import { CouponService } from "../../../../services/apis/CouponService";
 import RoomServiceIcon from '@mui/icons-material/RoomService';
-const HotelCart = ({ selectedRoom, setSelectedRoom }) => {
+const HotelCart = ({ selectedRoom, setSelectedRoom,setLoading }) => {
   const [openCoupon, setOpenCoupon] = useState(false);
   const couponRef = useRef(null);
   const [coupons, setCoupons] = useState([]);

@@ -17,7 +17,7 @@ import HotelCard from "./card/hotelCard";
 import { enqueueSnackbar } from "notistack";
 
 const Hotel = () => {
-  window.scrollTo(0, 0);
+  // window.scrollTo(0, 0);
   const location = useLocation();
   const { keyword, date, days } = location.state || {};
   const [selectedAmenities, setSelectedAmenities] = useState([]);

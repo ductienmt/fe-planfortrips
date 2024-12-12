@@ -17,6 +17,9 @@ import OpenStreetMapEmbed from "../mapCheckin/mapHotel";
 import { FeedbackService } from "../../../../services/apis/FeedbackService";
 import ReviewHeader from "../personReview/reviewHeader";
 import { enqueueSnackbar } from "notistack";
+import HotelShareComponent from "../shareHotel/shareHotel";
+import HotelImageModal from "../hotelImageModal/hotelImageModal";
+import { useAuth } from "../../../../context/AuthContext/AuthProvider";
 
 const style = {
   position: "absolute",
@@ -59,7 +62,7 @@ const DetailCard = () => {
   const originalPrice = 250000;
   const discountedPrice = 200000;
   const hasDiscount = discountedPrice < originalPrice;
-  window.scrollTo(0, 0);
+  // window.scrollTo(0, 0);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const [hotel, setHotel] = useState({});
@@ -67,36 +70,25 @@ const DetailCard = () => {
   const [selectedRoom, setSelectedRoom] = useState([]);
   const [feedbacks, setFeedbacks] = useState([]);
   const [openFeedback, setOpenFeedback] = useState(false);
+  const [isCopyModal, setIsCopyModal] = useState(false);
+  const { token } = useAuth();
   useEffect(() => {
     const fetch = async () => {
       const dataHotel = await HotelService.findHotelById(id);
       if (dataHotel) {
         setHotel(dataHotel);
         setRoom(dataHotel.rooms);
-        setLoading(false);
-        console.log(hotel);
         const dataFeedback = await FeedbackService.getFeedBackByEnterpriseId(
           dataHotel.enterpriseId
         );
         if (dataFeedback) {
           setFeedbacks(dataFeedback);
-          console.log(feedbacks);
         }
+        setLoading(false);
       }
     };
     fetch();
   }, [setFeedbacks, setHotel, setRoom]);
-  const handleCopyLink = () => {
-    const currentUrl = window.location.href;
-    navigator.clipboard
-      .writeText(currentUrl)
-      .then(() => {
-        enqueueSnackbar("Link đã được sao chép", { variant: "success",autoHideDuration: 2000});
-      })
-      .catch((err) => {
-        console.error("Không thể sao chép link:", err);
-      });
-  };
   const cartRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [openCart, setOpenCart] = useState(false);
@@ -121,6 +113,17 @@ const DetailCard = () => {
   if (loading) {
     return <Loader />;
   }
+  const ratingFeel = (rating)=>{
+    if(rating > 4){
+      return "Rất tốt";
+    }else if(rating > 3){
+      return "Tốt";
+    }else if(rating > 2){
+      return "Tạm được"
+    }else{
+      return "Không tốt";
+    }
+  }
   return (
     <>
       {selectedRoom.length > 0 && (
@@ -133,6 +136,7 @@ const DetailCard = () => {
           <HotelCart
             selectedRoom={selectedRoom}
             setSelectedRoom={setSelectedRoom}
+            setLoading={setLoading}
           />
         </div>
       )}
@@ -146,40 +150,41 @@ const DetailCard = () => {
               <i className="fa-solid fa-map-pin me-3"></i>
               {hotel.address}
             </small>
-            <div className="feed-back-hotel d-flex align-items-center mt-3">
-              <div className="start-feedback">
+            <div className="feed-back-hotel-detail d-flex align-items-center mt-3">
+              <div className="start-feedback-hotel">
                 {Array(hotel.rating)
                   .fill(0)
                   .map((_, index) => (
-                    <i key={index} className="fa-solid fa-star"></i>
+                    <i key={index} className="fa-solid fa-star text-warning" ></i>
                   ))}
               </div>
-              <span className="total-customer">{feedbacks?.length > 0 ?feedbacks?.length:"Chưa có "} người đánh giá</span>
+              <span className="total-customer">
+                {feedbacks?.length > 0 ? feedbacks?.length : "Chưa có "} người
+                đánh giá
+              </span>
             </div>
           </div>
           <div
             style={{ flexGrow: 2, textAlign: "end" }}
             className="priceHotelDetail"
           >
-            <span className={`price ${hasDiscount ? "discounted" : ""}`}>
-              {originalPrice.toLocaleString("vi-VN")} VNĐ
-            </span>
-            <br />
-            {hasDiscount && (
-              <span className="new-price">
-                {discountedPrice.toLocaleString("vi-VN")} VNĐ
-              </span>
-            )}
+           
             <br />
             <div className="btn-detail-hotel d-flex align-items-center">
               {/* <button style={{ flexGrow: 2 }}>
                 <i className="fa-solid fa-heart-circle-plus"></i>
               </button> */}
-              <button style={{ flexGrow: 2 }} onClick={handleCopyLink}>
+              <button
+                style={{ flexGrow: 2 }}
+                onClick={() => setIsCopyModal(!isCopyModal)}
+              >
                 <i className="fa-solid fa-share-nodes"></i>{" "}
               </button>
               {/* <button style={{ flexGrow: 6 }}>Đặt phòng</button> */}
-              <a href="#room-availible" style={{ flexGrow: 6 ,textDecoration:"none"}}>
+              <a
+                href="#room-availible"
+                style={{ flexGrow: 6, textDecoration: "none" }}
+              >
                 Đặt phòng
               </a>
             </div>
@@ -188,127 +193,44 @@ const DetailCard = () => {
         <div className="flex-container-body">
           <div className="img-col-1">
             <Image
-              src={hotel.images[0].url ?? "src/assets/placeNotFound.webp"}
+              src={hotel.images[0]?.url ?? "../src/assets/placeNotFound.webp"}
               alt=""
-              style={{ height: "500px" }}
-              className="img11"
+              className="img1"
             />
           </div>
           <div className="img-col-2">
             <Image
-              src={hotel.images[1].url ?? "src/assets/placeNotFound.webp"}
+              src={hotel.images[1]?.url ?? "../src/assets/placeNotFound.webp"}
               alt=""
               className="img2"
             />
             <Image
-              src={hotel.images[2].url ?? "src/assets/placeNotFound.webp"}
+              src={hotel.images[2]?.url ?? "../src/assets/placeNotFound.webp"}
               alt=""
               className="img2"
             />
           </div>
           <div className="img-col-3">
             <Image
-              src={hotel.images[3].url ?? "src/assets/placeNotFound.webp"}
+              src={hotel.images[3]?.url ?? "../src/assets/placeNotFound.webp"}
               alt=""
               className="img3"
             />
             <Image
-              src={hotel.images[4].url ?? "src/assets/placeNotFound.webp"}
+              src={hotel.images[4]?.url ?? "../src/assets/placeNotFound.webp"}
               alt=""
               className="img4"
             />
           </div>
         </div>
-        <div className="btn-seeAll-container">
-          <button className="btn-seeAll" onClick={handleOpen}>
-            Xem tất cả
-          </button>
-        </div>
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={{ ...style }}>
-            <Carousel
-              arrows
-              infinite={false}
-              prevArrow={
-                <div
-                  style={{
-                    position: "absolute",
-                    left: 10,
-                    zIndex: 2,
-                    width: 50,
-                    height: 50,
-                    background: "rgba(0,0,0,0.5)",
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#000",
-                  }}
-                >
-                  <ArrowBackIosNewIcon
-                    style={{
-                      color: "black",
-                      fontSize: 30,
-                    }}
-                  />
-                </div>
-              }
-              nextArrow={
-                <div
-                  style={{
-                    position: "absolute",
-                    right: 10,
-                    zIndex: 2,
-                    width: 50,
-                    height: 50,
-                    background: "rgba(0,0,0,0.5)",
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#000",
-                  }}
-                >
-                  <ArrowForwardIosIcon
-                    style={{
-                      color: "black",
-                      fontSize: 30,
-                    }}
-                  />
-                </div>
-              }
-            >
-              {hotel.images.map((i, index) => (
-                <div
-                  key={index}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    maxWidth: "500px",
-                    height: "400px",
-                    margin: "0 auto",
-                  }}
-                >
-                  <Image
-                    style={{
-                      ...contentStyle,
-                      width: "90%",
-                    }}
-                    src={i.url}
-                    alt={`Hotel image ${index + 1}`}
-                  />
-                </div>
-              ))}
-            </Carousel>
-            <br />
-          </Box>
-        </Modal>
+        {hotel.images.length > 0 && (
+          <div className="btn-seeAll-container">
+            <button className="btn-seeAll" onClick={handleOpen}>
+              Xem tất cả
+            </button>
+          </div>
+        )}
+        <HotelImageModal open={open} handleClose={handleClose} hotel={hotel} />
         <hr />
         <div className="row">
           <div className="col-6">
@@ -369,18 +291,20 @@ const DetailCard = () => {
         <div className="review-hotel mb-3">
           <div className="d-flex justify-content-between align-items-center">
             <h3>Đánh giá</h3>
-            <button
-              className="giveYour-review"
-              onClick={() => setOpenFeedback(!openFeedback)}
-            >
-              Thêm đánh giá của bạn
-            </button>
+            {token ? (
+              <button
+                className="giveYour-review"
+                onClick={() => setOpenFeedback(!openFeedback)}
+              >
+                Thêm đánh giá của bạn
+              </button>
+            ) : ("Đăng nhập để đánh giá")}
           </div>
           <div className="star-review">
             <div className="d-flex justify-content-start">
               <span className="star-number">{hotel.rating}</span>
               <div className="status-review">
-                <span className="status-text-review">Rất tốt</span>
+                <span className="status-text-review">{ratingFeel(hotel.rating)}</span>
                 {feedbacks.length > 0 ? (
                   <span>{feedbacks.length} người đã đánh giá</span>
                 ) : (
@@ -390,7 +314,7 @@ const DetailCard = () => {
             </div>
           </div>
         </div>
-        {openFeedback && (
+        {token && (
           <ReviewHeader
             onAddReview={onAddReview}
             enterpriseId={hotel.enterpriseId}
@@ -402,6 +326,16 @@ const DetailCard = () => {
           ))}
         </div>
       </div>
+      <Modal
+        open={isCopyModal}
+        onClose={() => setIsCopyModal(!isCopyModal)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <HotelShareComponent hotel={hotel} />
+        </Box>
+      </Modal>
     </>
   );
 };
