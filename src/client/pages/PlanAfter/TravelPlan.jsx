@@ -14,7 +14,10 @@ import Loader from "../../Components/Loading";
 
 function TravelPlan() {
   const [selectedCard, setSelectedCard] = useState("transportation");
-  const tripData = JSON.parse(sessionStorage.getItem("tripData"));
+  const [tripData, setTripData] = useState(
+    JSON.parse(sessionStorage.getItem("tripData")) || {}
+  );
+  // const tripData = JSON.parse(sessionStorage.getItem("tripData"));
   const [summaryItems, setSummaryItems] = useState([]);
   const [accommodationItems, setAccommodationItems] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
@@ -202,6 +205,13 @@ function TravelPlan() {
       ]
     : [];
 
+  const loadTripData = () => {
+    const tripDataFromStorage = JSON.parse(sessionStorage.getItem("tripData"));
+    if (tripDataFromStorage) {
+      setTripData(tripDataFromStorage);
+    }
+  };
+
   useEffect(() => {
     if (tripData) {
       // console.log(tripData.userData?.budget);
@@ -254,6 +264,8 @@ function TravelPlan() {
                 originalLocation={tripData.userData?.location}
                 destination={tripData.userData?.destination}
                 re={tripData.transportation?.return}
+                numPeople={tripData.userData?.numberPeople}
+                loadAgain={loadTripData}
               />
               <AccommodationCard
                 className={

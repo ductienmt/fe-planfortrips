@@ -1,73 +1,50 @@
 import "./ChooseTicket.css";
 import { useSnackbar } from "notistack";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 
-const ChooseTicket = ({ numPeople }) => {
-  // Dữ liệu đặt xe mẫu
-  const booking = {
-    code: "A004",
-    name: "Phương Trang",
-    rating: 5,
-    ariveltime: "2:00",
-    Departur: "5:00",
-    ariveladdres: "Cao Lãnh",
-    Departuraddres: "Hồ Chí Minh",
-    price: "140.000",
-  };
-
-  // Dữ liệu ghế cố định (gộp cả tầng 1 và tầng 2 vào một mảng duy nhất)
-  const initialSeats = [
-    { id: "A1", status: "available" },
-    { id: "A2", status: "booked" },
-    { id: "A3", status: "available" },
-    { id: "A4", status: "available" },
-    { id: "A5", status: "booked" },
-    { id: "A6", status: "available" },
-    { id: "A7", status: "available" },
-    { id: "A8", status: "booked" },
-    { id: "A9", status: "available" },
-    { id: "A10", status: "available" },
-    { id: "A11", status: "available" },
-    { id: "A12", status: "booked" },
-    { id: "A13", status: "available" },
-    { id: "A14", status: "available" },
-    { id: "A15", status: "booked" },
-    { id: "A16", status: "available" },
-    { id: "A17", status: "available" },
-    { id: "B1", status: "available" },
-    { id: "B2", status: "booked" },
-    { id: "B3", status: "available" },
-    { id: "B4", status: "available" },
-    { id: "B5", status: "available" },
-    { id: "B6", status: "booked" },
-    { id: "B7", status: "available" },
-    { id: "B8", status: "available" },
-    { id: "B9", status: "booked" },
-    { id: "B10", status: "available" },
-    { id: "B11", status: "available" },
-    { id: "B12", status: "available" },
-    { id: "B13", status: "booked" },
-    { id: "B14", status: "available" },
-    { id: "B15", status: "available" },
-  ];
-
-  const [seats, setSeats] = useState(initialSeats);
+const ChooseTicket = ({
+  numPeople,
+  preModalTarget,
+  preModalToogle,
+  nextModalTarget,
+  nextModalToogle,
+  preClick,
+  nextClick,
+  seatsProp,
+  scheduleIdOld,
+  scheduleIdNew,
+}) => {
+  const [seats, setSeats] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
 
+  useEffect(() => {
+    if (seatsProp) {
+      setSeats(seatsProp);
+    }
+  }, [seatsProp]);
+
+  const handlePreClick = () => {
+    setSeats(null);
+    if (preClick) {
+      preClick();
+    }
+  };
+
   // Tính số ghế đã chọn
-  const selectedSeatsCount = seats.filter(
+  const selectedSeatsCount = seats?.filter(
     (seat) => seat.status === "selected"
   ).length;
 
   // Hàm xử lý chọn/hủy ghế
   const handleSeatClick = (seatId) => {
-    const updateSeats = seats.map((seat) =>
-      seat.id === seatId && seat.status !== "booked"
+    const updateSeats = seats?.map((seat) =>
+      seat.seat_id === seatId && seat.status !== "Full"
         ? {
             ...seat,
             status:
               seat.status === "selected" && selectedSeatsCount <= numPeople
-                ? "available"
+                ? "Empty"
                 : selectedSeatsCount < numPeople
                   ? "selected"
                   : seat.status,
@@ -79,18 +56,19 @@ const ChooseTicket = ({ numPeople }) => {
 
   // Hàm phân loại ghế theo tầng
   const getSeatsByFloor = (floor) => {
-    return seats.filter((seat) => seat.id.charAt(0) === floor);
+    return seats?.filter((seat) => seat.seat_number.charAt(0) === floor);
   };
+
   // Hàm render ghế
   const renderSeats = (seats) => {
-    return seats.map((seat) => (
+    return seats?.map((seat) => (
       <button
-        key={seat.id}
+        key={seat.seat_id}
         className={`seat-button ${seat.status}`}
-        onClick={() => handleSeatClick(seat.id)}
-        disabled={seat.status === "booked"}
+        onClick={() => handleSeatClick(seat.seat_id)}
+        disabled={seat.status === "Full"}
       >
-        {seat.id}
+        {seat.seat_number}
       </button>
     ));
   };
@@ -100,9 +78,16 @@ const ChooseTicket = ({ numPeople }) => {
     if (selectedSeatsCount < numPeople) {
       enqueueSnackbar(`Bạn cần chọn đủ ${numPeople} ghế trước khi tiếp tục!`, {
         variant: "error",
+        autoHideDuration: 1000,
       });
     } else {
-      enqueueSnackbar("Bạn đã chọn đủ ghế. Tiếp tục!", { variant: "success" });
+      const selectedSeats = seats
+        ?.filter((seat) => seat.status === "selected")
+        .map((seat) => ({
+          seat_id: seat.seat_id,
+          seat_number: seat.seat_number,
+        }));
+      nextClick(selectedSeats, scheduleIdOld, scheduleIdNew);
     }
   };
 
@@ -157,6 +142,7 @@ const ChooseTicket = ({ numPeople }) => {
                   className="voucher-close-button"
                   data-bs-dismiss="modal"
                   aria-label="Close"
+                  id="closeChooseTicket"
                 >
                   <span className="voucher-close-X"></span>
                   <span className="voucher-close-Y"></span>
@@ -182,12 +168,10 @@ const ChooseTicket = ({ numPeople }) => {
                     </div>
                   </div>
                   <div className="price-bus">
-                    <div className="item-1">
-                      <b>{booking.code}</b>
-                    </div>
+                    <div className="item-1">{/* <b>{booking.code}</b> */}</div>
                     <div className="item-2">
                       <b style={{ fontSize: "25px", color: "red" }}>
-                        {booking.price}
+                        {/* {booking.price} */}
                       </b>
                     </div>
                   </div>
@@ -213,12 +197,22 @@ const ChooseTicket = ({ numPeople }) => {
                       )}
                     </div>
                   </div>
-                  <div className="d-flex justify-content-end">
+                  <div
+                    className="d-flex justify-content-end"
+                    style={{ gap: "10px" }}
+                  >
                     <div className="item-button">
                       <button
                         className="continue-button1"
-                        data-bs-toggle="modal"
-                        data-bs-target="#changeModal"
+                        // data-bs-toggle="modal"
+                        // data-bs-target="#changeModal"
+                        onClick={handlePreClick}
+                        {...(preModalTarget && {
+                          "data-bs-target": preModalTarget,
+                        })}
+                        {...(preModalToogle && {
+                          "data-bs-toggle": preModalToogle,
+                        })}
                       >
                         Quay lại
                       </button>
@@ -226,6 +220,12 @@ const ChooseTicket = ({ numPeople }) => {
                     <div className="item-button">
                       <button
                         className="continue-button"
+                        {...(nextModalTarget && {
+                          "data-bs-target": nextModalTarget,
+                        })}
+                        {...(nextModalToogle && {
+                          "data-bs-toggle": nextModalToogle,
+                        })}
                         onClick={handleContinue}
                       >
                         Tiếp tục

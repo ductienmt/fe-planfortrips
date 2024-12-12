@@ -103,8 +103,8 @@
   text-decoration: none;
   border-radius: 8px;
   font-weight: 600;
-  transition: 
-    background-color 0.3s ease, 
+  transition:
+    background-color 0.3s ease,
     transform 0.2s ease;
 }
 
@@ -132,7 +132,9 @@
     margin-bottom: var(--spacing-medium);
   }
 
-  .col-md-4, .col-md-6, .col-md-2 {
+  .col-md-4,
+  .col-md-6,
+  .col-md-2 {
     width: 100%;
     flex: 0 0 100%;
   }
@@ -186,7 +188,9 @@
     margin-bottom: var(--spacing-large);
   }
 
-  .col-md-4, .col-md-6, .col-md-2 {
+  .col-md-4,
+  .col-md-6,
+  .col-md-2 {
     width: 100%;
     flex: 0 0 100%;
   }

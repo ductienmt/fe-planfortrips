@@ -307,11 +307,11 @@ const routeClient = () => [
         Component: Checkinpage,
       },
       {
-        path: "/check-in/mien-bac",
+        path: "/check-in/area/:area",
         Component: ChooseProvinceDetail,
       },
       {
-        path: "/check-in/mien-bac/hung-yen",
+        path: "/check-in/city/:city",
         Component: ChooseCheckinFollowArea,
       },
       {

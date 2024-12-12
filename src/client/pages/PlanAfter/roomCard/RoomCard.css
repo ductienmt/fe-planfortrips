@@ -1,0 +1,102 @@
+.components-card-room-custom-plan .card-room-type {
+    box-shadow: 2px 5px 10px #cacaca !important;
+    border-radius: 13px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+    background-color: white;
+}
+
+.components-card-room-custom-plan .price-room-type {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-right: 2rem;
+}
+
+.components-card-room-custom-plan .price-room-type a {
+    border: none;
+    width: 100%;
+    height: 50px;
+    color: var(--background-color);
+    background-color: var(--success-btn-color);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.components-card-room-custom-plan .price-room-type a:hover {
+    background-color: var(--success-text-color);
+}
+
+.components-card-room-custom-plan .card-room-type .content-type {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.components-card-room-custom-plan .price-room-type span {
+    font-size: 1.2rem;
+}
+
+/* .components-card-room-custom-plan .custom-img-room-typee {
+    height: 215px;
+    max-width: 450px;
+    width: 100%;
+} */
+
+/* .components-card-room-custom-plan .custom-img-room-typee img {
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    border-radius: 13px 0 0 13px;
+    object-fit: cover;
+} */
+
+@media screen and (max-width: 960px) {
+    .components-card-room-custom-plan .card-room-type {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .components-card-room-custom-plan .custom-img-room-typee {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .components-card-room-custom-plan .custom-img-room-typee img {
+        width: 100%;
+        object-fit: cover;
+        border-radius: 13px 13px 0 0;
+
+    }
+
+    .components-card-room-custom-plan .custom-img-room-typee p {
+        text-transform: uppercase;
+        margin-top: 1rem;
+    }
+
+    .components-card-room-custom-plan .price-room-type {
+        justify-content: center;
+        width: 80%;
+        margin: 0;
+    }
+
+    .components-card-room-custom-plan .price-room-type span {
+        text-align: center;
+    }
+
+    .components-card-room-custom-plan .price-room-type button {
+        width: 100%;
+        height: 60px;
+    }
+
+    .components-card-room-custom-plan .priceHotelDetail .new-price {
+        font-size: 2rem;
+        font-weight: 700;
+    }
+}

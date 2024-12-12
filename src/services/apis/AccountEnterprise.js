@@ -4,8 +4,8 @@ export const AccountEtpService = {
   getAll: async () => {
     return await Http.get("/account-enterprises/all");
   },
-  getAccountEnterpriseNeedAccept: async() => {
-      return await Http.get('/account-enterprises/accept');
+  getAccountEnterpriseNeedAccept: async () => {
+    return await Http.get("/account-enterprises/accept");
   },
   toggleStage: async (id) => {
     return await Http.patch(`/account-enterprises/stage/${id}`);

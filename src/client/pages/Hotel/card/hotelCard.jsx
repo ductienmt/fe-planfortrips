@@ -4,8 +4,14 @@ import { Star } from "../../../../admin/pages/Components/Star";
 import SvgIcon from "./svgIcon";
 import { Link, useNavigate } from "react-router-dom";
 import { regexUrlIcon } from "../../../../utils/regex";
-const HotelCard = ({ item }) => {
-  console.log(item);
+const HotelCard = ({
+  item,
+  onClick,
+  modalTarget,
+  modalToogle,
+  contentButton,
+}) => {
+  // console.log(item.hotelAmenities);
   // const navigate = useNavigate();
   // const originalPrice = 250000;
   // const discountedPrice = 200000;
@@ -20,13 +26,19 @@ const HotelCard = ({ item }) => {
           {/* Phần Ảnh */}
           <div className="col-md-4" style={{ height: "100%" }}>
             <img
-              src={item.images[0]?.url ?? "src/assets/hotelNotFound.webp"}
+              src={
+                Array.isArray(item.images) && item.images.length > 0
+                  ? item.images[0].url // Nếu là mảng và có phần tử
+                  : typeof item.images === "string" && item.images.trim() !== ""
+                    ? item.images // Nếu là chuỗi không rỗng
+                    : "src/assets/hotelNotFound.webp" // Nếu rỗng hoặc không hợp lệ
+              }
               className="img-fluid rounded-start custom-img-hotel-card"
               alt={item.name}
             />
           </div>
           {/* Phần Tên và Amenities */}
-          <div className="col-md-6 d-flex flex-column justify-content-between">
+          <div className="col-md-5 d-flex flex-column justify-content-between">
             <div className="px-3 mt-2">
               <h5 className="card-title mb-0">{item?.name}</h5>
               <small className="hotel-adr d-flex align-items-center">
@@ -36,9 +48,24 @@ const HotelCard = ({ item }) => {
               <p className="card-text hotel-amenities grid-icons">
                 {item?.hotelAmenities && item.hotelAmenities.length > 0 ? (
                   item.hotelAmenities.map((ha, index) => (
-                    <small className="hotel-amenity-item" key={index}>
-                      <SvgIcon url={regexUrlIcon(ha.icon)} />
-                      <span className="hotel-amenity-name">{ha.name}</span>
+                    // code cũ Hùng
+                    // <small className="hotel-amenity-item" key={index}>
+                    // <SvgIcon url={regexUrlIcon(ha.icon)} />
+                    // <span className="hotel-amenity-name">{ha.name}</span>
+
+                    // code mới Dtien
+
+                    <small className="amenity-item" key={index}>
+                      {/* <SvgIcon url={regexUrlIcon(ha.icon)} /> */}
+                      <SvgIcon
+                        url={
+                          typeof ha.icon === "string" && ha.icon.trim() !== ""
+                            ? ha.icon
+                            : ha.icon[0]?.url || "src/assets/defaultIcon.webp"
+                        }
+                      />
+
+                      <span className="amenity-name">{ha.name}</span>
                     </small>
                   ))
                 ) : (
@@ -49,7 +76,7 @@ const HotelCard = ({ item }) => {
           </div>
 
           {/* Phần Rating và Nút */}
-          <div className="col-md-2  d-flex flex-column justify-content-between">
+          <div className="col-md-3 d-flex flex-column justify-content-between">
             <div className="feed-back-hotel d-flex align-items-center mt-2">
               <div className="start-feedback">
                 <Star rating={item?.rating}></Star>
@@ -58,18 +85,50 @@ const HotelCard = ({ item }) => {
             </div>
             <div>
               <div className="row addFav-viewDe">
-                <div className="col-md-3 px-3" style={{ width: "200px" }}>
-                  <span>{convertToVNDDB(item?.rooms[0]?.price)}</span>
+                <div className="col-md-3 px-3" style={{ width: "100%" }}>
+                  <span>
+                    {Array.isArray(item.rooms) && item.rooms.length > 0
+                      ? convertToVNDDB(item.rooms[0].price) // Nếu là mảng và có phần tử
+                      : item.price // Nếu không có rooms, dùng trực tiếp item.price
+                        ? convertToVNDDB(item.price)
+                        : "Không có giá"}{" "}
+                  </span>
+
                   {/* <button className="btn-booking bg-warning mb-2 ">
                     <span>Lưu</span>
                   </button> */}
-                  <Link
+
+                  {/* code cũ thiếu phần button Dtien bổ sung */}
+                  {/* code cũ Hùng */}
+                  {/* <Link
                     to={`/hotel-page/${item.hotel_id}`}
                     className="btn-booking mb-2"
                     style={{ textDecoration: "none" }}
                   >
                     <span>Đặt ngay</span>
-                  </Link>
+                  </Link> */}
+
+                  {/* Dtien bổ sung  */}
+                  {onClick || modalTarget || modalToogle ? (
+                    <button
+                      className="btn-booking mb-2"
+                      style={{ fontWeight: "700", width: "100%" }}
+                      {...(onClick && { onClick })}
+                      {...(modalTarget && { "data-bs-target": modalTarget })}
+                      {...(modalToogle && { "data-bs-toggle": modalToogle })}
+                    >
+                      {contentButton}
+                    </button>
+                  ) : (
+                    <Link
+                      to={`/hotel-page/${item.hotel_id}`}
+                      className="btn-booking mb-2"
+                      style={{ textDecoration: "none" }}
+                    >
+                      <span>Đặt ngay</span>
+                    </Link>
+                  )}
+                  {/* end bổ sung */}
                 </div>
                 <div className="col-md-9">
                   {/* Nút khác */}
