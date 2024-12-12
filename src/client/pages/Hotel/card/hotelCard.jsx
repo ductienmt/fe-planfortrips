@@ -63,7 +63,11 @@ const HotelCard = ({ item }) => {
                   {/* <button className="btn-booking bg-warning mb-2 ">
                     <span>Lưu</span>
                   </button> */}
-                  <Link to={ `/hotel-page/${item.hotel_id}`} className="btn-booking mb-2" style={{ textDecoration:'none' }}>
+                  <Link
+                    to={`/hotel-page/${item.hotel_id}`}
+                    className="btn-booking mb-2"
+                    style={{ textDecoration: "none" }}
+                  >
                     <span>Đặt ngay</span>
                   </Link>
                 </div>
@@ -81,7 +85,10 @@ const HotelCard = ({ item }) => {
 };
 
 HotelCard.propTypes = {
+  hotel_id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  address: PropTypes.string.isRequired,
+  rating: PropTypes.number.isRequired,
 };
 
 export default HotelCard;

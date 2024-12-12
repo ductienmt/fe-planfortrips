@@ -8,11 +8,11 @@ const Seatscard = ({
   licensePlate,
   capacity,
   driverName,
- 
+
   phone,
   image,
 }) => {
-  const getStatusStyles  = (status) => {
+  const getStatusStyles = (status) => {
     if (status === "Đang hoạt động") {
       return {
         backgroundColor: "#a6f6b5",
@@ -29,33 +29,37 @@ const Seatscard = ({
 
   return (
     <div className="enterprise-Seatscard-container">
-    <article className="Seatscard-card">
-      <div className="Seatscard-image">
-        <img src={image} alt={`${name} exterior`} className="Seatscard-photo" />
-      </div>
-      <div className="Seatscard-info">
-        <header className="Seatscard-header">
-          <div className="Seatscard-title">
-            <span className="Seatscard-code">
-              Mã Xe: {hotelCode}
-            </span>
-            <div className="Seatscard-body">
-              <h2 className="Seatscard-name">{name}</h2>
-              <span className="Seatscard-status" style={getStatusStyles(status)}>
-                {status}
-              </span>
+      <article className="Seatscard-card">
+        <div className="Seatscard-image">
+          <img
+            src={image}
+            alt={`${name} exterior`}
+            className="Seatscard-photo"
+          />
+        </div>
+        <div className="Seatscard-info">
+          <header className="Seatscard-header">
+            <div className="Seatscard-title">
+              <span className="Seatscard-code">Mã Xe: {hotelCode}</span>
+              <div className="Seatscard-body">
+                <h2 className="Seatscard-name">{name}</h2>
+                <span
+                  className="Seatscard-status"
+                  style={getStatusStyles(status)}
+                >
+                  {status}
+                </span>
+              </div>
             </div>
-          </div>
-        </header>
-        <p className="Seatscard-address">Biển số: {licensePlate}</p>
-        <p className="Seatscard-phone">Sức chứa: {capacity}</p>
-     
-      </div>
-      <div>
-      <p className="Seatscard-phone">Tài xế: {driverName}</p>
-      <p className="Seatscard-phone">sđt: {phone}</p>
-      </div>
-    </article>
+          </header>
+          <p className="Seatscard-address">Biển số: {licensePlate}</p>
+          <p className="Seatscard-phone">Sức chứa: {capacity}</p>
+        </div>
+        <div>
+          <p className="Seatscard-phone">Tài xế: {driverName}</p>
+          <p className="Seatscard-phone">sđt: {phone}</p>
+        </div>
+      </article>
     </div>
   );
 };

@@ -59,6 +59,12 @@
     flex-basis: 50%;
 }
 
+.vehicle-body .main-content .content-card {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
 .vehicle-body .sidebar .filter-sort {
     color: gray;
     margin: auto;

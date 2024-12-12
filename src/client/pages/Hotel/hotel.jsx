@@ -137,7 +137,6 @@ const Hotel = () => {
       </li>
     ));
   };
-
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
     setSliderPosition(category);
@@ -205,8 +204,10 @@ const Hotel = () => {
   const validation = () => {
     const today = new Date();
     if (!dateReturn) setError("Ngày về không được để trống");
-    if (new Date(dateDepart) < today) setError("Ngày đi không được nhỏ hơn ngày hiện tại");
-    if (new Date(dateDepart) > new Date(dateReturn)) setError("Ngày đi không được lớn hơn ngày về");
+    if (new Date(dateDepart) < today)
+      setError("Ngày đi không được nhỏ hơn ngày hiện tại");
+    if (new Date(dateDepart) > new Date(dateReturn))
+      setError("Ngày đi không được lớn hơn ngày về");
     return error.length == 0;
   };
   function addDaysToDate(dateStr, days) {
@@ -256,7 +257,6 @@ const Hotel = () => {
             }
             setDateDepart(formatDate(departDate));
             console.log(dateDepart);
-            
           },
         });
         const returnPicker = flatpickr(returnInputHotel, {
@@ -317,7 +317,7 @@ const Hotel = () => {
 
   const handleSearchHotel = async (e) => {
     e.preventDefault();
-    if(!validation()){
+    if (!validation()) {
       enqueueSnackbar(error, { variant: "error" });
       return;
     }
