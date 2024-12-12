@@ -21,8 +21,16 @@ export const RoomService = {
     const response = await Http.get(`/rooms/getById/${id}`);
     return response.data;
   },
-  getRoomsByHotelId: async (id, pageNo, pageSize, sortBy, sortType) => {
-    const params = new URLSearchParams({ id });
+  getRoomsByHotelId: async (
+    id,
+    checkinDate,
+    checkoutDate,
+    pageNo,
+    pageSize,
+    sortBy,
+    sortType
+  ) => {
+    const params = new URLSearchParams({ id, checkinDate, checkoutDate });
     if (pageNo) {
       params.append("pageNo", pageNo);
     }

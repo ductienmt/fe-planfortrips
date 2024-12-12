@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ScheduleService } from "../../../services/apis/ScheduleService";
 import "./TransportationCard.css";
 import "feather-icons/dist/feather";
+import { debounce } from "lodash";
 import { VehiclesService } from "../../../services/apis/Vehicles";
 import nhaxe from "../../../assets/caurong.webp";
 import TicketTransportationCard from "../../Components/ticketTransportation/TicketTransportationCard";
@@ -9,6 +10,8 @@ import { convertToVND } from "../../../utils/FormatMoney";
 import { DateFormatter } from "../../../utils/DateFormat";
 import { RouteService } from "../../../services/apis/RouteService";
 import ChooseTicket from "../../Components/ChooseTicket/ChooseTicket";
+import Loader from "../../Components/Loading";
+import { enqueueSnackbar } from "notistack";
 
 const TransportationCard = ({
   className,
@@ -26,8 +29,11 @@ const TransportationCard = ({
   destination,
   originalLocation,
   re,
+  numPeople,
+  loadAgain,
 }) => {
   // console.log("return", re);
+  const [loading, setLoading] = useState(false);
   const [reData, setReData] = useState({
     departureStation: "",
     arrivalStation: "",
@@ -64,43 +70,126 @@ const TransportationCard = ({
     // console.log("vehicleCode", response.data.car_company.images[0].url);
   };
 
-  const getDataReturn = async (vehicleCode, routeId) => {
-    const response = await VehiclesService.getVehicleById(vehicleCode);
-    // console.log("vehicle data", response.data);
-    const res = await ScheduleService.getStation(routeId);
-    // console.log("route data", res.data.data);
-    setReData({
-      departureStation: res.data.data.departureStation,
-      arrivalStation: res.data.data.arrivalStation,
-      driverPhoneNumber: response.data.driverPhone,
-      type_vehicle: response.data.type_vehicle,
-      plateNumber: response.data.plateNumber,
-      img: response.data.car_company.images[0].url,
-    });
-  };
+  const getDataReturn = useCallback(
+    debounce(async (vehicleCode, routeId) => {
+      try {
+        const response = await VehiclesService.getVehicleById(vehicleCode);
+        const res = await ScheduleService.getStation(routeId);
+        setReData({
+          departureStation: res.data.data.departureStation,
+          arrivalStation: res.data.data.arrivalStation,
+          driverPhoneNumber: response.data.driverPhone,
+          type_vehicle: response.data.type_vehicle,
+          plateNumber: response.data.plateNumber,
+          img: response.data.car_company.images[0].url,
+        });
+      } catch (error) {
+        console.error("Error fetching vehicle or route data", error);
+      }
+    }, 300),
+    []
+  );
 
   const [dataChange, setDataChange] = useState([]);
 
-  const loadScheduleChange = async (
-    price,
-    originalLocation,
-    destination,
-    departureDate
-  ) => {
-    try {
-      console.log(price, destination, originalLocation, departureDate);
+  const loadScheduleChange = useCallback(
+    debounce(async (price, originalLocation, destination, departureDate) => {
+      try {
+        setLoading(true);
+        const response = await ScheduleService.getSamePrice(
+          price,
+          destination,
+          originalLocation,
+          departureDate
+        );
+        setDataChange(response.data.data);
+      } catch (error) {
+        console.error("Error fetching schedule data", error);
+      } finally {
+        setLoading(false);
+      }
+    }, 300),
+    []
+  );
 
-      const response = await ScheduleService.getSamePrice(
-        price,
-        destination,
-        originalLocation,
-        departureDate
-      );
-      console.log(response.data);
-      setDataChange(response.data.data);
-    } catch (error) {
-      console.error("Error fetching schedule data", error);
+  const [seatsChange, setSeatsChange] = useState([]);
+  const [scheduleIdChange, setScheduleIdChange] = useState("");
+
+  const loadSeatsChange = useCallback(
+    debounce(async (scheduleId) => {
+      try {
+        setScheduleIdChange(scheduleId);
+        const response = await ScheduleService.getSeatsByScheduleId(scheduleId);
+        // console.log(response.data);
+        // console.log(response.data.data.first_floor);
+        console.log(response.data.data.seats);
+
+        setSeatsChange(response.data.data.seats);
+        // console.log(seatsChangeFirstFloor);
+      } catch (error) {
+        console.error("Error fetching vehicle or route data", error);
+      }
+    }, 300),
+    []
+  );
+
+  const changeSeatsPlanData = async (
+    seatBooks,
+    scheduleIdOld,
+    scheduleIdNew
+  ) => {
+    let tripData = JSON.parse(sessionStorage.getItem("tripData"));
+    console.log(tripData);
+
+    const scheduleResponse = await ScheduleService.getScheduleID(scheduleIdNew);
+    console.log(scheduleResponse.data);
+
+    const dataToSetNew = {
+      scheduleId: scheduleIdNew,
+      departureTime: scheduleResponse.data.departureTime,
+      arrivalTime: scheduleResponse.data.arrivalTime,
+      routeId: scheduleResponse.data.routeId,
+      carName: scheduleResponse.data.carCompanyName,
+      totalPrice:
+        seatBooks.length * scheduleResponse.data.priceForOneTicket * 1000,
+      vehicleCode: scheduleResponse.data.code,
+      seatBook: seatBooks,
+    };
+
+    let oldTotalPrice = 0;
+
+    if (tripData.transportation.departure.scheduleId === scheduleIdOld) {
+      oldTotalPrice = tripData.transportation.departure.totalPrice;
+      tripData.transportation.departure = {
+        ...tripData.transportation.departure,
+        ...dataToSetNew,
+      };
+    } else if (tripData.transportation.return.scheduleId === scheduleIdOld) {
+      oldTotalPrice = tripData.transportation.return.totalPrice;
+      tripData.transportation.return = {
+        ...tripData.transportation.return,
+        ...dataToSetNew,
+      };
+    } else {
+      enqueueSnackbar("Có lỗi trong quá trình cập nhật", {
+        variant: "error",
+        autoHideDuration: 1000,
+      });
     }
+
+    tripData.estimatedCost =
+      tripData.estimatedCost - oldTotalPrice + dataToSetNew.totalPrice;
+
+    sessionStorage.setItem("tripData", JSON.stringify(tripData));
+
+    enqueueSnackbar("Cập nhật vé xe thành công", {
+      variant: "success",
+      autoHideDuration: 1000,
+      onExit: () => {
+        document.getElementById("closeChooseTicket").click();
+        loadAgain();
+      },
+    });
   };
 
   useEffect(() => {
@@ -510,23 +599,33 @@ const TransportationCard = ({
                   <div className="voucher-close-close">Close</div>
                 </button>
               </div>
-              {dataChange.map((data) => (
-                <TicketTransportationCard
-                  key={data.scheduleId}
-                  start={data.departureLocation}
-                  destination={data.arrivalLocation}
-                  departTime={data.departureTime.split(" ")[1]}
-                  arrivalTime={data.arrivalTime.split(" ")[1]}
-                  // totalTime={calu}
-                  companyName={data.vehicleName}
-                  typeSeat={data.vehicleType}
-                  price={data.priceForOneSeat}
-                  leftSeat={data.totalSeat}
-                  rating={data.rating}
-                  modalTarget={"#chooseTicket"}
-                  modalToogle="modal"
-                />
-              ))}
+              {loading ? (
+                <Loader rong={"30vh"} />
+              ) : (
+                <>
+                  {dataChange?.map((data) => (
+                    <TicketTransportationCard
+                      key={data.scheduleId}
+                      start={data.departureLocation}
+                      destination={data.arrivalLocation}
+                      departTime={data.departureTime.split(" ")[1]}
+                      arrivalTime={data.arrivalTime.split(" ")[1]}
+                      // totalTime={calu}
+                      companyName={data.vehicleName}
+                      typeSeat={data.vehicleType}
+                      price={data.priceForOneSeat}
+                      leftSeat={data.totalSeat}
+                      rating={data.rating}
+                      modalTarget={"#chooseTicket"}
+                      modalToogle="modal"
+                      onClick={() => {
+                        loadSeatsChange(data.scheduleId);
+                      }}
+                    />
+                  ))}
+                </>
+              )}
+
               {/* <TicketTransportationCard
                 start="Hồ Chí Minh"
                 destination="Vũng Tàu"
@@ -542,7 +641,15 @@ const TransportationCard = ({
           </div>
         </div>
       </div>
-      <ChooseTicket numPeople={3} />
+      <ChooseTicket
+        numPeople={numPeople}
+        seatsProp={seatsChange}
+        preModalTarget={"#changeModal"}
+        preModalToogle={"modal"}
+        scheduleIdOld={scheduleId}
+        scheduleIdNew={scheduleIdChange}
+        nextClick={changeSeatsPlanData}
+      />
     </>
   );
 };

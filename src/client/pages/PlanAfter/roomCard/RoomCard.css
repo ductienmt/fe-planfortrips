@@ -1,9 +1,3 @@
-.flex-container-room-card img {
-    max-height: 200px !important;
-    border-radius: 13px 0 0 13px;
-    object-fit: cover;
-}
-
 .components-card-room-custom-plan .card-room-type {
     box-shadow: 2px 5px 10px #cacaca !important;
     border-radius: 13px;
@@ -48,11 +42,19 @@
     font-size: 1.2rem;
 }
 
-.components-card-room-custom-plan .custom-img-room-type img {
-    width: 200px;
-    height: 200px;
+/* .components-card-room-custom-plan .custom-img-room-typee {
+    height: 215px;
+    max-width: 450px;
+    width: 100%;
+} */
+
+/* .components-card-room-custom-plan .custom-img-room-typee img {
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    border-radius: 13px 0 0 13px;
     object-fit: cover;
-}
+} */
 
 @media screen and (max-width: 960px) {
     .components-card-room-custom-plan .card-room-type {
@@ -60,20 +62,20 @@
         flex-direction: column;
     }
 
-    .components-card-room-custom-plan .custom-img-room-type {
+    .components-card-room-custom-plan .custom-img-room-typee {
         display: flex;
         flex-direction: column;
         width: 100%;
     }
 
-    .components-card-room-custom-plan .custom-img-room-type img {
+    .components-card-room-custom-plan .custom-img-room-typee img {
         width: 100%;
         object-fit: cover;
         border-radius: 13px 13px 0 0;
 
     }
 
-    .components-card-room-custom-plan .custom-img-room-type p {
+    .components-card-room-custom-plan .custom-img-room-typee p {
         text-transform: uppercase;
         margin-top: 1rem;
     }
