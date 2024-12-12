@@ -24,4 +24,10 @@ export const ScheduleService = {
   getScheduleByEnterpriseId: async () => {
     return await Http.get("/schedules/getByEnterpriseId");
   },
+  getSeatsByScheduleId: async (scheduleId) => {
+    const params = new URLSearchParams({ scheduleId });
+    return await Http.get(
+      `/schedules/getSeatsByScheduleId?${params.toString()}`
+    );
+  },
 };

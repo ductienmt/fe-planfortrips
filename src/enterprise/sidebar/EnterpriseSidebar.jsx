@@ -35,14 +35,12 @@ const EnterpriseSidebar = () => {
   };
 
   useEffect(() => {
-    const basePath =
-      typeEnterprise === "Xe khách" ? "transportation" : "accomodation";
     const itemFromURL = location.pathname.split("/").pop();
     if (itemFromURL !== selectedItem) {
       setSelectedItem(itemFromURL);
       sessionStorage.setItem("selectedItem", itemFromURL);
     }
-  }, [typeEnterprise, location.pathname]);
+  }, [location.pathname]);
 
   const menuItems = useMemo(() => {
     const commonItems = [

@@ -133,8 +133,7 @@ const IntroHotel = () => {
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() - 1);
-    if(!date) 
-      newErrors.date = "Vui lòng chọn ngày";
+    if (!date) newErrors.date = "Vui lòng chọn ngày";
     if (new Date(date) < today)
       newErrors.date = "Ngày phải lớn hay ngày hiện tại";
     if (!selectedOption) newErrors.days = "Vui lòng chọn số đêm ở";
@@ -177,6 +176,8 @@ const IntroHotel = () => {
   //   }
   // };
   useEffect(() => {
+    document.title = "Khách sạn";
+
     const fetch = async () => {
       setIsLoading(true);
       const dataCoupon = await CouponService.getCoupons(0, 6, "");
@@ -264,19 +265,19 @@ const IntroHotel = () => {
             <b style={{ color: "#777777" }}>Chọn ngày:</b>
             <div className="date-night">
               <div className="input-night">
-              <input
-                className="input-date"
-                type="date"
-                value={date}
-                onChange={handDatechange}
-                style={{
-                  padding: "10px",
-                  borderRadius: "5px",
-                  border: "1px solid #ccc",
-                }}
-              />
+                <input
+                  className="input-date"
+                  type="date"
+                  value={date}
+                  onChange={handDatechange}
+                  style={{
+                    padding: "10px",
+                    borderRadius: "5px",
+                    border: "1px solid #ccc",
+                  }}
+                />
 
-              {errors?.date && <p className="text-danger">{errors.date}</p>}
+                {errors?.date && <p className="text-danger">{errors.date}</p>}
               </div>
 
               <div className="input-night">
