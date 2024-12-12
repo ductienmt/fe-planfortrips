@@ -1,0 +1,26 @@
+.hotel-share-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  
+  .share-buttons {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+  
+  .copy-link-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  .copy-link-btn:hover {
+    transform: scale(1.1);
+  }

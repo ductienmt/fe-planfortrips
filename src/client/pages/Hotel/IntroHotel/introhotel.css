@@ -16,40 +16,11 @@
 }
 
 .ant-carousel {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 12px; 
   overflow: hidden;
 }
 
-.ant-carousel .slick-slide {
-  padding: 0 5px;
-}
 
-.ant-carousel .slick-list {
-  margin: 0 -5px; 
-}
 
-.img1 {
-  position: relative;
-  width: 100%;
-  padding-top: 56.25%; 
-  overflow: hidden;
-}
-
-.img1 img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 8px; 
-  transition: transform 0.3s ease;
-}
-
-.img1 img:hover {
-  transform: scale(1.05);
-}
 
 .ant-carousel .slick-dots {
   bottom: 20px;
@@ -63,7 +34,7 @@
 }
 
 .ant-carousel .slick-dots li.slick-active button {
-  background: #1890ff;
+  background: #0b4276;
   width: 16px;
   height: 16px;
 }
@@ -73,29 +44,43 @@
   flex-basis: 20%;
 }
 
-.introhotel-container .header .img1 {
-  flex-grow: 1;
-  flex-basis: 20%;
+.introhotel-container .header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #f8f9fa;
 }
 
-.introhotel-container .header .img2 {
-  flex-grow: 1;
-  flex-basis: 20%;
+.introhotel-container .header .item {
+  width: 80%;
+  max-width: 1200px;
+  position: relative;
+  overflow: hidden;
 }
 
-.introhotel-container .header .img1 img {
-  width: 450px;
-  height: 250px;
-  border-radius: 20px;
+.introhotel-container .header .item .img1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  border-radius: 10px;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
 }
 
-.introhotel-container .header .img2 img {
-  width: 450px;
-  height: 250px;
-  border-radius: 20px;
+.introhotel-container .header .item .img1 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: transform 0.3s ease-in-out;
 }
 
-/* div content header */
+.introhotel-container .header .item .img1:hover img {
+  transform: scale(1.05);
+}
+
 .introhotel-container .content-header {
   display: flex;
   flex-direction: column;
@@ -349,6 +334,7 @@
 
 .introhotel-container .main-container .deal-card .card .image img {
   width: 100%;
+  height: 200px;
   object-fit: cover;
 }
 

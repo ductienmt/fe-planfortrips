@@ -8,12 +8,12 @@ const ChatbotComponent = () => {
       const userMessage = message.message;
 
       if (userMessage.includes('khách sạn')) {
-        const response = await HotelService.getHotels(0,100,"");
+        const response = await HotelService.getHotels(0,20,"");
         return formatHotelResponse(response);
       }
 
       if (userMessage.includes('phòng')) {
-        const response = await RoomService.getRooms(0,100,"");
+        const response = await RoomService.getRooms(0,20,"");
         return formatRoomResponse(response);
       }
 

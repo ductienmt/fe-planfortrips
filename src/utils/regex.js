@@ -4,6 +4,6 @@ export const regexUrlIcon = (str) => {
     if (match && match[1]) {
       return match[1];
     } else {
-      console.log("Không tìm thấy URL");
+      return str;
     }
   };

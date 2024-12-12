@@ -15,7 +15,7 @@ const HotelCard = ({ item }) => {
   // const hasDiscount = discountedPrice < originalPrice;
   return (
     <>
-      <div className="card custom-card-hotel mb-3" style={{ height: "300px" }}>
+      <div className="card custom-card-hotel mb-3">
         <div className="row g-0" style={{ height: "100%" }}>
           {/* Phần Ảnh */}
           <div className="col-md-4" style={{ height: "100%" }}>
@@ -33,12 +33,12 @@ const HotelCard = ({ item }) => {
                 <i className="fa-solid fa-map-pin me-2"></i>
                 <p className="mb-0">{item?.address}</p>
               </small>
-              <p className="card-text amenities grid-icons">
+              <p className="card-text hotel-amenities grid-icons">
                 {item?.hotelAmenities && item.hotelAmenities.length > 0 ? (
                   item.hotelAmenities.map((ha, index) => (
-                    <small className="amenity-item" key={index}>
+                    <small className="hotel-amenity-item" key={index}>
                       <SvgIcon url={regexUrlIcon(ha.icon)} />
-                      <span className="amenity-name">{ha.name}</span>
+                      <span className="hotel-amenity-name">{ha.name}</span>
                     </small>
                   ))
                 ) : (

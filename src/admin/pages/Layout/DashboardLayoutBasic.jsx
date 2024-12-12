@@ -53,7 +53,7 @@ const NAVIGATION = [
         <FontAwesomeIcon icon={faUser} />
       </NavLink>
     ),
-    segment: 'users',
+    // segment: 'users',
   },
   {
     title: (
@@ -91,18 +91,18 @@ const NAVIGATION = [
       </NavLink>
     ),
   },
-  {
-    title: (
-      <NavLink to="statistics" className="nav-linkAdmin">
-        Thống kê
-      </NavLink>
-    ),
-    icon: (
-      <NavLink to="statistics" className="nav-linkAdmin">
-        <FontAwesomeIcon icon={faChartPie} />
-      </NavLink>
-    ),
-  },
+  // {
+  //   title: (
+  //     <NavLink to="statistics" className="nav-linkAdmin">
+  //       Thống kê
+  //     </NavLink>
+  //   ),
+  //   icon: (
+  //     <NavLink to="statistics" className="nav-linkAdmin">
+  //       <FontAwesomeIcon icon={faChartPie} />
+  //     </NavLink>
+  //   ),
+  // },
   {
     title: "Giao dịch",
     icon: <FontAwesomeIcon icon={faMoneyBillWave} />,
@@ -236,7 +236,7 @@ function DashboardLayoutBasic({ window }) {
           name: admin.fullName || "",
           email: admin.email || "",
           image:
-            "https://i.pinimg.com/736x/0a/ab/67/0aab67dce992f37b5a22f681f043574f.jpg",
+            "../src/assets/admin.jpg",
         },
       });
     }
@@ -249,7 +249,7 @@ function DashboardLayoutBasic({ window }) {
             name: admin.fullName ?? "",
             email: admin.email ?? "",
             image:
-              "https://i.pinimg.com/736x/0a/ab/67/0aab67dce992f37b5a22f681f043574f.jpg",
+              "../src/assets/admin.jpg",
           },
         });
       },
@@ -264,7 +264,7 @@ function DashboardLayoutBasic({ window }) {
       "a.MuiButtonBase-root.MuiListItemButton-root"
     );
     listItemButtons.forEach((item) => {
-      // item.style.backgroundColor = "transparent";
+      item.style.backgroundColor = "transparent";
     });
   }, []);
 

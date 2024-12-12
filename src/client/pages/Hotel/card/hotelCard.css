@@ -1,209 +1,240 @@
-.custom-card-hotel .custom-img-hotel-card {
-  height: 100%;
-  /* Chiều cao của hình ảnh sẽ bằng với chiều cao của card */
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #34495e;
+  --accent-color: #3498db;
+  --background-light: #f4f6f7;
+  --text-color: #333;
+  --spacing-small: 8px;
+  --spacing-medium: 12px;
+  --spacing-large: 16px;
+}
+
+.custom-card-hotel {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.custom-card-hotel:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.custom-img-hotel-card {
   width: 100%;
-  /* Đảm bảo hình ảnh rộng 100% */
+  height: 250px;
   object-fit: cover;
-  /* Đảm bảo hình ảnh sẽ điều chỉnh sao cho vừa với kích thước mà không bị căng ra */
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.custom-card-hotel:hover .custom-img-hotel-card {
+  transform: scale(1.05);
 }
 
 .hotel-adr {
   font-size: 0.9rem;
-  font-weight: 600;
+  color: var(--secondary-color);
   display: flex;
   align-items: center;
+  margin-top: 5px;
 }
 
-.price {
-  color: var(--success-text-color);
-  font-size: 1.5rem;
-  font-weight: 600;
+.hotel-adr i {
+  color: var(--accent-color);
+  margin-right: 8px;
 }
 
-.addFav-viewDe button {
-  border: none;
-  width: 100%;
-  height: 50px;
+.card-title {
   font-size: 1.2rem;
-  color: var(--background-color);
-  background-color: var(--success-btn-color);
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 5px;
+}
+
+.hotel-amenities.grid-icons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.hotel-amenity-item {
   display: flex;
   align-items: center;
-  justify-content: center;
-  position: relative;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
+  gap: 8px;
+  font-size: 12px;
+  background-color: var(--background-light);
+  padding: 5px 8px;
+  border-radius: 6px;
   transition: background-color 0.3s ease;
 }
 
-.addFav-viewDe a {
-  background-color: var(--success-btn-color);
-  color: var(--background-color);
-  width: 100%;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  font-weight: 600;
+.hotel-amenity-item:hover {
+  background-color: #e1e7ec;
 }
 
-.addFav-viewDe a:hover {
-  background-color: var(--success-text-color);
-  color: var(--background-color);
-  transition: background-color 0.3s ease;
-}
-
-.amenities {
-  justify-content: start;
-  gap: 1rem;
-  margin-top: 0.5rem;
-}
-
-.amenities small i {
-  margin-right: 0.5rem;
-}
-
-.amenities small {
-  background-color: rgb(230, 230, 230);
-  padding: 8px;
-  border-radius: 10px;
-}
-
-.feed-back-hotel i {
-  color: salmon;
+.hotel-amenity-item svg {
+  width: 16px;
+  height: 16px;
+  color: var(--accent-color);
 }
 
 .feed-back-hotel {
-  gap: 10px;
-}
-
-.feed-back-hotel span {
-  font-size: 0.6rem;
-}
-
-.discounted {
-  text-decoration: line-through;
-  color: gray;
-  font-size: 1.2rem;
-  text-wrap: nowrap;
-}
-
-.new-price {
-  font-size: 1.5rem;
-  color: var(--success-text-color);
-  text-wrap: nowrap;
-}
-.custom-img-hotel-card {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 10px;
-}
-.card-text.amenities.grid-icons {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Chia 2 cột bằng nhau */
-    gap: 10px; /* Khoảng cách giữa các mục */
-  }
-  
-  .amenity-item {
-    display: flex;
-    align-items: center;
-    gap: 8px; /* Khoảng cách giữa icon và text */
-    font-size: 14px; /* Cỡ chữ nhỏ hơn một chút */
-  }
-  
-  .amenity-item svg {
-    width: 20px;
-    height: 20px;
-  }
-  .amenities small {
-    background-color: rgb(230, 230, 230);
-    padding: 5px;
-    border-radius: 10px;
-}
-/* From Uiverse.io by mrhyddenn */ 
-.btn-booking {
-  position: relative;
-  margin: 0;
-  padding: 0.8em 1em;
-  outline: none;
-  text-decoration: none;
   display: flex;
-  justify-content: center;
   align-items: center;
-  cursor: pointer;
-  border: none;
-  text-transform: uppercase;
-  background-color: #333;
-  border-radius: 10px;
-  color: #fff;
-  font-weight: 300;
-  font-size: 18px;
-  font-family: inherit;
-  z-index: 0;
-  overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.02, 0.01, 0.47, 1);
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+.btn-booking {
+  display: inline-block;
+  width: 100%;
+  padding: 10px 15px;
+  background-color: var(--accent-color);
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: 
+    background-color 0.3s ease, 
+    transform 0.2s ease;
 }
 
 .btn-booking:hover {
-  animation: sh0 0.5s ease-in-out both;
+  background-color: #2980b9;
+  transform: scale(1.05);
 }
 
-@keyframes sh0 {
-  0% {
-    transform: rotate(0deg) translate3d(0, 0, 0);
+@media (max-width: 480px) {
+  .custom-card-hotel {
+    display: flex;
+    flex-direction: column;
+    height: auto;
   }
 
-  25% {
-    transform: rotate(7deg) translate3d(0, 0, 0);
+  .custom-card-hotel .row {
+    display: flex;
+    flex-direction: column;
   }
 
-  50% {
-    transform: rotate(-7deg) translate3d(0, 0, 0);
+  .custom-img-hotel-card {
+    width: 100%;
+    height: 200px;
+    border-radius: 12px 12px 0 0;
+    margin-bottom: var(--spacing-medium);
   }
 
-  75% {
-    transform: rotate(1deg) translate3d(0, 0, 0);
+  .col-md-4, .col-md-6, .col-md-2 {
+    width: 100%;
+    flex: 0 0 100%;
   }
 
-  100% {
-    transform: rotate(0deg) translate3d(0, 0, 0);
+  .hotel-amenities.grid-icons {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-small);
+  }
+
+  .hotel-amenity-item {
+    font-size: 10px;
+    padding: 4px 6px;
+  }
+
+  .hotel-amenity-item svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .card-title {
+    font-size: 1rem;
+  }
+
+  .hotel-adr {
+    font-size: 0.8rem;
+  }
+
+  .feed-back-hotel {
+    justify-content: flex-start;
+    margin-top: var(--spacing-small);
+    margin-right: 0;
   }
 }
 
-.btn-booking:hover span {
-  animation: storm 0.7s ease-in-out both;
-  animation-delay: 0.06s;
+@media (min-width: 481px) and (max-width: 767px) {
+  .custom-card-hotel {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+  }
+
+  .custom-card-hotel .row {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .custom-img-hotel-card {
+    width: 100%;
+    height: 250px;
+    border-radius: 12px 12px 0 0;
+    margin-bottom: var(--spacing-large);
+  }
+
+  .col-md-4, .col-md-6, .col-md-2 {
+    width: 100%;
+    flex: 0 0 100%;
+  }
+
+  .hotel-amenities.grid-icons {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-medium);
+  }
+
+  .hotel-amenity-item {
+    font-size: 11px;
+    padding: 5px 8px;
+  }
+
+  .hotel-amenity-item svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .card-title {
+    font-size: 1.1rem;
+  }
+
+  .hotel-adr {
+    font-size: 0.9rem;
+  }
+
+  .feed-back-hotel {
+    justify-content: space-between;
+    margin-top: var(--spacing-medium);
+    margin-right: 0;
+  }
+
+  .btn-booking {
+    margin-top: var(--spacing-medium);
+  }
 }
 
-.btn-booking::before,
-.btn-booking::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: #fff;
-  opacity: 0;
-  transition: transform 0.15s cubic-bezier(0.02, 0.01, 0.47, 1), opacity 0.15s cubic-bezier(0.02, 0.01, 0.47, 1);
-  z-index: -1;
-  transform: translate(100%, -25%) translate3d(0, 0, 0);
-}
+@media (min-width: 768px) and (max-width: 991px) {
+  .custom-card-hotel {
+    height: auto;
+  }
 
-.btn-booking:hover::before,
-.btn-booking:hover::after {
-  opacity: 0.15;
-  transition: transform 0.2s cubic-bezier(0.02, 0.01, 0.47, 1), opacity 0.2s cubic-bezier(0.02, 0.01, 0.47, 1);
-}
+  .custom-img-hotel-card {
+    height: 220px;
+  }
 
-.btn-booking:hover::before {
-  transform: translate3d(50%, 0, 0) scale(0.9);
+  .hotel-amenities.grid-icons {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
-
-.btn-booking:hover::after {
-  transform: translate(50%, 0) scale(1.1);
-}
-

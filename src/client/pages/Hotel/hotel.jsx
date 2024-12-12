@@ -17,27 +17,7 @@ import HotelCard from "./card/hotelCard";
 import { enqueueSnackbar } from "notistack";
 
 const Hotel = () => {
-  //api
-  const [hotels, setHotels] = useState([]);
-  const fetchHotels = async () => {
-    try {
-      const data = await HotelService.getHotels(1, 10, "");
-      console.log("Hotels data:", data.hotelResponseList);
-      setHotels(data.hotelResponseList);
-
-      sessionStorage.setItem("hotels", JSON.stringify(data.hotelResponseList));
-    } catch (error) {
-      console.error("Error fetching hotels:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  useEffect(() => {
-    fetchHotels();
-  }, []);
-  // ket thuc api
-
-  window.scrollTo(0, 0);
+  // window.scrollTo(0, 0);
   const location = useLocation();
   const { keyword, date, days } = location.state || {};
   const [selectedAmenities, setSelectedAmenities] = useState([]);

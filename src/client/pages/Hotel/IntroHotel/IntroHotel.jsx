@@ -220,13 +220,7 @@ const IntroHotel = () => {
   const closeModal = () => {
     setIsModal(false);
   };
-  const contentStyle = {
-    height: "160px",
-    color: "#fff",
-    lineHeight: "160px",
-    textAlign: "center",
-    background: "#364d79",
-  };
+ 
   if (isLoading) {
     return <Loader />;
   }
@@ -241,9 +235,10 @@ const IntroHotel = () => {
               slidesToScroll={2}
               dots={true}
               infinite={true}
+              style={{ marginBottom:"30px" }}
             >
               {imgheader.map((i, index) => (
-                <div className="img1" style={contentStyle} key={index}>
+                <div className="img1" style={{ padding:"50px", marginBottom:"30px" }} key={index}>
                   <img src={i} alt={`Slide ${index + 1}`} />
                 </div>
               ))}
@@ -438,24 +433,24 @@ const IntroHotel = () => {
                         {card.description || "Mô tả không có sẵn"}
                       </p>
                       <div className="price-info">
-                        <p className="card-price-old">
-                          {card.basicprice || "Liên hệ để biết giá"}
-                        </p>
                         <p className="card-price-new">
                           {card.newprice || "Liên hệ để biết giá"}
                         </p>
                       </div>
                       <div className="card-button">
                         <Link
-                          to={`/hotel/${card.hotel_id}`}
+                          to={`/hotel-page/${card.hotel_id}`}
                           className="buy-button"
-                          style={{ textDecoration: "none" }}
+                          style={{ textDecoration: "none",textAlign:"center" }}
                         >
                           Đặt ngay
                         </Link>
-                        <button className="details-buttons">
+                        <Link
+                          to={`/hotel-page/${card.hotel_id}`} className="details-buttons"
+                          style={{ textDecoration: "none",textAlign:"center" }}
+                          >
                           Xem chi tiết
-                        </button>
+                        </Link>
                       </div>
                     </div>
                   </div>
