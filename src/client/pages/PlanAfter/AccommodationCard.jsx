@@ -3,7 +3,7 @@ import "./AccommodationCard.css";
 import { HotelService } from "../../../services/apis/HotelService";
 import imghotel from "../../../assets/beach.jpg";
 import HotelCard from "../Hotel/card/hotelCard";
-import RoomCard from "../Hotel/roomCard/roomCard";
+import RoomCard from "./roomCard/RoomCard";
 import { convertToVND, convertToVNDDB } from "../../../utils/FormatMoney";
 import { RoomService } from "../../../services/apis/RoomService";
 
@@ -44,6 +44,7 @@ function AccommodationCard({ className, onClick, accomodation, destination }) {
       const response = await HotelService.findHotelById(accomodation.hotelId);
       // console.log(response);
       const images = response.images;
+      console.log(response);
       setHotelAmentities(response.hotelAmenities);
 
       if (images.length > 0) {
@@ -165,11 +166,11 @@ function AccommodationCard({ className, onClick, accomodation, destination }) {
             />
           </div>
           <div className="amenities">
-            {hotelAmentities.slice(0, 4).map((amenity, index) => (
+            {/* {hotelAmentities.map((amenity, index) => (
               <span className="amenity" key={index}>
                 {amenity.name}
               </span>
-            ))}
+            ))} */}
           </div>
           <div className="action-buttons">
             {/* Bắt đầu xem chi tiết nơi ở */}
@@ -279,7 +280,7 @@ function AccommodationCard({ className, onClick, accomodation, destination }) {
                   ))}
 
                   <div className="tripTicket-item">
-                    <p>Tiện ích phòng:</p>
+                    {/* <p>Tiện ích phòng:</p>
                     {hotelAmentities.slice(0, 4).map((amenity, index) => (
                       <span
                         className=""
@@ -288,7 +289,7 @@ function AccommodationCard({ className, onClick, accomodation, destination }) {
                       >
                         {amenity.name},{" "}
                       </span>
-                    ))}
+                    ))} */}
                   </div>
                 </div>
 
