@@ -27,6 +27,7 @@ import TextArea from "antd/es/input/TextArea";
 import { Combobox } from "react-widgets";
 import { useAuth } from "../../../context/AuthContext/AuthProvider";
 import { RouteService } from "../../../services/apis/RouteService";
+import { uploadImage } from "../../../services/apis/ImageService";
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -49,6 +50,7 @@ function TourFormUpdate({ setRows, selectedTourId }) {
   const [previewImage, setPreviewImage] = useState("");
   const [fileList, setFileList] = useState([]);
   const [route, setRoute] = useState([]);
+  const [deleteImages, setDeleteImages] = useState([]);
   const [formData, setFormData] = useState({
     id: "",
     title: "",
@@ -88,14 +90,20 @@ function TourFormUpdate({ setRows, selectedTourId }) {
             size: 0,
             type: "image/jpeg",
             percent: 0,
-            originFileObj: {
-              uid: `rc-upload-${Date.now()}-${index}`,
-            },
+            originFileObj: new File(
+              [""], // Nội dung file giả lập
+              `image-${index}.jpg`,
+              {
+                type: image.type || "image/jpeg",
+                lastModified: new Date().getTime(),
+                uid: `rc-upload-${Date.now()}-${index}`,
+              }
+            ),
             status: "done",
             thumbUrl: image.url,
           }));
 
-          setFileList(formattedImages);
+          setFileList((prevFileList) => [...prevFileList, ...formattedImages]);
         }
       } else {
         setFormData([]);
@@ -103,6 +111,12 @@ function TourFormUpdate({ setRows, selectedTourId }) {
     };
     fetchData();
   }, [selectedTourId]);
+  const urlToFile = async (url, fileName, mimeType) => {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return new File([blob], fileName, { type: mimeType });
+  };
+  
   const handleSelectTags = (tagNames) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -180,7 +194,7 @@ function TourFormUpdate({ setRows, selectedTourId }) {
     if (response) {
       if (fileList.length > 0) {
         console.log(fileList);
-        uploadEncodedImage(response.tour_id, fileList);
+        await uploadEncodedImage(response.tour_id, fileList);
       }
       setHidden(false);
       toast("Tạo mới thành công");
@@ -267,6 +281,14 @@ function TourFormUpdate({ setRows, selectedTourId }) {
     }
     return errors;
   };
+  const handleDelteImage = async (file) => {
+    console.log("file", file);
+    const updatedFileList = fileList.filter((f) => f.uid !== file.uid);
+    setFileList(updatedFileList);
+    setDeleteImages((prevDeleteImages) => [...prevDeleteImages, file]);
+    console.log("file list", updatedFileList);
+    console.log("delete list", [...deleteImages, file]);
+  };
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
@@ -281,15 +303,25 @@ function TourFormUpdate({ setRows, selectedTourId }) {
   const uploadEncodedImage = async (id, fileList) => {
     try {
       const formData = new FormData();
-      fileList.forEach((file) => {
-        if (file.originFileObj) {
-          formData.append("files", file.originFileObj);
-        } else if (file.url) {
-          formData.append("existingFiles", file.url);
+  
+      const filesToUpload = await Promise.all(
+        fileList.map(async (file) => {
+          if (file.originFileObj) {
+            return file.originFileObj;
+          } else if (file.thumbUrl) {
+            return await urlToFile(file.thumbUrl, file.name, file.type);
+          }
+          return null; // Bỏ qua file không hợp lệ
+        })
+      );
+  
+      filesToUpload.forEach((file) => {
+        if (file) {
+          formData.append("files", file);
         }
       });
       const uploadResponse = await TourService.uploadImage(id, formData);
-      console.log("Upload successful:", uploadResponse.data);
+      console.log("Upload successful:", uploadResponse);
       return uploadResponse.data;
     } catch (error) {
       console.error("Error uploading image:", error);
@@ -589,11 +621,20 @@ function TourFormUpdate({ setRows, selectedTourId }) {
                 Ảnh
               </FormLabel>
               <Upload
-                action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
+                customRequest={({ file, onSuccess, onError }) => {
+                  uploadImage(file)
+                    .then((response) => {
+                      onSuccess(response);
+                    })
+                    .catch((error) => {
+                      onError(error);
+                    });
+                }}
                 listType="picture-card"
                 fileList={fileList}
                 onPreview={handlePreview}
                 onChange={handleChangeImage}
+                onRemove={handleDelteImage}
                 className="m-3 w-100"
                 style={{ width: "300px" }}
               >

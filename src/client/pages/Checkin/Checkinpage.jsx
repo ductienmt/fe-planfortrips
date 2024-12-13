@@ -36,6 +36,10 @@ const Checkinpage = () => {
     },
   ];
 
+  useEffect(() => {
+    document.title = "Check-in";
+  }, []);
+
   return (
     <>
       <div className="checkInPage-header mt-5">

@@ -86,12 +86,6 @@
     border: none;
     padding: 0;
   }
-.product-infoTicket {
-  padding: 20px;
-  font-family: Arial, sans-serif;
-  background-color: #fdfdfd;
-}
-
 .priceTicket {
   font-size: 20px;
   font-weight: bold;

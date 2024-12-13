@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const SvgIcon = ({ url, width = 20, height = 20 }) => {
+const SvgIcon = ({ url}) => {
   const [svgContent, setSvgContent] = useState(null);
 
   useEffect(() => {
@@ -18,7 +18,6 @@ const SvgIcon = ({ url, width = 20, height = 20 }) => {
 
   return (
     <div
-      style={{ width, height }}
       dangerouslySetInnerHTML={{ __html: svgContent }}
     />
   );

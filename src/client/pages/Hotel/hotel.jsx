@@ -14,9 +14,11 @@ import { useLocation } from "react-router-dom";
 import { HotelService } from "../../../services/apis/HotelService";
 import { Pagination } from "@mui/material";
 import HotelCard from "./card/hotelCard";
+import { enqueueSnackbar } from "notistack";
+import { flatpickrConfig } from "../../../utils/ConfigFlatpickr";
 
 const Hotel = () => {
-  window.scrollTo(0, 0);
+  // window.scrollTo(0, 0);
   const location = useLocation();
   const { keyword, date, days } = location.state || {};
   const [selectedAmenities, setSelectedAmenities] = useState([]);
@@ -28,14 +30,15 @@ const Hotel = () => {
   const [children, setChildren] = useState(0);
   const [infants, setInfants] = useState(0);
   const [sliderPosition, setSliderPosition] = useState("hotel");
-  const [selectedRating,setSelectedRating] = useState([])
+  const [selectedRating, setSelectedRating] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("hotel");
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(10);
   const [hotelAvailable, setHotelAvailable] = useState([]);
   const [totalPage, setTotalPage] = useState(0);
-  const [dateDepart, setDateDepart] = useState();
+  const [dateDepart, setDateDepart] = useState(date);
   const [dateReturn, setDateReturn] = useState();
+  const [error, setError] = useState("");
   useEffect(() => {
     const fetch = async () => {
       const response = await HotelService.getAvailableHotels(
@@ -119,22 +122,22 @@ const Hotel = () => {
       const matchesAmenities =
         selectedAmenities.length === 0 ||
         selectedAmenities.some((amenity) =>
-          hotel.hotelAmenities.some((hotelAmenity) => hotelAmenity.name === amenity)
+          hotel.hotelAmenities.some(
+            (hotelAmenity) => hotelAmenity.name === amenity
+          )
         );
-  
-      const matchesRating =
-        !selectedRating || hotel.rating <= selectedRating;
-  
+
+      const matchesRating = !selectedRating || hotel.rating <= selectedRating;
+
       return matchesAmenities || matchesRating;
     });
-  
+
     return filteredHotels.map((item, index) => (
       <li key={index}>
         <HotelCard item={item} />
       </li>
     ));
   };
-
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
     setSliderPosition(category);
@@ -146,60 +149,15 @@ const Hotel = () => {
 
   const [isLoading, setIsLoading] = useState(true); // Thêm trạng thái isLoading
 
-  const VietnameseHotel = {
-    weekdays: {
-      shorthand: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
-      longhand: [
-        "Chủ Nhật",
-        "Thứ Hai",
-        "Thứ Ba",
-        "Thứ Tư",
-        "Thứ Năm",
-        "Thứ Sáu",
-        "Thứ Bảy",
-      ],
-    },
-    months: {
-      shorthand: [
-        "Th1",
-        "Th2",
-        "Th3",
-        "Th4",
-        "Th5",
-        "Th6",
-        "Th7",
-        "Th8",
-        "Th9",
-        "Th10",
-        "Th11",
-        "Th12",
-      ],
-      longhand: [
-        "Tháng 1",
-        "Tháng 2",
-        "Tháng 3",
-        "Tháng 4",
-        "Tháng 5",
-        "Tháng 6",
-        "Tháng 7",
-        "Tháng 8",
-        "Tháng 9",
-        "Tháng 10",
-        "Tháng 11",
-        "Tháng 12",
-      ],
-    },
-    firstDayOfWeek: 1, // tuần bắt đầu từ thứ 2
-    rangeSeparator: " đến ",
-    weekAbbreviation: "Tuần",
-    scrollTitle: "Cuộn để tăng giảm",
-    toggleTitle: "Nhấp để chuyển đổi",
-    ordinal: (nth) => {
-      if (nth > 1) return "th";
-      return "";
-    },
+  const validation = () => {
+    const today = new Date();
+    if (!dateReturn) setError("Ngày về không được để trống");
+    if (new Date(dateDepart) < today)
+      setError("Ngày đi không được nhỏ hơn ngày hiện tại");
+    if (new Date(dateDepart) > new Date(dateReturn))
+      setError("Ngày đi không được lớn hơn ngày về");
+    return error.length == 0;
   };
-
   function addDaysToDate(dateStr, days) {
     const [day, month, year] = dateStr.split("-").map(Number);
     const date = new Date(year, month - 1, day);
@@ -219,6 +177,8 @@ const Hotel = () => {
   };
 
   useEffect(() => {
+    document.title = "Khách sạn";
+
     document.addEventListener("click", handleClickOutside);
 
     if (!isLoading) {
@@ -234,33 +194,34 @@ const Hotel = () => {
           altInput: true,
           altFormat: "d-m-Y",
           dateFormat: "Y-m-d",
-          locale: VietnameseHotel,
+          locale: flatpickrConfig,
           minDate: today,
           maxDate: maxDate,
-          defaultDate: date, 
+          defaultDate: date,
           onChange: function (selectedDates, dateStr, instance) {
-            const departDate = selectedDates[0]; 
-            const returnDate = returnPicker.selectedDates[0]; 
+            const departDate = selectedDates[0];
+            const returnDate = returnPicker.selectedDates[0];
 
             if (returnDate && returnDate < departDate) {
-              returnPicker.setDate(departDate); 
+              returnPicker.setDate(departDate);
             }
-            setDateDepart(formatDate(departDate)); 
+            setDateDepart(formatDate(departDate));
+            console.log(dateDepart);
           },
         });
         const returnPicker = flatpickr(returnInputHotel, {
           altInput: true,
           altFormat: "d-m-Y",
           dateFormat: "Y-m-d",
-          locale: VietnameseHotel,
+          locale: flatpickrConfig,
           minDate: today,
           maxDate: maxDate,
-          defaultDate: defaultReturnDate, 
+          defaultDate: defaultReturnDate,
           onChange: function (selectedDates, dateStr, instance) {
-            const returnDate = selectedDates[0]; 
+            const returnDate = selectedDates[0];
             const departDate = departPicker.selectedDates[0];
             if (departDate && returnDate < departDate) {
-              departPicker.setDate(returnDate); 
+              departPicker.setDate(returnDate);
             }
             setDateReturn(formatDate(returnDate));
           },
@@ -306,6 +267,10 @@ const Hotel = () => {
 
   const handleSearchHotel = async (e) => {
     e.preventDefault();
+    if (!validation()) {
+      enqueueSnackbar(error, { variant: "error" });
+      return;
+    }
     const departDate = convertToDate(dateDepart);
     const returnDate = convertToDate(dateReturn);
     const day = (returnDate - departDate) / (1000 * 3600 * 24);
@@ -441,17 +406,17 @@ const Hotel = () => {
               <div className="row mt-5 ms-2">
                 <h1>Bộ lọc</h1>
               </div>
-              <div className="row mt-5 ms-2">
+              {/* <div className="row mt-5 ms-2">
                 <h4 className="price-range">Giá tiền</h4>
                 <PriceRangeSlider />
-              </div>
+              </div> */}
               <div className="row mt-5 ms-2">
                 <h4 className="price-range">Tiện ích</h4>
                 <CheckboxGroup setSelectedAmenities={setSelectedAmenities} />
               </div>
               <div className="row mt-5 ms-2">
                 <h4 className="price-range">Đánh giá</h4>
-                <RatingCheckboxGroup setSelectedRating={setSelectedRating}/>
+                <RatingCheckboxGroup setSelectedRating={setSelectedRating} />
               </div>
             </div>
             <div className="col-md-9 custom-list-hotel">
@@ -495,7 +460,7 @@ const Hotel = () => {
           </div>
         </section>
       ) : (
-        <Loader />
+        <Loader rong={"80vh"} />
       )}
     </>
   );

@@ -136,9 +136,9 @@ export default function OrderCarPage() {
             <span
               style={{
                 padding: "4px 8px",
-                backgroundColor: "rgb(222 202 202)",
-                color: "rgb(159 31 31)",
-                border: "2px solid rgb(180 71 71)",
+                backgroundColor: "#EBFFF8",
+                color: "#0B6E4F",
+                border: "2px solid #0B6E4F",
                 borderRadius: "4px",
               }}
             >
@@ -163,7 +163,7 @@ export default function OrderCarPage() {
       },
     },
     {
-      field: "created_at",
+      field: "create_at",
       headerName: "Ngày tạo",
       type: "date",
       width: 110,

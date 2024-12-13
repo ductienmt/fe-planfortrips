@@ -64,7 +64,9 @@ import Guest from "../enterprise/transportation/guest/Guest";
 import Routehotel from "../enterprise/transportation/routehotel/Routehotel";
 import { useAuth } from "../context/AuthContext/AuthProvider";
 import { EnterpriseProvider } from "../context/EnterpriseContext/EnterpriseProvider";
+import ForgotPassword from "../client/pages/Auth/ForgotPassword/ForgotPassword";
 
+import NotFoundPage from "../notFound/notFoundPage";
 const ROLES = {
   CLIENT: "ROLE_USER",
   ADMIN: "ROLE_ADMIN",
@@ -104,6 +106,7 @@ const routeAdmin = () => [
           { path: "transactions/vehicles", element: <OrderCarPage /> },
           { path: "travel", element: <PlacePageAdmin /> },
           { path: "feedbacks", element: <FeedbackPage /> },
+          { path: "*", element: <NotFoundPage /> },
         ],
       },
     ],
@@ -191,6 +194,7 @@ const routeEnterprise = () => [
             path: "accomodation/choose-hotel",
             Component: ChooseHotel,
           },
+          { path: "*", element: <NotFoundPage /> },
         ],
       },
     ],
@@ -214,6 +218,7 @@ const routeClient = () => [
         path: "",
         Component: LandingPage,
       },
+      { path: "*", element: <NotFoundPage /> },
       {
         path: "/plan",
         Component: PlanBefore,
@@ -235,7 +240,7 @@ const routeClient = () => [
         Component: Hotel,
       },
       {
-        path: "/hotel-page/detail",
+        path: "/hotel-page/:id",
         Component: DetailCard,
       },
       {
@@ -247,7 +252,7 @@ const routeClient = () => [
         Component: VehiclePage,
       },
       {
-        path: "/vehicle-booking",
+        path: "/vehicle-booking/:id",
         Component: VehicleBooking,
       },
       {
@@ -302,11 +307,11 @@ const routeClient = () => [
         Component: Checkinpage,
       },
       {
-        path: "/check-in/mien-bac",
+        path: "/check-in/area/:area",
         Component: ChooseProvinceDetail,
       },
       {
-        path: "/check-in/mien-bac/hung-yen",
+        path: "/check-in/city/:city",
         Component: ChooseCheckinFollowArea,
       },
       {
@@ -323,15 +328,23 @@ const routeClient = () => [
           },
         ],
       },
+      {
+        path: "/forgot-password",
+        Component: ForgotPassword,
+      },
+      {
+        path: "/login",
+        Component: Login,
+      },
+      {
+        path: "/register",
+        Component: Register,
+      },
     ],
   },
   {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/register",
-    element: <Register />,
+    path: "*",
+    element: <NotFoundPage />,
   },
 ];
 

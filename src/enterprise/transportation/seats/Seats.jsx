@@ -24,56 +24,43 @@ const Seats = () => {
     navigate("/enterprise/accomodation/room-management");
   };
 
-  // Dữ liệu ghế cố định (gộp cả tầng 1 và tầng 2 vào một mảng duy nhất)
-  const initialSeats = [
-    { id: "A1", status: "available" },
-    { id: "A2", status: "booked" },
-    { id: "A3", status: "available" },
-    { id: "A4", status: "available" },
-    { id: "A5", status: "booked" },
-    { id: "A6", status: "available" },
-    { id: "A7", status: "available" },
-    { id: "A8", status: "booked" },
-    { id: "A9", status: "available" },
-    { id: "A10", status: "available" },
-    { id: "A11", status: "available" },
-    { id: "A12", status: "booked" },
-    { id: "A13", status: "available" },
-    { id: "A14", status: "available" },
-    { id: "A15", status: "booked" },
-    { id: "A16", status: "available" },
-    { id: "A17", status: "available" },
-    { id: "B1", status: "available" },
-    { id: "B2", status: "booked" },
-    { id: "B3", status: "available" },
-    { id: "B4", status: "available" },
-    { id: "B5", status: "available" },
-    { id: "B6", status: "booked" },
-    { id: "B7", status: "available" },
-    { id: "B8", status: "available" },
-    { id: "B9", status: "booked" },
-    { id: "B10", status: "available" },
-    { id: "B11", status: "available" },
-    { id: "B12", status: "available" },
-    { id: "B13", status: "booked" },
-    { id: "B14", status: "available" },
-    { id: "B15", status: "available" },
+   // Dữ liệu ghế cố định
+   const initialSeats = [
+    { id: "A1" },
+    { id: "A2" },
+    { id: "A3" },
+    { id: "A4" },
+    { id: "A5" },
+    { id: "A6" },
+    { id: "A7" },
+    { id: "A8" },
+    { id: "A9" },
+    { id: "A10" },
+    { id: "A11" },
+    { id: "A12" },
+    { id: "A13" },
+    { id: "A14" },
+    { id: "A15" },
+    { id: "A16" },
+    { id: "A17" },
+    { id: "B1" },
+    { id: "B2" },
+    { id: "B3" },
+    { id: "B4" },
+    { id: "B5" },
+    { id: "B6" },
+    { id: "B7" },
+    { id: "B8" },
+    { id: "B9" },
+    { id: "B10" },
+    { id: "B11" },
+    { id: "B12" },
+    { id: "B13" },
+    { id: "B14" },
+    { id: "B15" },
   ];
 
-  const [seats, setSeats] = useState(initialSeats);
-
-  // Hàm xử lý chọn hoặc hủy chọn ghế
-  const handleSeatClick = (seatId) => {
-    const updateSeats = seats.map((seat) =>
-      seat.id === seatId && seat.status !== "booked"
-        ? {
-            ...seat,
-            status: seat.status === "selected" ? "available" : "selected",
-          }
-        : seat
-    );
-    setSeats(updateSeats);
-  };
+  const [seats] = useState(initialSeats);
 
   // Hàm phân loại ghế theo tầng
   const getSeatsByFloor = (floor) => {
@@ -85,14 +72,14 @@ const Seats = () => {
     return seats.map((seat) => (
       <button
         key={seat.id}
-        className={`seat-button ${seat.status}`}
-        onClick={() => handleSeatClick(seat.id)}
-        disabled={seat.status === "booked"}
+        className="seat-button"
+        disabled
       >
         {seat.id}
       </button>
     ));
   };
+
 
   return (
     <>
@@ -105,11 +92,10 @@ const Seats = () => {
               textTransform: "uppercase",
               color: "#ADADAD",
             }}
-          ></h1>
+          >
+            Quản lý ghế
+          </h1>
         </div>
-
-        {/* Nội dung tìm kiếm */}
-        <div className="Seats-content mt-3"></div>
 
         {/* Lựa chọn khách sạn */}
         <div className="Seats-selection">
@@ -119,7 +105,7 @@ const Seats = () => {
               type="button"
               className="btn select-Seats-btn"
               data-bs-toggle="modal"
-              data-bs-target="#contactModal"
+              data-bs-target="#seatModal"
             >
               Chọn xe
             </button>
@@ -129,25 +115,17 @@ const Seats = () => {
         {/* Modal */}
         <div
           className="modal fade"
-          id="contactModal"
+          id="seatModal"
           // data-bs-backdrop="static"
           // data-bs-keyboard="false"
           tabIndex="-1"
-          aria-labelledby="contactModalLabel"
+          aria-labelledby="seatModalLabel"
           aria-hidden="true"
         >
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content p-3">
               <div className="transport-topBar-items mb-3">
-                <div className="nav-filter">
-                  <InputFlied
-                    className="seact-search"
-                    nameInput="search"
-                    content="Tìm kiếm"
-                    typeInput="text"
-                  />
-                </div>
-                <div className="right-close-add-seat">
+                <div className="right-close-add-seat d-flex justify-content-end">
                   <button
                     type="button"
                     className="btn seats-button"
@@ -283,9 +261,10 @@ const Seats = () => {
                 <button
                   type="button"
                   className="btn btn-secondary"
-                  data-bs-dismiss="modal"
+                  data-bs-toggle="modal"
+                  data-bs-target="#seatModal"
                 >
-                  Đóng
+                  Quay lại
                 </button>
                 <button type="button" className="btn btn-primary">
                   Xác Nhận

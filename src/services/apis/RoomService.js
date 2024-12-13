@@ -14,14 +14,23 @@ export const RoomService = {
     }
 
     const response = await Http.get(`/rooms?${params.toString()}`);
+    console.log(response);
     return response.data;
   },
   findRoomById: async (id) => {
     const response = await Http.get(`/rooms/getById/${id}`);
     return response.data;
   },
-  getRoomsByHotelId: async (id, pageNo, pageSize, sortBy, sortType) => {
-    const params = new URLSearchParams({ id });
+  getRoomsByHotelId: async (
+    id,
+    checkinDate,
+    checkoutDate,
+    pageNo,
+    pageSize,
+    sortBy,
+    sortType
+  ) => {
+    const params = new URLSearchParams({ id, checkinDate, checkoutDate });
     if (pageNo) {
       params.append("pageNo", pageNo);
     }
@@ -37,7 +46,7 @@ export const RoomService = {
     const response = await Http.get(
       `/rooms/getRoomByHotelId?${params.toString()}`
     );
-    console.log(params.toString());
+    console.log(response.data);
 
     return response.data;
   },

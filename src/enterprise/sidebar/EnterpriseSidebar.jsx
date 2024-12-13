@@ -19,20 +19,28 @@ const EnterpriseSidebar = () => {
     setCollapsed(!collapsed);
   };
 
-  const handleSelect = (item) => {
+  const handleSelect = (item, path) => {
     setSelectedItem(item);
     sessionStorage.setItem("selectedItem", item);
+
+    if (item === "aco-account" || item === "vehicle-account") {
+      const accountElement = document.getElementById("accountModal");
+      if (accountElement) {
+        accountElement.click();
+      }
+      return;
+    }
+
+    navigate(`/enterprise/${path}`);
   };
 
   useEffect(() => {
-    const basePath =
-      typeEnterprise === "Xe khách" ? "transportation" : "accomodation";
     const itemFromURL = location.pathname.split("/").pop();
     if (itemFromURL !== selectedItem) {
       setSelectedItem(itemFromURL);
       sessionStorage.setItem("selectedItem", itemFromURL);
     }
-  }, [typeEnterprise, location.pathname]);
+  }, [location.pathname]);
 
   const menuItems = useMemo(() => {
     const commonItems = [
@@ -42,12 +50,12 @@ const EnterpriseSidebar = () => {
         label: "Thống kê",
         path: `${typeEnterprise === "Xe khách" ? "transportation" : "accomodation"}/dashboard`,
       },
-      {
-        key: "voucher-manager",
-        icon: "fa-ticket",
-        label: "Mã giảm giá",
-        path: `${typeEnterprise === "Xe khách" ? "transportation" : "accomodation"}/voucher-manager`,
-      },
+      // {
+      //   key: "voucher-manager",
+      //   icon: "fa-ticket",
+      //   label: "Mã giảm giá",
+      //   path: `${typeEnterprise === "Xe khách" ? "transportation" : "accomodation"}/voucher-manager`,
+      // },
     ];
 
     const accomodationItems = [
@@ -70,9 +78,19 @@ const EnterpriseSidebar = () => {
         path: "accomodation/choose-hotel",
       },
       {
-        key: "aco-account",
+        key: "voucher-manager",
         icon: "fa-ticket",
+        label: "Quản lý voucher",
+        path: "accomodation/voucher-manager",
+      },
+      {
+        key: "aco-account",
+        icon: "fa-solid fa-user",
         label: "Account",
+        path: "",
+        onClick: () => {
+          document.getElementById("acco").click();
+        },
       },
     ];
 
@@ -91,8 +109,8 @@ const EnterpriseSidebar = () => {
       },
       {
         key: "Seats",
-        icon: "fa-route",
-        label: "Seats",
+        icon: "fa-solid fa-couch",
+        label: "Quản lý ghế",
         path: "transportation/Seats",
       },
       {
@@ -103,14 +121,24 @@ const EnterpriseSidebar = () => {
       },
       {
         key: "vehicle-schedules",
-        icon: "fa-ticket",
+        icon: "fa-solid fa-calendar-days",
         label: "Lịch trình",
         path: "transportation/vehicle-schedules",
       },
       {
-        key: "vehicle-account",
+        key: "vouchers",
         icon: "fa-ticket",
-        label: "Account",
+        label: "Khuyến mãi",
+        path: "transportation/vouchers",
+      },
+      {
+        key: "vehicle-account",
+        icon: "fa-solid fa-user",
+        label: "Tài khoản",
+        path: "",
+        onClick: () => {
+          document.getElementById("acco").click();
+        },
       },
     ];
 
@@ -120,52 +148,56 @@ const EnterpriseSidebar = () => {
   }, [typeEnterprise]);
 
   return (
-    <div className={`sidebar-container ${collapsed ? "collapsed" : ""}`}>
-      <div className="top">
-        <div className="sidebar-header">
-          <img
-            src={logo}
-            alt="Logo"
-            className="logo"
-            style={{ width: "80%", cursor: "pointer" }}
-            onClick={toggleSidebar}
-          />
+    <>
+      <div className={`sidebar-container ${collapsed ? "collapsed" : ""}`}>
+        <div className="top">
+          <div className="sidebar-header">
+            <img
+              src={logo}
+              alt="Logo"
+              className="logo"
+              style={{ width: "80%", cursor: "pointer" }}
+              onClick={toggleSidebar}
+            />
+          </div>
+          <ul className="sidebar-menu">
+            {menuItems.map((item) => (
+              <li
+                key={item.key}
+                className={selectedItem === item.key ? "isActive" : ""}
+                onClick={() => handleSelect(item.key, item.path)}
+              >
+                <Link to={item.path ? `/enterprise/${item.path}` : "#"}>
+                  <i className={`fa-solid ${item.icon}`}></i>{" "}
+                  {!collapsed && <span>{item.label}</span>}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
-        <ul className="sidebar-menu">
-          {menuItems.map((item) => (
-            <li
-              key={item.key}
-              className={
-                selectedItem === item.key &&
-                location.pathname.includes(item.path)
-                  ? "isActive"
-                  : ""
-              }
-              onClick={() => handleSelect(item.key)}
+        <div className="bottom">
+          <div className="sidebar-footer">
+            <button
+              style={{ border: "none", backgroundColor: "transparent" }}
+              onClick={() => {
+                logout();
+                navigate("/enterprise/login");
+              }}
             >
-              <Link to={`/enterprise/${item.path}`}>
-                <i className={`fa-solid ${item.icon}`}></i>{" "}
-                {!collapsed && <span>{item.label}</span>}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="bottom">
-        <div className="sidebar-footer">
-          <button
-            style={{ border: "none", backgroundColor: "transparent" }}
-            onClick={() => {
-              logout();
-              navigate("/enterprise/login");
-            }}
-          >
-            <i className="fa-solid fa-right-from-bracket"></i>{" "}
-            {!collapsed && "Logout"}
-          </button>
+              <i className="fa-solid fa-right-from-bracket"></i>{" "}
+              {!collapsed && "Logout"}
+            </button>
+          </div>
         </div>
+        <button
+          className="d-none"
+          data-bs-toggle="modal"
+          data-bs-target="#accountModalEnterprise"
+          id="accountModal"
+        ></button>
       </div>
-    </div>
+      <Account />
+    </>
   );
 };
 

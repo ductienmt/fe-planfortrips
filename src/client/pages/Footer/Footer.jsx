@@ -22,7 +22,7 @@ const Footer = () => {
             <p>React JS (FE)</p>
             <p>Spring Boot (BE)</p>
             <p>Bootstrap</p>
-            <p>SQL Server</p>
+            <p></p>
           </div>
 
           <div className="col-md-2">
@@ -49,7 +49,7 @@ const Footer = () => {
 
       <hr />
       <div className="text-center">
-        <h6>FPT Polytechnic nhóm 2 dự án Plan For trip</h6>
+        <h6>&copy; 2024 FPT Polytechnic nhóm 2 - Dự án Plan for Trips</h6>
       </div>
     </footer>
   );

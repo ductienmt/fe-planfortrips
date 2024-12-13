@@ -88,7 +88,7 @@ export const generateTripPlan = async (data) => {
 
   try {
     const result = await chatSession.sendMessage(
-      `bạn dựa vào dữ liệu tôi cung cấp chọn ra kế hoạch tốt nhất dựa vào userData của tôi để ý số người từ userData, nếu số tiền nhỏ quả thì trả ra json notification: "Không đủ ngân sách để lên kế hoạch", có thể gợi ý có thể giảm cái gì để đủ trong ngân sách đó 
+      `bạn dựa vào dữ liệu tôi cung cấp chọn ra kế hoạch tốt nhất dựa vào userData của tôi để ý số người từ userData, chọn ra các dịch vụ tối ưu số tiền nhất có thể theo số người nhé, nếu số tiền nhỏ quả thì trả ra json notification: "Không đủ ngân sách để lên kế hoạch", có thể gợi ý có thể giảm cái gì để đủ trong ngân sách đó 
       userData chứa dữ liệu của người dùng (budget là số ngân sách tôi đang để theo dạng phải *1000 nữa mới đúng giá trị thực) ,để ý số người trong chuyến đi để tính toán phù hợp, nếu từ 2 người trở lên hãy tính toán vé xe, 
       tại vé xe tôi cung cấp chỉ là 1 vé 1 người, tính toán thêm vé tham quan ở các nơi check in dựa vào số người, 
       nếu là hotel thì dựa nào numberPeople từ userData mà chọn phòng dựa vào roomSize của room tôi gửi lên, nếu số người nhiều hơn roomSize của phòng bạn có thể chọn thêm 1 phòng nữa,

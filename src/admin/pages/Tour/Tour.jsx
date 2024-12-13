@@ -140,7 +140,7 @@ function TourForm({ setRows, rows }) {
     const tagArray = tagNew.split(",").map((tag) => tag.trim());
     const validTags = [];
     const invalidTags = [];
-
+    let valid = true;
     tagArray.forEach((tag) => {
       if (tag.startsWith("#")) {
         validTags.push(tag);
@@ -160,14 +160,17 @@ function TourForm({ setRows, rows }) {
         const response = await TagService.createTag(tagDto);
         if (response.success !== false) {
           setTags((prevTags) => [...prevTags, response]);
-          enqueueSnackbar(
-            "Thêm tag mới thành công, vui lòng chọn tag vừa tạo!",
-            { variant: "success" }
-          );
         } else {
+          valid = false;
           enqueueSnackbar(response.message, { variant: "error" });
         }
       });
+    }
+    if(valid){
+      enqueueSnackbar(
+        "Thêm tag mới thành công, vui lòng chọn tag vừa tạo!",
+        { variant: "success" }
+      );
     }
   };
   useEffect(() => {

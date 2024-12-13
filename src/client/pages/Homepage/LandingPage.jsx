@@ -32,10 +32,12 @@ const LandingPage = () => {
               <h1>Hành Trình Khám Phá</h1>
               <h1>Việt Nam Cùng Chúng Tôi</h1>
               <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Possimus corporis itaque eos porro atque tenetur nesciunt, et
-                nam nihil quam. Voluptate dolores pariatur doloremque minima
-                sunt quas. Mollitia, qui sed!
+                Bạn có hào hứng khi khám phá Việt Nam cùng chúng tôi chứ ? Chúng
+                tôi sẽ mang lại cho bạn những trải nghiệm tuyệt vời nhất khi
+                đồng hành cùng bạn trên hành trình khám phá Việt Nam. Plan for
+                Trips không chỉ là một website mà sẽ còn phát triển thành ứng
+                dụng trên điện thoại để bạn có thể trải nghiệm tốt nhất. Hãy
+                cùng trải nghiệm và xây dựng 1 cộng đồng to lớn nhé!
               </p>
             </div>
             <div className="button-landing">
@@ -56,10 +58,8 @@ const LandingPage = () => {
             </h4>
             <h1 className="text-center">NHỮNG NƠI THAM QUAN PHỔ BIẾN</h1>
             <p className="text-center w-50 mx-auto">
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-              Asperiores non quibusdam a culpa repellat? Magni ad et
-              exercitationem voluptates reiciendis sint cumque non, rem tempora
-              temporibus corrupti quidem. Vel, facere.
+              Những nơi tham quan dưới đây là những nơi được du khách nhà Plan
+              for Trips đánh giá cao. Bạn có muốn thử trải nghiệm không?
             </p>
             <section className="checkin-card-container">
               <CheckinCard
@@ -89,10 +89,9 @@ const LandingPage = () => {
             <div className="body-content">
               <h1 className="text-center">TOUR ĐẶC SẮC</h1>
               <p className="text-center w-50 mx-auto">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                Deserunt laborum, assumenda accusamus asperiores impedit tempora
-                adipisci, modi fugiat magni itaque unde quas aperiam qui porro
-                temporibus sequi. Sit, porro id?
+                Bạn nghĩ sao về tour có sẵn nè. Nhà Plan for Trips đã tổng hợp
+                các dịch vụ lại thành 1 tour cho bạn rùi nhen. Có đầy đủ các
+                tiêu chí nhe!
               </p>
               <div className="content">
                 <TourCard

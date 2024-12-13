@@ -1,0 +1,68 @@
+/* Element: Form Container */
+.datevehicle__form-container {
+    width: 100%;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Element: Header */
+.datevehicle__header {
+    margin-bottom: 16px;
+}
+
+.datevehicle__label {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Element: Inputs */
+.datevehicle__inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+/* Element: Input Wrapper */
+.datevehicle__input-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.datevehicle__input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.datevehicle__input:focus {
+    border-color: #007bff;
+}
+
+/* Element: Checkbox */
+.datevehicle__checkbox {
+    display: flex;
+    align-items: center;
+    margin-top: 16px;
+}
+
+.datevehicle__checkbox-input {
+    margin-right: 8px;
+}
+
+.datevehicle__checkbox-label {
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+}
+
+/* Modifier: Checkbox Label for Round Trip */
+.datevehicle__checkbox-label--round-trip {
+    font-weight: bold;
+}

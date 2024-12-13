@@ -22,6 +22,7 @@ export const ClientLayout = () => {
     "/success",
     "/failed",
     "/tour",
+    "/forgot-password",
   ]);
 
   // Kiểm tra logic hiển thị

@@ -23,15 +23,13 @@ import {
 import Loader from "../../../Components/Loading";
 import { CheckinService } from "../../../../services/apis/CheckinService";
 import MapComponent from "../mapCheckin/mapCheckin";
+import { use } from "react";
 const imgheader = [
-  {
-    imgURL:
-      "https://th.bing.com/th/id/OIP.UecmWknyfqWzk18Gj8Z8xgHaE8?w=259&h=180&c=7&r=0&o=5&pid=1.7",
-  },
-  {
-    imgURL:
-      "https://th.bing.com/th/id/OIP.gTtb0T-zUik5W7oAvNrLagHaEo?w=295&h=184&c=7&r=0&o=5&pid=1.7",
-  },
+  "src/assets/hotel1.jpg",
+  "src/assets/hotel2.jpg",
+  "src/assets/hotel3.jpg",
+  "src/assets/hotel4.jpg",
+  "src/assets/hotel5.jpg",
 ];
 const style = {
   position: "absolute",
@@ -106,8 +104,8 @@ const IntroHotel = () => {
   const [isOpen, setIsOpen] = useState(false); // Kiểm soát dropdown
   const [inputValue, setInputValue] = useState(""); // Giá trị input
   const [selectedOption, setSelectedOption] = useState(""); // Tùy chọn được chọn
-  const [selectedItem, setSelectedItem] = useState(null);
   const [isModal, setIsModal] = useState(false);
+  const [errors, setErrors] = useState();
   const options = [
     {
       key: 1,
@@ -130,6 +128,18 @@ const IntroHotel = () => {
       value: "5 Đêm",
     },
   ];
+  const validateSearch = () => {
+    const newErrors = {};
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() - 1);
+    if (!date) newErrors.date = "Vui lòng chọn ngày";
+    if (new Date(date) < today)
+      newErrors.date = "Ngày phải lớn hay ngày hiện tại";
+    if (!selectedOption) newErrors.days = "Vui lòng chọn số đêm ở";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
   const toggleDropdown = () => {
     setIsOpen(!isOpen); // Đổi trạng thái mở/đóng
   };
@@ -144,6 +154,7 @@ const IntroHotel = () => {
     setInputValue(e.target.value); // Cập nhật giá trị input
   };
   const handleSearch = () => {
+    if (!validateSearch()) return;
     navigate("/hotel-page", {
       state: {
         keyword: keyword,
@@ -165,6 +176,8 @@ const IntroHotel = () => {
   //   }
   // };
   useEffect(() => {
+    document.title = "Khách sạn";
+
     const fetch = async () => {
       setIsLoading(true);
       const dataCoupon = await CouponService.getCoupons(0, 6, "");
@@ -208,13 +221,7 @@ const IntroHotel = () => {
   const closeModal = () => {
     setIsModal(false);
   };
-  const contentStyle = {
-    height: "160px",
-    color: "#fff",
-    lineHeight: "160px",
-    textAlign: "center",
-    background: "#364d79",
-  };
+ 
   if (isLoading) {
     return <Loader />;
   }
@@ -223,13 +230,19 @@ const IntroHotel = () => {
       <div className="introhotel-container">
         <div className="header">
           <div className="item">
-            <Carousel autoplay>
-              <div className="img1" style={contentStyle}>
-                <img src={imgheader[0].imgURL} alt="" />
-              </div>
-              <div className="img2" style={contentStyle}>
-                <img src={imgheader[1].imgURL} alt="" />
-              </div>
+            <Carousel
+              autoplay
+              slidesToShow={2}
+              slidesToScroll={2}
+              dots={true}
+              infinite={true}
+              style={{ marginBottom:"30px" }}
+            >
+              {imgheader.map((i, index) => (
+                <div className="img1" style={{ padding:"50px", marginBottom:"30px" }} key={index}>
+                  <img src={i} alt={`Slide ${index + 1}`} />
+                </div>
+              ))}
             </Carousel>
           </div>
         </div>
@@ -251,17 +264,21 @@ const IntroHotel = () => {
             </div>
             <b style={{ color: "#777777" }}>Chọn ngày:</b>
             <div className="date-night">
-              <input
-                className="input-date"
-                type="date"
-                value={date}
-                onChange={handDatechange}
-                style={{
-                  padding: "10px",
-                  borderRadius: "5px",
-                  border: "1px solid #ccc",
-                }}
-              />
+              <div className="input-night">
+                <input
+                  className="input-date"
+                  type="date"
+                  value={date}
+                  onChange={handDatechange}
+                  style={{
+                    padding: "10px",
+                    borderRadius: "5px",
+                    border: "1px solid #ccc",
+                  }}
+                />
+
+                {errors?.date && <p className="text-danger">{errors.date}</p>}
+              </div>
 
               <div className="input-night">
                 {/* Ô nhập liệu */}
@@ -279,6 +296,7 @@ const IntroHotel = () => {
                     border: "1px solid #ccc",
                   }}
                 />
+                {errors?.days && <p className="text-danger">{errors.days}</p>}
 
                 {/* Dropdown */}
                 {isOpen && (
@@ -416,23 +434,24 @@ const IntroHotel = () => {
                         {card.description || "Mô tả không có sẵn"}
                       </p>
                       <div className="price-info">
-                        <p className="card-price-old">
-                          {card.basicprice || "Liên hệ để biết giá"}
-                        </p>
                         <p className="card-price-new">
                           {card.newprice || "Liên hệ để biết giá"}
                         </p>
                       </div>
                       <div className="card-button">
                         <Link
-                          to={`/hotel/${card.hotel_id}`}
+                          to={`/hotel-page/${card.hotel_id}`}
                           className="buy-button"
+                          style={{ textDecoration: "none",textAlign:"center" }}
                         >
                           Đặt ngay
                         </Link>
-                        <button className="details-buttons">
+                        <Link
+                          to={`/hotel-page/${card.hotel_id}`} className="details-buttons"
+                          style={{ textDecoration: "none",textAlign:"center" }}
+                          >
                           Xem chi tiết
-                        </button>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -530,7 +549,10 @@ const IntroHotel = () => {
                       </Box>
                     </div>
                     <div className="col-md-6">
-                      <MapComponent latitude={checkinItem.latitude} longitude={checkinItem.longitude}/>
+                      <MapComponent
+                        latitude={checkinItem.latitude}
+                        longitude={checkinItem.longitude}
+                      />
                     </div>
                   </div>
                 </Box>
