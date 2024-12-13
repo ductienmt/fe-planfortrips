@@ -7,6 +7,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Link, useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { InputFlied } from "../../../Components/Input/InputFlied";
+import { convertToVND } from "../../../../utils/FormatMoney";
 
 const UserInformation = ({
   totalPrice,
@@ -46,22 +47,18 @@ const UserInformation = ({
           variant: "error",
           autoHideDuration: 2000,
         });
-      }
-      if (!validatePhone(form.phone)) {
+      } else if (!validatePhone(form.phone)) {
         enqueueSnackbar("Số điện thoại không hợp lệ.", {
           variant: "error",
           autoHideDuration: 2000,
         });
-      }
-
-      if (!isAgreed) {
+      } else if (!isAgreed) {
         e.preventDefault();
         enqueueSnackbar("Bạn cần đồng ý với điều khoản trước khi tiếp tục.", {
           variant: "error",
           autoHideDuration: 2000,
         });
       } else {
-        // TODO: Call API to create ticket
         sessionStorage.setItem("userInformation", JSON.stringify(form));
         sessionStorage.setItem("priceTr", totalPriceTransportation);
         sessionStorage.setItem("priceAc", totalPriceAccommodation);
@@ -82,13 +79,6 @@ const UserInformation = ({
     useState(false);
   const [showDetailPriceAccommodation, setShowDetailPriceAccommodation] =
     useState(false);
-
-  const convertToVND = (amount) => {
-    const formattedAmount = amount
-      .toString()
-      .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return `${formattedAmount}VNĐ`;
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -302,7 +292,7 @@ const UserInformation = ({
                     </div>
                   </div>
                   <div
-                    className={`detail-price ${
+                    className={`detail-pricee ${
                       showDetailPriceTransportation ? "d-block" : "d-none"
                     }`}
                     style={{ fontSize: "14px" }}
@@ -372,11 +362,11 @@ const UserInformation = ({
                     </div>
                   </div>
                   <div
-                    className={`detail-price ${
+                    className={`detail-pricee ${
                       showDetailPriceAccommodation ? "d-block" : "d-none"
                     }`}
                   >
-                    <div className="detail-price" style={{ fontSize: "14px" }}>
+                    <div className="detail-pricee" style={{ fontSize: "14px" }}>
                       <div
                         style={{
                           display: "flex",
@@ -384,7 +374,7 @@ const UserInformation = ({
                           justifyContent: "space-between",
                         }}
                       >
-                        <p>Giá cho 1 phòng</p>
+                        <p>Giá cho {totalRoom} phòng</p>
                         <p>{convertToVND(priceOneNight)}/1 đêm</p>
                       </div>
                       <div

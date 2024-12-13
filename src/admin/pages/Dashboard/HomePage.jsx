@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import Statitical from '../Statistical/Statistical';
+import Statitical from '../StatisticalDashBoard/StatisticalDashBoard';
 import AdminList from './AdminList/AdminList';
 import './HomePage.css';
 import { StatisticalService } from '../../../services/apis/StatisticalService';
@@ -78,9 +78,9 @@ function HomePage() {
                                     <CartesianGrid strokeDasharray="3 3" />
                                     <XAxis dataKey="month" />
                                     <YAxis />
-                                    <Tooltip formatter={(value) => `Số lượng chi tiết: ${value}`} />
+                                    <Tooltip formatter={(value) =>  value} />
                                     <Legend />
-                                    <Bar dataKey="totalDetails" fill="#8884d8" />
+                                    <Bar dataKey="totalDetails" fill="#8884d8" name={'Đơn đặt phòng'}/>
                                 </BarChart>
                             </ResponsiveContainer>
                         </div>

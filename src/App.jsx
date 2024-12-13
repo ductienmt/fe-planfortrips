@@ -14,13 +14,19 @@ function App() {
   const isAdminRoute = location.pathname.startsWith("/admin");
   const isAdmin = token && role === "ROLE_ADMIN";
 
-  const shouldRenderChat = 
-    !isAdmin && 
-    !isAdminRoute && 
+  const shouldRenderChat =
+    !isAdmin &&
+    !isAdminRoute &&
     !["/admin", "/enterprise"].includes(location.pathname);
 
   return (
-    <SnackbarProvider>
+    <SnackbarProvider
+      maxSnack={3}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+    >
       {isAdmin ? (
         <DashboardLayoutBasic />
       ) : (

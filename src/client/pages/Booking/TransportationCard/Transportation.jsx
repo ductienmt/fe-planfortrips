@@ -24,7 +24,9 @@ const Transportation = ({
   loadStation,
   stationData,
   loadCities,
+  loadAgainStationAndCity,
   cityData,
+  changeTransportationType,
 }) => {
   const formatDate = (dateString) => {
     if (!dateString) {
@@ -74,10 +76,10 @@ const Transportation = ({
   const toggleStation = async () => {
     if (
       !isOpen &&
-      !stationData.departureStation &&
-      !stationData.arrivalStation &&
-      !cityData.originalCity &&
-      !cityData.destination
+      !stationData?.departureStation &&
+      !stationData?.arrivalStation &&
+      !cityData?.originalCity &&
+      !cityData?.destination
     ) {
       setIsLoading(true);
       await loadStation(scheduleId);
@@ -85,6 +87,13 @@ const Transportation = ({
       setIsLoading(false);
     }
     setIsOpen(!isOpen);
+  };
+
+  const [currentType, setCurrentType] = useState("departure");
+
+  const handleChangeType = async (typeTrans) => {
+    setCurrentType(typeTrans);
+    changeTransportationType(typeTrans);
   };
 
   return (
@@ -102,7 +111,21 @@ const Transportation = ({
           <div className="transportation-header">
             <div className="nameVehicle">
               <h2 style={{ fontWeight: "700" }}>{name}</h2>
-              <p>{type}</p>
+              {currentType === "departure" ? (
+                <button
+                  onClick={() => handleChangeType("arrival")}
+                  className="button-change-type-trans"
+                >
+                  Xem chiều về
+                </button>
+              ) : (
+                <button
+                  onClick={() => handleChangeType("departure")}
+                  className="button-change-type-trans"
+                >
+                  Xem chiều đi
+                </button>
+              )}
             </div>
             <div
               className="seat"
@@ -126,7 +149,9 @@ const Transportation = ({
             <div className={`${isOpen ? "d-block" : "d-none"}`}>
               <div className={`transportation-body`}>
                 <div className="departure">
-                  <p style={{ fontSize: "20px" }}>{cityData.originalCity}</p>
+                  <p style={{ fontSize: "20px" }}>
+                    {cityData ? cityData.originalCity : "Unknown"}
+                  </p>
                   <p className="departure-time">Khởi hành</p>
                   <p style={{ fontWeight: "600" }}>{departureTime}</p>
                   <p style={{ fontSize: "18px" }}>
@@ -137,7 +162,9 @@ const Transportation = ({
                   <ArrowRightAltIcon />
                 </div>
                 <div className="arrival">
-                  <p style={{ fontSize: "20px" }}>{cityData.destination}</p>
+                  <p style={{ fontSize: "20px" }}>
+                    {cityData ? cityData.destination : "Unknown"}
+                  </p>
                   <p className="arrival-time">Đến nơi</p>
                   <p style={{ fontWeight: "600" }}>{arrivalTime}</p>
                   <p style={{ fontSize: "18px" }}>{formatDate(arrivalDate)}</p>
@@ -151,10 +178,10 @@ const Transportation = ({
                   <div className="infomation">
                     <p className="pickup">Điểm đón</p>
                     <p style={{ fontSize: "20px", fontWeight: "600" }}>
-                      {stationData.departureStation}
+                      {stationData ? stationData.departureStation : "Unknown"}
                     </p>
                     <p style={{ fontSize: "18px" }}>
-                      {stationData.departureStation}
+                      {stationData ? stationData.departureStation : "Unknown"}
                     </p>
                   </div>
                 </div>
@@ -179,10 +206,10 @@ const Transportation = ({
                   <div className="infomation">
                     <p className="dropoff">Điểm trả</p>
                     <p style={{ fontSize: "20px", fontWeight: "600" }}>
-                      {stationData.arrivalStation}
+                      {stationData ? stationData.arrivalStation : "Unknown"}
                     </p>
                     <p style={{ fontSize: "18px" }}>
-                      {stationData.arrivalStation}
+                      {stationData ? stationData.arrivalStation : "Unknown"}
                     </p>
                   </div>
                 </div>

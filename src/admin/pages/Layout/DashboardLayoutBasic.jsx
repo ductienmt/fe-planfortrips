@@ -18,6 +18,7 @@ import {
   faHotel,
   faCableCar,
   faEarthAsia,
+  faChartSimple,
 } from "@fortawesome/free-solid-svg-icons";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { AdminService } from "../../../services/apis/AdminService";
@@ -39,6 +40,18 @@ const NAVIGATION = [
     icon: (
       <NavLink to="" className="nav-linkAdmin">
         <FontAwesomeIcon icon={faHouse} />
+      </NavLink>
+    ),
+  },
+  {
+    title: (
+      <NavLink to="statistical" className="nav-linkAdmin">
+        Thống kê
+      </NavLink>
+    ),
+    icon: (
+      <NavLink to="" className="nav-linkAdmin">
+        <FontAwesomeIcon icon={faChartSimple} />
       </NavLink>
     ),
   },
