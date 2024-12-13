@@ -11,6 +11,9 @@ import { useAuth } from "../../../context/AuthContext/AuthProvider";
 import { useSnackbar } from "notistack";
 import { convertToVND } from "../../../utils/FormatMoney";
 import Loader from "../../Components/Loading";
+import { PlanServiceApi } from "../../../services/apis/PlanServiceApi";
+import { Equalizer } from "@mui/icons-material";
+import { format } from "date-fns";
 
 function TravelPlan() {
   const [selectedCard, setSelectedCard] = useState("transportation");
@@ -104,18 +107,32 @@ function TravelPlan() {
   // };
 
   const handleSubmit = async () => {
-    try {
-      if (!role) {
-        sessionStorage.setItem("previousUrl", window.location.pathname);
-        enqueueSnackbar("Vui lòng đăng nhập để tiếp tục", {
-          variant: "error",
-          autoHideDuration: 1000,
-          onExit: () => {
-            navigate("/login");
-          },
-        });
-        return;
-      } else {
+    // try {
+    if (!role) {
+      sessionStorage.setItem("previousUrl", window.location.pathname);
+      enqueueSnackbar("Vui lòng đăng nhập để tiếp tục", {
+        variant: "error",
+        autoHideDuration: 1000,
+        onExit: () => {
+          navigate("/login");
+        },
+      });
+      return;
+    }
+    // else if (){
+    //   enqueueSnackbar("Vui lòng chọn đủ các mục", {
+    //     variant: "error",
+    //     autoHideDuration: 1000,
+    //   });
+    //   return;
+    // }
+    else {
+      try {
+        const res = await PlanServiceApi.checkTime(
+          tripData.userData.startDate.split(" ")[0],
+          tripData.userData.endDate.split(" ")[0]
+        );
+
         const transportationDeparturePlanData = {
           carId: tripData.transportation.departure.vehicleCode,
           totalPrice: tripData.transportation.departure.totalPrice,
@@ -169,11 +186,21 @@ function TravelPlan() {
           setLoading(false);
           navigate("/booking/plan");
         }, 3000);
+      } catch (error) {
+        // console.error(error.response.data.message);
+        enqueueSnackbar(error.response?.data?.message || "Đã có lỗi xảy ra", {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
       }
-    } catch (error) {
-      console.error(error);
-      alert("Tạo chuyến đi thất bại!");
     }
+    // } catch (error) {
+    //   console.error(error);
+    //   enqueueSnackbar("Đã có lỗi xảy ra", {
+    //     variant: "error",
+    //     autoHideDuration: 1500,
+    //   });
+    // }
   };
 
   const newSummaryItems = tripData.userData
@@ -278,6 +305,8 @@ function TravelPlan() {
                 onClick={() => handleCardClick("accommodation")}
                 accomodation={tripData.accomodation}
                 destination={tripData.userData.destination}
+                numberPeople={tripData.userData?.numberPeople}
+                loadAgain={loadTripData}
               />
               <AttractionCard
                 className={
@@ -291,6 +320,7 @@ function TravelPlan() {
                 onNext={handleAttractionSelected}
                 onBack={handleAttractionSelected}
                 checkin={tripData.checkins}
+                loadAgain={loadTripData}
               />
             </section>
             <div

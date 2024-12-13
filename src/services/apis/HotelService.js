@@ -12,7 +12,7 @@ export const HotelService = {
     if (keyword) {
       params.append("keyword", keyword);
     }
-    const response = await Http.get(`api/v1/hotels/all?${params.toString()}`);
+    const response = await Http.get(`/hotels/all?${params.toString()}`);
     console.log(response);
 
     return response.data;

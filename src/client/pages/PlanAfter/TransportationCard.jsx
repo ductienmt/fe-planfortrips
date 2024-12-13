@@ -139,7 +139,8 @@ const TransportationCard = ({
     scheduleIdNew
   ) => {
     let tripData = JSON.parse(sessionStorage.getItem("tripData"));
-    console.log(tripData);
+    // console.log(tripData);
+    const budget = tripData.userData?.budget;
 
     const scheduleResponse = await ScheduleService.getScheduleID(scheduleIdNew);
     console.log(scheduleResponse.data);
@@ -177,19 +178,28 @@ const TransportationCard = ({
       });
     }
 
-    tripData.estimatedCost =
+    const newEstimatedCost =
       tripData.estimatedCost - oldTotalPrice + dataToSetNew.totalPrice;
+    if (newEstimatedCost <= budget) {
+      sessionStorage.setItem("tripData", JSON.stringify(tripData));
 
-    sessionStorage.setItem("tripData", JSON.stringify(tripData));
-
-    enqueueSnackbar("Cập nhật vé xe thành công", {
-      variant: "success",
-      autoHideDuration: 1000,
-      onExit: () => {
-        document.getElementById("closeChooseTicket").click();
-        loadAgain();
-      },
-    });
+      enqueueSnackbar("Cập nhật vé xe thành công", {
+        variant: "success",
+        autoHideDuration: 1000,
+        onExit: () => {
+          document.getElementById("closeChooseTicket").click();
+          loadAgain();
+        },
+      });
+    } else {
+      enqueueSnackbar(
+        "Bạn không đủ chí phí để đặt, hãy chọn vé/chuyến khác nè !",
+        {
+          variant: "error",
+          autoHideDuration: 3000,
+        }
+      );
+    }
   };
 
   useEffect(() => {
@@ -481,8 +491,8 @@ const TransportationCard = ({
                   <div className="tripTicket-item">
                     <p>Khởi hành:</p>
                     <h6>
-                      {re.departureTime.split("T")[1].slice(0, 5)} -{" "}
-                      {re.departureTime.split("T")[0]}{" "}
+                      {re.departureTime?.split("T")[1].slice(0, 5)} -{" "}
+                      {re.departureTime?.split("T")[0]}{" "}
                     </h6>
                   </div>
                   <div className="tripTicket-item">
