@@ -43,13 +43,14 @@ const IntroVehicle = () => {
       const response = await ScheduleService.getSchedules(formData);
       const fetchedSchedules = response.data.data || [];
       setSchedules(fetchedSchedules);
-      console.log(fetchedSchedules);
-      sessionStorage.setItem('schedules', JSON.stringify(fetchedSchedules));
-      navigate('/vehicle-page')
+      sessionStorage.setItem('schedules', JSON.stringify(fetchedSchedules)); // Lưu schedules vào sessionStorage
+      sessionStorage.setItem('formData', JSON.stringify(formData)); // Lưu formData vào sessionStorage
+      navigate('/vehicle-page');
     } catch (error) {
       console.error('Error fetching schedules:', error);
     }
   };
+
 
   const updateFormData = (field, value) => {
     setFormData((prev) => ({

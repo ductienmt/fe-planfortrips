@@ -1,14 +1,24 @@
 .admin__card-statistical {
+    cursor: pointer;
     display: flex;
-    min-height: 20vh;
+    height: 23vh;
     border: 1px solid black;
     border-radius: 13px;
     background-color: black;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
+
+.admin__card-statistical:hover {
+    transform: scale(1.05); /* Phóng to nhẹ */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Thêm bóng đổ */
+    background-color: #1a1a1a; /* Đổi màu nền */
+}
+
 .admin__card-statistical-container {
     padding: 13px;
     flex: 1;
 }
+
 .admin__card-statistical__icon-container {
     width: fit-content;
     text-align: center;
@@ -16,19 +26,44 @@
     border: 1px solid black;
     border-radius: 100%;
     background-color: white;
+    transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
 }
+
+.admin__card-statistical__icon-container:hover {
+    background-color: #ffd700; /* Đổi màu nền của icon container */
+    transform: scale(1.1); /* Phóng to nhẹ icon container */
+    color: black; /* Đổi màu icon */
+}
+
+.admin__card-statistical__icon-container i {
+    font-size: 2rem; /* Kích thước icon */
+    transition: color 0.3s ease;
+    color: black; /* Màu mặc định của icon */
+}
+
+.admin__card-statistical__icon-container:hover i {
+    color: white; /* Đổi màu icon khi hover */
+}
+
 .admin__card-statistical-left-container {
     height: 100%;
 }
 
 .admin__card-statistical__info {
     color: white;
+    transition: color 0.3s ease;
 }
+
+.admin__card-statistical:hover .admin__card-statistical__info {
+    color: #ffd700; /* Đổi màu chữ khi hover */
+}
+
 .admin__card-statistical__info .admin__card-statistical__info-number {
     font-weight: 700 !important;
     font-size: 1.3rem;
     line-height: 1.375;
 }
+
 .admin__card-statistical__info-title {
     display: block;
     font-size: 1rem;
@@ -41,6 +76,7 @@
     color: white;
     height: 100%;
 }
+
 .admin__card-statistical-right__detail .admin__card-statistical-right__detail-percent {
     font-weight: 700;
 }

@@ -1,38 +1,44 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from "react";
 import "./Schedules.css";
 import { Table } from "antd";
+import { ScheduleService } from "../../../services/apis/ScheduleService";
+import { DateFormatter } from "../../../utils/DateFormat";
+import { convertToVNDDB } from "../../../utils/FormatMoney";
 const schedules = () => {
-  const [roomsData, setRoomsData] = useState([]);
+  const [schedulesData, setScheduleData] = useState([]);
   const columns = [
     {
       title: "Mã lịch Trình",
-      dataIndex: "roomName",
-      key: "roomName",
+      dataIndex: "id",
+      key: "id",
     },
     {
       title: "Mã Tuyến",
-      dataIndex: "typeOfRoom",
-      key: "typeOfRoom",
+      dataIndex: "routeId",
+      key: "routeId",
     },
     {
       title: "Mã Xe",
-      dataIndex: "price",
-      key: "price",
+      dataIndex: "code",
+      key: "code",
     },
     {
       title: "Ngày/Giờ Xuất Phát",
-      dataIndex: "maxSize",
-      key: "maxSize",
+      dataIndex: "departureTime",
+      key: "departureTime",
+      render: (text) => DateFormatter(text),
     },
     {
       title: "Ngày/Giờ Đến",
-      dataIndex: "isAvailable",
-      key: "isAvailable",
+      dataIndex: "arrivalTime",
+      key: "arrivalTime",
+      render: (text) => DateFormatter(text),
     },
     {
       title: "Giá Vé",
-      dataIndex: "rating",
-      key: "rating",
+      dataIndex: "priceForOneTicket",
+      key: "priceForOneTicket",
+      render: (text) => convertToVNDDB(text),
     },
     {
       title: "Hành Động",
@@ -41,11 +47,26 @@ const schedules = () => {
     },
   ];
 
+  const loadScheduleData = async () => {
+    try {
+      const res = await ScheduleService.getScheduleByEnterpriseId();
+      setScheduleData(res.data.data);
+      console.log(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const [selectedItem, setSelectedItem] = useState("all");
 
   const handleSelectItem = (item) => {
     setSelectedItem(item);
   };
+
+  useEffect(() => {
+    loadScheduleData();
+  }, []);
+
   return (
     <>
       <div className="enterprise-schedules-container">
@@ -70,7 +91,7 @@ const schedules = () => {
               >
                 Tất cả
               </button>
-              <button
+              {/* <button
                 onClick={() => handleSelectItem("available")}
                 className={selectedItem === "available" ? "isActive" : ""}
               >
@@ -81,7 +102,7 @@ const schedules = () => {
                 className={selectedItem === "unavailable" ? "isActive" : ""}
               >
                 Đã đặt
-              </button>
+              </button> */}
             </div>
 
             <div className="nav-add-schedules">
@@ -102,10 +123,17 @@ const schedules = () => {
             </div>
 
             {/* Contact Info Modal */}
-            <div className="modal fade" id="contactModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+            <div
+              className="modal fade"
+              id="contactModal"
+              data-bs-backdrop="static"
+              data-bs-keyboard="false"
+              tabIndex="-1"
+              aria-labelledby="contactModalLabel"
+              aria-hidden="true"
+            >
               <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
-
                   <div className="modal-header">
                     <h3>Thêm Lịch Trình</h3>
                     <button
@@ -116,15 +144,17 @@ const schedules = () => {
                     ></button>
                   </div>
 
-
                   <div className="modal-nav">
                     <div className="row">
-
                       <div className="col-12 mb-3">
                         <label htmlFor="routeCode" className="form-label">
                           Mã Tuyến
                         </label>
-                        <select className="form-control" id="routeCode" name="routeCode">
+                        <select
+                          className="form-control"
+                          id="routeCode"
+                          name="routeCode"
+                        >
                           <option value="">Chọn Mã Tuyến</option>
                           <option value="route1">Tuyến 1</option>
                           <option value="route2">Tuyến 2</option>
@@ -134,13 +164,15 @@ const schedules = () => {
                         </select>
                       </div>
 
-
-
                       <div className="col-6 mb-3">
                         <label htmlFor="busCode" className="form-label">
                           Mã Xe
                         </label>
-                        <select className="form-control" id="busCode" name="busCode">
+                        <select
+                          className="form-control"
+                          id="busCode"
+                          name="busCode"
+                        >
                           <option value="">Chọn Mã Xe</option>
                           <option value="bus1">Xe 1</option>
                           <option value="bus2">Xe 2</option>
@@ -154,7 +186,10 @@ const schedules = () => {
                         <label htmlFor="Price" className="form-label">
                           Giá Vé (VNĐ)
                         </label>
-                        <input className="form-control" placeholder="Nhập giá vé" />
+                        <input
+                          className="form-control"
+                          placeholder="Nhập giá vé"
+                        />
                       </div>
 
                       <div className="col-6 mb-3">
@@ -178,10 +213,8 @@ const schedules = () => {
                           className="form-control"
                         />
                       </div>
-
                     </div>
                   </div>
-
 
                   <div className="modal3-footer">
                     <button className="btn footer-btn" type="button">
@@ -191,37 +224,26 @@ const schedules = () => {
                 </div>
               </div>
             </div>
-
-
-
-
-
-
-
-
-
-
-
           </div>
           <div className="content-table mt-4">
             <Table
-              dataSource={roomsData}
+              dataSource={schedulesData}
               columns={columns}
-            // pagination={{
-            //   current: currentPage,
-            //   pageSize: pageSize,
-            //   total: dataSource.length,
-            //   onChange: (page, pageSize) => {
-            //     setCurrentPage(page);
-            //     setPageSize(pageSize);
-            //   },
-            // }}
+              // pagination={{
+              //   current: currentPage,
+              //   pageSize: pageSize,
+              //   total: dataSource.length,
+              //   onChange: (page, pageSize) => {
+              //     setCurrentPage(page);
+              //     setPageSize(pageSize);
+              //   },
+              // }}
             />
           </div>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default schedules
+export default schedules;

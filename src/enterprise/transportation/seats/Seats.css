@@ -1,4 +1,4 @@
-  .enterprise-Seats-container {
+.enterprise-Seats-container {
   margin: 10px;
   width: 100%;
   border-radius: 20px;
@@ -6,14 +6,12 @@
   padding: 20px;
 }
 
-.enterprise-Seats-container .enterprise-Seats-container
-.enterprise-Seats-container  .nav-filterCombobox-Seats {
+.enterprise-Seats-container
+  .enterprise-Seats-container
+  .enterprise-Seats-container
+  .nav-filterCombobox-Seats {
   display: flex;
- 
 }
-  .enterprise-Seats-container .nav-filterCombobox-Seats{
-    width: 40%;
-  }
 
 .enterprise-Seats-container .Seats-selection {
   background-color: #fff;
@@ -28,7 +26,7 @@
   border-radius: 20px;
   background-color: #f3f3f3;
   display: flex;
-  width: 80%;
+  width: 100%;
   gap: 40px 100px;
   /* flex-wrap: wrap; */
 }
@@ -45,8 +43,22 @@
   cursor: pointer;
 }
 
-.enterprise-Seats-container .select-Seats-btn:hover{
-  background-color: #167ad7;
+.enterprise-Seats-container .Seats-selection {
+  background-color: #fff;
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  margin-top: 25px;
+  /* padding: 262px 70px; */
+}
+
+.enterprise-Seats-container .Seats-container {
+  border-radius: 20px;
+  background-color: #f3f3f3;
+  display: flex;
+  width: 100%;
+  gap: 40px 100px;
+  /* flex-wrap: wrap; */
 }
 
 /* @media (max-width: 991px) {
@@ -66,44 +78,36 @@
   }
 } */
 
-.enterprise-Seats-container .modal3-footer .modal-footer .pagination{
+/* .enterprise-Seats-container .modal3-footer .modal-footer .pagination{
   align-items: center;
 }
 .enterprise-Seats-container .modal-dialog{
   max-width: 800%;
+} */
+
+.enterprise-Seats-container .seats-button {
+  /* margin-left: 250px; */
+  background-color: #167ad7;
+  color: #fff;
 }
 
-.enterprise-Seats-container .seats-button{
-margin-left: 250px;
-background-color: #167ad7;
-color: #fff;
-
-}
-
-
-
-
-.enterprise-Seats-container .nav-filterCombobox-Seats{
+.enterprise-Seats-container .nav-filterCombobox-Seats {
   padding: 10px 20px;
-
 }
-
-
 
 .enterprise-Seats-container .modal3-footer .modal-footer .pagination {
   align-items: center;
-  justify-content: center; 
-  margin-top: 20px; 
+  justify-content: center;
+  margin-top: 20px;
 }
 
 .enterprise-Seats-container .modal-dialog {
   max-width: 800px;
 }
 
-
 /* ghế */
 .enterprise-Seats-container .modal-header {
-  background-color: #3b90e0;
+  /* background-color: #3b90e0; */
   color: #fff;
   border-bottom: 1px solid #ddd;
   padding: 15px;
@@ -117,7 +121,8 @@ color: #fff;
 .enterprise-Seats-container .seat-navigation {
   display: flex;
   flex-direction: column;
-  gap: 15px; /* Adds space between each row */
+  gap: 15px;
+  /* Adds space between each row */
 }
 
 .enterprise-Seats-container .seat-row {
@@ -153,12 +158,6 @@ color: #fff;
 .enterprise-Seats-container .modal-footer .btn-primary {
   background-color: #3b90e0;
   border: none;
-  
-}
-
-.enterprise-Seats-container .modal-footer .btn-secondary {
-  background-color: #6c757d;
-  border: none;
 }
 
 .enterprise-Seats-container .seat-input-wrapper {
@@ -168,7 +167,12 @@ color: #fff;
   border-radius: 5px;
 }
 
-
+.enterprise-Seats-container .seat-input-wrapper {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
 
 .enterprise-Seats-container .seat-input:focus {
   border-color: #0056b3;
@@ -178,30 +182,128 @@ color: #fff;
 .enterprise-Seats-container .mb-3 .form-label {
   font-weight: bold;
 }
+
 .enterprise-Seats-container .modal-footer {
   display: flex;
   justify-content: center;
-  align-items: center; 
-  padding: 10px 0; 
+  align-items: center;
+  padding: 10px 0;
 }
 
 .nav-filterCombobox-Seats {
   display: flex;
-  align-items: center;  
-  gap: 10px;  
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
 }
+
 .nav-filterCombobox-Seats .btn {
-  margin: 10; 
-  width: 100px; 
+  width: 100px;
+  height: 46px;
 }
-.enterprise-Seats-container .input-field input{
-  padding: 10px 200px;
-  font-size: 1rem;
+
+.right-close-add-seat .seats-button {
+  margin-right: 10px; /* Tạo khoảng cách bên phải */
+}
+
+.seats-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.seats-container .floor-section {
+  flex: 1;
+  margin: 0 10px;
+  padding: 10px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.seats-container .seat-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.seats-container .seat-button {
+  background: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 5px;
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+  cursor: pointer;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.seats-container .seat-button.available {
+  border-color: #0c7fda;
+}
+
+.seats-container .seat-button.booked {
+  background: #f2f2f2;
+  color: #a0a0a0;
+  cursor: not-allowed;
+}
+
+.seats-container .seat-button.selected {
+  border-color: #ff7f0e;
+  background-color: #fff3e0;
+}
+
+.seats-container .chair-icon {
+  font-size: 20px;
+}
+
+.price-bus {
+  display: flex;
+}
+
+.price-bus .item-1 {
+  width: 100%;
+}
+
+.item-2 {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.item-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.continue-button {
+  background-color: #005aa1;
+  color: white;
+  padding: 12px 30px;
+  border: none;
   border-radius: 8px;
-  border: solid 1px #cbcbcb;
-
-
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    transform 0.3s ease;
 }
 
+.continue-button:hover {
+  background-color: #003c6d;
+  transform: scale(1.05);
+}
 
-
+.continue-button:focus {
+  outline: none;
+}

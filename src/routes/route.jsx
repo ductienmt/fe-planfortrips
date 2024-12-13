@@ -1,4 +1,4 @@
-import { createBrowserRouter, Route } from "react-router-dom";
+import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
 import App from "../App";
 import LandingPage from "../client/pages/Homepage/LandingPage";
 import Login from "../client/pages/Auth/Login/Login";
@@ -31,13 +31,9 @@ import EnterpriseLogin from "../enterprise/auth/login/EnterpriseLogin";
 // import EnterpriseDashboard from "../enterprise/dashboard/EnterpriseDashboard";
 import Voucher from "../enterprise/voucher/Voucher";
 import Vehicle from "../enterprise/transportation/vehicleManagement/Vehicle";
-import Schedule from "../enterprise/transportation/schedules/Schedules";
-import RouteTrans from "../enterprise/transportation/routehotel/Routehotel";
-
 import Room from "../enterprise/accomodation/roomManagement/Room";
 import HotelManagement from "../enterprise/accomodation/manager/HotelManagement";
 import Sumbitenterprise from "../client/pages/Enterprise/Sumbitenterprise";
-import Tour from "../admin/pages/Tour/Tour";
 import TourAdmin from "../admin/pages/Tour/TourPage";
 import GuestLiving from "../enterprise/accomodation/guest/GuestLiving";
 import RoomVoucher from "../enterprise/accomodation/roomVoucher/RoomVoucher";
@@ -46,19 +42,18 @@ import AccomodationDashboard from "../enterprise/dashboard/Accomodation/Accomoda
 import TranportatinDashboard from "../enterprise/dashboard/tranportation/TranportatinDashboard";
 import Checkinpage from "../client/pages/Checkin/Checkinpage";
 import User from "../admin/pages/User/User";
+import ChooseProvinceDetail from "../client/pages/Checkin/chooseProvinceDetail/ChooseProvinceDetail";
+import ChooseCheckinFollowArea from "../client/pages/Checkin/chooseCheckinFollowArea/ChooseCheckinFollowArea";
 import IntroHotel from "../client/pages/hotel/IntroHotel/IntroHotel";
 import Hotel from "../client/pages/hotel/hotel";
-import IntroVehicle from "../client/pages/Vehicle/IntroVehicle/IntroVehicle"
+import IntroVehicle from "../client/pages/Vehicle/IntroVehicle/IntroVehicle";
 import VehiclePage from "../client/pages/Vehicle/VehiclePage/VehiclePage";
 import VehicleBooking from "../client/pages/Vehicle/VehicleBooking/VehicleBooking";
-
-import { Component } from "react";
 import DetailCard from "../client/pages/hotel/detailHotel/detailCard";
 import Failed from "../client/pages/Payment/Status/Failed";
 import TourPage from "../client/pages/Tour/TourPage";
 import TourDetail from "../client/pages/Tour/TourDetail/TourDetail";
 import TourIndex from "../client/pages/Tour/TourIndex";
-
 
 import Account from "../enterprise/transportation/account/Account";
 import Schedules from "../enterprise/transportation/schedules/Schedules";
@@ -67,155 +62,163 @@ import schedules from "../enterprise/transportation/schedules/Schedules";
 import Seats from "../enterprise/transportation/seats/Seats";
 import Guest from "../enterprise/transportation/guest/Guest";
 import Routehotel from "../enterprise/transportation/routehotel/Routehotel";
-import TourForm from "../admin/pages/Tour/Tour";
+import { useAuth } from "../context/AuthContext/AuthProvider";
+import { EnterpriseProvider } from "../context/EnterpriseContext/EnterpriseProvider";
+import ForgotPassword from "../client/pages/Auth/ForgotPassword/ForgotPassword";
+
+import NotFoundPage from "../notFound/notFoundPage";
+const ROLES = {
+  CLIENT: "ROLE_USER",
+  ADMIN: "ROLE_ADMIN",
+  ENTERPRISE: "ROLE_ENTERPRISE",
+};
+
+const ProtectedRoute = ({ allowedRoles }) => {
+  const { token } = useAuth();
+  const userRole = sessionStorage.getItem("role");
+
+  if (!token) {
+    return <Navigate to="login" replace />;
+  }
+
+  if (allowedRoles && !allowedRoles.includes(userRole)) {
+    return <Navigate to="/unauthorized" replace />;
+  }
+
+  return <Outlet />;
+};
 
 const routeAdmin = () => [
   {
     path: "/admin",
-    Component: LayoutAdmin,
+    element: <ProtectedRoute allowedRoles={[ROLES.ADMIN]} />,
     children: [
       {
         path: "",
-        Component: HomePage,
-      },
-      {
-        path: "users",
-        Component: User,
-      },
-      {
-        path: "business",
-        Component: EnterpriseAdmin,
-      },
-      {
-        path: "tours",
-        Component: TourAdmin,
-      },
-      {
-        path: "vouchers",
-        Component: CouponAdmin,
-      },
-      {
-        path: "transactions/hotels",
-        Component: BookingHotelPage,
-      },
-      {
-        path: "transactions/vehicles",
-        Component: OrderCarPage,
-      },
-
-      {
-        path: "travel",
-        Component: PlacePageAdmin,
-      },
-      {
-        path: "feedbacks",
-        Component: FeedbackPage,
+        element: <LayoutAdmin />,
+        children: [
+          { path: "", element: <HomePage /> },
+          { path: "users", element: <User /> },
+          { path: "business", element: <EnterpriseAdmin /> },
+          { path: "tours", element: <TourAdmin /> },
+          { path: "vouchers", element: <CouponAdmin /> },
+          { path: "transactions/hotels", element: <BookingHotelPage /> },
+          { path: "transactions/vehicles", element: <OrderCarPage /> },
+          { path: "travel", element: <PlacePageAdmin /> },
+          { path: "feedbacks", element: <FeedbackPage /> },
+          { path: "*", element: <NotFoundPage /> },
+        ],
       },
     ],
   },
   {
     path: "/admin/login",
-    Component: LoginAdmin,
+    element: <LoginAdmin />,
   },
 ];
 
 const routeEnterprise = () => [
   {
     path: "/enterprise",
-    Component: EnterpriseLayout,
+    element: <ProtectedRoute allowedRoles={[ROLES.ENTERPRISE]} />,
     children: [
       {
-        path: "login",
-        Component: EnterpriseLogin,
-      },
-      {
-        path: "accomodation/dashboard",
-        Component: AccomodationDashboard,
-      },
-      {
-        path: "transportation/dashboard",
-        Component: TranportatinDashboard,
-      },
-      {
-        path: ":type/vouchers",
-        Component: Voucher,
-      },
-
-      {
-        path: "transportation/vehicle-schedules",
-        Component: Schedules,
-      },
-      {
-        path: "transportation/Seats",
-        Component: Seats,
-      },
-      {
-        path: "transportation/vehicle-management",
-        Component: Vehicle,
-      },
-
-      {
-        path: "transportation/vehicle-account",
-        Component: Account,
-      },
-      {
-        path: "transportation/Guest",
-        Component: Guest,
-      },
-
-      {
-        path: "transportation/vouchers",
-        Component: TransportationVouchers,
-      },
-      {
-        path: "transportation/Routehotel",
-        Component: Routehotel,
-      },
-      {
-        path: "transportation/schedules",
-        Component: schedules,
-      },
-      {
-        path: "accomodation/room-management",
-        Component: Room,
-      },
-      {
-        path: "accomodation/accomodation-manager",
-        Component: HotelManagement,
-      },
-      {
-        path: "accomodation/guest-manager",
-        Component: GuestLiving,
-      },
-      {
-        path: "accomodation/voucher-manager",
-        Component: RoomVoucher,
-      },
-      {
-        path: "accomodation/choose-hotel",
-        Component: ChooseHotel,
+        path: "",
+        element: (
+          <EnterpriseProvider>
+            <EnterpriseLayout />
+          </EnterpriseProvider>
+        ),
+        children: [
+          {
+            path: "accomodation/dashboard",
+            Component: AccomodationDashboard,
+          },
+          {
+            path: "transportation/dashboard",
+            Component: TranportatinDashboard,
+          },
+          {
+            path: ":type/vouchers",
+            Component: Voucher,
+          },
+          {
+            path: "transportation/vehicle-schedules",
+            Component: Schedules,
+          },
+          {
+            path: "transportation/Seats",
+            Component: Seats,
+          },
+          {
+            path: "transportation/vehicle-management",
+            Component: Vehicle,
+          },
+          {
+            path: "transportation/vehicle-account",
+            Component: Account,
+          },
+          {
+            path: "transportation/Guest",
+            Component: Guest,
+          },
+          {
+            path: "transportation/vouchers",
+            Component: TransportationVouchers,
+          },
+          {
+            path: "transportation/Routehotel",
+            Component: Routehotel,
+          },
+          {
+            path: "transportation/schedules",
+            Component: schedules,
+          },
+          {
+            path: "accomodation/room-management",
+            Component: Room,
+          },
+          {
+            path: "accomodation/accomodation-manager",
+            Component: HotelManagement,
+          },
+          {
+            path: "accomodation/guest-manager",
+            Component: GuestLiving,
+          },
+          {
+            path: "accomodation/voucher-manager",
+            Component: RoomVoucher,
+          },
+          {
+            path: "accomodation/choose-hotel",
+            Component: ChooseHotel,
+          },
+          { path: "*", element: <NotFoundPage /> },
+        ],
       },
     ],
+  },
+  {
+    path: "/enterprise/login",
+    element: (
+      <EnterpriseProvider>
+        <EnterpriseLogin />
+      </EnterpriseProvider>
+    ),
   },
 ];
 
 const routeClient = () => [
   {
-    path: "/",
-    Component: ClientLayout,
+    path: "",
+    element: <ClientLayout />,
     children: [
       {
         path: "",
         Component: LandingPage,
       },
-      {
-        path: "/login",
-        Component: Login,
-      },
-      {
-        path: "/register",
-        Component: Register,
-      },
+      { path: "*", element: <NotFoundPage /> },
       {
         path: "/plan",
         Component: PlanBefore,
@@ -235,12 +238,10 @@ const routeClient = () => [
       {
         path: "/hotel-page",
         Component: Hotel,
-
       },
       {
-        path: "/hotel-page/detail/:id",
+        path: "/hotel-page/:id",
         Component: DetailCard,
-
       },
       {
         path: "/vehicle-intro",
@@ -289,7 +290,7 @@ const routeClient = () => [
           },
           // {
           //   path: "trip-save",
-          //   Component: YourSavedTrips, // Ensure you have this component
+          //   Component: YourSavedTrips, // Ensure you have this Component
           // },
         ],
       },
@@ -306,26 +307,50 @@ const routeClient = () => [
         Component: Checkinpage,
       },
       {
+        path: "/check-in/mien-bac",
+        Component: ChooseProvinceDetail,
+      },
+      {
+        path: "/check-in/mien-bac/hung-yen",
+        Component: ChooseCheckinFollowArea,
+      },
+      {
         path: "/tour",
         Component: TourIndex,
         children: [
           {
             path: "",
-            Component: TourPage
+            Component: TourPage,
           },
           {
             path: "detail/:tourId",
-            Component: TourDetail
-          }
-        ]
-      }
+            Component: TourDetail,
+          },
+        ],
+      },
+      {
+        path: "/forgot-password",
+        Component: ForgotPassword,
+      },
+      {
+        path: "/login",
+        Component: Login,
+      },
+      {
+        path: "/register",
+        Component: Register,
+      },
     ],
+  },
+  {
+    path: "*",
+    element: <NotFoundPage />,
   },
 ];
 
 export const router = createBrowserRouter([
   {
-    Component: App,
+    element: <App />,
     children: [...routeAdmin(), ...routeClient(), ...routeEnterprise()],
   },
 ]);

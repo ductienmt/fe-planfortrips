@@ -17,12 +17,13 @@ const Register = () => {
   const queryParam = new URLSearchParams(window.location.search);
   const navigate = useNavigate();
   const [authUrl, setAuthUrl] = useState("");
+  // const [genderss, setGenderss] = useState("");
   const [formData, setFormData] = useState({
     userName: "",
     password: "",
-    confirmPassword: "", // Added for validation
+    confirmPassword: "",
     phoneNumber: "",
-    gender: "",
+    gender: "Nam",
     fullName: "",
     email: "",
     birthdate: "",
@@ -51,6 +52,8 @@ const Register = () => {
 
   const handleRegister = async () => {
     try {
+      console.log(formData);
+
       if (!validateForm()) {
         return enqueueSnackbar("Vui lòng điền đầy đủ thông tin", {
           variant: "error",
@@ -64,15 +67,16 @@ const Register = () => {
 
       const formDataCopy = {
         ...formData,
-        birthdate: new Date(formData.birthdate).toISOString(), // Ensure the date format is correct
+        birthdate: new Date(formData.birthdate).toISOString().split("T")[0],
       };
+
       const response = await AuthService.register(formDataCopy);
       enqueueSnackbar(response.data.message, {
         variant: "success",
         autoHideDuration: 1000,
         onExit: () => {
           handleResetForm();
-          navigate("/");
+          navigate("/login");
         },
       });
     } catch (error) {
@@ -311,14 +315,26 @@ const Register = () => {
               </div>
 
               <div className="gender-selection" style={{ width: "100%" }}>
-                <SelectOptionField
-                  nameInput="gender"
-                  content="Chọn giới tính"
-                  options={optionsGender}
+                <select
+                  name="gender"
                   value={formData.gender}
-                  onChange={handleChange}
-                  dai={"100%"}
-                />
+                  onChange={(e) =>
+                    setGenderss(e.target.value) & handleChange(e)
+                  }
+                  style={{
+                    width: "100%",
+                    height: "40px",
+                    marginTop: "10px",
+                    marginBottom: "10px",
+                  }}
+                >
+                  <option value="" disabled>
+                    Chọn giới tính
+                  </option>
+                  <option value="Nam">Nam</option>
+                  <option value="Nữ">Nữ</option>
+                  <option value="Khác">Khác</option>
+                </select>
               </div>
 
               <div className="text-center" style={{ width: "100%" }}>

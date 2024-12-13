@@ -102,34 +102,6 @@ const AccomodationDashboard = () => {
               </section>
             </div>
           </div>
-          <div className="card5-container mt-3">
-            {/* Card5 */}
-            <h1
-              style={{
-                fontSize: "30px",
-                textTransform: "uppercase",
-                color: "#ADADAD",
-              }}
-            >
-              Quản lý phòng
-            </h1>
-            <div className="table-card5 ">
-              <Table
-                dataSource={roommData}
-                columns={columns}
-                
-                // pagination={{
-                //   current: currentPage,
-                //   pageSize: pageSize,
-                //   total: dataSource.length,
-                //   onChange: (page, pageSize) => {
-                //     setCurrentPage(page);
-                //     setPageSize(pageSize);
-                //   },
-                // }}
-              />
-            </div>
-          </div>
         </div>
       </div>
     </>

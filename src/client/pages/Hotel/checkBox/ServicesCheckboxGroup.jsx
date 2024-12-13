@@ -1,38 +1,39 @@
 import { useState } from "react";
+import { Star } from "../../../../admin/pages/Components/Star";
 
-const servicesList = [
-  "Bữa sáng miễn phí",
-  "Dịch vụ đón sân bay",
-  "Tour du lịch",
-  "Xe đưa đón",
-];
+const ratingList = [1, 2, 3, 4, 5];
 
-const ServicesCheckboxGroup = () => {
-  const [selectedServices, setSelectedServices] = useState([]);
+const RatingCheckboxGroup = ({ setSelectedRating }) => {
+  const [selectedRating, setSelectedRatingState] = useState(null);
 
   const handleCheckboxChange = (event) => {
     const { name, checked } = event.target;
     if (checked) {
-      setSelectedServices([...selectedServices, name]);
+      const rating = parseInt(name, 10);
+      setSelectedRatingState(rating);
+      setSelectedRating(rating);
+      console.log(rating);
+      
     } else {
-      setSelectedServices(selectedServices.filter((item) => item !== name));
+      setSelectedRatingState(null);
+      setSelectedRating(null);
     }
   };
 
   return (
     <div>
-      {servicesList.map((service) => (
-        <div key={service} className="form-check">
+      {ratingList.map((rating) => (
+        <div key={rating} className="form-check">
           <input
             type="checkbox"
             className="form-check-input"
-            id={service}
-            name={service}
-            checked={selectedServices.includes(service)}
+            id={`rating-${rating}`}
+            name={rating}
+            checked={selectedRating === rating}
             onChange={handleCheckboxChange}
           />
-          <label className="form-check-label" htmlFor={service}>
-            {service}
+          <label htmlFor={`rating-${rating}`} className="form-check-label">
+            <Star rating={rating} />
           </label>
         </div>
       ))}
@@ -40,4 +41,4 @@ const ServicesCheckboxGroup = () => {
   );
 };
 
-export default ServicesCheckboxGroup;
+export default RatingCheckboxGroup;

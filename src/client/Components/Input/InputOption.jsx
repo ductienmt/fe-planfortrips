@@ -1,100 +1,80 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./InputLocation.css";
+import { CityService } from "../../../services/apis/CityService";
 
-const address = [
-    { name: "Hà Nội" },
-    { name: "Hạ Long" },
-    { name: "Đà Nẵng" },
-    { name: "Hội An" },
-    { name: "Huế" },
-    { name: "Nha Trang" },
-    { name: "Đà Lạt" },
-    { name: "Phú Quốc" },
-    { name: "Cần Thơ" },
-    { name: "Sapa" },
-];
-
-const InputLocation = () => {
-    const [noiDi, setNoiDi] = useState("");
-    const [noiDen, setNoiDen] = useState("");
-    const [suggestions, setSuggestions] = useState([]);
-    const [activeField, setActiveField] = useState("");
-
-    const handleInputChange = (e, type) => {
-        const value = e.target.value;
-        const filteredSuggestions = address.filter((add) =>
-            add.name.toLowerCase().includes(value.toLowerCase())
-        );
-
-        if (type === "departure") {
-            setNoiDi(value);
-            setActiveField("departure");
-        } else {
-            setNoiDen(value);
-            setActiveField("destination");
-        }
-
-        setSuggestions(filteredSuggestions);
-    };
-
-    const handleSuggestionClick = (suggestion) => {
-        if (activeField === "departure") {
-            setNoiDi(suggestion);
-        } else {
-            setNoiDen(suggestion);
-        }
+const InputLocation = ({ setKeyword }) => {
+  const [noiDi, setNoiDi] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [activeField, setActiveField] = useState("");
+  const [address, setAddress] = useState([]);
+  const dropdownRef = useRef(null); 
+  const searchCityByName = async (cityName) => {
+    try {
+      const response = await CityService.searchCityByName(cityName);
+      if (response) {
+        const limitedResponse = response.slice(0, 10);
+        setAddress(limitedResponse);
+      }
+    } catch (error) {
+      console.error("Error fetching city suggestions:", error);
+    }
+  };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setSuggestions([]);
-        setActiveField("");
+      }
     };
 
-    const swapDestination = () => {
-        const temp = noiDi;
-        setNoiDi(noiDen);
-        setNoiDen(temp);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
     };
+  }, []);
+  useEffect(() => {
+    setSuggestions(address);
+  }, [address]);
 
-    return (
-        <div className="input-location-container">
-            <div className="input-group">
-                <input
-                    type="text"
-                    className="location-input"
-                    value={noiDi}
-                    onChange={(e) => handleInputChange(e, "departure")}
-                    placeholder="Điểm đi"
-                />
-                <button className="swap-btn" onClick={swapDestination}>
-                    <img
-                        src="https://d1785e74lyxkqq.cloudfront.net/_next/static/v2/3/331a92149a02dc615986206c588d6642.svg"
-                        alt="Swap"
-                        width={24}
-                        height={24}
-                    />
-                </button>
-                <input
-                    type="text"
-                    className="location-input"
-                    value={noiDen}
-                    onChange={(e) => handleInputChange(e, "destination")}
-                    placeholder="Điểm đến"
-                />
+  const handleSuggestionClick = (suggestion) => {
+    setNoiDi(suggestion);
+    setKeyword(suggestion);
+    setSuggestions([]);
+    setActiveField("");
+  };
+
+  return (
+    <div className="input-location-container">
+      <div className="input-group">
+        <input
+          type="text"
+          className="location-input"
+          value={noiDi}
+          onChange={(e) => {
+            setNoiDi(e.target.value);
+            searchCityByName(e.target.value);
+            setKeyword(e.target.value);
+          }}
+          onFocus={() => setActiveField("departure")}
+          placeholder="Điểm đi"
+        />
+      </div>
+      <div ref={dropdownRef}>
+      {suggestions.length > 0 && (
+        <div className="suggestions-dropdown">
+          {suggestions.map((add, index) => (
+            <div
+              key={index}
+              className="suggestion-item"
+              onClick={() => handleSuggestionClick(add)}
+            >
+              {add}
             </div>
-
-            {suggestions.length > 0 && (
-                <div className="suggestions-dropdown">
-                    {suggestions.map((add, index) => (
-                        <div
-                            key={index}
-                            className="suggestion-item"
-                            onClick={() => handleSuggestionClick(add.name)}
-                        >
-                            {add.name}
-                        </div>
-                    ))}
-                </div>
-            )}
+          ))}
         </div>
-    );
+      )}
+      </div>
+    </div>
+  );
 };
 
 export default InputLocation;

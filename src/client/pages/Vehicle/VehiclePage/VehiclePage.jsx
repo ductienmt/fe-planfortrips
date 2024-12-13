@@ -8,56 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { ScheduleService } from "../../../../services/apis/ScheduleService";
 
 
-const buslist = [
-  {
-    name: "Phương Trang",
-    giodi: "2:00",
-    gioden: "5:00",
-    gia: "140.000",
-    ghe: 10,
-    danhgia: 5,
-  },
-  {
-    name: "Phương Trang",
-    giodi: "2:00",
-    gioden: "5:00",
-    gia: "140.000",
-    ghe: 10,
-    danhgia: 5,
-  },
-  {
-    name: "Phương Trang",
-    giodi: "2:00",
-    gioden: "5:00",
-    gia: "140.000",
-    ghe: 10,
-    danhgia: 5,
-  },
-  {
-    name: "Phương Trang",
-    giodi: "2:00",
-    gioden: "5:00",
-    gia: "140.000",
-    ghe: 10,
-    danhgia: 5,
-  },
-  {
-    name: "Phương Trang",
-    giodi: "2:00",
-    gioden: "5:00",
-    gia: "140.000",
-    ghe: 10,
-    danhgia: 5,
-  },
-  {
-    name: "Phương Trang",
-    giodi: "2:00",
-    gioden: "5:00",
-    gia: "140.000",
-    ghe: 10,
-    danhgia: 5,
-  },
-]
 const VehiclePage = () => {
   const [selectedStars, setSelectedStars] = useState(0);
   const [formData, setFormData] = useState({
@@ -70,10 +20,17 @@ const VehiclePage = () => {
 
   useEffect(() => {
     const storedSchedules = sessionStorage.getItem('schedules');
+    const storedFormData = sessionStorage.getItem('formData');
+
     if (storedSchedules) {
       setSchedules(JSON.parse(storedSchedules));
     }
+
+    if (storedFormData) {
+      setFormData(JSON.parse(storedFormData));
+    }
   }, []);
+
 
   const handleStarClick = (stars) => {
     setSelectedStars(stars);
@@ -109,6 +66,13 @@ const VehiclePage = () => {
   const handleBooking = (id) => {
     // Chuyển hướng sang trang VehicleBooking và truyền id
     navigate(`/vehicle-booking/${id}`);
+  };
+
+  const formatDateTime = (dateTimeString) => {
+    const date = new Date(dateTimeString);
+    const options = { weekday: "long", day: "numeric", month: "numeric", hour: "2-digit", minute: "2-digit" };
+    const formattedDate = date.toLocaleString("vi-VN", options);
+    return formattedDate.replace(/,/g, "");
   };
   return (
     <>
@@ -176,7 +140,7 @@ const VehiclePage = () => {
             </div>
             <div>
               Đến <br />
-              <select class="option-form">
+              <select class="option-form">s
                 <option selected>Open this select menu</option>
                 <option value="1">One</option>
                 <option value="2">Two</option>
@@ -216,18 +180,18 @@ const VehiclePage = () => {
                     <div className='right'>
                       <div className="item1">
                         <div>
-                          <h4><b>{bus.departureTime.replace("T", " ")}</b></h4>
+                          <h4><b>{formatDateTime(bus.departureTime)}</b></h4>
                         </div>
                         <div>
                           <ArrowRightAltIcon />
                         </div>
                         <div>
-                          <h4><b>{bus.arrivalTime.replace("T", " ")}</b></h4>
+                          <h4><b>{formatDateTime(bus.arrivalTime)}</b></h4>
                         </div>
                       </div>
                       <div className="item2">
                         <div>
-                          <span><b style={{ fontSize: "25px" }}>{bus.carCompanyName}</b></span> <b style={{ fontSize: "20px" }}>⭐{bus.danhgia}/5</b>
+                          <span><b style={{ fontSize: "25px" }}>{bus.carCompanyName}</b></span> <b style={{ fontSize: "20px" }}>⭐{bus.carCompanyRating}/5</b>
                         </div>
                         <br />
                         <div className='voucher'>

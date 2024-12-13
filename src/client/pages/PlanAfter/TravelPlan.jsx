@@ -81,15 +81,24 @@ function TravelPlan() {
     return datePart; // Trả về chỉ phần ngày
   };
 
+  const formatDateT = (dateTime) => {
+    const datePart = dateTime.split("T")[0];
+    return datePart; // Trả về chỉ phần ngày
+  };
+
   const handleCardClick = (card) => {
     setSelectedCard(card === selectedCard ? null : card); // Nếu click lại thì bỏ chọn
-    console.log(card);
     if (card == "attraction") handleAttractionSelected();
+    // if (card == "transportation") handleTransportationSelected();
   };
 
   const handleAttractionSelected = () => {
     setSelectedCard("attraction");
   };
+
+  // const handleTransportationSelected = () => {
+  //   setSelectedCard("transportation");
+  // };
 
   const handleSubmit = async () => {
     try {
@@ -167,27 +176,27 @@ function TravelPlan() {
   const newSummaryItems = tripData.userData
     ? [
         {
-          label: "Location",
+          label: "Xuất phát",
           value: getLastThreeWords(tripData.userData.location),
         },
         {
-          label: "Destination",
+          label: "Điểm đến",
           value: getLastThreeWords(tripData.userData.destination),
         },
         {
-          label: "Start Date",
+          label: "Ngày đi",
           value: formatDate(tripData.userData.startDate),
         },
         {
-          label: "End Date",
+          label: "Ngày về",
           value: formatDate(tripData.userData.endDate),
         },
         {
-          label: "Number of People",
+          label: "Số lượng người",
           value: tripData.userData.numberPeople,
         },
         {
-          label: "Budget",
+          label: "Ngân sách",
           value: convertToVND(tripData.userData.budget),
         },
       ]
@@ -195,7 +204,7 @@ function TravelPlan() {
 
   useEffect(() => {
     if (tripData) {
-      console.log(tripData.userData?.budget);
+      // console.log(tripData.userData?.budget);
 
       setSummaryItems(newSummaryItems);
     }
@@ -219,9 +228,16 @@ function TravelPlan() {
                       : ""
                 }
                 onClick={() => handleCardClick("transportation")}
+                // onNext = {handleTransportationSelected}
                 vehicleCode={tripData.transportation.departure.vehicleCode}
                 departureTime={formatTime(
                   tripData.transportation.departure.departureTime
+                )}
+                departureDate={formatDateT(
+                  tripData.transportation.departure.departureTime
+                )}
+                arrivalDate={formatDateT(
+                  tripData.transportation.departure.arrivalTime
                 )}
                 arrivalTime={formatTime(
                   tripData.transportation.departure.arrivalTime
@@ -233,6 +249,11 @@ function TravelPlan() {
                   formatTime(tripData.transportation.departure.departureTime),
                   formatTime(tripData.transportation.departure.arrivalTime)
                 )}
+                total={tripData.transportation?.departure?.totalPrice}
+                routeId={tripData.transportation?.departure?.routeId}
+                originalLocation={tripData.userData?.location}
+                destination={tripData.userData?.destination}
+                re={tripData.transportation?.return}
               />
               <AccommodationCard
                 className={
@@ -244,6 +265,7 @@ function TravelPlan() {
                 }
                 onClick={() => handleCardClick("accommodation")}
                 accomodation={tripData.accomodation}
+                destination={tripData.userData.destination}
               />
               <AttractionCard
                 className={

@@ -1,86 +1,86 @@
-// import React from "react";
 import PropTypes from "prop-types";
-// import { Link } from "react-router-dom";
 import "./hotelCard.css";
-import imghotel from "../../../../assets/beach.jpg";
-import { Link } from "react-router-dom";
-
-const HotelCard = ({ hotel_id, name, address, rating, }) => {
-  const originalPrice = 250000;
-  const discountedPrice = 200000;
-  const hasDiscount = discountedPrice < originalPrice;
+import { Star } from "../../../../admin/pages/Components/Star";
+import SvgIcon from "./svgIcon";
+import { Link, useNavigate } from "react-router-dom";
+import { regexUrlIcon } from "../../../../utils/regex";
+const HotelCard = ({ item }) => {
+  console.log(item);
+  // const navigate = useNavigate();
+  // const originalPrice = 250000;
+  // const discountedPrice = 200000;
+  const convertToVNDDB = (price) => {
+    return price + ".000VND ";
+  };
+  // const hasDiscount = discountedPrice < originalPrice;
   return (
-    <div className="card custom-card-hotel mb-3">
-      <div className="row g-0">
-        <div className="col-md-4">
-          <img
-            src={imghotel}
-            className="img-fluid rounded-start custom-img-hotel-card"
-            alt="..."
-          />
-        </div>
-        <div className="col-md-8">
-          <div className="card-body">
-            <div className="row">
-              <div className="col-md-8">
-                <h5 className="card-title mb-0">{name}</h5>
-                <small className="hotel-adr">
-                  <i className="fa-solid fa-map-pin me-3"></i>{address}
-                </small>
-                <p className="card-text amenities d-flex">
-                  <small>
-                    <i className="fa-solid fa-square-parking"></i>Bãi đỗ xe
-                  </small>
-                  <small>
-                    <i className="fa-solid fa-wifi"></i>Wifi
-                  </small>
-                  <small>
-                    <i className="fa-solid fa-person-swimming"></i>Hồ bơi
-                  </small>
-                </p>
-                <div className="feed-back-hotel d-flex">
-                  <div className="start-feedback">
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                  </div>
-                  <span className="total-customer">{rating}</span>
+    <>
+      <div className="card custom-card-hotel mb-3" style={{ height: "300px" }}>
+        <div className="row g-0" style={{ height: "100%" }}>
+          {/* Phần Ảnh */}
+          <div className="col-md-4" style={{ height: "100%" }}>
+            <img
+              src={item.images[0]?.url ?? "src/assets/hotelNotFound.webp"}
+              className="img-fluid rounded-start custom-img-hotel-card"
+              alt={item.name}
+            />
+          </div>
+          {/* Phần Tên và Amenities */}
+          <div className="col-md-6 d-flex flex-column justify-content-between">
+            <div className="px-3 mt-2">
+              <h5 className="card-title mb-0">{item?.name}</h5>
+              <small className="hotel-adr d-flex align-items-center">
+                <i className="fa-solid fa-map-pin me-2"></i>
+                <p className="mb-0">{item?.address}</p>
+              </small>
+              <p className="card-text amenities grid-icons">
+                {item?.hotelAmenities && item.hotelAmenities.length > 0 ? (
+                  item.hotelAmenities.map((ha, index) => (
+                    <small className="amenity-item" key={index}>
+                      <SvgIcon url={regexUrlIcon(ha.icon)} />
+                      <span className="amenity-name">{ha.name}</span>
+                    </small>
+                  ))
+                ) : (
+                  <small>No amenities available</small>
+                )}
+              </p>
+            </div>
+          </div>
+
+          {/* Phần Rating và Nút */}
+          <div className="col-md-2  d-flex flex-column justify-content-between">
+            <div className="feed-back-hotel d-flex align-items-center mt-2">
+              <div className="start-feedback">
+                <Star rating={item?.rating}></Star>
+              </div>
+              {/* <span className="total-customer ms-2">{5} người đánh giá</span> */}
+            </div>
+            <div>
+              <div className="row addFav-viewDe">
+                <div className="col-md-3 px-3" style={{ width: "200px" }}>
+                  <span>{convertToVNDDB(item?.rooms[0]?.price)}</span>
+                  {/* <button className="btn-booking bg-warning mb-2 ">
+                    <span>Lưu</span>
+                  </button> */}
+                  <Link
+                    to={`/hotel-page/${item.hotel_id}`}
+                    className="btn-booking mb-2"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <span>Đặt ngay</span>
+                  </Link>
                 </div>
-                <p className="card-text">
-                  <small className="text-muted">Last updated 3 mins ago</small>
-                </p>
-                <div className="row addFav-viewDe">
-                  <div className="col-md-3">
-                    <button className="">
-                      <i className="fa-solid fa-heart-circle-plus"></i>
-                    </button>
-                  </div>
-                  <div className="col-md-9">
-                    <Link to={`./detail/${hotel_id}`}>Xem chi tiết</Link>
-                  </div>
+                <div className="col-md-9">
+                  {/* Nút khác */}
+                  {/* Thêm logic onClick hoặc data attributes nếu cần */}
                 </div>
               </div>
-
-              <h6 className="col-md-4">
-                <div className="text">Chỉ từ</div>
-                <span className={`price ${hasDiscount ? "discounted" : ""}`}>
-                  {originalPrice.toLocaleString("vi-VN")} VNĐ
-                </span>
-                <br />
-                {hasDiscount && (
-                  <span className="new-price">
-                    {discountedPrice.toLocaleString("vi-VN")} VNĐ
-                  </span>
-                )}
-                <br />
-              </h6>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

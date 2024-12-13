@@ -9,8 +9,6 @@ import { toast } from "react-toastify";
 import PlaceDialog from "./PlaceDialog";
 import { PlaceService } from "../../../services/apis/PlaceService";
 
-const paginationModel = { page: 0, pageSize: 100 };
-
 export default function PlacePageAdmin() {
   const [rows, setRows] = React.useState([]);
   const [open, setOpen] = React.useState(false);
@@ -18,6 +16,8 @@ export default function PlacePageAdmin() {
   const [selectedCouponId, setSelectedCouponId] = React.useState(null);
   const [viewMode, setViewMode] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [pageCurrent,setPageCurrent] = React.useState(1);
+  const [totalPage,setTotalPage] = React.useState(0);
   const [formData, setFormData] = React.useState({
     cityId: "",
     name: "", // default value
@@ -49,12 +49,11 @@ export default function PlacePageAdmin() {
     const fetchCoupons = async () => {
       try {
         const couponData = await PlaceService.getData(
-          paginationModel.page,
-          paginationModel.pageSize,
-          ""
+          pageCurrent
         );
         if (couponData && couponData.checkinResponses) {
           setRows(couponData.checkinResponses);
+          setTotalPage(couponData.totalPages);
           setIsLoading(false);
         } else {
           console.warn(
@@ -80,7 +79,38 @@ export default function PlacePageAdmin() {
       console.log(error.message);
     }
   };
-
+  const ToolBar = ()=>{
+    React.useEffect(() => {
+      setTimeout(() => {
+        const buttonCol = document.querySelector(
+          "button[aria-label='Select columns']"
+        );
+        const buttonFilter = document.querySelector(
+          "button[aria-label='Show filters']"
+        );
+        const buttonExport = document.querySelector(
+          "button[aria-label='Export']"
+        )
+        if (buttonCol) {
+          buttonCol.innerHTML = "<i class='fas fa-table-columns me-2'></i> Các Cột";
+        }
+        if(buttonFilter){
+          buttonFilter.innerHTML = "<i class='fas fa-filter me-2'></i> Lọc"
+        }
+        if(buttonExport){
+          buttonExport.innerHTML = "<i class='fas fa-download me-2'></i> Xuất"
+        }
+      }, 100);
+    }, []);
+    return (
+      <Box sx={{
+        display: "flex",
+        justifyContent: "flex-end",
+      }}>
+        <GridToolbar />
+      </Box>
+    );
+  }
   function EditToolbar() {
     return (
       <GridToolbarContainer>
@@ -149,7 +179,7 @@ export default function PlacePageAdmin() {
   ];
 
   return (
-    <Box sx={{ height: 400, width: "100%" }}>
+    <Box sx={{ height: 800, width: "100%" }}>
       <DataGrid
         loading={isLoading}
         slotProps={{
@@ -169,9 +199,9 @@ export default function PlacePageAdmin() {
         }}
         getRowId={(row) => row.id}
         pageSizeOptions={[10,20,50]}
-        checkboxSelection
+        checkboxSelection={false}
         disableRowSelectionOnClick
-        slots={{ toolbar: EditToolbar }}
+        slots={{ toolbar: ToolBar }}
       />
       <PlaceDialog
         open={open}

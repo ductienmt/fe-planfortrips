@@ -1,158 +1,60 @@
-import React, { useState } from "react";
-import "./TourPage.css"; // Đảm bảo bạn đã import file CSS này
+import React, { useEffect, useRef, useState } from "react";
+import "./TourPage.css"; // Ensure this file is imported
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCalendar,
   faClock,
   faEarthEurope,
+  faJetFighter,
   faStarHalfStroke,
   faTicket,
   faUserTie,
 } from "@fortawesome/free-solid-svg-icons";
 import TourCard from "./TourCard/TourCard";
+import { TourService } from "../../../services/apis/TourService";
+import { Box } from "@mui/system";
+import { CircularProgress } from "@mui/material";
+import { CityService } from "../../../services/apis/CityService";
 
 function TourPage() {
-  const [search, setSearch] = useState("");
-  const [filteredDestinations, setFilteredDestinations] = useState([]);
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [toursData, setToursData] = useState(null);
+  const [cities, setCities] = useState([]);
+  const [cityOrigin, setCityOrigin] = useState('');
+  const [cityDes, setCityDes] = useState('');
 
-  const tours = [
-    {
-      id: 1,
-      title: "Khám Phá Hà Nội",
-      description: "Khám phá vẻ đẹp thủ đô Hà Nội với những di tích lịch sử và văn hóa nổi tiếng.",
-      date: "15 Tháng 10, 2023",
-      image: "https://images.pexels.com/photos/50859/pexels-photo-50859.jpeg?auto=compress&cs=tinysrgb&w=600",
-      author: {
-        name: "Hồ Minh Nhựt",
-        role: "Hướng dẫn viên du lịch",
-        image: "https://images.pexels.com/photos/2007647/pexels-photo-2007647.jpeg?auto=compress&cs=tinysrgb&w=600"
-      },
-      hashtags: ["#HàNội", "#DuLịch", "#VănHóa"]
-    },
-    {
-      id: 2,
-      title: "Vịnh Hạ Long - Di Sản Thế Giới",
-      description: "Chuyến tham quan Vịnh Hạ Long, nơi sở hữu phong cảnh tuyệt đẹp và những đảo đá vôi kỳ vĩ.",
-      date: "10 Tháng 11, 2023",
-      image: "https://images.pexels.com/photos/58597/pexels-photo-58597.jpeg?auto=compress&cs=tinysrgb&w=600",
-      author: {
-        name: "Nguyễn Thị Lan",
-        role: "Hướng dẫn viên",
-        image: "https://images.pexels.com/photos/3766126/pexels-photo-3766126.jpeg?auto=compress&cs=tinysrgb&w=600"
-      },
-      hashtags: ["#HạLong", "#DiSảnThếGiới", "#VịnhHạLong"]
-    },
-    {
-      id: 3,
-      title: "Sapa - Đỉnh Fansipan",
-      description: "Chinh phục đỉnh Fansipan, nóc nhà của Đông Dương, và tận hưởng vẻ đẹp thiên nhiên hoang sơ.",
-      date: "5 Tháng 12, 2023",
-      image: "https://images.pexels.com/photos/28747659/pexels-photo-28747659/free-photo-of-phong-c-nh-nui-non-tuy-t-d-p-lao-cai-vi-t-nam.jpeg?auto=compress&cs=tinysrgb&w=600",
-      author: {
-        name: "Trần Văn Hải",
-        role: "Hướng dẫn viên leo núi",
-        image: "https://images.pexels.com/photos/1296398/pexels-photo-1296398.jpeg?auto=compress&cs=tinysrgb&w=600"
-      },
-      hashtags: ["#Sapa", "#Fansipan", "#DuLịchMạoHiểm"]
-    },
-    {
-      id: 4,
-      title: "Phong Nha - Kẻ Bàng",
-      description: "Tham quan các hang động nổi tiếng trong hệ thống Phong Nha - Kẻ Bàng, nơi được UNESCO công nhận.",
-      date: "22 Tháng 1, 2024",
-      image: "https://tse3.mm.bing.net/th?id=OIP.lRiZJZ2WH6U9wdSkWItGpAHaE7&pid=Api&P=0&h=180",
-      author: {
-        name: "Lê Minh Tuấn",
-        role: "Chuyên gia thám hiểm",
-        image: "https://images.pexels.com/photos/1551742/pexels-photo-1551742.jpeg?auto=compress&cs=tinysrgb&w=600"
-      },
-      hashtags: ["#PhongNha", "#KẻBàng", "#HangĐộng"]
-    },
-    {
-      id: 5,
-      title: "Hội An - Phố Cổ",
-      description: "Khám phá Hội An với các công trình kiến trúc cổ kính và không khí yên bình của một thành phố di sản.",
-      date: "18 Tháng 2, 2024",
-      image: "https://images.pexels.com/photos/92090/pexels-photo-92090.jpeg?auto=compress&cs=tinysrgb&w=600",
-      author: {
-        name: "Nguyễn Thanh Thảo",
-        role: "Hướng dẫn viên du lịch",
-        image: "https://images.pexels.com/photos/1675476/pexels-photo-1675476.jpeg?auto=compress&cs=tinysrgb&w=600"
-      },
-      hashtags: ["#HộiAn", "#PhốCổ", "#DiSản"]
-    },
-    {
-      id: 6,
-      title: "Đà Lạt - Thành Phố Ngàn Hoa",
-      description: "Khám phá Đà Lạt, với khí hậu mát mẻ, những thác nước hùng vĩ và vườn hoa tuyệt đẹp.",
-      date: "28 Tháng 3, 2024",
-      image: "https://images.pexels.com/photos/2131616/pexels-photo-2131616.jpeg?auto=compress&cs=tinysrgb&w=600",
-      author: {
-        name: "Phan Quang Duy",
-        role: "Hướng dẫn viên du lịch",
-        image: "https://images.pexels.com/photos/1797396/pexels-photo-1797396.jpeg?auto=compress&cs=tinysrgb&w=600"
-      },
-      hashtags: ["#ĐàLạt", "#NgànHoa", "#ThiênNhiên"]
-    },
-    {
-      id: 7,
-      title: "Cù Lao Chàm",
-      description: "Khám phá đảo Cù Lao Chàm với bãi biển hoang sơ và các hoạt động thể thao dưới nước hấp dẫn.",
-      date: "9 Tháng 4, 2024",
-      image: "https://images.pexels.com/photos/2164513/pexels-photo-2164513.jpeg?auto=compress&cs=tinysrgb&w=600",
-      author: {
-        name: "Lâm Minh Khoa",
-        role: "Hướng dẫn viên biển đảo",
-        image: "https://images.pexels.com/photos/2131593/pexels-photo-2131593.jpeg?auto=compress&cs=tinysrgb&w=600"
-      },
-      hashtags: ["#CùLaoChàm", "#DuLịchBiển", "#ThểThaoNước"]
-    },
-    {
-      id: 8,
-      title: "Mộc Châu - Cao Nguyên Mùa Hoa",
-      description: "Khám phá Mộc Châu với những đồi chè xanh ngắt và các mùa hoa đặc trưng.",
-      date: "20 Tháng 5, 2024",
-      image: "https://images.pexels.com/photos/4669490/pexels-photo-4669490.jpeg?auto=compress&cs=tinysrgb&w=600",
-      author: {
-        name: "Mai Thị Lan",
-        role: "Hướng dẫn viên nông thôn",
-        image: "https://images.pexels.com/photos/1717209/pexels-photo-1717209.jpeg?auto=compress&cs=tinysrgb&w=600"
-      },
-      hashtags: ["#MộcChâu", "#HoaMùa", "#CaoNguyên"]
+  const tourRef = useRef(null);
+
+  useEffect(() => {
+    const initData = async () => {
+      const resTour = await TourService.getToursClient();
+      setToursData(resTour);
+
+      const resCities = await CityService.getAll();
+      setCities(resCities);
+    };
+
+    initData();
+  }, []);
+
+  const handleSearhTourByOriginAndDes = async () => {
+    if (!cityOrigin || !cityDes) {
+      alert("Thiếu dữ liệu");
+      return;
     }
-  ];
-  
+    const resTour = await TourService.getTourByOriginAndDes(cityOrigin, cityDes);
+    setToursData(resTour);
 
-  const destinations = [
-    "Hà Nội",
-    "TP. HCM",
-    "Đà Nẵng",
-    "Bali",
-    "Paris",
-    "Hàn Quốc",
-  ]; // Dữ liệu giả cho điểm đến
-
-  const handleSearch = (e) => {
-    const value = e.target.value;
-    setSearch(value);
-
-    // Lọc dữ liệu điểm đến dựa trên input người dùng
-    if (value) {
-      setFilteredDestinations(
-        destinations.filter((destination) =>
-          destination.toLowerCase().includes(value.toLowerCase())
-        )
-      );
-      setShowDropdown(true);
-    } else {
-      setShowDropdown(false);
+    if (tourRef.current) {
+      tourRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
-  const handleSelectDestination = (destination) => {
-    setSearch(destination);
-    setShowDropdown(false); // Ẩn dropdown sau khi chọn điểm đến
+  const handleCityOriginChange = (event) => {
+    setCityOrigin(event.target.value);
+  };
+
+  const handleCityDesChange = (event) => {
+    setCityDes(event.target.value);
   };
 
   return (
@@ -163,46 +65,96 @@ function TourPage() {
           <div className="tour-header-content">
             <h1>Khám phá thế giới với tour du lịch tuyệt vời</h1>
             <p>Đặt tour ngay hôm nay với giá ưu đãi cực kỳ hấp dẫn!</p>
+            <p className="">Nội tỉnh: Tỉnh - Tỉnh. vd: Bình Thuận - Bình Thuận</p>
             <form className="tour-search-form">
               <div className="tour-search-destination">
                 <input
+                  disabled
                   type="text"
                   placeholder="Bạn muốn đi đâu?"
                   className="form-control w-100"
-                  value={search}
-                  onChange={handleSearch}
                 />
-
-                {/* Dropdown Search Điểm Đến */}
-                {showDropdown && (
-                  <div className="tour-search-destination-dropdown">
-                    {filteredDestinations.map((destination, index) => (
-                      <div
-                        key={index}
-                        className="dropdown-item"
-                        onClick={() => handleSelectDestination(destination)}
-                      >
-                        {destination}
-                      </div>
-                    ))}
-                  </div>
-                )}
               </div>
 
-              <input type="date" />
-              <select className="form-select">
+              <select
+                style={{ width: 'fit-content' }}
+                className="form-select"
+                value={cityDes}
+                onChange={handleCityDesChange}
+              >
                 <option value="">Khởi hành từ</option>
+                {cities.map((city) => (
+                  <option key={city.id} value={city.id}>
+                    {city.nameCity}
+                  </option>
+                ))}
               </select>
-              <button type="submit" className="btn-search">
+
+              <select
+                style={{ width: 'fit-content' }}
+                className="form-select"
+                value={cityOrigin}
+                onChange={handleCityOriginChange}
+              >
+                <option value="">Điểm đến</option>
+                {cities.map((city) => (
+                  <option key={city.id} value={city.id}>
+                    {city.nameCity}
+                  </option>
+                ))}
+              </select>
+
+              <button type="button" className="btn-search" onClick={handleSearhTourByOriginAndDes}>
                 Tìm
               </button>
             </form>
+            <div className="tour-page-city-card mt-4">
+              <div className="tour-page-city-card-row">
+                {/* {cityOrigin && (
+                  <div className="tour-page-city-card-item bg-white">
+                    <div className="tour-page-city-card-id text-info">
+                      <h4>{cities.find(city => city.id === cityOrigin)?.nameCity || 'N/A'}</h4>
+                    </div>
+                    <div className="tour-page-city-card-img">
+                      <img
+                        src={cities.find(city => city.id === cityOrigin)?.image || "default-image-url.jpg"}
+                        alt={cities.find(city => city.id === cityOrigin)?.nameCity}
+                      />
+                    </div>
+                    <div className="tour-page-city-page-des">
+                      <p>{cities.find(city => city.id === cityOrigin)?.description || "Thông tin mô tả thành phố."}</p>
+                    </div>
+                  </div>
+                )} */}
+
+                {/* <div className="d-flex fs-3" style={{alignItems : 'center'}}>
+                  <FontAwesomeIcon icon={faJetFighter} />
+                </div> */}
+
+                {/* {cityDes && (
+                  <div className="tour-page-city-card-item bg-white">
+                    <div className="tour-page-city-card-id text-danger">
+                      <h4>{cities.find(city => city.id === cityDes)?.nameCity || 'N/A'}</h4>
+                    </div>
+                    <div className="tour-page-city-card-img">
+                      <img
+                        src={cities.find(city => city.id === cityDes)?.image || "default-image-url.jpg"}
+                        alt={cities.find(city => city.id === cityDes)?.nameCity}
+                      />
+                    </div>
+                    <div className="tour-page-city-page-des">
+                      <p>{cities.find(city => city.id === cityDes)?.description || "Thông tin mô tả thành phố."}</p>
+                    </div>
+                  </div>
+                )} */}
+              </div>
+            </div>
           </div>
         </header>
-        {/* Header */}
 
+        {/* Tour Content */}
         <div className="tour-content container">
-          {/* Sumary */}
+          {/* Summary Section */}
           <div className="tour-content-summary">
             <div className="content-summary-item d-flex">
               <div className="content-summary-item-icon">
@@ -237,19 +189,22 @@ function TourPage() {
             </div>
           </div>
 
-          {/* Tour có sẵn */}
+          {/* Tour List Section */}
           <div className="tour-content-data mt-4">
-                  <div className="tour-content-title">
-                      <h3 className="fw-bold fs-2" style={{fontFamily: 'Italic'}}>#Tour của chúng tôi</h3>
-                    </div>  
-          <div className="tour-list row gx-3">
-      {tours.map((tour) => (
-        <TourCard key={tour.id} tour={tour}/>
-      ))}
-    </div>
-          
-
-            
+            <div className="tour-content-title">
+              <h3 className="fw-bold fs-2" style={{ fontFamily: 'Italic' }}>#Tour của chúng tôi</h3>
+            </div>
+            <div className="tour-list row gx-3" ref={tourRef}>
+              {toursData ? (
+                toursData.map((tour) => (
+                  <TourCard key={tour.tourId} tour={tour} />
+                ))
+              ) : (
+                <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}>
+                  <CircularProgress />
+                </Box>
+              )}
+            </div>
           </div>
         </div>
       </div>

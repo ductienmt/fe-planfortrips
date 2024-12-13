@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Seats.css";
 import SeatsCard from "../seatscard/Seatscard";
 import { InputFlied } from "../../../client/Components/Input/InputFlied";
 import { useNavigate } from "react-router-dom";
+import VehicleBooking from "../../../client/pages/Vehicle/VehicleBooking/VehicleBooking";
 
 const Seats = () => {
   const navigate = useNavigate();
@@ -19,12 +20,66 @@ const Seats = () => {
     image: "/src/assets/beach.jpg",
   };
 
-
-
-
   const handleClick = () => {
     navigate("/enterprise/accomodation/room-management");
   };
+
+   // Dữ liệu ghế cố định
+   const initialSeats = [
+    { id: "A1" },
+    { id: "A2" },
+    { id: "A3" },
+    { id: "A4" },
+    { id: "A5" },
+    { id: "A6" },
+    { id: "A7" },
+    { id: "A8" },
+    { id: "A9" },
+    { id: "A10" },
+    { id: "A11" },
+    { id: "A12" },
+    { id: "A13" },
+    { id: "A14" },
+    { id: "A15" },
+    { id: "A16" },
+    { id: "A17" },
+    { id: "B1" },
+    { id: "B2" },
+    { id: "B3" },
+    { id: "B4" },
+    { id: "B5" },
+    { id: "B6" },
+    { id: "B7" },
+    { id: "B8" },
+    { id: "B9" },
+    { id: "B10" },
+    { id: "B11" },
+    { id: "B12" },
+    { id: "B13" },
+    { id: "B14" },
+    { id: "B15" },
+  ];
+
+  const [seats] = useState(initialSeats);
+
+  // Hàm phân loại ghế theo tầng
+  const getSeatsByFloor = (floor) => {
+    return seats.filter((seat) => seat.id.charAt(0) === floor);
+  };
+
+  // Hàm render ghế
+  const renderSeats = (seats) => {
+    return seats.map((seat) => (
+      <button
+        key={seat.id}
+        className="seat-button"
+        disabled
+      >
+        {seat.id}
+      </button>
+    ));
+  };
+
 
   return (
     <>
@@ -38,13 +93,8 @@ const Seats = () => {
               color: "#ADADAD",
             }}
           >
-          
+            Quản lý ghế
           </h1>
-        </div>
-
-        {/* Nội dung tìm kiếm */}
-        <div className="Seats-content mt-3">
-       
         </div>
 
         {/* Lựa chọn khách sạn */}
@@ -55,7 +105,7 @@ const Seats = () => {
               type="button"
               className="btn select-Seats-btn"
               data-bs-toggle="modal"
-              data-bs-target="#contactModal"
+              data-bs-target="#seatModal"
             >
               Chọn xe
             </button>
@@ -63,102 +113,79 @@ const Seats = () => {
         </div>
 
         {/* Modal */}
-        <div className="modal fade" id="contactModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="contactModalLabel" aria-hidden="true"
+        <div
+          className="modal fade"
+          id="seatModal"
+          // data-bs-backdrop="static"
+          // data-bs-keyboard="false"
+          tabIndex="-1"
+          aria-labelledby="seatModalLabel"
+          aria-hidden="true"
         >
           <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="nav-filterCombobox-Seats ">
-                <InputFlied
-                className="seact-search"
-                  nameInput="search"
-                  content="Tìm kiếm"
-                  typeInput="text"
-                />
-                <button
-                  className="btn seact-search"
-                
-                >
-                
-                </button>
-                <button
-                  type="button"
-                  className="btn seats-button"
-                  data-bs-toggle="modal"
-                  data-bs-target="#addrouteModal"
-                >
-                  Thêm ghế
-                </button>
-                
+            <div className="modal-content p-3">
+              <div className="transport-topBar-items mb-3">
+                <div className="right-close-add-seat d-flex justify-content-end">
+                  <button
+                    type="button"
+                    className="btn seats-button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#addrouteModal"
+                  >
+                    Thêm ghế
+                  </button>
+                  {/* Sử dụng css của RoomVoucher   */}
+                  <button
+                    className="voucher-close-button"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span className="voucher-close-X"></span>
+                    <span className="voucher-close-Y"></span>
+                    <div className="voucher-close-close">Close</div>
+                  </button>
+                </div>
               </div>
 
-              {/* Header */}
-
-
-              <div className="Seats-nav mt-3">
-                <table className="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th>Mã Xe</th>
-                      <th>Mã Ghế</th>
-                      <th>Hành Động</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td>
-                        <button className="btn seats-btn btn-danger" onClick={() => console.log("Xóa ghế A1")}>
-                          Xóa
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td>
-                        <button className="btn seats-btn btn-danger" onClick={() => console.log("Xóa ghế A2")}>
-                          Xóa
-                        </button>
-                      </td>
-                    </tr>
-                    {/* Thêm các hàng khác nếu cần */}
-                  </tbody>
-                </table>
-              </div>
-
-
-
-
-              {/* Footer */}
-              <div className="modal3-footer">
-                <div className="modal-footer ">
-                  <div className="pagination">
-                    <button className="btn btn-light">1</button>
-                    <button className="btn btn-light">2</button>
-                    <button className="btn btn-light">3</button>
-                    <button className="btn btn-light">4</button>
-                    <button className="btn btn-light">5</button>
-                    <button className="btn btn-primary">Next</button>
+              {/* Chọn ghế */}
+              <div className="seats-container">
+                <div className="floor-section">
+                  <h4>Tầng 1</h4>
+                  <div className="seat-grid">
+                    {renderSeats(getSeatsByFloor("A"))}
+                  </div>
+                </div>
+                <div className="floor-section">
+                  <h4>Tầng 2</h4>
+                  <div className="seat-grid">
+                    {renderSeats(getSeatsByFloor("B"))}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
-
-
-
         </div>
 
-
-        <div className="modal fade" id="addrouteModal" tabIndex="-1" aria-labelledby="addrouteModal" aria-hidden="true">
-          <div className="modal-dialog">
+        <div
+          className="modal fade"
+          id="addrouteModal"
+          tabIndex="-1"
+          aria-labelledby="addrouteModal"
+          aria-hidden="true"
+        >
+          <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
               {/* Modal Header */}
               <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLabel">Thông Tin Ghế</h5>
-                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 className="modal-title" id="exampleModalLabel">
+                  Thông Tin Ghế
+                </h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
               </div>
 
               {/* Modal Body */}
@@ -170,7 +197,6 @@ const Seats = () => {
                       Tầng 1
                     </label>
                     <div className="mb-3 seat-input-wrapper">
-
                       <div className="mb-3 ">
                         <label htmlFor="start-seat1" className="form-label">
                           Ghế Bắt Đầu
@@ -196,7 +222,6 @@ const Seats = () => {
                     </div>
                   </div>
 
-
                   {/* Cột 2 */}
 
                   <div className="col-md-6">
@@ -204,7 +229,6 @@ const Seats = () => {
                       Tầng 2
                     </label>
                     <div className="mb-3 seat-input-wrapper">
-
                       <div className="mb-3 ">
                         <label htmlFor="start-seat1" className="form-label">
                           Ghế Bắt Đầu
@@ -234,16 +258,21 @@ const Seats = () => {
 
               {/* Modal Footer */}
               <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                <button type="button" className="btn btn-primary" >Xác Nhận</button>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#seatModal"
+                >
+                  Quay lại
+                </button>
+                <button type="button" className="btn btn-primary">
+                  Xác Nhận
+                </button>
               </div>
             </div>
           </div>
         </div>
-
-
-
-
       </div>
     </>
   );

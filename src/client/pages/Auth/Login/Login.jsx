@@ -136,7 +136,7 @@ const Login = () => {
                   />
                 </div>
                 <div className="register-forgot-password text-body mb-2">
-                  <a href="#!" className="register-text-body">
+                  <a href="/forgot-password" className="register-text-body">
                     Quên mật khẩu?
                   </a>
                 </div>
@@ -150,7 +150,7 @@ const Login = () => {
                   Đăng nhập
                 </button>
                 <p className="small fw-bold">
-                  Bạn đã có tài khoản? <a href="/register">Đăng ký ngay!</a>
+                  Bạn chưa có tài khoản? <a href="/register">Đăng ký ngay!</a>
                 </p>
               </div>
 

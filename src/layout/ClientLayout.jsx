@@ -17,8 +17,12 @@ export const ClientLayout = () => {
     "/booking/hotel",
     "/booking/transportation",
     "/hotel",
+    "/check-in",
     "/payment",
     "/success",
+    "/failed",
+    "/tour",
+    "/forgot-password",
   ]);
 
   // Kiểm tra logic hiển thị

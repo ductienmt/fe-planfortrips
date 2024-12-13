@@ -1,64 +1,84 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./GuestLiving.css";
 import { Table } from "antd";
 import { InputFlied } from "../../../client/Components/Input/InputFlied";
+import { BookingHotelService } from "../../../services/apis/BookingHotelService";
 
 const GuestLiving = () => {
   const [guestData, setGuestData] = useState([]);
   const columns = [
     {
       title: "Mã đặt",
-      dataIndex: "",
-      key: "",
+      dataIndex: "bookingId",
+      key: "bookingId",
     },
     {
       title: "Tên khách hàng",
-      dataIndex: "",
-      key: "",
+      dataIndex: "customerName",
+      key: "customerName",
+    },
+    {
+      title: "Sđt khách hàng",
+      dataIndex: "customerPhoneNumber",
+      key: "customerPhoneNumber",
     },
     {
       title: "Số phòng",
-      dataIndex: "",
-      key: "",
+      dataIndex: "roomName",
+      key: "roomName",
     },
     {
       title: "Tổng tiền",
-      dataIndex: "",
-      key: "",
+      dataIndex: "totalPrice",
+      key: "totalPrice",
     },
     {
       title: "Loại phòng",
-      dataIndex: "",
-      key: "",
+      dataIndex: "roomType",
+      key: "roomType",
     },
     {
       title: "Nhận phòng",
-      dataIndex: "",
-      key: "",
+      dataIndex: "checkInDate",
+      key: "checkInDate",
     },
     {
       title: "Trả phòng",
-      dataIndex: "",
-      key: "",
+      dataIndex: "checkOutDate",
+      key: "checkOutDate",
     },
     {
       title: "Trạng thái",
-      dataIndex: "",
-      key: "",
+      dataIndex: "bookingStatus",
+      key: "bookingStatus",
     },
-    {
-      title: "Hành động",
-      dataIndex: "",
-      key: "",
-    },
-    
+    // {
+    //   title: "Hành động",
+    //   dataIndex: "",
+    //   key: "",
+    // },
   ];
 
   const [selectedItem, setSelectedItem] = useState("all");
 
   const handleSelectItem = (item) => {
     setSelectedItem(item);
+    fetchGuestData(item);
   };
+
+  const fetchGuestData = async (item) => {
+    try {
+      const res = await BookingHotelService.getGuest(item);
+      setGuestData(res);
+      // console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchGuestData("all");
+  }, []);
   return (
     <>
       <div className="enterprise-guest-container">
@@ -84,15 +104,15 @@ const GuestLiving = () => {
               </button>
 
               <button
-                onClick={() => handleSelectItem("comingSoon")}
-                className={selectedItem === "comingSoon" ? "isActive" : ""}
+                onClick={() => handleSelectItem("not_used")}
+                className={selectedItem === "not_used" ? "isActive" : ""}
               >
                 Sắp sử dụng
               </button>
 
               <button
-                onClick={() => handleSelectItem("using")}
-                className={selectedItem === "using" ? "isActive" : ""}
+                onClick={() => handleSelectItem("in_use")}
+                className={selectedItem === "in_use" ? "isActive" : ""}
               >
                 Đang sử dụng
               </button>

@@ -1,3 +1,9 @@
+/* .action-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 11px;
+}
+
 .action-button {
   display: flex;
   align-items: center;
@@ -7,22 +13,7 @@
   font-weight: 600;
   padding: 6px 12px;
   border: 1px solid;
-}
-
-.primary {
-  background-color: #f3faff;
-  border-color: #47b5ff;
-}
-
-.secondary {
-  background-color: #fff;
-  border-color: rgba(0, 0, 0, 0.2);
-}
-
-.action-icon {
-  width: 21px;
-  height: 20px;
-}
+} */
 
 .check-in-out {
   display: block;
@@ -152,15 +143,9 @@
   padding: 4px 10px;
 }
 
-.action-buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 11px;
-}
-
-@media (max-width: 991px) {
-  .accommodation-card {
-    width: 100%;
-    margin-top: 40px;
-  }
+.room-details-card{
+  padding: 20px;
+  border: none;
+  border-radius: 10px;
+  background-color: white;
 }

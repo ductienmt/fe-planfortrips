@@ -24,6 +24,10 @@ import { enqueueSnackbar } from "notistack";
 import { PlusOutlined } from "@ant-design/icons";
 import { Image, Upload } from "antd";
 import TextArea from "antd/es/input/TextArea";
+import { Combobox } from "react-widgets";
+import { useAuth } from "../../../context/AuthContext/AuthProvider";
+import { RouteService } from "../../../services/apis/RouteService";
+import { uploadImage } from "../../../services/apis/ImageService";
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -31,13 +35,9 @@ const getBase64 = (file) =>
     reader.onload = () => resolve(reader.result);
     reader.onerror = (error) => reject(error);
   });
-function TourFormUpdate({ setRows,rows,selectedTourId }) {
-  const token = sessionStorage.getItem("token");
-  const userName = token ? parseJwt(token).sub : "";
+function TourFormUpdate({ setRows, selectedTourId }) {
+  const { username } = useAuth();
   const [hidden, setHidden] = useState(false);
-  const [area, setArea] = useState([]);
-  const [areaDepartSelected, setAreaDepartSelected] = useState([]);
-  const [areaArriveSelected, setAreaArriveSelected] = useState([]);
   const [hotel, setHotel] = useState([]);
   const [car, setCar] = useState([]);
   const [checkin, setCheckin] = useState([]);
@@ -45,15 +45,16 @@ function TourFormUpdate({ setRows,rows,selectedTourId }) {
   const [tags, setTags] = useState([]);
   const [tagNew, setTagNew] = useState([]);
   const [errors, setErrors] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
   const [tagErrors, setTagErrors] = useState("");
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [fileList, setFileList] = useState([]);
+  const [route, setRoute] = useState([]);
+  const [deleteImages, setDeleteImages] = useState([]);
   const [formData, setFormData] = useState({
+    id: "",
     title: "",
-    city_depart_id: "",
-    city_arrive_id: "",
+    route_id: "",
     number_people: 0,
     total_price: 0,
     day: 0,
@@ -62,23 +63,83 @@ function TourFormUpdate({ setRows,rows,selectedTourId }) {
     tagNames: [],
     note: "",
     hotel_id: "",
+    hotel: {},
     car_company_id: "",
+    car_company: {},
     checkin_id: "",
-    admin_username: userName,
+    checkin: {},
+    admin_username: username,
   });
-  useEffect(()=>{
-    const fetchData = async()=>{
-      const data = await TourService.findTourById(selectedTourId);
-      if(data){
-        setFormData(data)
+  useEffect(() => {
+    const fetchData = async () => {
+      if (selectedTourId) {
+        const data = await TourService.findTourById(selectedTourId);
+        if (data) {
+          setFormData({
+            ...data,
+            tagNames: data.tags.map((tag) => tag.name),
+            hotel_id: data.hotel.id,
+            car_company_id: data.car_company.id,
+            checkin_id: data.checkin.id,
+          });
+          const formattedImages = data.images.map((image, index) => ({
+            uid: `rc-upload-${Date.now()}-${index}`,
+            lastModified: new Date().getTime(),
+            lastModifiedDate: new Date(),
+            name: `image-${index}.jpg`,
+            size: 0,
+            type: "image/jpeg",
+            percent: 0,
+            originFileObj: new File(
+              [""], // Nội dung file giả lập
+              `image-${index}.jpg`,
+              {
+                type: image.type || "image/jpeg",
+                lastModified: new Date().getTime(),
+                uid: `rc-upload-${Date.now()}-${index}`,
+              }
+            ),
+            status: "done",
+            thumbUrl: image.url,
+          }));
+
+          setFileList((prevFileList) => [...prevFileList, ...formattedImages]);
+        }
+      } else {
+        setFormData([]);
       }
-    };fetchData();
-  },[selectedTourId])
+    };
+    fetchData();
+  }, [selectedTourId]);
+  const urlToFile = async (url, fileName, mimeType) => {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return new File([blob], fileName, { type: mimeType });
+  };
+  
   const handleSelectTags = (tagNames) => {
     setFormData((prevData) => ({
       ...prevData,
       tagNames,
     }));
+  };
+  const handleComboChange = (name, selected) => {
+    console.log(selected);
+    console.log(name);
+    console.log(username);
+
+    var selectedId = "";
+    if (name == "id") {
+      name = "checkin_id";
+      selectedId = selected.id;
+    } else {
+      selectedId = selected[name] || "";
+    }
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: selectedId,
+    }));
+    console.log(formData);
   };
   useEffect(() => {
     fetchDataInit();
@@ -86,8 +147,8 @@ function TourFormUpdate({ setRows,rows,selectedTourId }) {
 
   const fetchDataInit = async () => {
     try {
-      const areaData = await AreaService.getAll();
-      setArea(areaData);
+      const routeData = await RouteService.getAll(0, 100);
+      setRoute(routeData.listResponse);
       const hotelData = await HotelService.getHotels(0, 100, "");
       setHotel(hotelData.hotelResponseList);
       const carData = await CarService.getcars(0, 100);
@@ -100,17 +161,6 @@ function TourFormUpdate({ setRows,rows,selectedTourId }) {
       console.error("Lỗi khi lấy dữ liệu khu vực:", error);
     }
   };
-
-  const handleAreaDepChange = (e) => {
-    const selectedArea = area.find((a) => a.id === e.target.value);
-    setAreaDepartSelected(selectedArea?.cities || []);
-    document.getElementById("endPoint").value = "";
-  };
-  const handleAreaArriveChange = (e) => {
-    const selectedArea = area.find((a) => a.id === e.target.value);
-    setAreaArriveSelected(selectedArea?.cities || []);
-    document.getElementById("endPoint").value = "";
-  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -118,21 +168,41 @@ function TourFormUpdate({ setRows,rows,selectedTourId }) {
       [name]: value,
     }));
   };
-  const handleSave = async () => {
+  const handleUpdate = async () => {
     const errors = validateFormData(formData);
     if (Object.keys(errors).length > 0) {
       setErrors(errors);
       console.log("Validation errors:", errors);
       return;
     }
-    const response = await TourService.createTour(formData);
+    const data = {
+      title: formData.title,
+      route_id: formData.route_id,
+      number_people: formData.number_people,
+      total_price: formData.total_price,
+      day: formData.day,
+      night: formData.night,
+      is_active: formData.is_active,
+      tagNames: formData.tagNames,
+      note: formData.note,
+      hotel_id: formData.hotel_id,
+      car_company_id: formData.car_company_id,
+      checkin_id: formData.checkin_id,
+      admin_username: username,
+    };
+    const response = await TourService.updateTour(selectedTourId, data);
     if (response) {
-      if(fileList.length > 0){
-        uploadEncodedImage(response.tour_id, fileList);
+      if (fileList.length > 0) {
+        console.log(fileList);
+        await uploadEncodedImage(response.tour_id, fileList);
       }
       setHidden(false);
       toast("Tạo mới thành công");
-      setRows((prevRows) => [...prevRows, response]);
+      setRows((prevRows) =>
+        prevRows.map((row) =>
+          row.tour_id === selectedTourId ? { ...row, ...formData } : row
+        )
+      );
       document.getElementById("closeModalButton").click();
     }
   };
@@ -183,17 +253,13 @@ function TourFormUpdate({ setRows,rows,selectedTourId }) {
       total_price: price,
     }));
   }, [formData.hotel_id, formData.car_company_id]);
-
   const validateFormData = (data) => {
     const errors = {};
     if (!data.title.trim()) {
       errors.title = "Bắt buộc nhập tiêu đề.";
     }
-    if (!data.city_depart_id.trim()) {
-      errors.city_depart_id = "Bắt buộc chọn thành phố đi.";
-    }
-    if (!data.city_arrive_id.trim()) {
-      errors.city_arrive_id = "Bắt buộc chọn thành phố đến.";
+    if (!data.route_id) {
+      errors.route_id = "Bắt buộc chọn chuyển đi.";
     }
     if (data.number_people <= 0) {
       errors.number_people = "Số người phải lớn hơn 0.";
@@ -204,16 +270,24 @@ function TourFormUpdate({ setRows,rows,selectedTourId }) {
     if (data.night < 0) {
       errors.night = "Số đêm phải lớn hơn 0.";
     }
-    if (!data.hotel_id.trim()) {
+    if (!data.hotel_id) {
       errors.hotel_id = "Bắt buộc chọn khách sạn.";
     }
-    if (!data.car_company_id.trim()) {
+    if (!data.car_company_id) {
       errors.car_company_id = "Bắt buộc chọn nhà xe.";
     }
-    if (!data.checkin_id.trim()) {
+    if (!data.checkin_id) {
       errors.checkin_id = "Bắt buộc chọn điểm tham quan.";
     }
     return errors;
+  };
+  const handleDelteImage = async (file) => {
+    console.log("file", file);
+    const updatedFileList = fileList.filter((f) => f.uid !== file.uid);
+    setFileList(updatedFileList);
+    setDeleteImages((prevDeleteImages) => [...prevDeleteImages, file]);
+    console.log("file list", updatedFileList);
+    console.log("delete list", [...deleteImages, file]);
   };
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -226,14 +300,28 @@ function TourFormUpdate({ setRows,rows,selectedTourId }) {
     setFileList(newFileList);
     console.log(fileList);
   };
-  const uploadEncodedImage = async (id, encodedImageUrl) => {
+  const uploadEncodedImage = async (id, fileList) => {
     try {
       const formData = new FormData();
-      encodedImageUrl.forEach((file) => {
-        formData.append("files", file.originFileObj); 
+  
+      const filesToUpload = await Promise.all(
+        fileList.map(async (file) => {
+          if (file.originFileObj) {
+            return file.originFileObj;
+          } else if (file.thumbUrl) {
+            return await urlToFile(file.thumbUrl, file.name, file.type);
+          }
+          return null; // Bỏ qua file không hợp lệ
+        })
+      );
+  
+      filesToUpload.forEach((file) => {
+        if (file) {
+          formData.append("files", file);
+        }
       });
       const uploadResponse = await TourService.uploadImage(id, formData);
-      console.log("Upload successful:", uploadResponse.data);
+      console.log("Upload successful:", uploadResponse);
       return uploadResponse.data;
     } catch (error) {
       console.error("Error uploading image:", error);
@@ -304,106 +392,38 @@ function TourFormUpdate({ setRows,rows,selectedTourId }) {
                 </div>
 
                 {/* Điểm bắt đầu + Điểm đến */}
-                <div className="col-md-6">
-                  <label htmlFor="startPoint" className="form-label">
-                    Điểm đi
+                <div className="col-md-12">
+                  <label htmlFor="route_id" className="form-label">
+                    Tuyến đi
                   </label>
                   <select
-                    id="startPoint"
+                    id="route_id"
                     className="form-select"
-                    name="startPoint"
+                    name="route_id"
                     defaultValue=""
+                    value={formData.route_id}
                     onChange={(e) => {
-                      handleAreaDepChange(e);
-                      handleChange();
+                      const selectedId = e.target.value;
+                      setFormData((prev) => ({
+                        ...prev,
+                        route_id: selectedId,
+                      }));
                     }}
                   >
                     <option value="" disabled>
-                      Chọn khu vực
+                      Chọn tuyến
                     </option>
-                    {area.map((a) => (
-                      <option key={a.id} value={a.id}>
-                        {a.name}
-                      </option>
-                    ))}
+                    {route &&
+                      route.map((r) => (
+                        <option key={r.route_id} value={r.route_id}>
+                          {r.origin_station_id.name} --{" "}
+                          {r.destination_station_id.name}
+                        </option>
+                      ))}
                   </select>
-                </div>
-                <div className="col-md-6">
-                  <label
-                    htmlFor="city_depart_id"
-                    className="form-label"
-                  ></label>
-                  <select
-                    id="city_depart_id"
-                    className="form-select"
-                    name="city_depart_id"
-                    defaultValue=""
-                    value={formData.city_depart_id}
-                    onChange={handleChange}
-                  >
-                    <option value="" disabled>
-                      Chọn thành phố
-                    </option>
-                    {areaDepartSelected.map((city) => (
-                      <option key={city.id} value={city.id}>
-                        {city.nameCity}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.city_depart_id && (
-                    <p className="text-danger">{errors.city_depart_id}</p>
-                  )}
-                </div>
 
-                {/* Điểm bắt đầu + Điểm đến */}
-                <div className="col-md-6">
-                  <label htmlFor="end-point" className="form-label">
-                    Điểm đến
-                  </label>
-                  <select
-                    id="end-point"
-                    className="form-select"
-                    name="end-point"
-                    defaultValue=""
-                    onChange={(e) => {
-                      handleAreaArriveChange(e);
-                      handleChange();
-                    }}
-                  >
-                    <option value="" disabled>
-                      Chọn khu vực
-                    </option>
-                    {area.map((a) => (
-                      <option key={a.id} value={a.id}>
-                        {a.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="col-md-6">
-                  <label
-                    htmlFor="city_arrive_id"
-                    className="form-label"
-                  ></label>
-                  <select
-                    id="city_arrive_id"
-                    name="city_arrive_id"
-                    className="form-select"
-                    defaultValue=""
-                    value={formData.city_arrive_id}
-                    onChange={handleChange}
-                  >
-                    <option value="" disabled>
-                      Chọn thành phố
-                    </option>
-                    {areaArriveSelected.map((city) => (
-                      <option key={city.id} value={city.id}>
-                        {city.nameCity}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.city_arrive_id && (
-                    <p className="text-danger">{errors.city_arrive_id}</p>
+                  {errors.route_id && (
+                    <p className="text-danger">{errors.route_id}</p>
                   )}
                 </div>
 
@@ -454,7 +474,7 @@ function TourFormUpdate({ setRows,rows,selectedTourId }) {
                     onChange={handleChange}
                   />
                   {errors.night && (
-                    <p className="text-danger">{errors.nnightight}</p>
+                    <p className="text-danger">{errors.night}</p>
                   )}
                 </div>
 
@@ -466,26 +486,16 @@ function TourFormUpdate({ setRows,rows,selectedTourId }) {
                       <label htmlFor="transport" className="form-label">
                         Nhà xe
                       </label>
-                      <select
-                        id="transport"
-                        className="form-select"
+                      <Combobox
+                        data={car}
+                        dataKey="id"
+                        textField="name"
                         name="car_company_id"
+                        onChange={(selected) =>
+                          handleComboChange("car_company_id", selected)
+                        }
                         defaultValue={formData.car_company_id}
-                        value={formData.car_company_id}
-                        onChange={handleChange}
-                      >
-                        <option value="" disabled selected>
-                          Chọn phương tiện
-                        </option>
-                        {car.map((c) => (
-                          <option
-                            key={c.car_company_id}
-                            value={c.car_company_id}
-                          >
-                            {c.name}
-                          </option>
-                        ))}
-                      </select>
+                      />
                       {errors.car_company_id && (
                         <p className="text-danger">{errors.car_company_id}</p>
                       )}
@@ -494,23 +504,16 @@ function TourFormUpdate({ setRows,rows,selectedTourId }) {
                       <label htmlFor="accommodation" className="form-label">
                         Khách sạn
                       </label>
-                      <select
-                        id="hotel"
-                        className="form-select"
+                      <Combobox
+                        data={hotel}
+                        dataKey="id"
+                        textField="name"
                         name="hotel_id"
+                        onChange={(selected) =>
+                          handleComboChange("hotel_id", selected)
+                        }
                         defaultValue={formData.hotel_id}
-                        value={formData.hotel_id}
-                        onChange={handleChange}
-                      >
-                        <option value="" disabled selected>
-                          Chọn nơi ở
-                        </option>
-                        {hotel.map((h) => (
-                          <option key={h.hotel_id} value={h.hotel_id}>
-                            {h.name}
-                          </option>
-                        ))}
-                      </select>
+                      />
                       {errors.hotel_id && (
                         <p className="text-danger">{errors.hotel_id}</p>
                       )}
@@ -519,23 +522,16 @@ function TourFormUpdate({ setRows,rows,selectedTourId }) {
                       <label htmlFor="checkin" className="form-label">
                         Điểm tham quan
                       </label>
-                      <select
-                        id="checkin"
-                        className="form-select"
+                      <Combobox
+                        data={checkin}
+                        dataKey="id"
+                        textField="name"
                         name="checkin_id"
+                        onChange={(selected) =>
+                          handleComboChange("car_company_id", selected)
+                        }
                         defaultValue={formData.checkin_id}
-                        value={formData.checkin_id}
-                        onChange={handleChange}
-                      >
-                        <option value="" disabled selected>
-                          Chọn điểm tham quan
-                        </option>
-                        {checkin.map((h) => (
-                          <option key={h.id} value={h.id}>
-                            {h.name}
-                          </option>
-                        ))}
-                      </select>
+                      />
                       {errors.checkin_id && (
                         <p className="text-danger">{errors.checkin_id}</p>
                       )}
@@ -625,11 +621,20 @@ function TourFormUpdate({ setRows,rows,selectedTourId }) {
                 Ảnh
               </FormLabel>
               <Upload
-                action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
+                customRequest={({ file, onSuccess, onError }) => {
+                  uploadImage(file)
+                    .then((response) => {
+                      onSuccess(response);
+                    })
+                    .catch((error) => {
+                      onError(error);
+                    });
+                }}
                 listType="picture-card"
                 fileList={fileList}
                 onPreview={handlePreview}
                 onChange={handleChangeImage}
+                onRemove={handleDelteImage}
                 className="m-3 w-100"
                 style={{ width: "300px" }}
               >
@@ -679,7 +684,7 @@ function TourFormUpdate({ setRows,rows,selectedTourId }) {
                 type="button"
                 className="btn btn-primary"
                 onClick={() => {
-                  handleSave();
+                  handleUpdate();
                 }}
               >
                 Lưu thay đổi

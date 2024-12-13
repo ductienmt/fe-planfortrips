@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import "./EnterpriseSidebar.css";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/planfortrips-logo_1.png";
 import { useEnterprise } from "../../context/EnterpriseContext/EnterpriseProvider";
 import { useAuth } from "../../context/AuthContext/AuthProvider";
+import Account from "../transportation/account/Account";
 
 const EnterpriseSidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -18,25 +19,135 @@ const EnterpriseSidebar = () => {
     setCollapsed(!collapsed);
   };
 
-  const handleSelect = (item) => {
+  const handleSelect = (item, path) => {
     setSelectedItem(item);
     sessionStorage.setItem("selectedItem", item);
+
+    if (item === "aco-account" || item === "vehicle-account") {
+      const accountElement = document.getElementById("accountModal");
+      if (accountElement) {
+        accountElement.click();
+      }
+      return;
+    }
+
+    navigate(`/enterprise/${path}`);
   };
 
   useEffect(() => {
-    // Xác định base path theo loại doanh nghiệp
     const basePath =
       typeEnterprise === "Xe khách" ? "transportation" : "accomodation";
-
-    // Xác định selectedItem từ URL hiện tại nếu người dùng nhập trực tiếp
     const itemFromURL = location.pathname.split("/").pop();
-
-    // Nếu selectedItem khác với URL hiện tại, cập nhật nó và lưu vào sessionStorage
     if (itemFromURL !== selectedItem) {
       setSelectedItem(itemFromURL);
       sessionStorage.setItem("selectedItem", itemFromURL);
     }
   }, [typeEnterprise, location.pathname]);
+
+  const menuItems = useMemo(() => {
+    const commonItems = [
+      {
+        key: "dashboard",
+        icon: "fa-house",
+        label: "Thống kê",
+        path: `${typeEnterprise === "Xe khách" ? "transportation" : "accomodation"}/dashboard`,
+      },
+      // {
+      //   key: "voucher-manager",
+      //   icon: "fa-ticket",
+      //   label: "Mã giảm giá",
+      //   path: `${typeEnterprise === "Xe khách" ? "transportation" : "accomodation"}/voucher-manager`,
+      // },
+    ];
+
+    const accomodationItems = [
+      {
+        key: "accomodation-manager",
+        icon: "fa-hotel",
+        label: `Quản lý ${typeEnterprise}`,
+        path: "accomodation/accomodation-manager",
+      },
+      {
+        key: "guest-manager",
+        icon: "fa-user-check",
+        label: "Khách hàng",
+        path: "accomodation/guest-manager",
+      },
+      {
+        key: "choose-hotel",
+        icon: "fa-bed",
+        label: "Quản lý phòng",
+        path: "accomodation/choose-hotel",
+      },
+      {
+        key: "voucher-manager",
+        icon: "fa-ticket",
+        label: "Quản lý voucher",
+        path: "accomodation/voucher-manager",
+      },
+      {
+        key: "aco-account",
+        icon: "fa-solid fa-user",
+        label: "Account",
+        path: "",
+        onClick: () => {
+          document.getElementById("acco").click();
+        },
+      },
+    ];
+
+    const transportationItems = [
+      {
+        key: "Guest",
+        icon: "fa-clipboard-list",
+        label: "Khách hàng",
+        path: "transportation/Guest",
+      },
+      {
+        key: "vehicle-management",
+        icon: "fa-car",
+        label: "Quản lý xe",
+        path: "transportation/vehicle-management",
+      },
+      {
+        key: "Seats",
+        icon: "fa-solid fa-couch",
+        label: "Quản lý ghế",
+        path: "transportation/Seats",
+      },
+      {
+        key: "Routehotel",
+        icon: "fa-route",
+        label: "Tuyến",
+        path: "transportation/Routehotel",
+      },
+      {
+        key: "vehicle-schedules",
+        icon: "fa-solid fa-calendar-days",
+        label: "Lịch trình",
+        path: "transportation/vehicle-schedules",
+      },
+      {
+        key: "vouchers",
+        icon: "fa-ticket",
+        label: "Khuyến mãi",
+        path: "transportation/vouchers",
+      },
+      {
+        key: "vehicle-account",
+        icon: "fa-solid fa-user",
+        label: "Tài khoản",
+        path: "",
+        onClick: () => {
+          document.getElementById("acco").click();
+        },
+      },
+    ];
+
+    return typeEnterprise === "Xe khách"
+      ? [...commonItems, ...transportationItems]
+      : [...commonItems, ...accomodationItems];
+  }, [typeEnterprise]);
 
   return (
     <>
@@ -47,161 +158,23 @@ const EnterpriseSidebar = () => {
               src={logo}
               alt="Logo"
               className="logo"
-              style={{
-                width: "80%",
-                cursor: "pointer",
-              }}
+              style={{ width: "80%", cursor: "pointer" }}
               onClick={toggleSidebar}
             />
           </div>
           <ul className="sidebar-menu">
-            {["Homestay", "Resort", "Khách sạn"].includes(typeEnterprise) && (
-              <>
-                <li
-                  className={selectedItem === "dashboard" ? "isActive" : ""}
-                  onClick={() => handleSelect("dashboard")}
-                >
-                  <Link to="/enterprise/accomodation/dashboard">
-                    <i className="fa-duotone fa-solid fa-house"></i>{" "}
-                    {!collapsed && <span>Thống kê</span>}
-                  </Link>
-                </li>
-                <li
-                  className={
-                    selectedItem === "accomodation-manager" ? "isActive" : ""
-                  }
-                  onClick={() => handleSelect("accomodation-manager")}
-                >
-                  <Link to="/enterprise/accomodation/accomodation-manager">
-                    <i className="fa-solid fa-hotel"></i>{" "}
-                    {!collapsed && (
-                      <span>
-                        Quản lý{" "}
-                        <span style={{ textTransform: "lowercase" }}>
-                          {typeEnterprise}
-                        </span>
-                      </span>
-                    )}
-                  </Link>
-                </li>
-                {typeEnterprise !== "Homestay" && (
-                  <>
-                    <li
-                      className={
-                        selectedItem === "guest-management" ? "isActive" : ""
-                      }
-                      onClick={() => handleSelect("guest-management")}
-                    >
-                      <Link to="accomodation/guest-manager">
-                        <i className="fa-solid fa-user-check"></i>{" "}
-                        {!collapsed && <span>Khách hàng</span>}
-                      </Link>
-                    </li>
-                    <li
-                      className={
-                        selectedItem === "choose-hotel" ? "isActive" : ""
-                      }
-                      onClick={() => handleSelect("choose-hotel")}
-                    >
-                      <Link to="accomodation/choose-hotel">
-                        <i className="fa-duotone fa-solid fa-bed"></i>{" "}
-                        {!collapsed && <span>Quản lý phòng</span>}
-                      </Link>
-                    </li>
-                  </>
-                )}
-                <li
-                  className={selectedItem === "vouchers" ? "isActive" : ""}
-                  onClick={() => handleSelect("vouchers")}
-                >
-                  <Link to="accomodation/voucher-manager">
-                    <i className="fa-solid fa-ticket"></i>{" "}
-                    {!collapsed && <span>Mã giảm giá</span>}
-                  </Link>
-                </li>
-              </>
-            )}
-
-            {typeEnterprise === "Xe khách" && (
-              <>
-                <li
-                  className={selectedItem === "dashboard" ? "isActive" : ""}
-                  onClick={() => handleSelect("dashboard")}
-                >
-                  <Link to="/enterprise/transportation/dashboard">
-                    <i className="fa-duotone fa-solid fa-house"></i>{" "}
-                    {!collapsed && <span>Thống kê</span>}
-                  </Link>
-                </li>
-            
-                <li
-                  className={selectedItem === "Guest" ? "isActive" : ""}
-                  onClick={() => handleSelect("Guest")}
-                >
-                  <Link to="transportation/Guest">
-                    <i className="fa-solid fa-clipboard-list"></i>
-                    {!collapsed && <span>Khách hàng</span>}
-                  </Link>
-                </li>
-                <li
-                  className={
-                    selectedItem === "vehicle-management" ? "isActive" : ""
-                  }
-                  onClick={() => handleSelect("vehicle-management")}
-                >
-                  <Link to="transportation/vehicle-management">
-                    <i className="fa-solid fa-car"></i>{" "}
-                    {!collapsed && <span>Quản lý xe</span>}
-                  </Link>
-                </li>
-                <li
-                  className={selectedItem === "Seats" ? "isActive" : ""}
-                  onClick={() => handleSelect("Seats")}
-                >
-                  <Link to="transportation/Seats">
-                    <i className="fa-solid fa-route"></i>{" "}
-                    {!collapsed && <span>Seats</span>}
-                  </Link>
-                </li>
-                <li
-                  className={selectedItem === "Route" ? "isActive" : ""}
-                  onClick={() => handleSelect("Route")}
-                >
-                  <Link to="transportation/Routehotel">
-                    <i className="fa-solid fa-Routehotel"></i>{" "}
-                    {!collapsed && <span>Tuyến</span>}
-                  </Link>
-                </li>
-                
-                <li
-                  className={selectedItem === "vouchers" ? "isActive" : ""}
-                  onClick={() => handleSelect("vouchers")}
-                >
-                  <Link to="transportation/vouchers">
-                    <i className="fa-solid fa-ticket"></i>{" "}
-                    {!collapsed && <span>Mã giảm giá</span>}
-                  </Link>
-                </li>
-                  <li
-                    className={selectedItem === "schedules" ? "isActive" : ""}
-                    onClick={() => handleSelect("schedules")}
-                  >
-                    <Link to="transportation/vehicle-schedules">
-                      <i className="fa-solid fa-ticket"></i>{" "}
-                      {!collapsed && <span>Lịch trình</span>}
-                    </Link>
-                  </li>
-                <li
-                  className={selectedItem === "account" ? "isActive" : ""}
-                  onClick={() => handleSelect("account")}
-                >
-                  <Link to="transportation/vehicle-account">
-                    <i className="fa-solid fa-ticket"></i>{" "}
-                    {!collapsed && <span>Account</span>}
-                  </Link>
-                </li>
-              </>
-            )}
+            {menuItems.map((item) => (
+              <li
+                key={item.key}
+                className={selectedItem === item.key ? "isActive" : ""}
+                onClick={() => handleSelect(item.key, item.path)}
+              >
+                <Link to={item.path ? `/enterprise/${item.path}` : "#"}>
+                  <i className={`fa-solid ${item.icon}`}></i>{" "}
+                  {!collapsed && <span>{item.label}</span>}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
         <div className="bottom">
@@ -218,9 +191,16 @@ const EnterpriseSidebar = () => {
             </button>
           </div>
         </div>
+        <button
+          className="d-none"
+          data-bs-toggle="modal"
+          data-bs-target="#accountModalEnterprise"
+          id="accountModal"
+        ></button>
       </div>
+      <Account />
     </>
   );
 };
 
-export default EnterpriseSidebar;
+export default React.memo(EnterpriseSidebar);

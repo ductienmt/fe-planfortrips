@@ -1,15 +1,19 @@
 import "./App.css";
 import { SnackbarProvider } from "notistack";
 import DashboardLayoutBasic from "./admin/pages/Layout/DashboardLayoutBasic";
+import { Outlet } from "react-router-dom";
+import { useAuth } from "./context/AuthContext/AuthProvider";
+import ChatbotComponent from "./client/Components/ChatBotAI/ChatBox";
+import MessengerChat from "./client/Components/ChatBotAI/ChatMessenger";
 // import LoginAdmin from "./admin/pages/Auth/Login/Login";
-// const checkAuth =(requiredRole)=>{
-//   const token = sessionStorage.getItem("token");
-//   const role = sessionStorage.getItem("role");
-//   if(!token || role !== requiredRole ){
-//     return false;
-//   }
-//   return true
-// }
+const checkRoleAdmin = () => {
+  const { token } = useAuth();
+  const { role } = useAuth();
+  if (!token || role !== "ROLE_ADMIN") {
+    return false;
+  }
+  return true;
+};
 function App() {
   return (
     <SnackbarProvider
@@ -19,8 +23,13 @@ function App() {
         horizontal: "right",
       }}
     >
-      {/* {checkAuth('ROLE_ADMIN') ? <DashboardLayoutBasic /> : <LoginAdmin/>} */}
-      <DashboardLayoutBasic/>
+      {checkRoleAdmin("ROLE_ADMIN") ? (
+        <DashboardLayoutBasic />
+      ) : (
+        <>
+          <Outlet /> <ChatbotComponent /> <MessengerChat/>
+        </>
+      )}
     </SnackbarProvider>
   );
 }
