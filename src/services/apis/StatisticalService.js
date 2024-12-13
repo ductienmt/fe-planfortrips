@@ -20,5 +20,21 @@ export const StatisticalService = {
   BookingHotelDetailByYear: async (year) => {
     const response = await Http.get(`/statistical/year/bookingHotelDetail/${year}`);
     return response.data;
+  },
+  CountEtpByYear: async (year) => {
+    const response = await Http.get(`statistical/enterprise/${year}`);
+    return response;
+  },
+  CountUserByYear: async (year) => {
+    const response = await Http.get(`statistical/user/${year}`);
+    return response;
+  },
+  CountPlanByYear: async (year) => {
+    const response = await Http.get(`statistical/plan/${year}`);
+    return response;
+  },
+  CountVehicleByYear: async (year) => {
+    const response = await Http.get(`statistical/vehicle/${year}`);
+    return response;
   }
 };

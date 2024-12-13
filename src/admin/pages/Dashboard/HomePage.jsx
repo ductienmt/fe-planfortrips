@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import Statitical from '../Statistical/Statistical';
+import Statitical from '../StatisticalDashBoard/StatisticalDashBoard';
 import AdminList from './AdminList/AdminList';
 import './HomePage.css';
 import { StatisticalService } from '../../../services/apis/StatisticalService';

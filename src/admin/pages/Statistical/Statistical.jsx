@@ -1,92 +1,136 @@
-import './Statistical.css';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { StatisticalService } from '../../../services/apis/StatisticalService';
-import CarStatistical from '../CardStatistical/CardStatistical';
 
 function Statistical() {
-    const [countAc, setCountAc] = useState({
-        countUser: 0,
-        countAdmin: 0,
-        countEtp: 0,
-        countPlan : 0
-    });
-
-    const [sum, setSum] = useState(0);
-
+    const [dataEtp, setDataEtp] = useState([]);
+    const [dataUser, setDataUser] = useState([]);
+    const [dataPlan, setDataPlan] = useState([]);
+    const [dataVehicle, setDataVehicle] = useState([]);
+    const [year, setYear] = useState(new Date().getFullYear());
+    const [years, setYears] = useState([]);
 
     useEffect(() => {
-        fetchData();
+        const availableYears = [];
+        for (let i = 2000; i <= new Date().getFullYear(); i++) {
+            availableYears.push(i);
+        }
+        setYears(availableYears);
     }, []);
 
-    const fetchData = async () => {
-        try {
-            const [countUser, countAdmin, countEtp, countPlan] = await Promise.all([
-                StatisticalService.getCountUser(),
-                StatisticalService.getCountAdmin(),
-                StatisticalService.getCountEnterprise(),
-                StatisticalService.getCountPlan()   
-            ]);
-    
-            const total = countUser + countAdmin + countEtp + countPlan; 
-            setCountAc({ countUser, countAdmin, countEtp, countPlan }); 
-            setSum(total);
-        } catch (error) {
-            console.error('Error fetching statistical data:', error);
-        }
-    };
-    ;
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                // Lấy dữ liệu thống kê doanh nghiệp theo năm
+                const responseEtp = await StatisticalService.CountEtpByYear(year);
+                setDataEtp(responseEtp.data);
 
-    const calculatePercent = (value) => {
-        if (!sum || !value) return 0;
-        return ((value / sum) * 100).toFixed(2);
+                // Lấy dữ liệu thống kê người dùng theo năm
+                const responseUser = await StatisticalService.CountUserByYear(year);
+                setDataUser(responseUser.data);
+
+                // Lấy dữ liệu thống kê kế hoạch theo năm
+                const responsePlan = await StatisticalService.CountPlanByYear(year);
+                setDataPlan(responsePlan.data);
+
+                // Lấy dữ liệu thống kê phương tiện theo năm
+                const responseVehicle = await StatisticalService.CountVehicleByYear(year);
+                setDataVehicle(responseVehicle.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    }, [year]);
+
+    const handleYearChange = (event) => {
+        setYear(event.target.value);
     };
 
     return (
-        <div className="admin-statitiscal mt-3">
-            <div className="admin-statitiscal-container bg-light">
-                <div className="admin-statitiscal-nav d-flex justify-content-between">
-                    <div className="admin-statitiscal-nav-title">
-                        <span>Tổng thống kê</span>
-                    </div>
-                    <div className="admin-statitiscal-nav-print">
-                        <button className="btn btn-outline-dark">Xuất File</button>
-                    </div>
+        <div className="p-4">
+            <h2 className="text-center">Trang thống kê</h2>
+            <div>
+                <label htmlFor="yearInput">Chọn năm: </label>
+                <select
+                    id="yearInput"
+                    value={year}
+                    onChange={handleYearChange}
+                    className="ps-2"
+                >
+                    {years.map((yearItem) => (
+                        <option key={yearItem} value={yearItem}>
+                            {yearItem}
+                        </option>
+                    ))}
+                </select>
+            </div>
+
+            <div className="row">
+                <div className="col-6">
+                    <h3>Số lượng doanh nghiệp tham gia trong năm {year}</h3>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <LineChart data={dataEtp}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="month" />
+                            <YAxis />
+                            <Tooltip formatter={(value) => value} />
+                            <Legend />
+                            <Line type="monotone" dataKey="account_count" stroke="#8884d8" name="Số lượng doanh nghiệp" />
+                        </LineChart>
+                    </ResponsiveContainer>
                 </div>
 
-                <div className="admin-statistical-body">
-                    <div className="row p-2 mt-2 g-3">
-                        <div className="col-6">
-                            <CarStatistical
-                                number={countAc.countUser}
-                                title="Số lượng User"
-                                percent={calculatePercent(countAc.countUser)}
-                                typeIcon="User"
-                            />
-                        </div>
-                        <div className="col-6">
-                            <CarStatistical
-                                number={countAc.countAdmin}
-                                title="Số lượng Admin"
-                                percent={calculatePercent(countAc.countAdmin)}
-                                typeIcon="Admin"
-                            />
-                        </div>
-                        <div className="col-6">
-                            <CarStatistical
-                                number={countAc.countEtp}
-                                title="Số lượng Doanh Nghiệp"
-                                percent={calculatePercent(countAc.countEtp)}
-                                typeIcon="Enterprise"
-                            />
-                        </div>
-                        <div className="col-6">
-                            <CarStatistical number={countAc.countPlan} title={"Kế hoạch đã được đã được tạo ra"} percent={''} typeIcon={"Plan"} />
-                        </div>
-                    </div>
-                    
+                <div className="col-6">
+                    <h3>Số lượng người dùng tham gia trong năm {year}</h3>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <LineChart data={dataUser}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="month" />
+                            <YAxis />
+                            <Tooltip formatter={(value) => value} />
+                            <Legend />
+                            <Line type="monotone" dataKey="account_count" stroke="#82ca9d" name="Số lượng người dùng" />
+                        </LineChart>
+                    </ResponsiveContainer>
                 </div>
 
+                <div className="col-6">
+                    <h3>Số lượng kế hoạch được tạo trong năm {year}</h3>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <LineChart data={dataPlan}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="month" />
+                            <YAxis />
+                            <Tooltip formatter={(value) => value} />
+                            <Legend />
+                            <Line type="monotone" dataKey="account_count" stroke="#ff7300" name="Số lượng kế hoạch" />
+                        </LineChart>
+                    </ResponsiveContainer>
+                </div>
 
+                <div className="col-6">
+                    <h3>Phương tiện có Lịch trình nhiều nhất trong tháng / {year}</h3>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <LineChart data={dataVehicle}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="month" />
+                            <YAxis />
+                            <Tooltip
+                                formatter={(value, name, props) => {
+                                    // Hiển thị thêm resource_id trong tooltip
+                                    if (props.payload) {
+                                        return [`${value} (${props.payload.resource_id || 'N/A'})`, name];
+                                    }
+                                    return value;
+                                }}
+                                labelFormatter={(label) => `Tháng: ${label}`}
+                            />
+                            <Legend />
+                            <Line type="monotone" dataKey="count" stroke="#8884d8" name="Số lượng phương tiện" />
+                        </LineChart>
+                    </ResponsiveContainer>
+                </div>
             </div>
         </div>
     );
