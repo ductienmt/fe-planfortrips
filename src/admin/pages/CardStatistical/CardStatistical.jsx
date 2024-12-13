@@ -45,7 +45,7 @@ function CardStatistical({ number, title, percent, typeIcon }) {
 
                             <div className="admin__card-statistical-right__detail">
                                 <span className='admin__card-statistical-right__detail-percent'>
-                                    +{percent}%
+                                  {percent ? `${percent}%` : 'None'}
                                 </span>
                             </div>
                         </div>

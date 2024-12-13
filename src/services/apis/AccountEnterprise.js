@@ -1,8 +1,8 @@
 import Http from "../Http";
 
 export const AccountEtpService = {
-  getAll: async () => {
-    return await Http.get("/account-enterprises/all");
+  getAll: async (name, page, size) => {
+    return await Http.get(`/account-enterprises/all?name=${name}&page=${page}&size=${size}`);
   },
   getAccountEnterpriseNeedAccept: async() => {
       return await Http.get('/account-enterprises/accept');

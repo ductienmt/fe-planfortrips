@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Typography, CircularProgress, Button, Snackbar, Pagination } from '@mui/material';
+import { Typography, CircularProgress, Button, Snackbar, Pagination, TextField } from '@mui/material';
 import AccountEtpService from '../../../services/apis/AccountEnterprise';
 
 function Enterprise() {
@@ -8,26 +8,27 @@ function Enterprise() {
   const [error, setError] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  
-  // Pagination states
   const [page, setPage] = useState(1);
-  const [itemsPerPage] = useState(5); 
+  const [totalPages, setTotalPages] = useState(1);
+  const [pageSize] = useState(8);
+  const [searchName, setSearchName] = useState(''); // New state for search input
 
+  // Fetch enterprises with search term and pagination
   const fetchEnterprises = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await AccountEtpService.getAll();
-      setEnterprises(response.data);
-      console.log(response);
-      
+      const response = await AccountEtpService.getAll(searchName, page - 1, pageSize);
+      setEnterprises(response.data.content);
+      setTotalPages(response.data.totalPages);
     } catch (err) {
-      setError('Failed to load enterprises');
+      setError('No data');
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [page, pageSize, searchName]);
 
+  // Trigger fetch when searchName or page changes
   useEffect(() => {
     fetchEnterprises();
   }, [fetchEnterprises]);
@@ -36,8 +37,7 @@ function Enterprise() {
     setLoading(true);
     try {
       const res = await AccountEtpService.toggleStage(id);
-      console.log(res);
-      
+
       if (res.status) {
         setSnackbarMessage(res.data ? 'Tắt trạng thái tài khoản Enterprise.' : 'Mở trạng thái tài khoản thành công');
         setSnackbarOpen(true);
@@ -47,16 +47,12 @@ function Enterprise() {
         setSnackbarOpen(true);
       }
     } catch (error) {
-      console.log(error);
-      
       setSnackbarMessage('Error occurred while updating status.');
       setSnackbarOpen(true);
     } finally {
       setLoading(false);
     }
   };
-
-  const paginatedEnterprises = enterprises.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
   return (
     <div className="container pb-3">
@@ -66,6 +62,24 @@ function Enterprise() {
           <Typography variant="h4" gutterBottom>
             Quản lý Doanh nghiệp
           </Typography>
+        </div>
+      </div>
+
+      {/* Search field */}
+      <div className="row my-2">
+        <div className="col">
+          <TextField
+            label="Tìm kiếm theo tên"
+            variant="outlined"
+            fullWidth
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)} // Update searchName on input change
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                setPage(1); // Reset page to 1 when search is submitted
+              }
+            }}
+          />
         </div>
       </div>
 
@@ -92,20 +106,20 @@ function Enterprise() {
               </tr>
             </thead>
             <tbody>
-              {paginatedEnterprises?.map((enterprise) => (
+              {enterprises.map((enterprise) => (
                 <tr key={enterprise.accountEnterpriseId}>
                   <td>{enterprise.cityName}</td>
                   <td>{enterprise.email}</td>
                   <td>{enterprise.enterpriseName}</td>
                   <td>{enterprise.phoneNumber}</td>
-                  <td>{enterprise.taxCode}</td>
+                  <td>{enterprise.taxCode || 'N/A'}</td>
                   <td>{enterprise.status ? 'Active' : 'Inactive'}</td>
                   <td>
                     <Button
                       variant="contained"
                       color={enterprise.status ? 'secondary' : 'primary'}
                       onClick={() => toggleEnterpriseStatus(enterprise.accountEnterpriseId)}
-                      disabled={loading} 
+                      disabled={loading}
                     >
                       {enterprise.status ? 'Deactivate' : 'Activate'}
                     </Button>
@@ -115,8 +129,9 @@ function Enterprise() {
             </tbody>
           </table>
 
+          {/* Pagination */}
           <Pagination
-            count={Math.ceil(enterprises.length / itemsPerPage)}
+            count={totalPages}
             page={page}
             onChange={(event, value) => setPage(value)}
             color="primary"

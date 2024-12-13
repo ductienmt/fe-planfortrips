@@ -26,14 +26,15 @@ function Statistical() {
                 StatisticalService.getCountEnterprise(),
                 StatisticalService.getCountPlan()   
             ]);
-
-            const total = countUser + countAdmin + countEtp;
-            setCountAc({ countUser, countAdmin, countEtp });
+    
+            const total = countUser + countAdmin + countEtp + countPlan; 
+            setCountAc({ countUser, countAdmin, countEtp, countPlan }); 
             setSum(total);
         } catch (error) {
             console.error('Error fetching statistical data:', error);
         }
     };
+    ;
 
     const calculatePercent = (value) => {
         if (!sum || !value) return 0;
@@ -79,7 +80,7 @@ function Statistical() {
                             />
                         </div>
                         <div className="col-6">
-                            <CarStatistical number={countAc.countPlan} title={"Kế hoạch đã được đã được tạo ra"} percent={'N/A  '} typeIcon={"Plan"} />
+                            <CarStatistical number={countAc.countPlan} title={"Kế hoạch đã được đã được tạo ra"} percent={''} typeIcon={"Plan"} />
                         </div>
                     </div>
                     
