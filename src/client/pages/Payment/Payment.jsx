@@ -100,16 +100,16 @@ const Payment = () => {
         enqueueSnackbar("Tạo kế hoạch thành công", {
           variant: "success",
           autoHideDuration: 2000,
-          // onExit: () => {
-          //   sessionStorage.removeItem("planData");
-          //   sessionStorage.removeItem("checkin");
-          //   sessionStorage.removeItem("checkout");
-          //   sessionStorage.removeItem("priceAc");
-          //   sessionStorage.removeItem("priceTr");
-          //   sessionStorage.removeItem("totalPrice");
-          //   sessionStorage.removeItem("userInformation");
-          //   sessionStorage.removeItem("tripData");
-          // },
+          onExit: () => {
+            sessionStorage.removeItem("planData");
+            sessionStorage.removeItem("checkin");
+            sessionStorage.removeItem("checkout");
+            sessionStorage.removeItem("priceAc");
+            sessionStorage.removeItem("priceTr");
+            sessionStorage.removeItem("totalPrice");
+            sessionStorage.removeItem("userInformation");
+            sessionStorage.removeItem("tripData");
+          },
         });
         return res.data;
       } catch (e) {
@@ -142,6 +142,8 @@ const Payment = () => {
       } else {
         console.log("No hotel found to update ticketId.");
       }
+      console.log(res.data);
+
       return res.data;
     } catch (error) {
       console.error("Error creating booking:", error);
@@ -236,7 +238,7 @@ const Payment = () => {
         const tData = JSON.parse(sessionStorage.getItem("tripData"));
 
         const bookingDetails = tripData.accomodation.rooms.map((room) => ({
-          roomId: room.roomId,
+          roomId: room.id,
 
           checkInTime: checkinHours ? checkinHours : "",
           checkOutTime: checkoutHours ? checkoutHours : "",
@@ -309,7 +311,7 @@ const Payment = () => {
         const tData = JSON.parse(sessionStorage.getItem("tripData"));
 
         const bookingDetails = tripData.accomodation.rooms.map((room) => ({
-          roomId: room.roomId,
+          roomId: room.id,
           checkInTime: checkinHours ? checkinHours : "",
           checkOutTime: checkoutHours ? checkoutHours : "",
           price: tData?.accomodation?.price_per_night || 0,
@@ -327,6 +329,8 @@ const Payment = () => {
 
         try {
           setIsLoading(true);
+          console.log("Booking details:", bookingDetails);
+
           const bookingResponse = await handleCreateBooking(bookingDetails, 2);
           const bookingHotelId = bookingResponse.bookingHotelId;
 

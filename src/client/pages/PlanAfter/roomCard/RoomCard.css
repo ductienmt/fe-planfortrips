@@ -1,4 +1,4 @@
-.components-card-room-custom-plan .card-room-type {
+.components-card-room-custom-plan .card-room-typee {
     box-shadow: 2px 5px 10px #cacaca !important;
     border-radius: 13px;
     display: flex;
@@ -7,14 +7,14 @@
     background-color: white;
 }
 
-.components-card-room-custom-plan .price-room-type {
+.components-card-room-custom-plan .price-room-typee {
     display: flex;
     flex-direction: column;
     gap: 20px;
     margin-right: 2rem;
 }
 
-.components-card-room-custom-plan .price-room-type a {
+.components-card-room-custom-plan .price-room-typee a {
     border: none;
     width: 100%;
     height: 50px;
@@ -29,16 +29,16 @@
     justify-content: center;
 }
 
-.components-card-room-custom-plan .price-room-type a:hover {
+.components-card-room-custom-plan .price-room-typee a:hover {
     background-color: var(--success-text-color);
 }
 
-.components-card-room-custom-plan .card-room-type .content-type {
+.components-card-room-custom-plan .card-room-typee .content-type {
     font-size: 1.2rem;
     font-weight: 600;
 }
 
-.components-card-room-custom-plan .price-room-type span {
+.components-card-room-custom-plan .price-room-typee span {
     font-size: 1.2rem;
 }
 
@@ -57,7 +57,7 @@
 } */
 
 @media screen and (max-width: 960px) {
-    .components-card-room-custom-plan .card-room-type {
+    .components-card-room-custom-plan .card-room-typee {
         display: flex;
         flex-direction: column;
     }
@@ -80,17 +80,17 @@
         margin-top: 1rem;
     }
 
-    .components-card-room-custom-plan .price-room-type {
+    .components-card-room-custom-plan .price-room-typee {
         justify-content: center;
         width: 80%;
         margin: 0;
     }
 
-    .components-card-room-custom-plan .price-room-type span {
+    .components-card-room-custom-plan .price-room-typee span {
         text-align: center;
     }
 
-    .components-card-room-custom-plan .price-room-type button {
+    .components-card-room-custom-plan .price-room-typee button {
         width: 100%;
         height: 60px;
     }
