@@ -14,6 +14,7 @@ import ButtonDeleteRoom from "../../components/ButtonDeleteRoom";
 import ButtonDeletePictureRoom from "../../components/ButtonDeletePictureRoom";
 import { id } from "date-fns/locale";
 import ImageCarousel from "../../components/ImageCarousel";
+import { format } from "date-fns";
 
 const Room = () => {
   const location = useLocation();
@@ -353,8 +354,13 @@ const Room = () => {
       sortOrder = null
     ) => {
       try {
+        const checkInDate = format(new Date(), "yyyy-MM-dd");
+        const checkOutDate = format(new Date(), "yyyy-MM-dd");
+
         const response = await RoomService.getRoomsByHotelId(
           id,
+          checkInDate,
+          checkOutDate,
           pageNo,
           pageSize,
           sortField,

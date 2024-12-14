@@ -22,4 +22,8 @@ export const CityService = {
     const response = await Http.get(`/cities/getFavoriteCity`);
     return response.data;
   },
+  getPopularCity: async () => {
+    const response = await Http.get(`/cities/getPopularCity`);
+    return response.data;
+  },
 };

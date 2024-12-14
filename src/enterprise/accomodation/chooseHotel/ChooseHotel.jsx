@@ -17,7 +17,7 @@ const ChooseHotel = () => {
     try {
       const response = await HotelService.detail();
       setHotelmData(response);
-      console.log(response);
+      // console.log(response);
     } catch (error) {
       console.error("Error fetching hotel data", error);
     } finally {

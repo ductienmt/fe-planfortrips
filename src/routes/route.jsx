@@ -241,6 +241,11 @@ const routeClient = () => [
       {
         path: "/booking/:type",
         Component: Booking,
+        // element: (
+        //   <ProtectedRoute allowedRoles={[ROLES.CLIENT]}>
+        //     <Booking />
+        //   </ProtectedRoute>
+        // ),
       },
       {
         path: "/hotel",
@@ -269,19 +274,39 @@ const routeClient = () => [
       {
         path: "/payment",
         Component: Payment,
+        // element: (
+        //   <ProtectedRoute allowedRoles={[ROLES.CLIENT]}>
+        //     <Payment />
+        //   </ProtectedRoute>
+        // ),
       },
       {
         path: "/success",
         Component: Success,
+        // element: (
+        //   <ProtectedRoute allowedRoles={[ROLES.CLIENT]}>
+        //     <Success />
+        //   </ProtectedRoute>
+        // ),
         exact: true,
       },
       {
         path: "/failed",
         Component: Failed,
+        // element: (
+        //   <ProtectedRoute allowedRoles={[ROLES.CLIENT]}>
+        //     <Failed />
+        //   </ProtectedRoute>
+        // ),
       },
       {
         path: "/profile",
         Component: Profile,
+        // element: (
+        //   <ProtectedRoute allowedRoles={[ROLES.CLIENT]}>
+        //     <Profile />
+        //   </ProtectedRoute>
+        // ),
         children: [
           {
             path: "",
@@ -301,7 +326,7 @@ const routeClient = () => [
           },
           // {
           //   path: "trip-save",
-          //   Component: YourSavedTrips, // Ensure you have this Component
+          //   Component: YourSavedTrips,
           // },
         ],
       },
@@ -353,10 +378,10 @@ const routeClient = () => [
       },
     ],
   },
-  {
-    path: "*",
-    element: <NotFoundPage />,
-  },
+  // {
+  //   path: "*",
+  //   element: <NotFoundPage />,
+  // },
 ];
 
 export const router = createBrowserRouter([

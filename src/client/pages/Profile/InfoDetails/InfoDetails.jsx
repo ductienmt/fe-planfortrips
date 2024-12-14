@@ -108,8 +108,6 @@ const InfoDetails = ({ email, phone, birthdate, loadAgain }) => {
         inputRefs.current[index - 1].focus();
       }
     }
-
-    // console.log("Current OTP:", newOtp.join(""));
   };
 
   const maskEmail = (email) => {
