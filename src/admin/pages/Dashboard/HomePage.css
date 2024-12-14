@@ -33,11 +33,11 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
-.admin__homepage-button:hover {
+/* .admin__homepage-button:hover {
     background-color: #ff4d4d; 
     color: white; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
-}
+} */
 
 .admin-body-item {
     padding: 12px 16px;
