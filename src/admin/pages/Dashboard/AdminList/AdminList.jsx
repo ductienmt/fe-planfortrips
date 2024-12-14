@@ -1,45 +1,10 @@
 import { useEffect, useState } from 'react';
 import './AdminList.css';
 import AccountEtpService from '../../../../services/apis/AccountEnterprise';
-import { format } from 'date-fns';  
+import { format } from 'date-fns';
 
-function AdminList() {
-    const [enterprises, setEnterprise] = useState([]);
-    const [loading, setLoading] = useState(false);  
-    const [message, setMessage] = useState('');  
+function AdminList({ title, enterprises, loading, handleAccept, message }) {
 
-    useEffect(() => {
-        const fetchEnterprises = async () => {
-            setLoading(true);  
-            try {
-                const res = await AccountEtpService.getAccountEnterpriseNeedAccept();
-                setEnterprise(res.data);
-            } catch (error) {
-                console.error('Error fetching enterprises:', error);
-            } finally {
-                setLoading(false);  
-            }
-        };
-
-        fetchEnterprises();
-    }, []);
-
-    const handleAccept = async (id) => {
-        try {
-            setLoading(true);  
-            await AccountEtpService.toggleStage(id); 
-            setMessage('Xét duyệt thành công!');  
-
-            setEnterprise(prevEnterprises => 
-                prevEnterprises.filter(etp => etp.accountEnterpriseId !== id)
-            );
-        } catch (error) {
-            console.error('Error accepting enterprise:', error);
-            setMessage('Đã có lỗi xảy ra. Vui lòng thử lại!');
-        } finally {
-            setLoading(false);  
-        }
-    };
 
     return (
         <>
@@ -51,6 +16,7 @@ function AdminList() {
                 </div>
             ) : (
                 <div style={{ maxHeight: '20rem', overflow: 'auto' }}>
+                    <h4>{title}</h4>
                     <table className="table table-hover">
                         <thead>
                             <tr>
