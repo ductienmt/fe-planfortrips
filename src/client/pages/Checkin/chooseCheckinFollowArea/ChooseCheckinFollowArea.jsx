@@ -47,6 +47,7 @@ const ChooseCheckinFollowArea = () => {
   useEffect(() => {
     // console.log("ChooseCheckinFollowArea id", city);
     document.title = "Điểm check-in";
+    window.scrollTo(0, 0);
     loadCityData(city);
   }, [city]);
 
@@ -89,7 +90,7 @@ const ChooseCheckinFollowArea = () => {
               <h2 className="text-center">GỢI Ý TOUR DU LỊCH DÀNH CHO BẠN</h2>
               <p className="text-center w-50 mx-auto"></p>
             </div>
-            <div className="checkInPage-card-chooseTour mt-5">
+            <div className="checkInPage-card-chooseTour mb-5">
               {tourCard.map((tour, index) => (
                 <TourCard
                   key={index}
