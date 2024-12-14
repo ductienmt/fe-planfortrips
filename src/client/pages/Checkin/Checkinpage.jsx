@@ -8,17 +8,13 @@ import ChooseAreaCard from "./chooseAreaCard/ChooseAreaCard";
 import ChooseProvince from "./chooseProvince/ChooseProvince";
 import TourCard from "../Homepage/TourCard/TourCard";
 import { useNavigate } from "react-router-dom";
+import { CityService } from "../../../services/apis/CityService";
+import Loader from "../../Components/Loading";
 
 const Checkinpage = () => {
   const navigate = useNavigate();
-  const provinces = [
-    { img: phuquoc, provinceName: "Phú Quốc" },
-    { img: phuquoc, provinceName: "Hà Nội" },
-    { img: phuquoc, provinceName: "Hạ Long" },
-    { img: phuquoc, provinceName: "Đà Nẵng" },
-    { img: phuquoc, provinceName: "Nha Trang" },
-    { img: phuquoc, provinceName: "Huế" },
-  ];
+  const [provinces, setProvinces] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const tourCard = [
     {
@@ -36,8 +32,21 @@ const Checkinpage = () => {
     },
   ];
 
+  const loadDataCityFavorites = async () => {
+    try {
+      setLoading(true);
+      const response = await CityService.getFavoriteCity();
+      setProvinces(response);
+    } catch (error) {
+      console.log("Failed to fetch data", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     document.title = "Check-in";
+    loadDataCityFavorites();
   }, []);
 
   return (
@@ -81,15 +90,22 @@ const Checkinpage = () => {
           Nam
         </p>
       </div>
-      <div className="checkInPage-card-chooseProvince">
-        {provinces.map((province, index) => (
-          <ChooseProvince
-            key={index}
-            img={province.img}
-            provinceName={province.provinceName}
-          />
-        ))}
-      </div>
+      {loading ? (
+        <Loader rong={"20vh"} />
+      ) : (
+        <>
+          <div className="checkInPage-card-chooseProvince">
+            {provinces.map((province) => (
+              <ChooseProvince
+                key={province.city_id}
+                img={province.image_url}
+                provinceName={province.name_city}
+                linkTo={`/check-in/city/${province.city_id}`}
+              />
+            ))}
+          </div>
+        </>
+      )}
       <div className="checkInPage-text mt-5">
         <h2 className="text-center">
           TOUR DU LỊCH PLAN FOR TRIPS GỢI Ý CHO BẠN
@@ -100,7 +116,7 @@ const Checkinpage = () => {
           combo dịch vụ thành 1 tour du lịch cho bạn
         </p>
       </div>
-      <div className="checkInPage-card-chooseTour mt-5 mb-5">
+      <div className="checkInPage-card-chooseTour mb-5">
         {tourCard.map((tour, index) => (
           <TourCard
             key={index}

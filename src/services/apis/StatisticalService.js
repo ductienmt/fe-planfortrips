@@ -25,16 +25,32 @@ export const StatisticalService = {
     const response = await Http.get(`statistical/enterprise/${year}`);
     return response;
   },
+  CountEtpByMonth: async (year, month) => {
+    const response = await Http.get(`statistical/enterprise/${year}/${month}`);
+    return response;
+  },
   CountUserByYear: async (year) => {
     const response = await Http.get(`statistical/user/${year}`);
+    return response;
+  },
+  CountUserByMonth : async (year, month) => {
+    const response = await Http.get(`statistical/user/${year}/${month}`);
     return response;
   },
   CountPlanByYear: async (year) => {
     const response = await Http.get(`statistical/plan/${year}`);
     return response;
   },
+  CountPlanByMonth: async (year, month) => {
+    const response = await Http.get(`statistical/plan/${year}/${month}`);
+    return response;
+  },
   CountVehicleByYear: async (year) => {
     const response = await Http.get(`statistical/vehicle/${year}`);
+    return response;
+  },
+  CountHotelByYear: async (year) => {
+    const response = await Http.get(`statistical/hotel/${year}`);
     return response;
   }
 };

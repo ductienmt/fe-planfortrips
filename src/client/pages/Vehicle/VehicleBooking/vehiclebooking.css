@@ -53,6 +53,39 @@
     font-style: italic;
 }
 
+.vehiclebooking-body .vehicle-container .ex-booking {
+    width: 570px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: stretch;
+}
+
+.vehiclebooking-body .vehicle-container .ex-booking .ex-1 {
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    flex-grow: 2;
+    flex-basis: 30%;
+}
+
+.vehiclebooking-body .vehicle-container .ex-booking .ex-2 {
+    background-color: rgba(255, 142, 0, 0.7);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    flex-grow: 2;
+    flex-basis: 30%;
+}
+
+.vehiclebooking-body .vehicle-container .ex-booking .ex-3 {
+    background-color: gray;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    flex-grow: 2;
+    flex-basis: 30%;
+}
+
+.vehiclebooking-body .vehicle-container .ex-booking div {
+    max-width: 60px;
+    border-radius: 5px;
+}
 
 .vehiclebooking-body .vehicle-container .seats-container {
     display: flex;
@@ -106,8 +139,7 @@
 }
 
 .vehiclebooking-body .vehicle-container .seats-container .seat-button.selected {
-    border-color: #ff7f0e;
-    background-color: #fff3e0;
+    background-color: rgba(255, 142, 0, 0.7);
 }
 
 .vehiclebooking-body .vehicle-container .seats-container .chair-icon {
@@ -126,6 +158,12 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
+}
+
+.vehiclebooking-body .vehicle-container .price-bus .item-2 .right-item-2 {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
 }
 
 .vehiclebooking-body .vehicle-container .item-button {

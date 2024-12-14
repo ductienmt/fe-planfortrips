@@ -14,6 +14,7 @@ function Enterprise() {
   const [pageSize] = useState(8);
   const [searchName, setSearchName] = useState('');
   const [searchPhone, setSearchPhone] = useState('');
+  const [searchEmail, setSearchEmail] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [enterpriseDetails, setEnterpriseDetails] = useState(null);
 
@@ -36,6 +37,7 @@ function Enterprise() {
     fetchEnterprises();
   }, [fetchEnterprises]);
 
+  // Search by phone number
   const handleSearchByPhone = async () => {
     setLoading(true);
     try {
@@ -50,6 +52,22 @@ function Enterprise() {
     }
   };
 
+  // Search by email
+  const handleSearchByEmail = async () => {
+    setLoading(true);
+    try {
+      const response = await AccountEtpService.getByEmail(searchEmail);
+      setEnterpriseDetails(response.data);
+      setModalOpen(true);
+    } catch (err) {
+      setSnackbarMessage('Không tìm thấy doanh nghiệp với email này.');
+      setSnackbarOpen(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Toggle enterprise status
   const toggleEnterpriseStatus = async (id) => {
     setLoading(true);
     try {
@@ -65,6 +83,7 @@ function Enterprise() {
     }
   };
 
+  // Toggle enterprise status from modal
   const toggleEnterpriseStatusForModal = async (id) => {
     setLoading(true);
     try {
@@ -94,7 +113,7 @@ function Enterprise() {
       </div>
 
       <div className="row my-2">
-        <div className="col-5">
+        <div className="col-12">
           <TextField
             label="Tìm kiếm theo tên"
             variant="outlined"
@@ -108,7 +127,7 @@ function Enterprise() {
             }}
           />
         </div>
-        <div className="col-5">
+        <div className="col-3 mt-2">
           <TextField
             label="Tìm kiếm theo số điện thoại"
             variant="outlined"
@@ -117,9 +136,24 @@ function Enterprise() {
             onChange={(e) => setSearchPhone(e.target.value)}
           />
         </div>
-        <div className="col-2">
-          <Button variant="contained" color="primary" onClick={handleSearchByPhone}>
-            Tìm kiếm
+
+        <div className="col-3 mt-2">
+        <Button variant="contained" color="primary" onClick={handleSearchByPhone} style={{height: '90%'}}>
+            Tìm kiếm theo số điện thoại
+          </Button>
+        </div>
+        <div className="col-3 mt-2">
+          <TextField
+            label="Tìm kiếm theo Email"
+            variant="outlined"
+            fullWidth
+            value={searchEmail}
+            onChange={(e) => setSearchEmail(e.target.value)}
+          />
+        </div>
+        <div className="col-3 mt-2">
+          <Button variant="contained" color="primary" onClick={handleSearchByEmail} style={{height: '90%'}}>
+            Tìm kiếm theo Email
           </Button>
         </div>
       </div>
@@ -210,9 +244,8 @@ function Enterprise() {
           {enterpriseDetails ? (
             <Grid container spacing={2}>
               <Grid item xs={12} sm={4}>
-                {/* Thêm hình ảnh */}
                 <img
-                  src={enterpriseDetails.urlImage || 'default-image-url.jpg'}  
+                  src={enterpriseDetails.urlImage || 'https://tse2.mm.bing.net/th?id=OIP.Jb4XrrIxatYfB2DQxV0TngHaFs&pid=Api&P=0&h=180'}  
                   alt="Enterprise"
                   style={{ width: '100%', borderRadius: 8, height: '100%' }}
                 />
@@ -231,7 +264,7 @@ function Enterprise() {
                     <Cancel color="error" />
                   )}
                 </Typography>
-                <Button
+                <Button className='mt-2'
                   variant="contained"
                   color={enterpriseDetails.status ? 'secondary' : 'primary'}
                   onClick={() => toggleEnterpriseStatusForModal(enterpriseDetails.accountEnterpriseId)}
