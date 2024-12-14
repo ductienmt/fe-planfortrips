@@ -67,6 +67,7 @@ import { EnterpriseProvider } from "../context/EnterpriseContext/EnterpriseProvi
 import ForgotPassword from "../client/pages/Auth/ForgotPassword/ForgotPassword";
 
 import NotFoundPage from "../notFound/notFoundPage";
+import ForgotPasswordEnterprise from "../enterprise/auth/login/forgotPassword/ForgotPasswordEnterprise";
 const ROLES = {
   CLIENT: "ROLE_USER",
   ADMIN: "ROLE_ADMIN",
@@ -204,6 +205,14 @@ const routeEnterprise = () => [
     element: (
       <EnterpriseProvider>
         <EnterpriseLogin />
+      </EnterpriseProvider>
+    ),
+  },
+  {
+    path: "/enterprise/forgot-password",
+    element: (
+      <EnterpriseProvider>
+        <ForgotPasswordEnterprise />
       </EnterpriseProvider>
     ),
   },

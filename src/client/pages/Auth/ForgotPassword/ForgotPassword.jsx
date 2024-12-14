@@ -20,7 +20,7 @@ const ForgotPassword = ({ initialEmail }) => {
 
   const [formState, setFormState] = useState("enterEmail");
   const [formData, setFormData] = useState({
-    oldPassword: "",
+    // oldPassword: "",
     newPassword: "",
   });
 

@@ -1,3 +1,4 @@
+import { id } from "date-fns/locale";
 import Http from "../Http";
 
 export const AccountEtpService = {
@@ -12,6 +13,20 @@ export const AccountEtpService = {
   },
   create: async (data) => {
     return await Http.post("/account-enterprises/create", data);
+  },
+  sendOTP: async (email, content) => {
+    return await Http.post(`/email/send?email=${email}&content=${content}`);
+  },
+  verifyOTP: async (email, otp) => {
+    return await Http.post(`/email/validate?email=${email}&otp=${otp}`);
+  },
+  resetPasswordE: async (serviceType, email, phone) => {
+    const params = new URLSearchParams({serviceType, email, phone})
+    return await Http.patch(`/account-enterprises/reset-password?${params.toString()}`);
+  },
+  validateContact: async (serviceType, email, phone) => {
+    const params = new URLSearchParams({serviceType, email, phone})
+    return await Http.get(`/account-enterprises/validate-contact?${params.toString()}`);
   },
   checkUsername: async (username) => {
     const params = new URLSearchParams({ username });
