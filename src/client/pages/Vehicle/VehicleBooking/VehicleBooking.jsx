@@ -123,9 +123,23 @@ const VehicleBooking = () => {
             </b>
           </div>
         </div>
-        <div className="local-bus">
+        {/* <div className="local-bus">
           <input type="text" placeholder="Điểm xuất phát" />
           <input type="text" placeholder="Điểm đến" />
+        </div> */}
+        <div className="ex-booking">
+          Chưa đặt
+          <div className="ex-1">
+
+          </div>
+          Đã đặt
+          <div className="ex-2">
+
+          </div>
+          Hết chỗ
+          <div className="ex-3">
+
+          </div>
         </div>
         <hr />
         <div className="seats-container">
@@ -140,8 +154,10 @@ const VehicleBooking = () => {
         </div>
         <div className="price-bus">
           <div className="item-2">
-            <h4>Ghế đã chọn:</h4>
-            <p>{selectedSeats.join(", ")}</p>
+            <div className="right-item-2">
+              <h4>Ghế đã chọn:</h4>
+              <h4>{selectedSeats.join(", ")}</h4>
+            </div>
             <b style={{ fontSize: "25px", color: "red" }}>
               {Number(totalPrice).toFixed(2)} VND
             </b>
