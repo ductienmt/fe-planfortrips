@@ -25,6 +25,10 @@ export const StatisticalService = {
     const response = await Http.get(`statistical/enterprise/${year}`);
     return response;
   },
+  CountEtpByMonth: async (year, month) => {
+    const response = await Http.get(`statistical/enterprise/${year}/${month}`);
+    return response;
+  },
   CountUserByYear: async (year) => {
     const response = await Http.get(`statistical/user/${year}`);
     return response;
@@ -36,5 +40,5 @@ export const StatisticalService = {
   CountVehicleByYear: async (year) => {
     const response = await Http.get(`statistical/vehicle/${year}`);
     return response;
-  }
+  },
 };
