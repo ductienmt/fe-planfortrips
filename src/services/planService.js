@@ -98,7 +98,7 @@ export const generateTripPlan = async (data) => {
       Bạn hãy chọn ghế trong transportation, tôi có để một mảng là seatAvailable chọn ghế từ đây. Trả về theo cú pháp tôi cung cấp như sau.
       userData, transportation(departure (chọn từ mảng schedule.departure mà tôi cung cấp)[departureTime, arrivalTime,vehicleCode,scheduleId,carName, seatBook, routeId, totalPrice(numberPeople*priceForOnSeat) "trả về theo giá tiền việt nam"], 
       return (chọn từ mảng schedule.return mà tôi cung cấp) [departureTime, arrivalTime,vehicleCode,scheduleId,carName, seatBook(seat_id, seat_number), routeId, totalPrice(numberPeople*priceForOnSeat)]),
-      accomodation(nameHotel, hotelId, price_per_night, total (trả về theo giá tiền việt nam), (mảng chứa room đã book) rooms[nameRoom, checkin, checkout, roomType, roomId, roomSize(maxPeople)](dựa vào numberPeople chỉ đặt vừa đủ không được dư phòng)) , 
+      accomodation(nameHotel, hotelId, total [tổng giá của các phòng] (trả về theo giá tiền việt nam), (mảng chứa room đã book) rooms[nameRoom, checkin, checkout, roomType, roomId, roomSize(maxPeople),price_per_night]. Chú ý: dựa vào numberPeople chỉ đặt vừa đủ không được dư phòng) , 
       checkins(dựa vào những nơi tôi cung cấp, ít nhất 5 nơi), estimatedCost (trả về theo giá tiền việt nam), itinerary(trả theo ngày, day1, day2,... đi đâu vào ngày làm gì,...), 
       để ý số người mà tính toán cho đúng, nếu không đủ số tiền có thể chọn một nơi ở khác giá rẻ hơn, sau đó nếu vẫn chưa đủ thì chọn chuyến xe khác sẽ hơn, làm sao cho 1 kế hoạch tối ưu chi phí nhất\n\n${JSON.stringify(data)}`
     );

@@ -10,4 +10,8 @@ export const PlanServiceApi = {
   getPlanById: async () => {
     return await Http.get(`/plans/all`);
   },
+  checkTime: async (departure, returnDate) => {
+    const params = new URLSearchParams({ departure, return: returnDate });
+    return await Http.get(`/plans/check-time?${params.toString()}`);
+  },
 };

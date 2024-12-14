@@ -23,6 +23,15 @@
     justify-content: space-between;
 }
 
+.transportation-container .transportation-header .nameVehicle .button-change-type-trans {
+    border: none;
+    font-size: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #0976CF;
+    color: #fff;
+}
+
 .transportation-container .transportation-header .nameVehicle h4,
 .transportation-container .transportation-header .nameVehicle p {
     margin: 0px;

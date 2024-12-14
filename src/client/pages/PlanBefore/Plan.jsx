@@ -592,6 +592,9 @@ function PlanBefore() {
             {
               variant: "error",
               autoHideDuration: 4000,
+              onExit: () => {
+                window.location.reload();
+              },
             }
           );
         }
