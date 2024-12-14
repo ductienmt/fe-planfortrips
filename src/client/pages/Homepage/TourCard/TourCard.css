@@ -42,13 +42,13 @@
 }
 
 .tour-card .content .text-head {
-    font-size: 35px;
+    font-size: 25px;
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .tour-card .content .text-des {
-    font-size: 20px;
+    font-size: 17px;
     font-weight: 400;
 }
 

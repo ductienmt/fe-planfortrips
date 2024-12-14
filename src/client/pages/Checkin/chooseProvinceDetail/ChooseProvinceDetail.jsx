@@ -6,12 +6,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { CityService } from "../../../../services/apis/CityService";
 import Loader from "../../../Components/Loading";
+import { TourService } from "../../../../services/apis/TourService";
 
 const ChooseProvinceDetail = () => {
   const navigate = useNavigate();
   const { area } = useParams();
   const [provincesFollowArea, setProvincesFollowArea] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [tourData, setTourData] = useState([]);
 
   const loadCitiesData = async (id) => {
     try {
@@ -26,28 +28,41 @@ const ChooseProvinceDetail = () => {
     }
   };
 
+  const loadTourData = async (id) => {
+    try {
+      setLoading(true);
+      const response = await TourService.getTourHaveCityIn(id);
+      console.log("tour", response);
+      setTourData(response);
+    } catch (error) {
+      console.log("error", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     document.title = "Các tỉnh thành";
-    console.log("ChooseProvinceDetail id", area);
-
+    // console.log("ChooseProvinceDetail id", area);
     loadCitiesData(area);
+    loadTourData(area);
   }, [area]);
 
-  const tourCard = [
-    {
-      image: phuquoc,
-      title: "Tour Đảo Phú Quốc",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
-      location: "Phú Quốc, Kiên Giang",
-      people: "2 người",
-      nights: "2N/1Đ",
-      rating: "4.5",
-      price: "5.000.000",
-      feedback: "25",
-      number: "2",
-    },
-  ];
+  // const tourCard = [
+  //   {
+  //     image: phuquoc,
+  //     title: "Tour Đảo Phú Quốc",
+  //     description:
+  //       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
+  //     location: "Phú Quốc, Kiên Giang",
+  //     people: "2 người",
+  //     nights: "2N/1Đ",
+  //     rating: "4.5",
+  //     price: "5.000.000",
+  //     feedback: "25",
+  //     number: "2",
+  //   },
+  // ];
   return (
     <>
       {loading ? (
@@ -87,19 +102,27 @@ const ChooseProvinceDetail = () => {
               </p>
             </div>
             <div className="checkInPage-card-chooseTour mb-5">
-              {tourCard.map((tour, index) => (
+              {tourData.map((tour) => (
                 <TourCard
-                  key={index}
-                  image={tour.image}
-                  title={tour.title}
-                  description={tour.description}
-                  location={tour.location}
-                  people={tour.people}
-                  nights={tour.nights}
-                  rating={tour.rating}
-                  price={tour.price}
-                  feedback={tour.feedback}
-                  number={tour.number}
+                  key={tour.tourId}
+                  image={tour.tourImage}
+                  title={tour.tourTitle}
+                  description={
+                    tour.tourDescription.length > 150
+                      ? `${tour.tourDescription.substring(0, 150)}...`
+                      : tour.tourDescription
+                  }
+                  location={
+                    tour.tourDestination.includes("-")
+                      ? tour.tourDestination.split("-")[1]
+                      : tour.tourDestination
+                  }
+                  people={tour.tourPeople}
+                  nights={tour.tourDays}
+                  rating={tour.tourRating}
+                  contentButton={"Xem chi tiết"}
+                  tags={tour.tourTags}
+                  numberPeopleUsed={tour.tourUsed}
                   handleClick={() => {}}
                 />
               ))}

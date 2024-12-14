@@ -47,4 +47,16 @@ export const TourService = {
     const response = await Http.post(`/tours/deleteImages/${id}`, formData);
     return response.data;
   },
+  getTourHaveCityIn: async (areaId) => {
+    const response = await Http.get(`/tours/area/${areaId}`);
+    return response.data;
+  },
+  getTourByCity: async (cityId) => {
+    const response = await Http.get(`/tours/destination/${cityId}`);
+    return response.data;
+  },
+  getTourByCheckin: async (checkin) => {
+    const response = await Http.get(`/tours/checkIn/${checkin}`);
+    return response.data;
+  },
 };

@@ -58,6 +58,8 @@ const ChooseCheckinFollowArea = () => {
     return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ".000 VND";
   };
 
+  const loadTourData = (id) => {};
+
   return (
     <>
       {loading ? (
