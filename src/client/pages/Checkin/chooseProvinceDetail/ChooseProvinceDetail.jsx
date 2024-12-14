@@ -60,10 +60,9 @@ const ChooseProvinceDetail = () => {
                 CÁC TỈNH CỦA KHU VỰC
               </h2>
               <p className="text-center w-50 mx-auto">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Asperiores non quibusdam a culpa repellat? Magni ad et
-                exercitationem voluptates reiciendis sint cumque non, rem
-                tempora temporibus corrupti quidem. Vel, facere.
+                Các tỉnh của khu vực này, bạn{" "}
+                <span style={{ fontStyle: "italic" }}>Click</span> vào thành phố
+                bạn muốn xem các điểm check-in nhé !
               </p>
             </div>
             <div className="checkInPage-card-chooseProvince">
@@ -83,13 +82,11 @@ const ChooseProvinceDetail = () => {
             <div className="checkInPage-text mt-5">
               <h2 className="text-center">GỢI Ý TOUR DU LỊCH DÀNH CHO BẠN</h2>
               <p className="text-center w-50 mx-auto">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Asperiores non quibusdam a culpa repellat? Magni ad et
-                exercitationem voluptates reiciendis sint cumque non, rem
-                tempora temporibus corrupti quidem. Vel, facere.
+                Các tour du lịch tới các địa điểm thành phố mà Plan for Trips
+                gợi ý nè !
               </p>
             </div>
-            <div className="checkInPage-card-chooseTour mt-5">
+            <div className="checkInPage-card-chooseTour mb-5">
               {tourCard.map((tour, index) => (
                 <TourCard
                   key={index}

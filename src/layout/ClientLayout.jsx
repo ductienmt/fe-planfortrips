@@ -5,30 +5,17 @@ import Footer from "../client/pages/Footer/Footer";
 export const ClientLayout = () => {
   const location = useLocation();
 
-  // Danh sách các đường dẫn cần ẩn Header hoặc Footer
-  const noHeaderFooterPaths = /^\/(profile|success|failed)/; // Regex để kiểm tra
-  const noFooterPaths = new Set([
-    "/plan",
-    "/plan/trip",
-    "/login",
-    "/register",
-    "/vehicle",
-    "/booking/plan",
-    "/booking/hotel",
-    "/booking/transportation",
-    "/hotel",
-    "/check-in",
-    "/payment",
-    "/success",
-    "/failed",
-    "/tour",
-    "/forgot-password",
-  ]);
+  // Regex để kiểm tra các đường dẫn không hiển thị Footer
+  const noFooterRegex =
+    /^\/(check-in|plan|login|register|vehicle|booking\/plan|booking\/hotel|booking\/transportation|hotel|payment|success|failed|tour|forgot-password)(\/.*)?$/;
+
+  // Regex để kiểm tra các đường dẫn không hiển thị cả Header và Footer
+  const noHeaderFooterRegex = /^\/(profile|success|failed)/;
 
   // Kiểm tra logic hiển thị
-  const shouldShowHeader = !noHeaderFooterPaths.test(location.pathname);
+  const shouldShowHeader = !noHeaderFooterRegex.test(location.pathname);
   const shouldShowFooter =
-    shouldShowHeader && !noFooterPaths.has(location.pathname);
+    shouldShowHeader && !noFooterRegex.test(location.pathname);
 
   return (
     <>
