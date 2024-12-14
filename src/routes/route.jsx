@@ -68,6 +68,7 @@ import ForgotPassword from "../client/pages/Auth/ForgotPassword/ForgotPassword";
 
 import NotFoundPage from "../notFound/notFoundPage";
 import Statistical from "../admin/pages/Statistical/Statistical";
+import ForgotPasswordEnterprise from "../enterprise/auth/login/forgotPassword/ForgotPasswordEnterprise";
 const ROLES = {
   CLIENT: "ROLE_USER",
   ADMIN: "ROLE_ADMIN",
@@ -107,7 +108,7 @@ const routeAdmin = () => [
           { path: "transactions/vehicles", element: <OrderCarPage /> },
           { path: "travel", element: <PlacePageAdmin /> },
           { path: "feedbacks", element: <FeedbackPage /> },
-          { path: "statistical", element: <Statistical/>},
+          { path: "statistical", element: <Statistical /> },
           { path: "*", element: <NotFoundPage /> },
         ],
       },
@@ -206,6 +207,14 @@ const routeEnterprise = () => [
     element: (
       <EnterpriseProvider>
         <EnterpriseLogin />
+      </EnterpriseProvider>
+    ),
+  },
+  {
+    path: "/enterprise/forgot-password",
+    element: (
+      <EnterpriseProvider>
+        <ForgotPasswordEnterprise />
       </EnterpriseProvider>
     ),
   },
