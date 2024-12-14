@@ -10,6 +10,9 @@
     getByPhoneNumber : async (phoneNumber) => {
       return await Http.get(`/account-enterprises/sdt/${phoneNumber}`)
     },
+    getByEmail : async (email) => {
+      return await Http.get(`/account-enterprises/email/${email}`)
+    },
     toggleStage: async (id) => {
       return await Http.patch(`/account-enterprises/stage/${id}`);
     },
