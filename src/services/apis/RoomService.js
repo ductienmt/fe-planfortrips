@@ -127,4 +127,8 @@ export const RoomService = {
     });
     return response.data;
   },
+  getRoomsByEnterpriseId: async () => {
+    const response = await Http.get(`/rooms/getRoomByEnterpriseId`);
+    return response.data;
+  },
 };

@@ -29,4 +29,16 @@ export const VoucherService = {
     );
     return response.data;
   },
+  createRoomVoucher: async (data, roomId) => {
+    const params = new URLSearchParams({ roomId });
+    const response = await Http.post(
+      `/coupons/create-coupon-room?${params.toString()}`,
+      data
+    );
+    return response.data;
+  },
+  deleteVoucher: async (voucherId) => {
+    const response = await Http.post(`/coupons/delete/${voucherId}`);
+    return response.data;
+  },
 };
