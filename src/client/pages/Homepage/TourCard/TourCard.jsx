@@ -12,9 +12,10 @@ const TourCard = ({
   people,
   nights,
   rating,
-  price,
-  feedback,
+  contentButton,
+  tags,
   handleClick,
+  numberPeopleUsed,
 }) => {
   const renderStars = (rating) => {
     const stars = [];
@@ -52,7 +53,22 @@ const TourCard = ({
           <img src={image} alt="" />
         </div>
         <div className="content">
-          <h2 className="mb-3 text-head">{title}</h2>
+          <h2 className="mb-1 text-head">{title}</h2>
+          <div
+            className="price mb-2"
+            style={{
+              display: "grid",
+              gridTemplateColumns:
+                "auto auto auto auto auto auto auto auto auto auto",
+              gap: "5px",
+            }}
+          >
+            {" "}
+            Tag:
+            {tags?.map((tags, index) => (
+              <div key={index}>#{tags}</div>
+            ))}
+          </div>
           <p className="text-des">{description}</p>
           <div className="amenities mt-3">
             <div className="location">
@@ -71,19 +87,21 @@ const TourCard = ({
             </div>
           </div>
         </div>
-        <div className="footer">
-          <div className="rating d-flex align-items-center mb-4">
+        <div className="footer" style={{ gap: "15px" }}>
+          <div className="rating mb">
             <p className="mb-0 text-white">
-              ({feedback} đánh giá) {"   "}
+              {numberPeopleUsed > 0
+                ? `(Đã có: ${numberPeopleUsed} khách hàng đặt)`
+                : `Tour mới`}
             </p>
-            <div className="rating-badge mb-0">{renderStars(rating)}</div>
           </div>
-          <div className="price d-flex flex-column align-items-center mb-4">
-            <p className="mb-0 text-white fw-bold custom-price">{price} VNĐ</p>
-            <p className="mb-0 text-white">/ 1 người</p>
-          </div>
-          <button className="btn btn-book" onClick={() => handleClick()}>
-            Đặt ngay
+          <div className="rating-badge mb-0">{renderStars(rating)}</div>
+          <button
+            className="btn btn-book"
+            onClick={() => handleClick()}
+            style={{ fontSize: "1.2rem", width: "80%" }}
+          >
+            {contentButton}
           </button>
         </div>
       </div>
