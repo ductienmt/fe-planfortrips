@@ -2,17 +2,7 @@ import Http from "../Http";
 
 export const HotelService = {
   getHotels: async (page, limit, keyword) => {
-    const params = new URLSearchParams();
-    if (page) {
-      params.append("page", page);
-    }
-    if (limit) {
-      params.append("limit", limit);
-    }
-    if (keyword) {
-      params.append("keyword", keyword);
-    }
-    const response = await Http.get(`api/v1/hotels/all?${params.toString()}`);
+    const response = await Http.get(`/hotels/all?page=${page}&limit=${limit}&keyword=${keyword}`);
     console.log(response);
 
     return response.data;

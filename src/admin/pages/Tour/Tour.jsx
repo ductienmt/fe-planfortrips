@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Multiselect from "react-widgets/Multiselect";
 import "react-widgets/styles.css";
-import { AreaService } from "../../../services/apis/AreaService";
 import { HotelService } from "../../../services/apis/HotelService";
 import { CarService } from "../../../services/apis/CarCompanyService";
 import { TagService } from "../../../services/apis/TagService";
 import { TourService } from "../../../services/apis/TourService";
 import { toast } from "react-toastify";
-import { parseJwt } from "../../../utils/Jwt";
 import { CheckinService } from "../../../services/apis/CheckinService";
 import TagIcon from "@mui/icons-material/Tag";
 import {
@@ -35,7 +33,7 @@ const getBase64 = (file) =>
     reader.onerror = (error) => reject(error);
   });
 function TourForm({ setRows, rows }) {
-  const {username} = useAuth();
+  const { username } = useAuth();
   const [hidden, setHidden] = useState(false);
   const [hotel, setHotel] = useState([]);
   const [car, setCar] = useState([]);
@@ -60,12 +58,26 @@ function TourForm({ setRows, rows }) {
     is_active: true,
     tagNames: [],
     note: "",
+    description: "",
     hotel_id: "",
     car_company_id: "",
-    checkin_id: "",
+    checkin_id: [],
     admin_username: username,
   });
-
+  const handleSelectCheckins = (checkIns) => {
+    const checkin_id = checkIns.map((c) => c.id);
+    console.log(checkin_id);
+    
+    setFormData((prevData) => ({
+      ...prevData,
+      checkin_id,
+    }));
+    setFormData((prevData) => ({
+      ...prevData,
+      checkIns,
+    }));
+    console.log(formData);
+  };
   const handleSelectTags = (tagNames) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -95,14 +107,13 @@ function TourForm({ setRows, rows }) {
     try {
       const routeData = await RouteService.getAll(0, 100);
       setRoute(routeData.listResponse);
-      console.log(route);
-      const hotelData = await HotelService.getHotels("1", "10", "");
+      const hotelData = await HotelService.getHotels("0", "200", "");
       setHotel(hotelData.hotelResponseList);
-      const carData = await CarService.getcars(0, 10);
+      const carData = await CarService.getcars(0, 200);
       setCar(carData.listResponse);
       const checkinData = await CheckinService.getCheckins();
       setCheckin(checkinData.data.checkinResponses);
-      const tag = await TagService.getTags(0, 50);
+      const tag = await TagService.getTags(0, 100);
       setTags(tag.listResponse);
     } catch (error) {
       console.error("Lỗi khi lấy dữ liệu khu vực:", error);
@@ -124,7 +135,6 @@ function TourForm({ setRows, rows }) {
       return;
     }
     console.log(formData);
-
     const response = await TourService.createTour(formData);
     if (response) {
       if (fileList.length > 0) {
@@ -166,11 +176,10 @@ function TourForm({ setRows, rows }) {
         }
       });
     }
-    if(valid){
-      enqueueSnackbar(
-        "Thêm tag mới thành công, vui lòng chọn tag vừa tạo!",
-        { variant: "success" }
-      );
+    if (valid) {
+      enqueueSnackbar("Thêm tag mới thành công, vui lòng chọn tag vừa tạo!", {
+        variant: "success",
+      });
     }
   };
   useEffect(() => {
@@ -363,6 +372,7 @@ function TourForm({ setRows, rows }) {
                     placeholder="Nhập số người"
                     value={formData.number_people}
                     onChange={handleChange}
+                    min={1}
                   />
                   {errors.number_people && (
                     <p className="text-danger">{errors.number_people}</p>
@@ -379,6 +389,7 @@ function TourForm({ setRows, rows }) {
                     className="form-control"
                     placeholder="Nhập số ngày"
                     value={formData.day}
+                    min={1}
                     onChange={handleChange}
                   />
                   {errors.day && <p className="text-danger">{errors.day}</p>}
@@ -394,6 +405,7 @@ function TourForm({ setRows, rows }) {
                     className="form-control"
                     placeholder="Nhập số đêm"
                     value={formData.night}
+                    min={1}
                     onChange={handleChange}
                   />
                   {errors.night && (
@@ -447,15 +459,11 @@ function TourForm({ setRows, rows }) {
                       <label htmlFor="checkin" className="form-label">
                         Điểm tham quan
                       </label>
-                      <Combobox
+                      <Multiselect
                         data={checkin}
                         dataKey="id"
                         textField="name"
-                        name="checkin_id"
-                        onChange={(selected) =>
-                          handleComboChange("id", selected)
-                        }
-                        defaultValue={formData.checkin_id}
+                        onChange={handleSelectCheckins}
                       />
                       {errors.checkin_id && (
                         <p className="text-danger">{errors.checkin_id}</p>
@@ -578,7 +586,7 @@ function TourForm({ setRows, rows }) {
                 rows={4}
                 className="m-3"
                 style={{ width: "95%" }}
-                name="note"
+                name="description"
                 onChange={handleChange}
               />
             </>

@@ -8,7 +8,7 @@ import { CouponService } from "../../../services/apis/CouponService";
 import AddIcon from "@mui/icons-material/Add";
 import { toast } from "react-toastify";
 import CouponDialog from "./CouponDialog";
-const paginationModel = { page: 0, pageSize: 20 };
+const paginationModel = { page: 0, pageSize: 200 };
 
 export default function CouponAdmin() {
   const [rows, setRows] = React.useState([]);

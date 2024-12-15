@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Multiselect from "react-widgets/Multiselect";
 import "react-widgets/styles.css";
-import { AreaService } from "../../../services/apis/AreaService";
 import { HotelService } from "../../../services/apis/HotelService";
 import { CarService } from "../../../services/apis/CarCompanyService";
 import { TagService } from "../../../services/apis/TagService";
 import { TourService } from "../../../services/apis/TourService";
 import { toast } from "react-toastify";
-import { parseJwt } from "../../../utils/Jwt";
 import { CheckinService } from "../../../services/apis/CheckinService";
 import TagIcon from "@mui/icons-material/Tag";
 import {
@@ -64,10 +62,11 @@ function TourFormUpdate({ setRows, selectedTourId }) {
     note: "",
     hotel_id: "",
     hotel: {},
+    description: "",
     car_company_id: "",
     car_company: {},
-    checkin_id: "",
-    checkin: {},
+    checkin_id: [],
+    checkin: [],
     admin_username: username,
   });
   useEffect(() => {
@@ -80,7 +79,9 @@ function TourFormUpdate({ setRows, selectedTourId }) {
             tagNames: data.tags.map((tag) => tag.name),
             hotel_id: data.hotel.id,
             car_company_id: data.car_company.id,
-            checkin_id: data.checkin.id,
+            checkin: data.checkin,
+            checkin_id: data.checkin.map((c) => c.id),
+            route_id: data.route.id
           });
           const formattedImages = data.images.map((image, index) => ({
             uid: `rc-upload-${Date.now()}-${index}`,
@@ -103,7 +104,7 @@ function TourFormUpdate({ setRows, selectedTourId }) {
             thumbUrl: image.url,
           }));
 
-          setFileList((prevFileList) => [...prevFileList, ...formattedImages]);
+          setFileList(formattedImages);
         }
       } else {
         setFormData([]);
@@ -116,28 +117,40 @@ function TourFormUpdate({ setRows, selectedTourId }) {
     const blob = await response.blob();
     return new File([blob], fileName, { type: mimeType });
   };
-  
+  console.log(formData);
+
   const handleSelectTags = (tagNames) => {
     setFormData((prevData) => ({
       ...prevData,
       tagNames,
     }));
   };
-  const handleComboChange = (name, selected) => {
-    console.log(selected);
-    console.log(name);
-    console.log(username);
+  const handleSelectCheckins = (checkIns) => {
+    console.log(checkIns);
 
+    const checkin_id = checkIns.map((c) => c.id);
+    setFormData((prevData) => ({
+      ...prevData,
+      checkin: checkIns,
+    }));
+    setFormData((prevData) => ({
+      ...prevData,
+      checkin_id: checkin_id,
+    }));
+    console.log(formData);
+  };
+  const handleComboChange = (n, selected) => {
+    console.log(selected);
     var selectedId = "";
-    if (name == "id") {
-      name = "checkin_id";
+    if (n == "id") {
+      n = "checkin_id";
       selectedId = selected.id;
     } else {
-      selectedId = selected[name] || "";
+      selectedId = selected[n] || "";
     }
     setFormData((prevData) => ({
       ...prevData,
-      [name]: selectedId,
+      [n]: selectedId,
     }));
     console.log(formData);
   };
@@ -184,12 +197,13 @@ function TourFormUpdate({ setRows, selectedTourId }) {
       night: formData.night,
       is_active: formData.is_active,
       tagNames: formData.tagNames,
-      note: formData.note,
+      description: formData.description,
       hotel_id: formData.hotel_id,
       car_company_id: formData.car_company_id,
       checkin_id: formData.checkin_id,
       admin_username: username,
     };
+    console.log(data);
     const response = await TourService.updateTour(selectedTourId, data);
     if (response) {
       if (fileList.length > 0) {
@@ -303,7 +317,7 @@ function TourFormUpdate({ setRows, selectedTourId }) {
   const uploadEncodedImage = async (id, fileList) => {
     try {
       const formData = new FormData();
-  
+
       const filesToUpload = await Promise.all(
         fileList.map(async (file) => {
           if (file.originFileObj) {
@@ -314,7 +328,7 @@ function TourFormUpdate({ setRows, selectedTourId }) {
           return null; // Bỏ qua file không hợp lệ
         })
       );
-  
+
       filesToUpload.forEach((file) => {
         if (file) {
           formData.append("files", file);
@@ -400,8 +414,7 @@ function TourFormUpdate({ setRows, selectedTourId }) {
                     id="route_id"
                     className="form-select"
                     name="route_id"
-                    defaultValue=""
-                    value={formData.route_id}
+                    value={formData.route_id || ""}
                     onChange={(e) => {
                       const selectedId = e.target.value;
                       setFormData((prev) => ({
@@ -491,10 +504,14 @@ function TourFormUpdate({ setRows, selectedTourId }) {
                         dataKey="id"
                         textField="name"
                         name="car_company_id"
+                        value={formData?.car_company?.name}
                         onChange={(selected) =>
-                          handleComboChange("car_company_id", selected)
+                          setFormData((prevFormData) => ({
+                            ...prevFormData,
+                            car_company_id: selected.car_company_id,
+                            car_company: selected,
+                          }))
                         }
-                        defaultValue={formData.car_company_id}
                       />
                       {errors.car_company_id && (
                         <p className="text-danger">{errors.car_company_id}</p>
@@ -509,10 +526,14 @@ function TourFormUpdate({ setRows, selectedTourId }) {
                         dataKey="id"
                         textField="name"
                         name="hotel_id"
+                        value={formData?.hotel?.name}
                         onChange={(selected) =>
-                          handleComboChange("hotel_id", selected)
+                          setFormData((prevFormData) => ({
+                            ...prevFormData,
+                            hotel_id: selected.hotel_id,
+                            hotel: selected,
+                          }))
                         }
-                        defaultValue={formData.hotel_id}
                       />
                       {errors.hotel_id && (
                         <p className="text-danger">{errors.hotel_id}</p>
@@ -522,16 +543,16 @@ function TourFormUpdate({ setRows, selectedTourId }) {
                       <label htmlFor="checkin" className="form-label">
                         Điểm tham quan
                       </label>
-                      <Combobox
-                        data={checkin}
-                        dataKey="id"
-                        textField="name"
-                        name="checkin_id"
-                        onChange={(selected) =>
-                          handleComboChange("car_company_id", selected)
-                        }
-                        defaultValue={formData.checkin_id}
-                      />
+                      {formData.checkin && (
+                        <Multiselect
+                          data={checkin}
+                          value={formData.checkin}
+                          dataKey="id"
+                          textField="name"
+                          onChange={handleSelectCheckins}
+                          placeholder="Chọn các điểm tham quan"
+                        />
+                      )}
                       {errors.checkin_id && (
                         <p className="text-danger">{errors.checkin_id}</p>
                       )}
@@ -662,8 +683,8 @@ function TourFormUpdate({ setRows, selectedTourId }) {
                 rows={4}
                 className="m-3"
                 style={{ width: "95%" }}
-                name="note"
-                value={formData.note}
+                name="description"
+                value={formData.description}
                 onChange={handleChange}
               />
             </>
