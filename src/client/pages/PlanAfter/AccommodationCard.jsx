@@ -8,8 +8,16 @@ import { convertToVND, convertToVNDDB } from "../../../utils/FormatMoney";
 import { RoomService } from "../../../services/apis/RoomService";
 import { debounce } from "lodash";
 import Loader from "../../../client/Components/Loading";
+import { enqueueSnackbar } from "notistack";
 
-function AccommodationCard({ className, onClick, accomodation, destination }) {
+function AccommodationCard({
+  className,
+  onClick,
+  accomodation,
+  destination,
+  numberPeople,
+  loadAgain,
+}) {
   const [loading, setLoading] = useState(false);
   const [hotelImage1, setHotelImage1] = useState("");
   const [hotelImage2, setHotelImage2] = useState("");
@@ -19,23 +27,81 @@ function AccommodationCard({ className, onClick, accomodation, destination }) {
 
   const [selectedRooms, setSelectedRooms] = useState([]); // Lưu danh sách phòng được chọn
 
+  // const handleSelectRoom = (room) => {
+  //   const totalPeople = selectedRooms.reduce(
+  //     (total, room) => total + room.quantity * room.maxSize,
+  //     0
+  //   );
+
+  //   // Kiểm tra số lượng người có hợp lý không
+  //   const newTotalPeople = totalPeople + room.maxSize;
+
+  //   if (newTotalPeople <= numberPeople) {
+  //     setSelectedRooms((prevRooms) => {
+  //       const existingRoom = prevRooms.find((r) => r.id === room.id);
+
+  //       if (existingRoom) {
+  //         // Nếu phòng đã tồn tại, tăng số lượng
+  //         return prevRooms.map((r) =>
+  //           r.id === room.id
+  //             ? { ...r, quantity: Math.min(r.quantity + 1, room.maxSize) }
+  //             : r
+  //         );
+  //       } else {
+  //         // Nếu phòng chưa tồn tại, thêm mới với số lượng 1
+  //         return [...prevRooms, { ...room, quantity: 1 }];
+  //       }
+  //     });
+  //     setShowCard(true); // Hiển thị thẻ chi tiết phòng
+  //   } else {
+  //     enqueueSnackbar("Số lượng phòng đã đạt giới hạn", {
+  //       variant: "error",
+  //       autoHideDuration: 1000,
+  //     });
+  //   }
+  // };
+
   const handleSelectRoom = (room) => {
-    setSelectedRooms((prevRooms) => {
-      const existingRoom = prevRooms.find((r) => r.id === room.id);
+    // Kiểm tra nếu maxSize của phòng lớn hơn số người, không cho phép đặt
+    if (room.maxSize > numberPeople + 1) {
+      enqueueSnackbar("Không thể đặt phòng có sức chứa vượt quá số người", {
+        variant: "error",
+        autoHideDuration: 1000,
+      });
+      return;
+    }
 
-      if (existingRoom) {
-        // Nếu phòng đã tồn tại, tăng số lượng
-        return prevRooms.map((r) =>
-          r.id === room.id ? { ...r, quantity: r.quantity + 1 } : r
-        );
-      } else {
-        // Nếu phòng chưa tồn tại, thêm mới với số lượng 1
-        return [...prevRooms, { ...room, quantity: 1 }];
-      }
-    });
-    console.log(selectedRooms);
+    const totalPeople = selectedRooms.reduce(
+      (total, room) => total + room.quantity * room.maxSize,
+      0
+    );
 
-    setShowCard(true); // Hiển thị thẻ chi tiết phòng
+    // Kiểm tra số lượng người có hợp lý không
+    const newTotalPeople = totalPeople + room.maxSize;
+
+    if (newTotalPeople <= numberPeople + 1) {
+      setSelectedRooms((prevRooms) => {
+        const existingRoom = prevRooms.find((r) => r.id === room.id);
+
+        if (existingRoom) {
+          // Nếu phòng đã tồn tại, tăng số lượng
+          enqueueSnackbar("Bạn đã đặt phòng này rùi mò bạn ui", {
+            variant: "warning",
+            autoHideDuration: 3000,
+          });
+          return prevRooms;
+        } else {
+          // Nếu phòng chưa tồn tại, thêm mới với số lượng 1
+          return [...prevRooms, { ...room, quantity: 1 }];
+        }
+      });
+      setShowCard(true); // Hiển thị thẻ chi tiết phòng
+    } else {
+      enqueueSnackbar("Phòng đáp ứng đủ ùi ó, không cần đặt thêm âu", {
+        variant: "warning",
+        autoHideDuration: 2000,
+      });
+    }
   };
 
   // const [showConfirmPopup, setShowConfirmPopup] = useState(false);
@@ -81,7 +147,7 @@ function AccommodationCard({ className, onClick, accomodation, destination }) {
       try {
         setLoading(true);
         const response = await HotelService.getHotelSamePrice(
-          accomodation.price_per_night / 1000,
+          accomodation.rooms[0]?.price_per_night / 1000,
           destination
         );
         setHotelChangeData(response);
@@ -119,6 +185,101 @@ function AccommodationCard({ className, onClick, accomodation, destination }) {
     ),
     [accomodation.rooms]
   );
+
+  const [hotelIdChange, setHotelIdChange] = useState("");
+
+  const handleChangeRoom = async () => {
+    try {
+      let tripData = JSON.parse(sessionStorage.getItem("tripData"));
+      const budget = tripData.userData?.budget;
+      const oldTotalPrice = tripData.accomodation.total;
+      // console.log(tripData);
+
+      const roomInSelect = selectedRooms.map((room) => ({
+        id: room.id,
+        nameRoom: room.roomName,
+        roomSize: room.maxSize,
+        roomType: room.typeOfRoom,
+        price_per_night: room.price * 1000,
+        checkin: accomodation.rooms[0].checkin,
+        checkout: accomodation.rooms[0].checkout,
+      }));
+
+      const totalPrice = roomInSelect.reduce(
+        (total, room) => total + room.price_per_night,
+        0
+      );
+      const totalPeople = selectedRooms.reduce(
+        (total, room) => total + room.maxSize,
+        0
+      );
+
+      if (totalPeople < numberPeople) {
+        enqueueSnackbar(
+          `Bạn đặt thiếu phòng rồi cần chổ cho ${numberPeople - totalPeople} bạn nữa nè !`,
+          {
+            variant: "warning",
+            autoHideDuration: 3000,
+          }
+        );
+      } else {
+        const response = await HotelService.findHotelById(hotelIdChange);
+        // console.log(response);
+        // console.log(selectedRooms);
+        const newDataToSet = {
+          hotelId: hotelIdChange,
+          nameHotel: response.name,
+          total:
+            totalPrice *
+            calculateNights(
+              accomodation.rooms[0].checkin,
+              accomodation.rooms[0].checkout
+            ),
+          rooms: roomInSelect,
+        };
+        tripData.accomodation = {
+          ...tripData.accomodation,
+          ...newDataToSet,
+        };
+        const newEstimatedCost =
+          tripData.estimatedCost - oldTotalPrice + newDataToSet.total;
+        if (newEstimatedCost <= budget) {
+          tripData.estimatedCost = newEstimatedCost;
+          sessionStorage.setItem("tripData", JSON.stringify(tripData));
+          enqueueSnackbar("Đặt phòng thành công", {
+            variant: "success",
+            autoHideDuration: 1000,
+            onExit: () => {
+              setSelectedRooms([]);
+              setShowCard(false);
+              document.getElementById("closeChooseRooms").click();
+              loadAgain();
+            },
+          });
+        } else {
+          enqueueSnackbar(
+            "Bạn không đủ chí phí để phông bạt âu, hãy chọn phòng/khách sạn khác nè !",
+            {
+              variant: "error",
+              autoHideDuration: 3000,
+            }
+          );
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching hotel:", error);
+    }
+  };
+
+  const calculateNights = (checkInDate, checkOutDate) => {
+    const checkIn = new Date(checkInDate);
+    const checkOut = new Date(checkOutDate);
+
+    const timeDifference = checkOut.getTime() - checkIn.getTime();
+    const nights = timeDifference / (1000 * 3600 * 24);
+
+    return nights <= 0 ? 0 : nights;
+  };
 
   useEffect(() => {
     // console.log(accomodation.hotelId);
@@ -158,14 +319,51 @@ function AccommodationCard({ className, onClick, accomodation, destination }) {
                 {accomodation.nameHotel}
               </h3>
 
-              {accomodation.rooms?.map((room, index) => (
+              {/* {accomodation.rooms?.map((room, index) => (
                 <div key={index}>
                   <p className="room-type" style={{ fontSize: "15px" }}>
                     {room.nameRoom} - {room.roomType}
                   </p>
                   <CheckInOut checkIn={room.checkin} checkOut={room.checkout} />
                 </div>
-              ))}
+              ))} */}
+
+              <div className="d-flex" style={{ gap: "10px" }}>
+                {accomodation.rooms?.map((room, index) => (
+                  <p
+                    key={index}
+                    className="room-type"
+                    style={{ fontSize: "15px" }}
+                  >
+                    {room.nameRoom} - {room.roomType}
+                    {/* <CheckInOut
+                      checkIn={room.checkin}
+                      checkOut={room.checkout}
+                    /> */}
+                  </p>
+                ))}
+              </div>
+
+              <div
+                className=""
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(2, 1fr)",
+                }}
+              >
+                {accomodation.rooms?.map((room, index) => (
+                  <p
+                    key={index}
+                    className="room-type"
+                    style={{ fontSize: "15px" }}
+                  >
+                    <CheckInOut
+                      checkIn={room.checkin}
+                      checkOut={room.checkout}
+                    />
+                  </p>
+                ))}
+              </div>
             </div>
             <img
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/8312b6c1afbf8ba2407ea61d3c83d5228f569367fc22cfce1fef9201d811a2c5?placeholderIfAbsent=true&apiKey=75fde3af215540558ff19397203996a6"
@@ -420,6 +618,7 @@ function AccommodationCard({ className, onClick, accomodation, destination }) {
                       modalToogle={"modal"}
                       onClick={() => {
                         loadRooms(hotel.hotelId);
+                        setHotelIdChange(hotel.hotelId);
                       }}
                     />
                   ))}
@@ -493,6 +692,7 @@ function AccommodationCard({ className, onClick, accomodation, destination }) {
                   className="voucher-close-button"
                   data-bs-dismiss="modal"
                   aria-label="Close"
+                  id="closeChooseRooms"
                 >
                   <span className="voucher-close-X"></span>
                   <span className="voucher-close-Y"></span>
@@ -534,42 +734,83 @@ function AccommodationCard({ className, onClick, accomodation, destination }) {
                             setSelectedRooms((prevRooms) => {
                               const updatedRooms = prevRooms
                                 .map((r) =>
-                                  r.id === room.id && r.quantity >= 1
-                                    ? { ...r, quantity: r.quantity - 1 } // Giảm số lượng nếu > 1
+                                  r.id === room.id && r.quantity > 0
+                                    ? { ...r, quantity: r.quantity - 1 }
                                     : r
                                 )
-                                .filter(
-                                  (r) => r.id !== room.id || r.quantity > 0
-                                ); // Xóa phòng nếu số lượng = 0
+                                .filter((r) => r.quantity > 0); // Xóa phòng nếu số lượng = 0
 
-                              // Ẩn card nếu không còn phòng
+                              // Kiểm tra nếu số người tổng giảm xuống dưới giới hạn
+                              // const totalPeople = updatedRooms.reduce(
+                              //   (total, room) =>
+                              //     total + room.quantity * room.maxSize,
+                              //   0
+                              // );
+
+                              // if (totalPeople < numberPeople) {
+                              //   enqueueSnackbar(
+                              //     "Tổng số người không được ít hơn số lượng tối thiểu",
+                              //     {
+                              //       variant: "error",
+                              //       autoHideDuration: 1000,
+                              //     }
+                              //   );
+                              //   return prevRooms; // Không thay đổi nếu vi phạm
+                              // }
+
                               if (updatedRooms.length === 0) {
                                 setShowCard(false);
                               }
 
                               return updatedRooms;
                             });
+
+                            // Ẩn card nếu không còn phòng
+                            if (updatedRooms.length === 0) {
+                              setShowCard(false);
+                            }
                           }}
                         >
                           <i className="fas fa-minus"></i>
                         </button>
 
                         <span>{room.quantity}</span>
-                        <button
+                        {/* <button
                           className="btn btn-link px-2"
-                          onClick={() =>
-                            setSelectedRooms((prevRooms) =>
-                              prevRooms.map((r) =>
-                                r.id === room.id
+                          onClick={() => {
+                            setSelectedRooms((prevRooms) => {
+                              const updatedRooms = prevRooms.map((r) =>
+                                r.id === room.id && r.quantity < room.maxSize
                                   ? { ...r, quantity: r.quantity + 1 }
                                   : r
-                              )
-                            )
-                          }
+                              );
+
+                              // Kiểm tra nếu số lượng người tổng vượt quá số người cho phép
+                              const totalPeople = updatedRooms.reduce(
+                                (total, room) =>
+                                  total + room.quantity * room.maxSize,
+                                0
+                              );
+
+                              if (totalPeople > numberPeople) {
+                                enqueueSnackbar(
+                                  "Số lượng người đã vượt quá giới hạn phòng",
+                                  {
+                                    variant: "error",
+                                    autoHideDuration: 2000,
+                                  }
+                                );
+                                return prevRooms;
+                              }
+
+                              return updatedRooms;
+                            });
+                          }}
                         >
                           <i className="fas fa-plus"></i>
-                        </button>
+                        </button> */}
                       </div>
+
                       <p>
                         <strong className="d-flex justify-content-center">
                           Giá:
@@ -580,20 +821,49 @@ function AccommodationCard({ className, onClick, accomodation, destination }) {
                       </p>
                     </div>
                   ))}
-                  <div className="total-price d-flex justify-content-end mb-3">
+                  <div className="total-price d-flex justify-content-center align-items-end flex-column mb-3">
                     <h5>
                       Tổng tiền:{" "}
                       {convertToVNDDB(
                         selectedRooms.reduce(
                           (total, room) =>
-                            total + room.quantity * parseInt(room.price),
+                            total +
+                            room.quantity *
+                              parseInt(room.price) *
+                              calculateNights(
+                                accomodation.rooms[0].checkin,
+                                accomodation.rooms[0].checkout
+                              ),
                           0
                         )
-                      )}
+                      )}{" "}
+                      <span style={{ fontWeight: "400", fontStyle: "italic" }}>
+                        -{" "}
+                        {calculateNights(
+                          accomodation.rooms[0].checkin,
+                          accomodation.rooms[0].checkout
+                        )}{" "}
+                        đêm
+                      </span>
                     </h5>
+
+                    <span
+                      style={{
+                        fontSize: "15px",
+                        fontStyle: "italic",
+                      }}
+                    >
+                      ({accomodation.rooms[0].checkin} -{" "}
+                      {accomodation.rooms[0].checkout})
+                    </span>
                   </div>
                   <div className="d-flex justify-content-end">
-                    <button className="btn btn-primary">
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => {
+                        handleChangeRoom();
+                      }}
+                    >
                       Xác nhận đặt phòng
                     </button>
                   </div>

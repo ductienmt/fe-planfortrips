@@ -14,7 +14,7 @@ const RoomCard = ({
   return (
     <>
       <div className="flex-container-room-cardd components-card-room-custom-plan">
-        <div className="card-room-type align-items-center">
+        <div className="card-room-typee align-items-center">
           <div
             className="d-flex align-items-center custom-img-room-typee"
             style={{
@@ -30,7 +30,7 @@ const RoomCard = ({
                 width: "85%",
                 height: "100%",
                 objectFit: "cover",
-                borderRadius: "10px",
+                borderRadius: "10px 0 0 10px",
               }}
             />
             <p className="content-type ms-3" style={{ width: "150px" }}>
@@ -42,7 +42,7 @@ const RoomCard = ({
               </span>
             </p>
           </div>
-          <div className="price-room-type text-end">
+          <div className="price-room-typee text-end">
             <p className="amenities d-flex justify-content-center mt-3">
               {amenities?.map((ha, index) => (
                 <small key={index}>

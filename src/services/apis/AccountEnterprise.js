@@ -1,11 +1,19 @@
 import Http from "../Http";
 
 export const AccountEtpService = {
-  getAll: async () => {
-    return await Http.get("/account-enterprises/all");
+  getAll: async (name, page, size) => {
+    return await Http.get(
+      `/account-enterprises/all?name=${name}&page=${page}&size=${size}`
+    );
   },
   getAccountEnterpriseNeedAccept: async () => {
     return await Http.get("/account-enterprises/accept");
+  },
+  getByPhoneNumber: async (phoneNumber) => {
+    return await Http.get(`/account-enterprises/sdt/${phoneNumber}`);
+  },
+  getByEmail: async (email) => {
+    return await Http.get(`/account-enterprises/email/${email}`);
   },
   toggleStage: async (id) => {
     return await Http.patch(`/account-enterprises/stage/${id}`);
@@ -29,6 +37,24 @@ export const AccountEtpService = {
     const params = new URLSearchParams({ phone });
     return await Http.post(
       `/account-enterprises/validate-phone?${params.toString()}`
+    );
+  },
+  sendOTP: async (email, content) => {
+    return await Http.post(`/email/send?email=${email}&content=${content}`);
+  },
+  verifyOTP: async (email, otp) => {
+    return await Http.post(`/email/validate?email=${email}&otp=${otp}`);
+  },
+  resetPasswordE: async (serviceType, email, phone) => {
+    const params = new URLSearchParams({ serviceType, email, phone });
+    return await Http.patch(
+      `/account-enterprises/reset-password?${params.toString()}`
+    );
+  },
+  validateContact: async (serviceType, email, phone) => {
+    const params = new URLSearchParams({ serviceType, email, phone });
+    return await Http.get(
+      `/account-enterprises/validate-contact?${params.toString()}`
     );
   },
 };
