@@ -71,12 +71,16 @@ const EnterpriseSidebar = () => {
         label: "Khách hàng",
         path: "accomodation/guest-manager",
       },
-      {
-        key: "choose-hotel",
-        icon: "fa-bed",
-        label: "Quản lý phòng",
-        path: "accomodation/choose-hotel",
-      },
+      ...(typeEnterprise !== "Homestay"
+        ? [
+            {
+              key: ["choose-hotel", "room-management"],
+              icon: "fa-bed",
+              label: "Quản lý phòng",
+              path: "accomodation/choose-hotel",
+            },
+          ]
+        : []),
       {
         key: "voucher-manager",
         icon: "fa-ticket",
@@ -164,8 +168,21 @@ const EnterpriseSidebar = () => {
             {menuItems.map((item) => (
               <li
                 key={item.key}
-                className={selectedItem === item.key ? "isActive" : ""}
-                onClick={() => handleSelect(item.key, item.path)}
+                className={
+                  Array.isArray(item.key)
+                    ? item.key.includes(selectedItem)
+                      ? "isActive"
+                      : ""
+                    : selectedItem === item.key
+                      ? "isActive"
+                      : ""
+                }
+                onClick={() =>
+                  handleSelect(
+                    Array.isArray(item.key) ? item.key[0] : item.key,
+                    item.path
+                  )
+                }
               >
                 <Link to={item.path ? `/enterprise/${item.path}` : "#"}>
                   <i className={`fa-solid ${item.icon}`}></i>{" "}

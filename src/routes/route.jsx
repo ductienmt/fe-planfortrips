@@ -238,15 +238,7 @@ const routeClient = () => [
         path: "/plan/trip",
         Component: TravelPlan,
       },
-      {
-        path: "/booking/:type",
-        Component: Booking,
-        // element: (
-        //   <ProtectedRoute allowedRoles={[ROLES.CLIENT]}>
-        //     <Booking />
-        //   </ProtectedRoute>
-        // ),
-      },
+
       {
         path: "/hotel",
         Component: IntroHotel,
@@ -271,65 +263,7 @@ const routeClient = () => [
         path: "/vehicle-booking/:id",
         Component: VehicleBooking,
       },
-      {
-        path: "/payment",
-        Component: Payment,
-        // element: (
-        //   <ProtectedRoute allowedRoles={[ROLES.CLIENT]}>
-        //     <Payment />
-        //   </ProtectedRoute>
-        // ),
-      },
-      {
-        path: "/success",
-        Component: Success,
-        // element: (
-        //   <ProtectedRoute allowedRoles={[ROLES.CLIENT]}>
-        //     <Success />
-        //   </ProtectedRoute>
-        // ),
-        exact: true,
-      },
-      {
-        path: "/failed",
-        Component: Failed,
-        // element: (
-        //   <ProtectedRoute allowedRoles={[ROLES.CLIENT]}>
-        //     <Failed />
-        //   </ProtectedRoute>
-        // ),
-      },
-      {
-        path: "/profile",
-        Component: Profile,
-        // element: (
-        //   <ProtectedRoute allowedRoles={[ROLES.CLIENT]}>
-        //     <Profile />
-        //   </ProtectedRoute>
-        // ),
-        children: [
-          {
-            path: "",
-            Component: ProfileDetail,
-          },
-          {
-            path: "change-password",
-            Component: ChangePassword,
-          },
-          {
-            path: "detail",
-            Component: InfoDetails,
-          },
-          {
-            path: "trip",
-            Component: YourTripsQuery,
-          },
-          // {
-          //   path: "trip-save",
-          //   Component: YourSavedTrips,
-          // },
-        ],
-      },
+
       // {
       //   path: "/vehicle",
       //   Component: TransportSelectionPage,
@@ -375,6 +309,61 @@ const routeClient = () => [
       {
         path: "/register",
         Component: Register,
+      },
+    ],
+  },
+  {
+    path: "",
+    element: <ProtectedRoute allowedRoles={[ROLES.CLIENT]} />,
+    children: [
+      {
+        path: "/profile",
+        Component: Profile,
+        // element: (
+        //   <ProtectedRoute allowedRoles={[ROLES.CLIENT]}>
+        //     <Profile />
+        //   </ProtectedRoute>
+        // ),
+        children: [
+          {
+            path: "",
+            Component: ProfileDetail,
+          },
+          {
+            path: "change-password",
+            Component: ChangePassword,
+          },
+          {
+            path: "detail",
+            Component: InfoDetails,
+          },
+          {
+            path: "trip",
+            Component: YourTripsQuery,
+          },
+          // {
+          //   path: "trip-save",
+          //   Component: YourSavedTrips,
+          // },
+        ],
+      },
+      {
+        path: "/booking/:type",
+        Component: Booking,
+      },
+      {
+        path: "/payment",
+        Component: Payment,
+      },
+      {
+        path: "/success",
+        Component: Success,
+
+        exact: true,
+      },
+      {
+        path: "/failed",
+        Component: Failed,
       },
     ],
   },

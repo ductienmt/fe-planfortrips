@@ -111,11 +111,11 @@ const RoomVoucher = () => {
     room_id: "",
   });
   const [filters, setFilters] = useState({
-    roomType: null,
+    discountType: null,
     status: null,
   });
   const [selectedFilter, setSelectedFilter] = useState("Lọc");
-  const handleFilterChangeType = (type, value, label) => {
+  const handleFilterChangeType = (label) => {
     // console.log("Filter Type:", type, "Value:", value);
     setSelectedFilter(label);
   };
@@ -125,22 +125,23 @@ const RoomVoucher = () => {
       ...prevFilters,
       [key]: value,
     }));
-    fetchFilteredRoomData({ ...filters, [key]: value });
+    fetchFilteredVoucherData({ ...filters, [key]: value });
   };
 
-  const fetchFilteredRoomData = async (filterParams) => {
+  const fetchFilteredVoucherData = async (filterParams) => {
     try {
-      // const response = await RoomService.getFilteredRooms(
-      //   getQueryParams(),
-      //   filterParams.roomType,
-      //   filterParams.status
-      // );
+      const response = await VoucherService.searchEnterprise(
+        null,
+        filterParams.status,
+        filterParams.discountType
+      );
       // setRoomsData(response.content || []);
+      setVoucherData(response.content);
       // setTotalRecords(response.totalElements || 0);
-      // setFilters({
-      //   roomType: null,
-      //   status: null,
-      // });
+      setFilters({
+        discountType: null,
+        status: null,
+      });
     } catch (error) {
       console.error("Error fetching filtered room data", error);
     }
@@ -158,7 +159,7 @@ const RoomVoucher = () => {
         //   sortField,
         //   sortOrder
         // ),
-        handleFilterChangeType("filter", "all", "Tất cả");
+        handleFilterChangeType("Tất cả");
       },
     },
     {
@@ -166,19 +167,19 @@ const RoomVoucher = () => {
       label: "Loại giảm giá",
       children: [
         {
-          key: "precent",
+          key: "percent",
           label: "Phần trăm",
           onClick: () => {
-            handleFilterChangeType("roomType", "Standard", "Standard"),
-              handleFilterChange("roomType", "Standard");
+            handleFilterChangeType("Phần trăm"),
+              handleFilterChange("discountType", "PERCENT");
           },
         },
         {
           key: "fix",
           label: "Giảm tiền",
           onClick: () => {
-            handleFilterChangeType("roomType", "Superior", "Superior"),
-              handleFilterChange("roomType", "Superior");
+            handleFilterChangeType("Giảm tiền"),
+              handleFilterChange("discountType", "FIXED_AMOUNT");
           },
         },
       ],
@@ -190,14 +191,18 @@ const RoomVoucher = () => {
         {
           key: "true",
           label: "Đang hoạt động",
-          onClick: () =>
-            handleFilterChangeType("status", "1", "Đang hoạt động"),
+          onClick: () => {
+            handleFilterChangeType("Đang hoạt động"),
+              handleFilterChange("status", "true");
+          },
         },
         {
           key: "false",
           label: "Ngưng hoạt động",
-          onClick: () =>
-            handleFilterChangeType("status", "0", "Ngưng hoạt động"),
+          onClick: () => {
+            handleFilterChangeType("Ngưng hoạt động"),
+              handleFilterChange("status", "false");
+          },
         },
       ],
     },
@@ -264,6 +269,18 @@ const RoomVoucher = () => {
     }
   };
 
+  const handleSearchVoucher = async (e) => {
+    const { name, value } = e.target;
+    console.log("Search value: ", value);
+    try {
+      const res = await VoucherService.searchEnterprise(value);
+      setVoucherData(res.content);
+      // console.log("Search voucher: ", res.content);
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  };
+
   const handleDeleteVoucher = async (id) => {
     try {
       const res = await VoucherService.deleteVoucher(id);
@@ -308,6 +325,7 @@ const RoomVoucher = () => {
                 nameInput={"search"}
                 content={"Tìm kiếm"}
                 typeInput={"text"}
+                onChange={(e) => handleSearchVoucher(e)}
               />
             </div>
             <div className="nav-filterCombobox-voucher">

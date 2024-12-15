@@ -19,8 +19,8 @@ import { CityService } from "../../../services/apis/CityService";
 function TourPage() {
   const [toursData, setToursData] = useState(null);
   const [cities, setCities] = useState([]);
-  const [cityOrigin, setCityOrigin] = useState('');
-  const [cityDes, setCityDes] = useState('');
+  const [cityOrigin, setCityOrigin] = useState("");
+  const [cityDes, setCityDes] = useState("");
 
   const tourRef = useRef(null);
 
@@ -41,11 +41,14 @@ function TourPage() {
       alert("Thiếu dữ liệu");
       return;
     }
-    const resTour = await TourService.getTourByOriginAndDes(cityOrigin, cityDes);
+    const resTour = await TourService.getTourByOriginAndDes(
+      cityOrigin,
+      cityDes
+    );
     setToursData(resTour);
 
     if (tourRef.current) {
-      tourRef.current.scrollIntoView({ behavior: 'smooth' });
+      tourRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -57,6 +60,10 @@ function TourPage() {
     setCityDes(event.target.value);
   };
 
+  useEffect(() => {
+    document.title = "Tour";
+  }, []);
+
   return (
     <div className="c-tour py-3">
       <div className="c-tour-container">
@@ -65,7 +72,9 @@ function TourPage() {
           <div className="tour-header-content">
             <h1>Khám phá thế giới với tour du lịch tuyệt vời</h1>
             <p>Đặt tour ngay hôm nay với giá ưu đãi cực kỳ hấp dẫn!</p>
-            <p className="">Nội tỉnh: Tỉnh - Tỉnh. vd: Bình Thuận - Bình Thuận</p>
+            <p className="">
+              Nội tỉnh: Tỉnh - Tỉnh. vd: Bình Thuận - Bình Thuận
+            </p>
             <form className="tour-search-form">
               <div className="tour-search-destination">
                 <input
@@ -77,7 +86,7 @@ function TourPage() {
               </div>
 
               <select
-                style={{ width: 'fit-content' }}
+                style={{ width: "fit-content" }}
                 className="form-select"
                 value={cityDes}
                 onChange={handleCityDesChange}
@@ -91,7 +100,7 @@ function TourPage() {
               </select>
 
               <select
-                style={{ width: 'fit-content' }}
+                style={{ width: "fit-content" }}
                 className="form-select"
                 value={cityOrigin}
                 onChange={handleCityOriginChange}
@@ -104,7 +113,11 @@ function TourPage() {
                 ))}
               </select>
 
-              <button type="button" className="btn-search" onClick={handleSearhTourByOriginAndDes}>
+              <button
+                type="button"
+                className="btn-search"
+                onClick={handleSearhTourByOriginAndDes}
+              >
                 Tìm
               </button>
             </form>
@@ -192,7 +205,9 @@ function TourPage() {
           {/* Tour List Section */}
           <div className="tour-content-data mt-4">
             <div className="tour-content-title">
-              <h3 className="fw-bold fs-2" style={{ fontFamily: 'Italic' }}>#Tour của chúng tôi</h3>
+              <h3 className="fw-bold fs-2" style={{ fontFamily: "Italic" }}>
+                #Tour của chúng tôi
+              </h3>
             </div>
             <div className="tour-list row gx-3" ref={tourRef}>
               {toursData ? (
@@ -200,7 +215,13 @@ function TourPage() {
                   <TourCard key={tour.tourId} tour={tour} />
                 ))
               ) : (
-                <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: 4,
+                  }}
+                >
                   <CircularProgress />
                 </Box>
               )}

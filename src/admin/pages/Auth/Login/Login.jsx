@@ -15,18 +15,14 @@ export default function LoginAdmin() {
   const theme = useTheme();
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [loading, setLoading] = React.useState(false); 
+  const [loading, setLoading] = React.useState(false);
   const { login, logout } = useAuth();
 
   const signIn = async () => {
     setLoading(true);
     try {
       const response = await AdminService.login(username, password);
-      login(
-        response.data.token,
-        response.data.role,
-        response.data.userName
-      );
+      login(response.data.token, response.data.role, response.data.userName);
       enqueueSnackbar(response.message, {
         variant: "success",
         autoHideDuration: 1000,
@@ -36,17 +32,18 @@ export default function LoginAdmin() {
       });
     } catch (error) {
       console.log(error);
-      enqueueSnackbar(
-        error.response?.data?.message || "Đăng nhập thất bại",
-        {
-          variant: "error",
-          autoHideDuration: 1000,
-        }
-      );
+      enqueueSnackbar(error.response?.data?.message || "Đăng nhập thất bại", {
+        variant: "error",
+        autoHideDuration: 1000,
+      });
     } finally {
-      setLoading(false);  
+      setLoading(false);
     }
   };
+
+  React.useEffect(() => {
+    document.title = "Đăng nhập Admin";
+  }, []);
 
   const BRANDING = {
     logo: (
@@ -89,8 +86,8 @@ export default function LoginAdmin() {
             onChange: (e) => setPassword(e.target.value),
           },
           submitButton: {
-            children: loading ? "Đang đăng nhập..." : "Đăng nhập", 
-            disabled: loading, 
+            children: loading ? "Đang đăng nhập..." : "Đăng nhập",
+            disabled: loading,
           },
           forgotPasswordLink: {
             children: "Quên mật khẩu?",

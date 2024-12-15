@@ -77,6 +77,7 @@ const GuestLiving = () => {
   };
 
   useEffect(() => {
+    document.title = "Khách hàng của bạn";
     fetchGuestData("all");
   }, []);
   return (

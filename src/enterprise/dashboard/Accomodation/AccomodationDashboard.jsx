@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import "./AccomodationDashboard.css";
 import RoomStatusCard from "../../accomodation/accpmodationComponent/roomStatusCard/RoomStatusCard";
 import ChartReportCard from "../../accomodation/accpmodationComponent/chartReportCard/ChartReportCard";
@@ -38,24 +38,9 @@ const AccomodationDashboard = () => {
     },
   ];
 
-  const [roommData, setroommData] = useState([]);
-  const columns = [
-    {
-      title: "STT",
-      dataIndex: "",
-      key: "",
-    },
-    {
-      title: "Tên loại phòng",
-      dataIndex: "",
-      key: "",
-    },
-    {
-      title: "Giá 1 đêm",
-      dataIndex: "",
-      key: "",
-    },
-  ];
+  useEffect(() => {
+    document.title = "Thống kê";
+  }, []);
 
   return (
     <>
