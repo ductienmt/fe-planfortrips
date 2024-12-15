@@ -4,6 +4,7 @@ import { createTheme } from "@mui/material/styles";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./Dashboard.css";
+import 'react-toastify/dist/ReactToastify.css';
 import {
   faHouse,
   faUser,
@@ -26,6 +27,7 @@ import { parseJwt } from "../../../utils/Jwt";
 import { useAuth } from "../../../context/AuthContext/AuthProvider";
 import logo from "../../../assets/planfortrips-logo_1.png";
 import { router } from "../../../routes/route";
+import { ToastContainer } from "react-toastify";
 const NAVIGATION = [
   {
     kind: "header",
@@ -38,7 +40,7 @@ const NAVIGATION = [
       </NavLink>
     ),
     icon: (
-      <NavLink to="" className="nav-linkAdmin">
+      <NavLink to="">
         <FontAwesomeIcon icon={faHouse} />
       </NavLink>
     ),
@@ -62,7 +64,7 @@ const NAVIGATION = [
       </NavLink>
     ),
     icon: (
-      <NavLink to="users" className="nav-linkAdmin">
+      <NavLink to="users">
         <FontAwesomeIcon icon={faUser} />
       </NavLink>
     ),
@@ -75,7 +77,7 @@ const NAVIGATION = [
       </NavLink>
     ),
     icon: (
-      <NavLink to="business" className="nav-linkAdmin">
+      <NavLink to="business">
         <FontAwesomeIcon icon={faBriefcase} />
       </NavLink>
     ),
@@ -87,7 +89,7 @@ const NAVIGATION = [
       </NavLink>
     ),
     icon: (
-      <NavLink to="tours" className="nav-linkAdmin">
+      <NavLink to="tours">
         <FontAwesomeIcon icon={faEarthAsia} />
       </NavLink>
     ),
@@ -99,7 +101,7 @@ const NAVIGATION = [
       </NavLink>
     ),
     icon: (
-      <NavLink to="vouchers" className="nav-linkAdmin">
+      <NavLink to="vouchers">
         <FontAwesomeIcon icon={faTicket} />
       </NavLink>
     ),
@@ -127,7 +129,7 @@ const NAVIGATION = [
           </NavLink>
         ),
         icon: (
-          <NavLink to="transactions/hotels" className="nav-linkAdmin">
+          <NavLink to="transactions/hotels">
             <FontAwesomeIcon icon={faHotel} />
           </NavLink>
         ),
@@ -139,7 +141,7 @@ const NAVIGATION = [
           </NavLink>
         ),
         icon: (
-          <NavLink to="transactions/vehicles" className="nav-linkAdmin">
+          <NavLink to="transactions/vehicles">
             <FontAwesomeIcon icon={faCableCar} />
           </NavLink>
         ),
@@ -153,7 +155,7 @@ const NAVIGATION = [
       </NavLink>
     ),
     icon: (
-      <NavLink to="feedbacks" className="nav-linkAdmin">
+      <NavLink to="feedbacks">
         <FontAwesomeIcon icon={faDatabase} />
       </NavLink>
     ),
@@ -165,42 +167,42 @@ const NAVIGATION = [
       </NavLink>
     ),
     icon: (
-      <NavLink to="travel" className="nav-linkAdmin">
+      <NavLink to="travel">
         <FontAwesomeIcon icon={faUmbrellaBeach} />
       </NavLink>
     ),
   },
-  {
-    kind: "divider",
-  },
-  {
-    kind: "header",
-    title: "Cài đặt",
-  },
-  {
-    title: (
-      <NavLink to="settings" className="nav-linkAdmin">
-        Cài đặt
-      </NavLink>
-    ),
-    icon: (
-      <NavLink to="settings" className="nav-linkAdmin">
-        <FontAwesomeIcon icon={faGear} />
-      </NavLink>
-    ),
-  },
-  {
-    title: (
-      <NavLink to="tools" className="nav-linkAdmin">
-        Công cụ
-      </NavLink>
-    ),
-    icon: (
-      <NavLink to="tools" className="nav-linkAdmin">
-        <FontAwesomeIcon icon={faScrewdriverWrench} />
-      </NavLink>
-    ),
-  },
+  // {
+  //   kind: "divider",
+  // },
+  // {
+  //   kind: "header",
+  //   title: "Cài đặt",
+  // },
+  // {
+  //   title: (
+  //     <NavLink to="settings" className="nav-linkAdmin">
+  //       Cài đặt
+  //     </NavLink>
+  //   ),
+  //   icon: (
+  //     <NavLink to="settings" className="nav-linkAdmin">
+  //       <FontAwesomeIcon icon={faGear} />
+  //     </NavLink>
+  //   ),
+  // },
+  // {
+  //   title: (
+  //     <NavLink to="tools" className="nav-linkAdmin">
+  //       Công cụ
+  //     </NavLink>
+  //   ),
+  //   icon: (
+  //     <NavLink to="tools" className="nav-linkAdmin">
+  //       <FontAwesomeIcon icon={faScrewdriverWrench} />
+  //     </NavLink>
+  //   ),
+  // },
 ];
 const demoTheme = createTheme({
   cssVariables: {
@@ -220,8 +222,7 @@ const demoTheme = createTheme({
 
 function DashboardLayoutBasic({ window }) {
   const [admin, setAdmin] = React.useState({});
-  const { login, logout } = useAuth();
-  const token = sessionStorage.getItem("token");
+  const { login, logout, token } = useAuth();
   const userName = token ? parseJwt(token).sub : "";
   React.useEffect(() => {
     const fetch = async () => {
@@ -238,7 +239,7 @@ function DashboardLayoutBasic({ window }) {
       name: "",
       email: "",
       image:
-        "https://i.pinimg.com/736x/0a/ab/67/0aab67dce992f37b5a22f681f043574f.jpg",
+        "../src/assets/admin.jpg",
     },
   });
   const demoWindow = window !== undefined ? window() : undefined;
@@ -248,8 +249,7 @@ function DashboardLayoutBasic({ window }) {
         user: {
           name: admin.fullName || "",
           email: admin.email || "",
-          image:
-            "../src/assets/admin.jpg",
+          image: "../src/assets/admin.jpg",
         },
       });
     }
@@ -261,8 +261,7 @@ function DashboardLayoutBasic({ window }) {
           user: {
             name: admin.fullName ?? "",
             email: admin.email ?? "",
-            image:
-              "../src/assets/admin.jpg",
+            image: "../src/assets/admin.jpg",
           },
         });
       },
@@ -273,12 +272,37 @@ function DashboardLayoutBasic({ window }) {
     };
   }, [navigate]);
   React.useEffect(() => {
-    const listItemButtons = document.querySelectorAll(
-      "a.MuiButtonBase-root.MuiListItemButton-root"
-    );
-    listItemButtons.forEach((item) => {
-      item.style.backgroundColor = "transparent";
+    const observer = new MutationObserver(() => {
+      const listItemButtons = document.querySelectorAll(
+        "a.MuiButtonBase-root.MuiListItemButton-root"
+      );
+
+      if (listItemButtons.length > 0) {
+        listItemButtons.forEach((item) => {
+          item.style.backgroundColor = "transparent";
+
+          const handleMouseEnter = () => {
+            item.style.backgroundColor = "#f0f0f0";
+          };
+
+          const handleMouseLeave = () => {
+            item.style.backgroundColor = "transparent";
+          };
+
+          item.addEventListener("mouseenter", handleMouseEnter);
+          item.addEventListener("mouseleave", handleMouseLeave);
+
+          return () => {
+            item.removeEventListener("mouseenter", handleMouseEnter);
+            item.removeEventListener("mouseleave", handleMouseLeave);
+          };
+        });
+      }
     });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -295,6 +319,7 @@ function DashboardLayoutBasic({ window }) {
       }}
     >
       <Outlet />
+      <ToastContainer />
     </AppProvider>
   );
 }

@@ -35,4 +35,9 @@ export const CheckinService = {
     const response = await Http.get(`/check-in/getByCityId?cityId=${id}`);
     return response.data;
   },
+  delete: async (id) => {
+    const response = await Http.delete(`/check-in/delete?id=${id}`);
+    return response.data;
+  },
+  
 };

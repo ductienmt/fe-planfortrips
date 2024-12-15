@@ -1,13 +1,14 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar, GridToolbarContainer } from "@mui/x-data-grid";
-import { Button, Switch } from "@mui/material";
+import { Button, Switch, Toolbar } from "@mui/material";
 import { Delete, Edit, RemoveRedEye } from "@mui/icons-material";
 import { CouponService } from "../../../services/apis/CouponService";
 import AddIcon from "@mui/icons-material/Add";
-import { toast } from "react-toastify";
 import PlaceDialog from "./PlaceDialog";
 import { PlaceService } from "../../../services/apis/PlaceService";
+import { CheckinService } from "../../../services/apis/CheckinService";
+import { toast } from "react-toastify";
 
 export default function PlacePageAdmin() {
   const [rows, setRows] = React.useState([]);
@@ -16,8 +17,8 @@ export default function PlacePageAdmin() {
   const [selectedCouponId, setSelectedCouponId] = React.useState(null);
   const [viewMode, setViewMode] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [pageCurrent,setPageCurrent] = React.useState(1);
-  const [totalPage,setTotalPage] = React.useState(0);
+  const [pageCurrent, setPageCurrent] = React.useState(1);
+  const [totalPage, setTotalPage] = React.useState(0);
   const [formData, setFormData] = React.useState({
     cityId: "",
     name: "", // default value
@@ -48,9 +49,7 @@ export default function PlacePageAdmin() {
   React.useEffect(() => {
     const fetchCoupons = async () => {
       try {
-        const couponData = await PlaceService.getData(
-          pageCurrent
-        );
+        const couponData = await PlaceService.getData(pageCurrent);
         if (couponData && couponData.checkinResponses) {
           setRows(couponData.checkinResponses);
           setTotalPage(couponData.totalPages);
@@ -69,17 +68,17 @@ export default function PlacePageAdmin() {
   }, []);
   const handleDelete = async (id) => {
     try {
-      const response = await CouponService.deleteCoupon(id);
+      const response = await CheckinService.delete(id);
       if (response) {
-        toast("Cập nhật thành công");
-        setRows((prevRows) => prevRows.filter((row) => row.coupon_id !== id));
+        toast("Xóa thành công");
+        setRows((prevRows) => prevRows.filter((row) => row.id !== id));
       }
     } catch (error) {
       toast("Lỗi");
       console.log(error.message);
     }
   };
-  const ToolBar = ()=>{
+  const ToolBar = () => {
     React.useEffect(() => {
       setTimeout(() => {
         const buttonCol = document.querySelector(
@@ -90,30 +89,26 @@ export default function PlacePageAdmin() {
         );
         const buttonExport = document.querySelector(
           "button[aria-label='Export']"
-        )
+        );
         if (buttonCol) {
-          buttonCol.innerHTML = "<i class='fas fa-table-columns me-2'></i> Các Cột";
+          buttonCol.innerHTML =
+            "<i class='fas fa-table-columns me-2'></i> Các Cột";
         }
-        if(buttonFilter){
-          buttonFilter.innerHTML = "<i class='fas fa-filter me-2'></i> Lọc"
+        if (buttonFilter) {
+          buttonFilter.innerHTML = "<i class='fas fa-filter me-2'></i> Lọc";
         }
-        if(buttonExport){
-          buttonExport.innerHTML = "<i class='fas fa-download me-2'></i> Xuất"
+        if (buttonExport) {
+          buttonExport.innerHTML = "<i class='fas fa-download me-2'></i> Xuất";
         }
       }, 100);
     }, []);
     return (
-      <Box sx={{
-        display: "flex",
-        justifyContent: "flex-end",
-      }}>
-        <GridToolbar />
-      </Box>
-    );
-  }
-  function EditToolbar() {
-    return (
-      <GridToolbarContainer>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
         <Button
           color="primary"
           style={{ fontSize: "13px", padding: "4px 5px" }}
@@ -126,10 +121,9 @@ export default function PlacePageAdmin() {
           Thêm mã giảm
         </Button>
         <GridToolbar />
-      </GridToolbarContainer>
+      </Box>
     );
-  }
-
+  };
   const columns = [
     { field: "cityName", headerName: "Tên thành phố", width: 240 },
     {
@@ -171,7 +165,8 @@ export default function PlacePageAdmin() {
         <Delete
           key="delete"
           onClick={() => {
-            handleDelete(params.row.coupon_id);
+            console.log(params);
+            handleDelete(params.row.id);
           }}
         />,
       ],
@@ -198,7 +193,7 @@ export default function PlacePageAdmin() {
           },
         }}
         getRowId={(row) => row.id}
-        pageSizeOptions={[10,20,50]}
+        pageSizeOptions={[10, 20, 50]}
         checkboxSelection={false}
         disableRowSelectionOnClick
         slots={{ toolbar: ToolBar }}
