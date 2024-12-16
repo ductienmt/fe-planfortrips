@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../../../assets/beach.jpg";
 import "./LandingPage.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CheckinCard from "./checkinCard/CheckinCard";
 import phuquoc from "../../../assets/phuquoc.jpg";
 import caurong from "../../../assets/caurong.webp";
@@ -14,11 +14,46 @@ import feedback3 from "../../../assets/feedback3.jpg";
 import feedback4 from "../../../assets/feedback4.jpg";
 import feedback5 from "../../../assets/feedback5.jpg";
 import feedback6 from "../../../assets/feedback6.jpeg";
+import { CityService } from "../../../services/apis/CityService";
+import Loader from "../../Components/Loading";
+import { TourService } from "../../../services/apis/TourService";
 
 const LandingPage = () => {
+  const [cityData, setCityData] = useState([]);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [tourData, setTourData] = useState([]);
+
+  const loadCityData = async () => {
+    try {
+      setLoading(true);
+      const response = await CityService.getPopularCity();
+      setCityData(response);
+    } catch (error) {
+      console.log("error", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadTourData = async () => {
+    try {
+      setLoading(true);
+      const response = await TourService.getTopTour();
+      // console.log("tourData", response);
+      setTourData(response);
+    } catch (error) {
+      console.log("error", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     document.title = "Trang chủ";
     window.scrollTo(0, 0);
+    loadCityData();
+    loadTourData();
   }, []);
   return (
     <>
@@ -61,28 +96,33 @@ const LandingPage = () => {
               Những nơi tham quan dưới đây là những nơi được du khách nhà Plan
               for Trips đánh giá cao. Bạn có muốn thử trải nghiệm không?
             </p>
-            <section className="checkin-card-container">
-              <CheckinCard
-                img={phuquy}
-                cityName="Bình Thuận"
-                checkinName="Đảo Phú Quý"
-                rating="4.5"
-              />
-              <CheckinCard
-                img={caurong}
-                cityName="Đà Nẵng"
-                checkinName="Cầu Rồng"
-                rating="4.8"
-              />
-              <CheckinCard
-                img={phuquoc}
-                cityName="Kiên Giang"
-                checkinName="Đảo Phú Quốc"
-                rating="4.7"
-              />
-            </section>
+            {loading ? (
+              <Loader rong={"20vh"} />
+            ) : (
+              <>
+                <section className="checkin-card-container">
+                  {cityData.map((city) => (
+                    <CheckinCard
+                      key={city.city_id}
+                      img={city.city_image_url}
+                      cityName={city.city_name}
+                      // checkinName="Đảo Phú Quý"
+                      rating="4.5"
+                      linkTo={`/check-in/city/${city.city_id}`}
+                    />
+                  ))}
+                </section>
+              </>
+            )}
             <div className="view-more">
-              <button className="btn btn-view-more">Xem thêm</button>
+              <button
+                className="btn btn-view-more"
+                onClick={() => {
+                  navigate("/check-in");
+                }}
+              >
+                Xem thêm
+              </button>
             </div>
           </section>
           <div className="body">
@@ -94,48 +134,40 @@ const LandingPage = () => {
                 tiêu chí nhe!
               </p>
               <div className="content">
-                <TourCard
-                  image={phuquoc}
-                  title="Tour Đảo Phú Quốc"
-                  description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos."
-                  location="Phú Quốc, Kiên Giang"
-                  people="2 người"
-                  nights="2N/1Đ"
-                  rating="4.5"
-                  price="5.000.000"
-                  feedback="25"
-                  number="2"
-                  handleClick={() => {}}
-                />
-                <TourCard
-                  image={phuquy}
-                  title="Tour Đảo Phú Quý"
-                  description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos."
-                  location="Phú Quý, Bình Thuận"
-                  people="10 người"
-                  nights="7N/6Đ"
-                  rating="4.8"
-                  price="6.000.000"
-                  feedback="25"
-                  number="10"
-                  handleClick={() => {}}
-                />
-                <TourCard
-                  image={caurong}
-                  title="Tour Đà Nẵng"
-                  description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos."
-                  location="Đà Nẵng"
-                  people="5 người"
-                  nights="5N/4Đ"
-                  rating="4.9"
-                  price="4.000.000"
-                  feedback="25"
-                  number="5"
-                  handleClick={() => {}}
-                />
+                {tourData.map((tour) => (
+                  <TourCard
+                    key={tour.tourId}
+                    image={tour.tourImage}
+                    title={tour.tourTitle}
+                    description={
+                      tour.tourDescription.length > 150
+                        ? `${tour.tourDescription.substring(0, 150)}...`
+                        : tour.tourDescription
+                    }
+                    location={
+                      tour.tourDestination.includes("-")
+                        ? tour.tourDestination.split("-")[1]
+                        : tour.tourDestination
+                    }
+                    people={tour.tourPeople}
+                    nights={tour.tourDays}
+                    rating={tour.tourRating}
+                    contentButton={"Xem chi tiết"}
+                    tags={tour.tourTags}
+                    numberPeopleUsed={tour.tourUsed}
+                    handleClick={() => {}}
+                  />
+                ))}
               </div>
               <div className="view-more mt-4">
-                <button className="btn btn-view-more">Xem thêm</button>
+                <button
+                  className="btn btn-view-more"
+                  onClick={() => {
+                    navigate("/tour");
+                  }}
+                >
+                  Xem thêm
+                </button>
               </div>
             </div>
           </div>

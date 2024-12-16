@@ -1,7 +1,14 @@
+import { Link } from "react-router-dom";
 import "./CheckinCard.css";
 
-const CheckinCard = ({ img, cityName, checkinName, rating, description }) => {
-  const toUpperCase = (str) => str.toUpperCase();
+const CheckinCard = ({
+  img,
+  cityName,
+  checkinName,
+  rating,
+  description,
+  linkTo,
+}) => {
   const renderStars = (rating) => {
     const stars = [];
     const fullStars = Math.floor(rating);
@@ -34,17 +41,19 @@ const CheckinCard = ({ img, cityName, checkinName, rating, description }) => {
 
   return (
     <>
-      <div className="checkin-card" style={{ padding: "0" }}>
-        <div className="checkin-card-item">
-          <img src={img} alt={checkinName} />
-          <div className="content">
-            <p className="city-name">{toUpperCase(cityName)}</p>
-            <h4 className="checkin-name">{toUpperCase(checkinName)}</h4>
-            <p className="checkin-description">{description}</p>
-            <div className="rating-badge">{renderStars(rating)}</div>
+      <Link to={linkTo}>
+        <div className="checkin-card" style={{ padding: "0" }}>
+          <div className="checkin-card-item">
+            <img src={img} alt={checkinName} />
+            <div className="content">
+              <p className="city-name">{cityName}</p>
+              <h4 className="checkin-name">{checkinName}</h4>
+              <p className="checkin-description">{description}</p>
+              <div className="rating-badge">{renderStars(rating)}</div>
+            </div>
           </div>
         </div>
-      </div>
+      </Link>
     </>
   );
 };

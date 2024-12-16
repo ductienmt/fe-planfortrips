@@ -238,7 +238,7 @@ const Payment = () => {
         const tData = JSON.parse(sessionStorage.getItem("tripData"));
 
         const bookingDetails = tripData.accomodation.rooms.map((room) => ({
-          roomId: room.id,
+          roomId: room.roomId,
 
           checkInTime: checkinHours ? checkinHours : "",
           checkOutTime: checkoutHours ? checkoutHours : "",
@@ -311,7 +311,7 @@ const Payment = () => {
         const tData = JSON.parse(sessionStorage.getItem("tripData"));
 
         const bookingDetails = tripData.accomodation.rooms.map((room) => ({
-          roomId: room.id,
+          roomId: room.roomId,
           checkInTime: checkinHours ? checkinHours : "",
           checkOutTime: checkoutHours ? checkoutHours : "",
           price: tData?.accomodation?.price_per_night || 0,
