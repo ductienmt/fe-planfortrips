@@ -103,7 +103,7 @@ export const generateTripPlan = async (data) => {
       để ý số người mà tính toán cho đúng, nếu không đủ số tiền có thể chọn một nơi ở khác giá rẻ hơn, sau đó nếu vẫn chưa đủ thì chọn chuyến xe khác sẽ hơn, làm sao cho 1 kế hoạch tối ưu chi phí nhất\n\n${JSON.stringify(data)}`
     );
     // const expected = cleanedResponse(result.response.text());
-    console.log(result.response.text());
+    // console.log(result.response.text());
     let cleanedResponse = result.response
       .text()
       .replace(/```json/g, "")
@@ -115,9 +115,10 @@ export const generateTripPlan = async (data) => {
     if (lastCurlyBraceIndex !== -1) {
       cleanedResponse = cleanedResponse.slice(0, lastCurlyBraceIndex + 1);
     }
-    console.log(cleanedResponse);
-    console.log(JSON.parse(cleanedResponse));
-    return JSON.parse(cleanedResponse);
+    // console.log(cleanedResponse);
+    const parsedResponse = JSON.parse(cleanedResponse);
+    console.log(parsedResponse);
+    return parsedResponse;
   } catch (error) {
     console.error("An error occurred while sending the message:", error);
     // throw new Error("Failed to generate trip plan");

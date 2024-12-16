@@ -1,9 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./EnterpriseTopbar.css";
 import { InputFlied } from "../../client/Components/Input/InputFlied";
 import avt from "../../assets/avt.jpg";
+import AccountEtpService from "../../services/apis/AccountEnterprise";
 
 const EnterpriseTopbar = () => {
+  const [img, setImage] = useState("");
+  const loadUserData = async () => {
+    try {
+      const res = await AccountEtpService.detail();
+      console.log("res", res);
+      setImage(res.data.urlImage);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+  useEffect(() => {
+    loadUserData();
+  }, []);
   return (
     <>
       <div className="enterprise-topbar-container">
@@ -25,7 +39,7 @@ const EnterpriseTopbar = () => {
           </div>
           <div className="avatar">
             <img
-              src={avt}
+              src={img}
               alt=""
               style={{
                 width: "45px",

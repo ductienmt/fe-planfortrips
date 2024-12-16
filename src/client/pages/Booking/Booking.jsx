@@ -19,6 +19,7 @@ import { id } from "date-fns/locale";
 
 const Booking = () => {
   window.scrollTo(0, 0);
+  document.title = "Nhập thông tin thanh toán";
   const { type } = useParams();
 
   const steps = useMemo(() => {

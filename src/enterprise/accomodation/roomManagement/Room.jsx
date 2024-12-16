@@ -14,6 +14,7 @@ import ButtonDeleteRoom from "../../components/ButtonDeleteRoom";
 import ButtonDeletePictureRoom from "../../components/ButtonDeletePictureRoom";
 import { id } from "date-fns/locale";
 import ImageCarousel from "../../components/ImageCarousel";
+import { format } from "date-fns";
 
 const Room = () => {
   const location = useLocation();
@@ -54,7 +55,8 @@ const Room = () => {
     try {
       const response = await RoomService.findRoomById(id);
       setRoomImages(response.images);
-      // console.log("Room Images:", response.images);
+
+      console.log("Room Images:", response);
     } catch (error) {
       console.error("Error fetching room images", error);
     }
@@ -353,8 +355,13 @@ const Room = () => {
       sortOrder = null
     ) => {
       try {
+        const checkInDate = format(new Date(), "yyyy-MM-dd");
+        const checkOutDate = format(new Date(), "yyyy-MM-dd");
+
         const response = await RoomService.getRoomsByHotelId(
           id,
+          checkInDate,
+          checkOutDate,
           pageNo,
           pageSize,
           sortField,
@@ -814,7 +821,7 @@ const Room = () => {
           <div className="modal-content">
             <div className="modal-header">
               <h3 style={{ fontWeight: "600", margin: "0" }}>
-                Chỉnh s���a tên phòng và mô tả
+                Chỉnh sửa tên phòng và mô tả
               </h3>
 
               <button
@@ -1106,10 +1113,9 @@ const Room = () => {
                 className="btn-close"
                 data-bs-toggle="modal"
                 data-bs-target="#editInfoRoom"
-                // onClick={() => {
-                //   setPreviewImage(null);
-                //   setSelectedImage(null);
-                // }}
+                onClick={() => {
+                  setRoomImages([]);
+                }}
               ></button>
             </div>
             <div className="modal-body">

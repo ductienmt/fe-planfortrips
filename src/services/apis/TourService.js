@@ -2,7 +2,7 @@ import Http from "../Http";
 
 export const TourService = {
   getToursClient: async () => {
-    const response = await Http.get("/tours/client/");
+    const response = await Http.get("/tours/client");
     return response.data;
   },
   getTourDetail: async (tourId) => {
@@ -57,6 +57,10 @@ export const TourService = {
   },
   getTourByCheckin: async (checkin) => {
     const response = await Http.get(`/tours/checkIn/${checkin}`);
+    return response.data;
+  },
+  getTopTour: async () => {
+    const response = await Http.get(`/tours/top1`);
     return response.data;
   },
 };
