@@ -76,6 +76,7 @@ import NotFoundPage from "../notFound/notFoundPage";
 import { Component, useEffect, useState } from "react";
 import Statistical from "../admin/pages/Statistical/Statistical";
 import ForgotPasswordEnterprise from "../enterprise/auth/login/forgotPassword/ForgotPasswordEnterprise";
+import FeedBack from "../client/pages/FeedBack/FeedBack";
 const ROLES = {
   CLIENT: "ROLE_USER",
   ADMIN: "ROLE_ADMIN",
