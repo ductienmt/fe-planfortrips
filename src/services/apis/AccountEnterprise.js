@@ -57,6 +57,20 @@ export const AccountEtpService = {
       `/account-enterprises/validate-contact?${params.toString()}`
     );
   },
+  detail: async () => {
+    return await Http.get(`/account-enterprises/detail`);
+  },
+  uploadImage: async (formData) => {
+    return await Http.post(`/account-enterprises/upload`, formData);
+  },
+  verifyPasswordEtp: async (password) => {
+    return await Http.get(
+      `/account-enterprises/verify-password?password=${password}`
+    );
+  },
+  update: async (data) => {
+    return await Http.put(`/account-enterprises/update`, data);
+  },
 };
 
 export default AccountEtpService;

@@ -92,9 +92,9 @@ const ProtectedRoute = ({ allowedRoles }) => {
       if (location.pathname.startsWith("/admin")) {
         navigate("/admin/login", { replace: true });
       } else if (location.pathname.startsWith("/enterprise")) {
-        navigate("/enterprise/login", { replace: true }); 
+        navigate("/enterprise/login", { replace: true });
       } else {
-        navigate("/login", { replace: true }); 
+        navigate("/login", { replace: true });
       }
     }
   }, [location.pathname, navigate, token]);
@@ -260,59 +260,8 @@ const routeClient = () => [
       },
       {
         path: "/booking/:type",
-        element: <ProtectedRoute allowedRoles={[ROLES.CLIENT]} />,
         Component: Booking,
       },
-      {
-        path: "/payment",
-        element: <ProtectedRoute allowedRoles={[ROLES.CLIENT]} />,
-        children: [
-          {
-            path: "",
-            Component: Payment,
-          },
-        ],
-      },
-      {
-        path: "/success",
-        element: <ProtectedRoute allowedRoles={[ROLES.CLIENT]} />,
-        Component: Success,
-        exact: true,
-      },
-      {
-        path: "/failed",
-        element: <ProtectedRoute allowedRoles={[ROLES.CLIENT]} />,
-        Component: Failed,
-      },
-      {
-        path: "/profile",
-        element: <ProtectedRoute allowedRoles={[ROLES.CLIENT]} />,
-        Component: Profile,
-        children: [
-          {
-            path: "",
-            Component: ProfileDetail,
-          },
-          {
-            path: "change-password",
-            Component: ChangePassword,
-          },
-          {
-            path: "detail",
-            Component: InfoDetails,
-          },
-          {
-            path: "trip",
-            Component: YourTripsQuery,
-          },
-        ],
-      },
-      {
-        path: "/submit-enterprise",
-        element: <ProtectedRoute allowedRoles={[ROLES.CLIENT]} />,
-        Component: Sumbitenterprise,
-      },
-      // Keep public routes outside of protection
       {
         path: "/hotel",
         Component: IntroHotel,
@@ -336,6 +285,15 @@ const routeClient = () => [
       {
         path: "/vehicle-booking/:id",
         Component: VehicleBooking,
+      },
+
+      // {
+      //   path: "/vehicle",
+      //   Component: TransportSelectionPage,
+      // },
+      {
+        path: "/submit-enterprise",
+        Component: Sumbitenterprise,
       },
       {
         path: "/check-in",
@@ -379,9 +337,59 @@ const routeClient = () => [
     ],
   },
   {
-    path: "*",
-    element: <NotFoundPage />,
+    path: "",
+    element: <ProtectedRoute allowedRoles={[ROLES.CLIENT]} />,
+    children: [
+      {
+        path: "/profile",
+        Component: Profile,
+        children: [
+          {
+            path: "",
+            Component: ProfileDetail,
+          },
+          {
+            path: "change-password",
+            Component: ChangePassword,
+          },
+          {
+            path: "detail",
+            Component: InfoDetails,
+          },
+          {
+            path: "trip",
+            Component: YourTripsQuery,
+          },
+          // {
+          //   path: "trip-save",
+          //   Component: YourSavedTrips,
+          // },
+        ],
+      },
+      {
+        path: "/booking/:type",
+        Component: Booking,
+      },
+      {
+        path: "/payment",
+        Component: Payment,
+      },
+      {
+        path: "/success",
+        Component: Success,
+
+        exact: true,
+      },
+      {
+        path: "/failed",
+        Component: Failed,
+      },
+    ],
   },
+  // {
+  //   path: "*",
+  //   element: <NotFoundPage />,
+  // },
 ];
 
 export const router = createBrowserRouter([
