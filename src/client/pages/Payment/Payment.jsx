@@ -48,7 +48,6 @@ const Payment = () => {
   const tripData = JSON.parse(sessionStorage.getItem("tripData"));
   const [isLoading, setIsLoading] = useState(false);
   const [planId, setPlanId] = useState("");
-
   let type = null;
   if (planData) {
     type = "plan";

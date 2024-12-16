@@ -211,7 +211,7 @@ function TourFormUpdate({ setRows, selectedTourId }) {
         await uploadEncodedImage(response.tour_id, fileList);
       }
       setHidden(false);
-      toast("Tạo mới thành công");
+      toast.success("Tạo mới thành công");
       setRows((prevRows) =>
         prevRows.map((row) =>
           row.tour_id === selectedTourId ? { ...row, ...formData } : row

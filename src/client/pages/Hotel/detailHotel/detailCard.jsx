@@ -2,13 +2,11 @@ import "./detailCard.css";
 import RoomCard from "../roomCard/roomCard";
 import PersonReview from "../personReview/PersonReview";
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import { HotelService } from "../../../../services/apis/HotelService";
 import Loader from "../../../Components/Loading";
-import { Box, IconButton, Modal, Tooltip, Typography } from "@mui/material";
-import { Carousel, Image } from "antd";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { Box, IconButton, Modal, Tooltip } from "@mui/material";
+import {Image } from "antd";
 import SvgIcon from "../card/svgIcon";
 import { regexUrlIcon } from "../../../../utils/regex";
 import BageCartHotel from "../badgeCartHotel/badgeCartHotel";
@@ -16,7 +14,6 @@ import HotelCart from "../hotelCart/hotelCart";
 import OpenStreetMapEmbed from "../mapCheckin/mapHotel";
 import { FeedbackService } from "../../../../services/apis/FeedbackService";
 import ReviewHeader from "../personReview/reviewHeader";
-import { enqueueSnackbar } from "notistack";
 import HotelShareComponent from "../shareHotel/shareHotel";
 import HotelImageModal from "../hotelImageModal/hotelImageModal";
 import { useAuth } from "../../../../context/AuthContext/AuthProvider";
@@ -45,24 +42,10 @@ const style = {
   overflow: "hidden",
 };
 
-const contentStyle = {
-  height: "500px",
-  maxHeight: {
-    xs: "70vh",
-    sm: "75vh",
-    md: "80vh",
-  },
-  objectFit: "cover",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  margin: "0 auto",
-};
+
 const DetailCard = () => {
-  const originalPrice = 250000;
-  const discountedPrice = 200000;
-  const hasDiscount = discountedPrice < originalPrice;
   // window.scrollTo(0, 0);
+ 
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const [hotel, setHotel] = useState({});
@@ -72,6 +55,11 @@ const DetailCard = () => {
   const [openFeedback, setOpenFeedback] = useState(false);
   const [isCopyModal, setIsCopyModal] = useState(false);
   const { token } = useAuth();
+  const [searchParams] = useSearchParams();
+  const checkIn = searchParams.get("checkIn");
+  const checkOut = searchParams.get("checkOut");
+  console.log("CheckIn:", checkIn);
+  console.log("CheckOut:", checkOut);
   useEffect(() => {
     const fetch = async () => {
       const dataHotel = await HotelService.findHotelById(id);
@@ -134,9 +122,12 @@ const DetailCard = () => {
       {openCart && (
         <div ref={cartRef}>
           <HotelCart
+            hotel={hotel}
             selectedRoom={selectedRoom}
             setSelectedRoom={setSelectedRoom}
             setLoading={setLoading}
+            checkIn={checkIn}
+            checkOut={checkOut}
           />
         </div>
       )}

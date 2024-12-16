@@ -48,11 +48,11 @@ export default function TourAdmin() {
 
       const response = await TourService.deleteTour(id);
       if (response) {
-        ("Xóa thành công");
+        toast.success("Xóa thành công");
         setRows((prevRows) => prevRows.filter((row) => row.tour_id !== id));
       }
     } catch (error) {
-      toast("Lỗi");
+      toast.error("Lỗi");
       console.log(error.message);
     }
   };
@@ -101,11 +101,11 @@ export default function TourAdmin() {
       headerName: "Số người tham gia",
       width: 90,
     },
-    {
-      field: "total_price",
-      headerName: "Tổng số tiền",
-      width: 90,
-    },
+    // {
+    //   field: "total_price",
+    //   headerName: "Tổng số tiền",
+    //   width: 90,
+    // },
     {
       field: "day",
       headerName: "Số ngày",

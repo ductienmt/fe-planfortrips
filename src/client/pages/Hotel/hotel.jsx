@@ -18,7 +18,6 @@ import { enqueueSnackbar } from "notistack";
 import { flatpickrConfig } from "../../../utils/ConfigFlatpickr";
 
 const Hotel = () => {
-  // window.scrollTo(0, 0);
   const location = useLocation();
   const { keyword, date, days } = location.state || {};
   const [selectedAmenities, setSelectedAmenities] = useState([]);
@@ -52,17 +51,18 @@ const Hotel = () => {
         setHotelAvailable(response.hotelResponseList);
         setTotalPage(response.totalPage);
       }
+      window.scrollTo(0, 0);
     };
     fetch();
   }, [setPage]);
-  // const filteredHotels = hotelAvailable.filter((hotel) =>
-  //   hotel.hotelAmenities.some((amenity) =>
-  //     selectedAmenities.includes(amenity.name)
-  //   )
-  // );
-  // const filteredHotelsByRating = selectedRating
-  // ? hotelAvailable.filter((hotel) => hotel.rating <= selectedRating)
-  // : hotelAvailable;
+  const filteredHotels = hotelAvailable.filter((hotel) =>
+    hotel.hotelAmenities.some((amenity) =>
+      selectedAmenities.includes(amenity.name)
+    )
+  );
+  const filteredHotelsByRating = selectedRating
+  ? hotelAvailable.filter((hotel) => hotel.rating <= selectedRating)
+  : hotelAvailable;
   const handlePageChange = (e, value) => {
     setPage(value);
   };
@@ -99,7 +99,6 @@ const Hotel = () => {
   };
 
   const handleGuestChange = (type, operation, event) => {
-    // Added event parameter here
     event.preventDefault(); // Prevent default form submission behavior
     if (type === "adults") {
       setAdults(
@@ -134,7 +133,8 @@ const Hotel = () => {
 
     return filteredHotels.map((item, index) => (
       <li key={index}>
-        <HotelCard item={item} />
+        <HotelCard item={item} dateDepart={dateDepart ?? null}
+  dateReturn={dateReturn ?? null}/>
       </li>
     ));
   };
@@ -151,12 +151,31 @@ const Hotel = () => {
 
   const validation = () => {
     const today = new Date();
-    if (!dateReturn) setError("Ngày về không được để trống");
-    if (new Date(dateDepart) < today)
+    if (!dateReturn || dateReturn.trim() === '') {
+      setError("Ngày về không được để trống");
+      return false;
+    }
+  
+    const departDate = new Date(dateDepart);
+    const returnDate = new Date(dateReturn);
+    if (isNaN(departDate.getTime())) {
+      setError("Ngày đi không hợp lệ");
+      return false;
+    }
+    if (isNaN(returnDate.getTime())) {
+      setError("Ngày về không hợp lệ");
+      return false;
+    }
+    if (departDate < today) {
       setError("Ngày đi không được nhỏ hơn ngày hiện tại");
-    if (new Date(dateDepart) > new Date(dateReturn))
+      return false;
+    }
+    if (departDate > returnDate) {
       setError("Ngày đi không được lớn hơn ngày về");
-    return error.length == 0;
+      return false;
+    }
+    setError('');
+    return true;
   };
   function addDaysToDate(dateStr, days) {
     const [day, month, year] = dateStr.split("-").map(Number);
@@ -268,7 +287,7 @@ const Hotel = () => {
   const handleSearchHotel = async (e) => {
     e.preventDefault();
     if (!validation()) {
-      enqueueSnackbar(error, { variant: "error" });
+      enqueueSnackbar(error, { variant: "error",hideIconVariant: 3000 });
       return;
     }
     const departDate = convertToDate(dateDepart);

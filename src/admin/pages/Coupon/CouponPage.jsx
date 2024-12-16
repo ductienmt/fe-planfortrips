@@ -17,6 +17,7 @@ export default function CouponAdmin() {
   const [selectedCouponId, setSelectedCouponId] = React.useState(null);
   const [viewMode, setViewMode] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [isRemove,setIsRemove] = React.useState(false)
   const [formData, setFormData] = React.useState({
     code: "",
     discount_type: 1, // default value
@@ -53,7 +54,7 @@ export default function CouponAdmin() {
           paginationModel.pageSize,
           ""
         );
-
+        setIsRemove(false)
         if (couponData && couponData.listResponse) {
           setRows(couponData.listResponse);
           setIsLoading(false);
@@ -68,13 +69,14 @@ export default function CouponAdmin() {
       }
     };
     fetchCoupons();
-  }, []);
+  }, [setIsRemove]);
   const handleDelete = async (id) => {
     try {
       const response = await CouponService.deleteCoupon(id);
       if (response) {
-        toast("Cập nhật thành công");
-        setRows((prevRows) => prevRows.filter((row) => row.coupon_id !== id));
+        toast.success("Xóa thành công");
+        // setRows((prevRows) => prevRows.filter((row) => row.coupon_id !== id));
+        setIsRemove(true)
       }
     } catch (error) {
       toast("Lỗi");
