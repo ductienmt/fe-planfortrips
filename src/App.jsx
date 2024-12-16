@@ -17,11 +17,14 @@ function App() {
   const isEnterpriseRoute = location.pathname.startsWith("/enterprise");
   const isEnterprise = token && role === "ROLE_ENTERPRISE";
 
+  const isProfileRoute = location.pathname.startsWith("/profile");
+
   const shouldRenderChat =
     !isAdmin &&
     !isAdminRoute &&
     !isEnterprise &&
     !isEnterpriseRoute &&
+    !isProfileRoute &&
     !["/admin", "/enterprise"].includes(location.pathname);
 
   return (

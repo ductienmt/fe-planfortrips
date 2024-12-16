@@ -3,9 +3,9 @@ import Http from "../Http";
 export const HotelService = {
   getHotels: async (page, limit, keyword) => {
     const params = new URLSearchParams();
-    if (page) {
-      params.append("page", page);
-    }
+
+    params.append("page", page);
+
     if (limit) {
       params.append("limit", limit);
     }
@@ -25,12 +25,16 @@ export const HotelService = {
     const response = await Http.get(`/hotels/getByRoomId/${id}`);
     return response.data;
   },
+  create: async (data) => {
+    const response = await Http.post(`/hotels/create`, data);
+    return response.data;
+  },
   update: async (hotelId, data) => {
     const response = await Http.put(`/hotels/update/${hotelId}`, data);
     return response.data;
   },
   delete: async (id) => {
-    const response = await Http.delete(`/users/delete/${id}`);
+    const response = await Http.post(`/hotels/delete/${id}`);
     return response.data;
   },
   detail: async () => {
@@ -49,6 +53,35 @@ export const HotelService = {
       `/hotels/findHotelAvailable?keyword=${keyword}&date=${date}&days=${days}&page=${page}&limit=${limit}`
     );
     console.log(response);
+    return response.data;
+  },
+  changeHotelStatus: async (id) => {
+    const params = new URLSearchParams({ id });
+    const response = await Http.patch(
+      `/hotels/changeStatus?${params.toString()}`
+    );
+    return response.data;
+  },
+  search: async (keyword, pageNo, pageSize, sortBy, sortType) => {
+    const params = new URLSearchParams({});
+    if (keyword) {
+      params.append("keyword", keyword);
+    }
+    if (pageNo) {
+      params.append("pageNo", pageNo);
+    }
+    if (pageSize) {
+      params.append("pageSize", pageSize);
+    }
+    if (sortBy) {
+      params.append("sortBy", sortBy);
+    }
+    if (sortType) {
+      params.append("sortType", sortType);
+    }
+    const response = await Http.get(
+      `/hotels/searchEnterprise?${params.toString()}`
+    );
     return response.data;
   },
 };

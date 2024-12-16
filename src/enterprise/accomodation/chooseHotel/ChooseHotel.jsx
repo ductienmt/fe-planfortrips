@@ -78,7 +78,10 @@ const ChooseHotel = () => {
               />
             </div>
           </div>
-          <div className="chooseHotel-selection">
+          <div
+            className="chooseHotel-selection d-flex flex-column"
+            style={{ gap: "1rem" }}
+          >
             {filteredHotels.map((hotel) => (
               <div key={hotel.hotelId} className="chooseHotel-container">
                 <ChooseHotelCard {...hotel} />

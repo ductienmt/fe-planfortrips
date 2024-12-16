@@ -55,7 +55,8 @@ const Room = () => {
     try {
       const response = await RoomService.findRoomById(id);
       setRoomImages(response.images);
-      // console.log("Room Images:", response.images);
+
+      console.log("Room Images:", response);
     } catch (error) {
       console.error("Error fetching room images", error);
     }
@@ -820,7 +821,7 @@ const Room = () => {
           <div className="modal-content">
             <div className="modal-header">
               <h3 style={{ fontWeight: "600", margin: "0" }}>
-                Chỉnh s���a tên phòng và mô tả
+                Chỉnh sửa tên phòng và mô tả
               </h3>
 
               <button
@@ -1112,10 +1113,9 @@ const Room = () => {
                 className="btn-close"
                 data-bs-toggle="modal"
                 data-bs-target="#editInfoRoom"
-                // onClick={() => {
-                //   setPreviewImage(null);
-                //   setSelectedImage(null);
-                // }}
+                onClick={() => {
+                  setRoomImages([]);
+                }}
               ></button>
             </div>
             <div className="modal-body">
