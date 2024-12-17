@@ -29,6 +29,10 @@ export const VoucherService = {
     );
     return response.data;
   },
+  create: async (data) => {
+    const response = await Http.post(`/coupons/create`, data);
+    return response.data;
+  },
   createRoomVoucher: async (data, roomId) => {
     const params = new URLSearchParams({ roomId });
     const response = await Http.post(

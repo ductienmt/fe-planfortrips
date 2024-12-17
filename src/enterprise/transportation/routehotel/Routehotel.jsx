@@ -1,47 +1,52 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Routehotel.css";
 import { Table } from "antd";
+import { RouteService } from "../../../services/apis/RouteService";
 const Routehotel = () => {
   const [roomsData, setRoomsData] = useState([]);
   const columns = [
     {
       title: "Mã Tuyến",
-      dataIndex: "roomName",
-      key: "roomName",
-    },
-    {
-      title: "Tên Tuyến",
-      dataIndex: "typeOfRoom",
-      key: "typeOfRoom",
+      dataIndex: "route_id",
+      key: "route_id",
     },
     {
       title: "Xuất Phát",
-      dataIndex: "price",
-      key: "price",
+      dataIndex: "departureCity",
+      key: "departureCity",
     },
     {
       title: "Điểm Đến",
-      dataIndex: "maxSize",
-      key: "maxSize",
+      dataIndex: "arrivalCity",
+      key: "arrivalCity",
     },
     {
       title: "Bến Xe Xuất phát",
-      dataIndex: "isAvailable",
-      key: "isAvailable",
+      dataIndex: "departureStation",
+      key: "departureStation",
     },
     {
       title: "Bến Xe Đến",
-      dataIndex: "rating",
-      key: "rating",
-    },
-    {
-      title: "Trạng thái",
-      dataIndex: "action",
-      key: "action",
+      dataIndex: "arrivalStation",
+      key: "arrivalStation",
     },
   ];
 
   const [selectedItem, setSelectedItem] = useState("all");
+
+  const loadData = async () => {
+    try {
+      const res = await RouteService.all();
+      setRoomsData(res.data);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  useEffect(() => {
+    document.title = "Tuyến";
+    loadData();
+  }, []);
 
   const handleSelectItem = (item) => {
     setSelectedItem(item);
@@ -84,7 +89,7 @@ const Routehotel = () => {
               </button> */}
             </div>
 
-            <div className="nav-add-Route">
+            {/* <div className="nav-add-Route">
               <select>
                 <option value="">Lọc</option>
                 <option value="deluxe">Deluxe</option>
@@ -100,7 +105,7 @@ const Routehotel = () => {
               >
                 Thêm Tuyến
               </button>
-            </div>
+            </div> */}
           </div>
           <div className="content-table mt-4">
             <Table

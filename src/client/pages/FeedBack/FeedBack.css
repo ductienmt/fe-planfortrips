@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Acme&display=swap');
+
+.feedback-content {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Acme', sans-serif;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    min-height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3); /* Thêm nền mờ để làm nổi bật modal */
+}
+
+.feedback-container {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+    height: fit-content;
+    justify-content: space-evenly;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Tăng độ mờ của shadow */
+    padding: 20px;
+}
+
+.feedback-head,
+.feedback-mid,
+.feedback-textarea,
+.feedback-end {
+    padding: 15px;
+}
+
+.feedback-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #f1f1f1;
+}
+
+.feedback-heading h1 {
+    font-size: 24px;
+    font-weight: bolder;
+    color: #333;
+}
+
+.feedback-close {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+    transition: transform 0.2s ease;
+}
+
+.feedback-close:hover {
+    transform: scale(1.2);
+}
+
+.s {
+    width: 1.5px;
+    height: 20px;
+    background-color: black;
+    border-radius: 100px;
+}
+
+.s1 {
+    transform: translateX(1.5px) rotate(45deg);
+}
+
+.s2 {
+    transform: rotate(-45deg);
+}
+
+.feedback-mid {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 15px 0;
+}
+
+.feedback-media img {
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+    background-color: rgba(233, 212, 97, 0.507);
+    border-radius: 50%;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+    margin: 5px;
+}
+
+.feedback-media img:hover {
+    transform: scale(1.2);
+    background-color: gold;
+}
+
+
+.feedback-active img {
+    background-color: gold;
+    transform: scale(1.2);
+}
+
+.feedback-textarea {
+    margin-top: 20px;
+}
+
+.feedback-textarea p {
+    font-size: 16px;
+    color: #555;
+}
+
+textarea {
+    outline: none;
+    resize: none;
+    height: 120px;
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+textarea:focus {
+    border-color: gold;
+}
+
+.feedback-end {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.feedback-sub,
+.feedback-skp {
+    width: 48%;
+    height: 40px;
+    border: 1px solid transparent;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.feedback-sub {
+    background-color: gold;
+    color: white;
+    border-radius: 5px;
+}
+
+.feedback-skp {
+    background-color: transparent;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+.feedback-sub:hover {
+    background-color: black;
+    color: white;
+    border-color: black;
+}
+
+.feedback-skp:hover {
+    background-color: #333;
+    color: white;
+    border-color: black;
+}
+
+.feedback-skp:focus,
+.feedback-sub:focus {
+    outline: none;
+    box-shadow: 0 0 5px gold;
+}
+
+

@@ -9,7 +9,7 @@ import { UserService } from "../../../services/apis/UserService";
 import { useAuth } from "../../../context/AuthContext/AuthProvider";
 
 const Header = () => {
-  const { username, logout } = useAuth();
+  const { token, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation(); // Theo dõi URL
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -21,13 +21,13 @@ const Header = () => {
   });
 
   useEffect(() => {
-    if (username) {
+    if (token) {
       setIsLoggedIn(true);
       loadUser();
     } else {
       setIsLoggedIn(false);
     }
-  }, [username]);
+  }, [token]);
 
   // Đóng dropdown khi URL thay đổi
   useEffect(() => {
