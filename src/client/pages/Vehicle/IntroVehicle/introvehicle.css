@@ -61,7 +61,7 @@
     padding: 0 20px;
 }
 
-.card {
+/* .card {
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -73,7 +73,7 @@
 .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
-}
+} */
 
 .card-image {
     width: 100%;

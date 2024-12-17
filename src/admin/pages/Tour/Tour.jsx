@@ -52,7 +52,6 @@ function TourForm({ setRows, rows }) {
     title: "",
     route_id: "",
     number_people: 0,
-    total_price: 0,
     day: 0,
     night: 0,
     is_active: true,
@@ -141,7 +140,7 @@ function TourForm({ setRows, rows }) {
         uploadEncodedImage(response.tour_id, fileList);
       }
       setHidden(false);
-      toast("Tạo mới thành công");
+      toast.success("Tạo mới thành công");
       setRows((prevRows) => [...prevRows, response]);
       document.getElementById("closeModalButton").click();
     }
@@ -160,6 +159,7 @@ function TourForm({ setRows, rows }) {
     });
     if (invalidTags.length > 0) {
       setTagErrors(`Các tag không hợp lệ: ${invalidTags.join(", ")}`);
+      valid = false;
     } else {
       tagArray.map(async (tag) => {
         tag = tag.replace(/^#/, "");
@@ -182,19 +182,6 @@ function TourForm({ setRows, rows }) {
       });
     }
   };
-  useEffect(() => {
-    let price = 0;
-    if (formData.hotel_id) {
-      price += 400000;
-    }
-    if (formData.car_company_id) {
-      price += 500000;
-    }
-    setFormData((prevState) => ({
-      ...prevState,
-      total_price: price,
-    }));
-  }, [formData.hotel_id, formData.car_company_id]);
 
   const validateFormData = (data) => {
     const errors = {};
@@ -593,7 +580,7 @@ function TourForm({ setRows, rows }) {
             <div className="modal-footer" style={{ marginBottom: "50px" }}>
               <h3>
                 {" "}
-                <span>Tổng tiền: {formData.total_price}</span>{" "}
+                {/* <span>Tổng tiền: {formData.total_price}</span>{" "} */}
               </h3>
               <button
                 type="button"

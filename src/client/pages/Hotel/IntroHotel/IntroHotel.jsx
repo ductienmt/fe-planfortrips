@@ -411,7 +411,7 @@ const IntroHotel = () => {
             ))}
           </div>
           <br />
-          {hotel.length > 0 ? (
+          {hotel?.length > 0 ? (
             <div className="deal-card">
               {hotel.map((card, index) => (
                 <div key={index} className="card">
@@ -425,7 +425,7 @@ const IntroHotel = () => {
                       alt={card.name || "Khách sạn"}
                     />
                   </div>
-                  <div className="content">
+                  <div className="content text-center">
                     <div className="content-item">
                       <p className="card-title">
                         {card.name || "Tên khách sạn"}
