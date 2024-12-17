@@ -30,4 +30,7 @@ export const ScheduleService = {
       `/schedules/getSeatsByScheduleId?${params.toString()}`
     );
   },
+  createSchedule: async (data) => {
+    return await Http.post(`/schedules/create`, data);
+  },
 };

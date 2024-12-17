@@ -14,6 +14,7 @@ import Loader from "../../Components/Loading";
 import { PlanServiceApi } from "../../../services/apis/PlanServiceApi";
 import { Equalizer } from "@mui/icons-material";
 import { format } from "date-fns";
+import { InputFlied } from "../../Components/Input/InputFlied";
 
 function TravelPlan() {
   const [selectedCard, setSelectedCard] = useState("transportation");
@@ -240,6 +241,7 @@ function TravelPlan() {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 200);
     if (tripData) {
       // console.log(tripData.userData?.budget);
 
@@ -324,15 +326,28 @@ function TravelPlan() {
               />
             </section>
             <div
-              className="travel-plan-footer"
+              className="travel-plan-footer mt-5"
               style={{
                 display: "flex",
                 width: "100%",
                 justifyContent: "center",
                 marginTop: "20px",
+                gap: "20px",
               }}
             >
-              {/* <button className="travel-plan-footer-button">Edit</button> */}
+              <button
+                className="travel-plan-footer-button btn btn-success"
+                style={{
+                  width: "30%",
+
+                  height: "50px",
+                  fontSize: "20px",
+                }}
+                data-bs-toggle="modal"
+                data-bs-target="#itinerary"
+              >
+                Xem kế hoạch đề xuất
+              </button>
               <button
                 onClick={(e) => {
                   e.preventDefault();
@@ -347,12 +362,127 @@ function TravelPlan() {
                   fontSize: "20px",
                 }}
               >
-                Xác nhận kế hoạch
+                Đặt kế hoạch
               </button>
             </div>
           </main>
         </>
       )}
+      <div
+        className="modal fade"
+        id="itinerary"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabIndex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered modal-profile-custom">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3 style={{ fontWeight: "600", margin: 0 }}>
+                Kế hoạch đề xuất cho các ngày
+              </h3>
+
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-toggle="modal"
+                data-bs-target="#main"
+              ></button>
+            </div>
+            <div className="modal-body" style={{ padding: " 0 20px" }}>
+              {Object.entries(tripData?.itinerary).map(
+                ([day, description], index) => (
+                  // <p >
+                  //   <strong>Ngày {index + 1}:</strong> {description}
+                  // </p>
+                  <div
+                    key={index}
+                    className="itinerary-popup"
+                    style={{
+                      boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.5)",
+                      borderRadius: "10px",
+                      padding: "10px 20px",
+                      background: "#f9f9f9",
+                      position: "relative",
+                      zIndex: "100",
+                      overflow: "hidden",
+                      margin: "15px 0",
+                    }}
+                  >
+                    <div
+                      className="itinerary-popup-header text-center text-uppercase"
+                      style={{ fontSize: "20px", fontWeight: "800" }}
+                    >
+                      Ngày {index + 1}
+                    </div>
+                    <div className="itinerary-popup-body">{description}</div>
+                  </div>
+                )
+              )}
+
+              <div
+                className="estimatedCost"
+                style={{
+                  boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.5)",
+                  borderRadius: "10px",
+                  padding: "10px 20px",
+                  background: "#f9f9f9",
+                  position: "relative",
+                  zIndex: "100",
+                  overflow: "hidden",
+                  margin: "15px 0",
+                }}
+              >
+                <div className="header-text-estimatedCost text-center text-uppercase">
+                  <strong>Chi phí ước lượng: </strong>
+                </div>
+                <div className="price text-center">
+                  <div className="left">
+                    Ngân sách: {convertToVND(tripData?.userData?.budget)}
+                  </div>
+                  <div className="right">
+                    Tổng chi phí: {convertToVND(tripData?.estimatedCost)}
+                    <br />
+                    Còn lại:{" "}
+                    {convertToVND(
+                      tripData?.userData?.budget - tripData?.estimatedCost
+                    )}
+                  </div>
+                  <div className="note">
+                    (Chi phí chi tiết theo từng dịch vụ, bạn có thể bấm vào{" "}
+                    <span style={{ fontStyle: "italic", fontWeight: "600" }}>
+                      Xem chi tiết
+                    </span>{" "}
+                    ở bên ngoài)
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              className="modal-footer"
+              style={{ width: "100%", borderTop: "none" }}
+            >
+              <button
+                data-bs-dismiss="modal"
+                type="button"
+                className="custome-button-footer"
+                // onClick={handleChangeUserName}
+                style={{
+                  width: "100%",
+                  height: "50px",
+                  margin: "0",
+                  border: "none",
+                }}
+              >
+                Xác nhận
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

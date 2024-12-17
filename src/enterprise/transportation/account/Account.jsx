@@ -8,6 +8,8 @@ import AccountEtpService from "../../../services/apis/AccountEnterprise";
 import { enqueueSnackbar } from "notistack";
 import { InputFlied } from "../../../client/Components/Input/InputFlied";
 import { UserService } from "../../../services/apis/UserService";
+import { useAuth } from "../../../context/AuthContext/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const Account = () => {
   const [formData, setFormData] = useState({
@@ -20,6 +22,8 @@ const Account = () => {
     taxCode: "",
     pass: "",
   });
+  const { logout } = useAuth();
+  const navigate = useNavigate();
 
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const inputRefs = useRef([]);
@@ -179,6 +183,63 @@ const Account = () => {
         }
       );
     }
+  };
+
+  const handleVerifyOTPPass = async () => {
+    const otpCode = otp.join("");
+    if (otpCode.length < 6) {
+      enqueueSnackbar("Vui lòng nhập đầy đủ mã OTP", {
+        variant: "error",
+        autoHideDuration: 1000,
+      });
+      return;
+    }
+
+    try {
+      await UserService.verifyOTP(formData.email, otpCode);
+      enqueueSnackbar("Xác thực thành công", {
+        variant: "success",
+        autoHideDuration: 1000,
+        onExit: () => {
+          handleStartTimer();
+          setOtp(new Array(6).fill(""));
+          inputRefs.current.forEach((ref) => {
+            if (ref) ref.value = "";
+          });
+          setFormData({
+            email: "",
+            phone: "",
+            address: "",
+            representative: "",
+            name: "",
+            img: "",
+            taxCode: "",
+            pass: "",
+          });
+        },
+      });
+      document.getElementById("button-verify-pass-etp").click();
+    } catch (error) {
+      enqueueSnackbar(
+        error.response?.data?.message || "Đã có lỗi xảy ra khi xác thực",
+        {
+          variant: "error",
+          autoHideDuration: 1000,
+        }
+      );
+    }
+  };
+
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const passwordRegex =
+    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+  const validatePassword = (password) => {
+    const passwordRegex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordRegex.test(password);
   };
 
   React.useEffect(() => {
@@ -343,6 +404,43 @@ const Account = () => {
     }
   };
 
+  const handleChangePassword = async () => {
+    if (newPassword !== confirmPassword) {
+      enqueueSnackbar("Mật khẩu mới và xác nhận mật khẩu phải giống nhau", {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
+      return;
+    }
+    if (!validatePassword(newPassword)) {
+      enqueueSnackbar(
+        "Mật khẩu phải chứa ít nhất 8 ký tự, 1 chữ cái, 1 số và 1 ký tự đặc biệt",
+        {
+          variant: "error",
+          autoHideDuration: 2000,
+        }
+      );
+      return;
+    }
+    try {
+      await AccountEtpService.changePassword(newPassword);
+      enqueueSnackbar("Đổi mật khẩu thành công", {
+        variant: "success",
+        autoHideDuration: 2000,
+      });
+      setNewPassword("");
+      setConfirmPassword("");
+      document.getElementById("closeVerifyPassEtp").click();
+      logout();
+      navigate("/enterprise/login");
+    } catch (error) {
+      enqueueSnackbar("Đổi mật khẩu thất bại", {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
+    }
+  };
+
   useEffect(() => {
     document.title = "Tài khoản";
     loadUserData();
@@ -394,7 +492,7 @@ const Account = () => {
                         data-bs-target="#businessInfoModal"
                         onClick={() => loadUserData()}
                       >
-                        <span>Thông Tin </span>
+                        <span>Thông tin </span>
                       </button>
                     </li>
                     <li>
@@ -404,7 +502,21 @@ const Account = () => {
                         data-bs-target="#avatarModal"
                         onClick={() => loadUserData()}
                       >
-                        <span>Thay Đổi Hình đại diện</span>
+                        <span>Thay đổi ảnh đại diện</span>
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        className="btn account-btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#verifyOTPEmailEtpPass"
+                        onClick={() => {
+                          loadUserData(),
+                            // document.getElementById("showEmailEtp").click(),
+                            sendEmail();
+                        }}
+                      >
+                        <span>Thay đổi mật khẩu</span>
                       </button>
                     </li>
                   </ul>
@@ -975,6 +1087,179 @@ const Account = () => {
                   Gửi lại
                 </button>
               </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        className="modal fade"
+        id="verifyOTPEmailEtpPass"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabIndex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered modal-profile-custom">
+          <div className="modal-content">
+            <div className="modal-header">
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                onClick={() => {
+                  handleStartTimer();
+                }}
+              ></button>
+            </div>
+            <div className="modal-body">
+              <h3 style={{ fontWeight: "600" }} className="text-center mb-0">
+                Xác nhận mã OTP
+              </h3>
+              <p className="text-center w-75 mx-auto">
+                Mã OTP 6 số được gửi qua{" "}
+                <span>{maskEmail(formData.email)}</span> vui lòng nhập để tiếp
+                tục !
+              </p>
+              <div className="timer">
+                <div className="timer-box">
+                  <span className="timer-digit">{minutes[0]}</span>
+                  <span className="timer-digit">{minutes[1]}</span>
+                  <span className="timer-separator">:</span>
+                  <span className="timer-digit">{seconds[0]}</span>
+                  <span className="timer-digit">{seconds[1]}</span>
+                </div>
+              </div>
+              <div className="inputContainer">
+                {[...Array(6)].map((_, index) => (
+                  <input
+                    key={index}
+                    type="text"
+                    maxLength={1}
+                    className="otp-input"
+                    required
+                    ref={(el) => (inputRefs.current[index] = el)}
+                    onKeyUp={(e) => handleKeyUp(e, index)}
+                    onFocus={(e) => e.target.select()}
+                  />
+                ))}
+              </div>
+            </div>
+            <div
+              className="modal-footer"
+              style={{ width: "100%", borderTop: "none" }}
+            >
+              <button
+                data-bs-dismiss="modal"
+                className="custom-button-verified"
+                type="submit"
+                onClick={handleVerifyOTPPass}
+              >
+                Xác nhận
+              </button>
+              <p
+                className="resendNote"
+                style={{
+                  textAlign: "center",
+                  fontSize: "14px",
+                  color: "#6c757d",
+                  marginTop: "10px",
+                  width: "100%",
+                }}
+              >
+                Bạn không nhận được mã?{" "}
+                <button
+                  className="resendBtn"
+                  style={{
+                    border: "none",
+                    backgroundColor: "transparent",
+                    color: "#007bff",
+                    fontWeight: "bold",
+                  }}
+                  onClick={sendEmail}
+                >
+                  Gửi lại
+                </button>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button
+        className="d-none"
+        data-bs-toggle="modal"
+        data-bs-target="#verify-pass-etp"
+        id="button-verify-pass-etp"
+      ></button>
+
+      <div
+        className="modal fade"
+        id="verify-pass-etp"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabIndex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered modal-profile-custom custom-change-pass">
+          <div className="modal-content">
+            <div className="modal-header">
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                id="closeVerifyPassEtp"
+                onClick={() => {
+                  setNewPassword("");
+                  setConfirmPassword("");
+                }}
+              ></button>
+            </div>
+            <div className="modal-body" style={{ paddingTop: "0" }}>
+              <h3 style={{ fontWeight: "600" }} className="text-center">
+                Thay đổi mật khẩu
+              </h3>
+              <InputFlied
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                content={"Mật khẩu mới"}
+                typeInput={"password"}
+              />
+              <InputFlied
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                content={"Xác nhận mật khẩu"}
+                onBlur={() => {
+                  if (newPassword !== confirmPassword) {
+                    enqueueSnackbar("Mật khẩu không khớp", {
+                      variant: "error",
+                      autoHideDuration: 2000,
+                    });
+                  }
+                }}
+                typeInput={"password"}
+              />
+            </div>
+            <div
+              className="modal-footer"
+              style={{ width: "100%", borderTop: "none" }}
+            >
+              <button
+                // data-bs-dismiss="modal"
+                type="button"
+                className="custome-button-footer"
+                onClick={handleChangePassword}
+                style={{
+                  width: "100%",
+                  height: "50px",
+                  margin: "0",
+                  border: "none",
+                }}
+              >
+                Xác nhận
+              </button>
             </div>
           </div>
         </div>

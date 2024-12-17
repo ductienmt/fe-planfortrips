@@ -13,4 +13,7 @@ export const TicketService = {
   getById: async (id) => {
     return await Http.get(`/tickets/getById/${id}`);
   },
+  getUsers: async (status) => {
+    return await Http.get(`/tickets/getUsers?status=${status}`);
+  },
 };

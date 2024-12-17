@@ -250,13 +250,21 @@ const routeClient = () => [
         Component: LandingPage,
       },
       { path: "*", element: <NotFoundPage /> },
+      // {
+      //   path: "/plan",
+      //   element: <ProtectedRoute allowedRoles={[ROLES.CLIENT]} />,
+      //   children: [
+      //     { path: "", Component: PlanBefore },
+      //     { path: "trip", Component: TravelPlan },
+      //   ],
+      // },
       {
         path: "/plan",
-        element: <ProtectedRoute allowedRoles={[ROLES.CLIENT]} />,
-        children: [
-          { path: "", Component: PlanBefore },
-          { path: "trip", Component: TravelPlan },
-        ],
+        Component: PlanBefore,
+      },
+      {
+        path: "/plan/trip",
+        Component: TravelPlan,
       },
       {
         path: "/booking/:type",
