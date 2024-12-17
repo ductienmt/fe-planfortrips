@@ -157,13 +157,12 @@ const HotelCart = ({hotel, selectedRoom, setSelectedRoom, setLoading,checkIn,che
       cancelText: 'Hủy',
       onOk() {
         sessionStorage.setItem("acoData", JSON.stringify(accommodationData));
-        
         notification.success({
           message: 'Đặt phòng thành công',
           description: 'Đang chuyển đến trang thanh toán...',
           duration: 1.5,
           onClose: () => {
-            navigate("/payment");
+            navigate("/booking/hotel");
           }
         });
       }
