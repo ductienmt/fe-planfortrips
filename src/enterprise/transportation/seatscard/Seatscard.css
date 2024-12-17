@@ -1,98 +1,97 @@
 .enterprise-Seatscard-container .Seatscard-card {
-    flex-grow: 1;
-    flex-basis: auto;
-    display: flex;
-    gap: 20px;
-  }
-  
- .enterprise-Seatscard-container .Seatscard-image {
-    width: 35%;
-  }
-  
- .enterprise-Seatscard-container .Seatscard-photo {
-    border-radius: 20px 0 0 20px;
-    background-color: #d9d9d9;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
- .enterprise-Seatscard-container .Seatscard-info {
-    width: 50%;
-    display: flex;
+  flex-grow: 1;
+  flex-basis: auto;
+  display: flex;
+  gap: 20px;
+}
+
+.enterprise-Seatscard-container .Seatscard-image {
+  width: 35%;
+}
+
+.enterprise-Seatscard-container .Seatscard-photo {
+  border-radius: 20px 0 0 20px;
+  background-color: #d9d9d9;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.enterprise-Seatscard-container .Seatscard-info {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+}
+
+.enterprise-Seatscard-container .Seatscard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.enterprise-Seatscard-container .Seatscard-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.enterprise-Seatscard-container .Seatscard-code {
+  color: #000;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+.enterprise-Seatscard-container .Seatscard-body {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.enterprise-Seatscard-container .Seatscard-name {
+  color: #1e252b;
+  font-size: 30px;
+  line-height: 30px;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+.enterprise-Seatscard-container .Seatscard-status {
+  border-radius: 30px;
+  padding: 10px 10px 10px 10px;
+  font-size: 15px;
+  font-weight: 400;
+  /* background-color: #a6f6b5; */
+  /* color: #07d02b; */
+}
+
+.enterprise-Seatscard-container .Seatscard-address {
+  color: #000;
+  font-size: 20px;
+  font-weight: 350;
+  line-height: 22px;
+  margin-top: 29px;
+}
+
+.enterprise-Seatscard-container .Seatscard-phone {
+  color: #000;
+  margin-top: 29px;
+  font-size: 17px;
+  line-height: 1;
+}
+
+@media (max-width: 991px) {
+  .enterprise-Seatscard-container .Seatscard-card {
     flex-direction: column;
-    padding: 8px 0;
-  }
-  
- .enterprise-Seatscard-container .Seatscard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-  .enterprise-Seatscard-container .Seatscard-title {
-    display: flex;
-    flex-direction: column;
-  }
-  
- .enterprise-Seatscard-container .Seatscard-code {
-    color: #000;
-    font-size: 15px;
-    line-height: 18px;
-    font-weight: 700;
-    margin-top: 4px;
-  }
-  
- .enterprise-Seatscard-container .Seatscard-body{
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-  }
-  
- .enterprise-Seatscard-container .Seatscard-name {
-    color: #1e252b;
-    font-size: 30px;
-    line-height: 30px;
-    font-weight: 700;
-    margin-top: 4px;
-  }
-  
-.enterprise-Seatscard-container  .Seatscard-status {
-    border-radius: 30px;
-    padding: 10px 10px 10px 10px;
-    font-size: 15px;
-    font-weight: 400;
-    /* background-color: #a6f6b5; */
-    /* color: #07d02b; */
-  }
-  
- .enterprise-Seatscard-container .Seatscard-address {
-    color: #000;
-    font-size: 20px;
-    font-weight: 350;
-    line-height: 22px;
-    margin-top: 29px;
-  }
-  
- .enterprise-Seatscard-container .Seatscard-phone {
-    color: #000;
-    margin-top: 29px;
-    font-size: 17px;
-    line-height: 1;
-  }
-  
-  @media (max-width: 991px) {
- .enterprise-Seatscard-container   .Seatscard-card {
-      flex-direction: column;
-    }
-  
-  .enterprise-Seatscard-container  .Seatscard-image,
-   .enterprise-Seatscard-container .Seatscard-info {
-      width: 100%;
-    }
-  
-   .enterprise-Seatscard-container .Seatscard-photo {
-      border-radius: 20px 20px 0 0;
-    }
   }
 
-  
+  .enterprise-Seatscard-container .Seatscard-image,
+  .enterprise-Seatscard-container .Seatscard-info {
+    width: 100%;
+  }
+
+  .enterprise-Seatscard-container .Seatscard-photo {
+    border-radius: 20px 20px 0 0;
+  }
+}

@@ -4,6 +4,7 @@
   border-radius: 20px;
   box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.2);
   padding: 20px;
+  height: max-content;
 }
 
 .enterprise-vehicle-container .content .nav-filter {
@@ -44,21 +45,13 @@
   transition: background-color 0.3s ease;
 }
 
-.enterprise-vehicle-container
-  .content
-  .nav-filter
-  .filter-vehicle
-  button.isActive {
+.enterprise-vehicle-container .content .nav-filter .filter-vehicle button.isActive {
   background-color: rgb(237, 248, 255);
   color: rgb(65, 165, 232);
   border-color: rgb(132, 205, 255);
 }
 
-.enterprise-vehicle-container
-  .content
-  .nav-filter
-  .nav-add-vehicle
-  button:hover {
+.enterprise-vehicle-container .content .nav-filter .nav-add-vehicle button:hover {
   background-color: rgb(39, 100, 140);
 }
 
@@ -92,4 +85,14 @@
   font-weight: 500;
   width: 800px;
   height: 50px;
+}
+
+.add-vehicle-enterprise-custom .modal-body .row-modal-body {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 15px;
+}
+
+.add-vehicle-enterprise-custom .modal-body {
+  padding-top: 0;
 }

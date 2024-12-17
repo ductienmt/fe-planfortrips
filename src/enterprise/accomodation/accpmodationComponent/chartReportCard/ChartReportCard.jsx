@@ -2,51 +2,64 @@ import React, { useState, useMemo } from "react";
 import "./ChartReportCard.css";
 import { Column } from "@ant-design/charts";
 
-const ChartReportCard = () => {
-  const [reportType, setReportType] = useState("week");
-
+const ChartReportCard = ({ onChangeReportType, reportType, revenueData }) => {
   // Dữ liệu theo loại báo cáo
-  const weeklyData = [
-    { day: "Thứ 2", revenue: 250000 },
-    { day: "Thứ 3", revenue: 300000 },
-    { day: "Thứ 4", revenue: 200000 },
-    { day: "Thứ 5", revenue: 400000 },
-    { day: "Thứ 6", revenue: 350000 },
-    { day: "Thứ 7", revenue: 500000 },
-    { day: "Chủ nhật", revenue: 450000 },
-  ];
-
-  const monthlyData = [
-    { day: "Tuần 1", revenue: 1200000 },
-    { day: "Tuần 2", revenue: 1500000 },
-    { day: "Tuần 3", revenue: 1100000 },
-    { day: "Tuần 4", revenue: 1700000 },
-  ];
-
-  const quarterlyData = [
-    { day: "Tháng 1", revenue: 4500000 },
-    { day: "Tháng 2", revenue: 4700000 },
-    { day: "Tháng 3", revenue: 4900000 },
-  ];
-
-  // Xác định dữ liệu hiển thị dựa trên loại báo cáo
   const data = useMemo(() => {
-    switch (reportType) {
-      case "week":
-        return weeklyData;
-      case "month":
-        return monthlyData;
-      case "quarter":
-        return quarterlyData;
-      default:
-        return [];
+    if (reportType === "week") {
+      const days = [
+        { key: "monday_revenue", label: "Thứ 2" },
+        { key: "tuesday_revenue", label: "Thứ 3" },
+        { key: "wednesday_revenue", label: "Thứ 4" },
+        { key: "thursday_revenue", label: "Thứ 5" },
+        { key: "friday_revenue", label: "Thứ 6" },
+        { key: "saturday_revenue", label: "Thứ 7" },
+        { key: "sunday_revenue", label: "Chủ nhật" },
+      ];
+      return days.map((day) => ({
+        day: day.label,
+        revenue: revenueData[0]?.[day.key] * 1000 || 0,
+      }));
+    } else if (reportType === "month") {
+      const weeks = [
+        { key: "week_1_revenue", label: "Tuần 1" },
+        { key: "week_2_revenue", label: "Tuần 2" },
+        { key: "week_3_revenue", label: "Tuần 3" },
+        { key: "week_4_revenue", label: "Tuần 4" },
+      ];
+      return weeks.map((week) => ({
+        day: week.label,
+        revenue: revenueData[0]?.[week.key] * 1000 || 0,
+      }));
+    } else if (reportType === "year") {
+      const months = [
+        { key: "january_revenue", label: "Tháng 1" },
+        { key: "february_revenue", label: "Tháng 2" },
+        { key: "march_revenue", label: "Tháng 3" },
+        { key: "april_revenue", label: "Tháng 4" },
+        { key: "may_revenue", label: "Tháng 5" },
+        { key: "june_revenue", label: "Tháng 6" },
+        { key: "july_revenue", label: "Tháng 7" },
+        { key: "august_revenue", label: "Tháng 8" },
+        { key: "september_revenue", label: "Tháng 9" },
+        { key: "october_revenue", label: "Tháng 10" },
+        { key: "november_revenue", label: "Tháng 11" },
+        { key: "december_revenue", label: "Tháng 12" },
+      ];
+      return months.map((month) => ({
+        day: month.label,
+        revenue: revenueData[0]?.[month.key] * 1000 || 0,
+      }));
     }
-  }, [reportType]);
+    return [];
+  }, [reportType, revenueData]);
 
   // Tính tổng doanh thu
   const totalRevenue = useMemo(() => {
-    return data.reduce((total, item) => total + item.revenue, 0);
-  }, [data]);
+    if (revenueData.length > 0) {
+      return revenueData[0].total_revenue * 1000 || 0;
+    }
+    return 0;
+  }, [revenueData]);
 
   const config = {
     data,
@@ -71,11 +84,6 @@ const ChartReportCard = () => {
     },
   };
 
-  // Xử lý thay đổi loại báo cáo
-  const handleReportChange = (event) => {
-    setReportType(event.target.value);
-  };
-
   return (
     <>
       <div className="chart-report-dashboard">
@@ -93,10 +101,13 @@ const ChartReportCard = () => {
             Tổng doanh thu: {totalRevenue.toLocaleString()} VNĐ
           </div>
           <section className="chart-report-section">
-            <select onChange={handleReportChange} value={reportType}>
+            <select
+              onChange={(e) => onChangeReportType(e.target.value)}
+              value={reportType}
+            >
               <option value="week">Báo cáo tuần</option>
               <option value="month">Báo cáo tháng này</option>
-              <option value="quarter">Báo cáo quý</option>
+              <option value="year">Báo cáo năm</option>
             </select>
           </section>
         </div>
