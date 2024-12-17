@@ -24,8 +24,6 @@ const TripCompo = ({ trip }) => {
     }
   };
   
-  console.log(trip);
-
 
   const fetchPlanDetail = async () => {    
     setLoadingPlanDetail(true);
@@ -106,7 +104,7 @@ const TripCompo = ({ trip }) => {
           </div>
           <div className="d-flex align-items-center card-right">
 
-      {trip.status != 'COMPLETE' ? <>
+      {trip.status == 'COMPLETE' ? <>
             {(trip.isFbHotel && trip.isFbVehicle) ? 
             <>
         <span className="me-2 btn btn btn-success text-nowrap">Đã dánh giá</span>
