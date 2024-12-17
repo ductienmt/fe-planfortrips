@@ -70,10 +70,12 @@ export default function CouponDialog({
     }));
   };
   const handleChange = (event) => {
-    setFormData({
-      ...formData,
-      is_active: event.target.value === "true",
-    });
+    const value = event.target.value === "true";
+    setFormData((prev) => ({
+      ...prev,
+      is_active: value,
+    }));
+    console.log({ ...formData, is_active: value }); // Để kiểm tra trạng thái mới
   };
   const validateCouponData = () => {
     const newErrors = {};
@@ -137,6 +139,8 @@ export default function CouponDialog({
   const handleUpdate = async (formData, id) => {
     if (!validateCouponData()) return;
     try {
+      console.log(formData);
+      
       const response = await CouponService.updateCoupon(id, formData);
       if (response) {
         toast.success("Cập nhật thành công");

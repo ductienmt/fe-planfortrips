@@ -34,35 +34,38 @@ const HotelCart = ({
   const handleCouponSelect = (coupon) => {
     setSelectedCoupon(coupon);
     localStorage.setItem("selectedCoupon", JSON.stringify(coupon));
+    
     const currentPriceRooms = selectedRoom.reduce(
       (sum, room) => sum + room.price,
       0
     );
-
+  
     let appliedDiscount = 0;
     if (coupon.discount_type === "PERCENT") {
       appliedDiscount = (currentPriceRooms * coupon.discount_value) / 100;
     } else {
       appliedDiscount = coupon.discount_value;
     }
-
+  
     setCashAppliedCoupon(appliedDiscount);
-    setTotal(currentPriceRooms - appliedDiscount);
+    setTotal(currentPriceRooms - appliedDiscount); 
     setOpenCoupon(false);
   };
+  
   const handleRemoveCoupon = () => {
     setSelectedCoupon(null);
     setCashAppliedCoupon(0);
     setTotal(priceRooms);
     localStorage.removeItem("selectedCoupon");
-  };
+  };  
   useEffect(() => {
     const fetch = async () => {
       const storedCoupon = localStorage.getItem("selectedCoupon");
       if (storedCoupon) {
         const parsedCoupon = JSON.parse(storedCoupon);
         setSelectedCoupon(parsedCoupon);
-
+        console.log(selectedCoupon);
+        
         const currentPriceRooms = selectedRoom.reduce(
           (sum, room) => sum + room.price,
           0
@@ -82,9 +85,26 @@ const HotelCart = ({
     fetch();
   }, [selectedRoom]);
   useEffect(() => {
-    const t = selectedRoom.reduce((sum, room) => sum + room.price, 0);
-    setPriceRooms(t);
-  }, [selectedRoom]);
+    const currentPriceRooms = selectedRoom.reduce((sum, room) => sum + room.price, 0);
+    setPriceRooms(currentPriceRooms);
+  
+    const storedCoupon = localStorage.getItem("selectedCoupon");
+  
+    if (storedCoupon) {
+      const parsedCoupon = JSON.parse(storedCoupon);
+  
+      let appliedDiscount = 0;
+      if (parsedCoupon.discount_type === "PERCENT") {
+        appliedDiscount = (currentPriceRooms * parsedCoupon.discount_value) / 100;
+      } else {
+        appliedDiscount = parsedCoupon.discount_value;
+      }
+  
+      setTotal(currentPriceRooms - appliedDiscount);
+    } else {
+      setTotal(currentPriceRooms);
+    }
+  }, [selectedRoom, selectedCoupon]);
   useEffect(() => {
     const fetch = async () => {
       const dataCoupon = await CouponService.getCoupons(0, 100, "");
@@ -92,15 +112,14 @@ const HotelCart = ({
         var data = dataCoupon.listResponse;
         data = data.filter((d) => d.is_active !== false);
         setCoupons(data);
-        console.log(coupons);
       }
       setAccommodationData({
-        name: hotel?.hotelName,
+        name: hotel?.name,
         room: selectedRoom.map((room) => room?.roomName).join(", "),
         checkIn: checkIn,
-        checkInTime: checkIn,
+        checkInTime: `${checkIn} 14:00:00`,
         checkOutDate: checkOut,
-        checkOutTime: checkOut,
+        checkOutTime: `${checkOut} 12:00:00`,
         type: "hotel",
       });
     };
@@ -153,7 +172,7 @@ const HotelCart = ({
       content: (
         <div>
           <p>
-            <strong>Khách sạn:</strong> {hotel?.hotelName}
+            <strong>Khách sạn:</strong> {hotel?.name}
           </p>
           <p>
             <strong>Phòng:</strong>{" "}
