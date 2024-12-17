@@ -7,9 +7,12 @@ export const PlanServiceApi = {
   savePlan: async (data) => {
     return await Http.post("/plans/save", data);
   },
-  getPlanById: async () => {
+  getPlanByUserId: async () => {
     return await Http.get(`/plans/all`);
   },
+  getPlanById: async (id) => {
+    return Http.get(`/plans/detail?id=${id}`);
+  },  
   checkTime: async (departure, returnDate) => {
     const params = new URLSearchParams({ departure, return: returnDate });
     return await Http.get(`/plans/check-time?${params.toString()}`);

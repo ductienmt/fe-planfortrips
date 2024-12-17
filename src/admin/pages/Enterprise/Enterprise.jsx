@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Typography, CircularProgress, Button, Snackbar, Pagination, TextField, Modal, Box, Divider, Grid } from '@mui/material';
 import { CheckCircle, Cancel } from '@mui/icons-material';
 import AccountEtpService from '../../../services/apis/AccountEnterprise';
+import { StatisticalService } from '../../../services/apis/StatisticalService';
+import * as XLSX from 'xlsx';
 
 function Enterprise() {
   const [enterprises, setEnterprises] = useState([]);
@@ -102,6 +104,51 @@ function Enterprise() {
     }
   };
 
+  const [time, setTime] = useState(
+    {
+      startDay : "",
+      endDay : ""
+    }
+  );
+
+  const exportExcel = async () => {
+    try {
+      const resExcel = await StatisticalService.aboutTimeEnterprise(time.startDay, time.endDay);
+      console.log(resExcel);
+      const users = resExcel.data;
+
+      const formattedData = users.map(user => ({
+        "Id": user.id,
+        "Số điện thoại": user.phoneNumber,
+        "Email": user.email,
+        "Giới tính": user.gender,
+        "Địa chỉ": user.address || 'N/A',
+        "Trạng thái": user.isActive ? 'Hoạt động' : 'Ngừng hoạt động',
+        "Ngày sinh": user.birthdate,
+      }));
+
+      const ws = XLSX.utils.json_to_sheet(formattedData);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Users');
+
+      const formatDate = (dateStr) => {
+        const date = new Date(dateStr);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}-${month}-${year}`;
+      };
+
+      const startDate = formatDate(time.startDay);
+      const endDate = formatDate(time.endDay);
+      const fileName = `PTTrip_enterprise_${startDate}_${endDate}.xlsx`;
+
+      XLSX.writeFile(wb, fileName);
+    } catch (error) {
+      console.error('Có lỗi khi xuất Excel:', error);
+    }
+  };
+
   return (
     <div className="container pb-3">
       <div className="row my-4">
@@ -109,6 +156,29 @@ function Enterprise() {
           <Typography variant="h4" gutterBottom>
             Quản lý Doanh nghiệp
           </Typography>
+            <div className="row">
+            <div className="col-6">
+              <label htmlFor="" className="form-label">Ngày bắt đầu</label>
+              <input
+                type="datetime-local"
+                className='form-control'
+                placeholder='Ngày bắt đầu'
+                value={time.startDay}
+                onChange={(e) => setTime({...time, startDay: e.target.value})}
+              />
+            </div>
+            <div className="col-6">
+              <label htmlFor="" className="form-label">Ngày kết thúc</label>
+              <input
+                type="datetime-local"
+                className='form-control'
+                placeholder='Ngày kết thúc'
+                value={time.endDay}
+                onChange={(e) => setTime({...time, endDay: e.target.value})}
+              />
+            </div>
+            </div>
+          <button className='btn btn-secondary mt-2' onClick={() => exportExcel()}>Xuất file</button>
         </div>
       </div>
 

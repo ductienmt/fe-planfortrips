@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./TripCompo.css";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { faCommentDots } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Feedback from "../../FeedBack/FeedBack";
+import { PlanServiceApi } from "../../../../services/apis/PlanServiceApi";
 
 const TripCompo = ({ trip }) => {
+  const [showModal, setShowModal] = useState(false);
+  const [planDetail, setPlanDetail] = useState({});
+  const [loadingPlanDetail, setLoadingPlanDetail] = useState(false);
+
   const getStatusDisplay = (status) => {
     switch (status) {
       case "NOT_STARTED":
@@ -15,15 +23,51 @@ const TripCompo = ({ trip }) => {
         return { text: "Không xác định", bgColor: "status-unknown" };
     }
   };
-  const { text, bgColor } = getStatusDisplay(trip.status);
-  const convertToVND = (amount) => {
-    const formattedAmount = amount
-      .toString()
-      .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return `${formattedAmount}VNĐ`;
+  
+
+  const fetchPlanDetail = async () => {    
+    setLoadingPlanDetail(true);
+    try {
+      const resPlanDetail = await PlanServiceApi.getPlanById(trip.plan_id);
+      setPlanDetail(resPlanDetail.data);
+    } catch (error) {
+      console.error("Error fetching plan detail:", error);
+    } finally {
+      setLoadingPlanDetail(false); 
+    }
   };
+
+  const openModal = async () => {
+    await fetchPlanDetail();
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  const convertToVND = (amount) => {
+    return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} VNĐ`;
+  };
+
+  const handleCheckFeedBack = () => {
+      closeModal();
+  };
+
+  const { text, bgColor } = getStatusDisplay(trip.status);
+  const [isFeedBack, setIsFeedBack] = useState({
+    hotel: false,
+    vehicle: false,
+  });
+
   return (
     <>
+      {loadingPlanDetail && (
+        <div className="feedback-loading-overlay">
+          <div className="feedback-spinner"></div>
+        </div>
+      )}
+
       <div className="tripcompo-container-custom">
         <div className="tripcompo-card">
           <div className="card-left">
@@ -37,21 +81,13 @@ const TripCompo = ({ trip }) => {
               <div className={`tripcompo-status ${bgColor}`}>{text}</div>
               <div className="tripcompo-number">{trip.numberPeople} người</div>
             </div>
-            <div
-              className="body"
-              style={{
-                display: "flex",
-                gap: "10px",
-                marginTop: "10px",
-              }}
-            >
+            <div className="body" style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
               <div
                 className="body-lefy"
                 style={{ borderRight: "1px solid #fff", paddingRight: "20px" }}
               >
                 <div className="tripcompo-location">
-                  {trip.origin_location}{" "}
-                  <ArrowForwardIcon style={{ fontSize: "15px" }} />{" "}
+                  {trip.origin_location} <ArrowForwardIcon style={{ fontSize: "15px" }} />{" "}
                   {trip.destination}
                 </div>
                 <div className="tripcompo-date">
@@ -66,10 +102,33 @@ const TripCompo = ({ trip }) => {
               </div>
             </div>
           </div>
-          <div
-            className="card-right"
-            style={{ display: "flex", alignItems: "center" }}
-          >
+          <div className="d-flex align-items-center card-right">
+
+      {trip.status == 'COMPLETE' ? <>
+            {(trip.isFbHotel && trip.isFbVehicle) ? 
+            <>
+        <span className="me-2 btn btn btn-success text-nowrap">Đã dánh giá</span>
+            </> : 
+            <>
+            <button
+              className="btn btn-primary text-white border p-2 me-3 tripcombo-feedback-btn bookmarkBtn"
+              style={{ width: "fit-content", padding: "1rem" }}
+              onClick={openModal}
+            >
+              <span className="IconContainer me-2">
+                <FontAwesomeIcon icon={faCommentDots} className="icon" />
+              </span>
+              <p className="text" style={{ textWrap: "nowrap" }}>
+                Đánh giá
+              </p>
+            </button>
+            </>}
+      </> : <>
+        <button className="me-2 btn btn-outline-light text-nowrap" disabled>Chưa hoàn thành</button>
+      </>}
+
+          
+
             <button className="bookmarkBtn">
               <span className="IconContainer">
                 <svg viewBox="0 0 384 512" height="0.9em" className="icon">
@@ -81,6 +140,46 @@ const TripCompo = ({ trip }) => {
           </div>
         </div>
       </div>
+
+      {showModal && planDetail && (
+        <div
+          className="modal-feedback"
+          style={{ display: "block" }}
+          tabIndex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+        >
+          <div className="show-feedback d-flex">
+            <div
+              className="d-flex"
+              style={{ position: "relative", width: "80vw", height: "100vh", margin: "auto" }}
+            >
+              <button
+                className="show-feedback btn-close text-white fs-4 bg-light"
+                onClick={() => handleCheckFeedBack()}
+              ></button>
+
+          
+
+              {!trip.isFbHotel &&  <Feedback
+                planId={trip.plan_id}
+                accountEnterpriseId={planDetail.etp_hotel_id}
+                accountEnterpriseName={planDetail.hotel_name}
+                nameService={planDetail.rooms}
+                typeService="hotel"
+              />}
+
+                {!trip.isFbVehicle && <Feedback
+                planId={trip.plan_id}
+                accountEnterpriseId={planDetail?.vehicle?.etp_company_id}
+                accountEnterpriseName={planDetail?.vehicle?.car_company_name}
+                nameService={planDetail?.vehicle?.vehicle_name}
+                typeService="Xe"
+              />}
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

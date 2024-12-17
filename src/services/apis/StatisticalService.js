@@ -52,5 +52,21 @@ export const StatisticalService = {
   CountHotelByYear: async (year) => {
     const response = await Http.get(`statistical/hotel/${year}`);
     return response;
+  },
+  allUser: async () => {
+    const response = await Http.get('statistical/pdf/user');
+    return response;
+  },
+  aboutTimeEnterprise: async (startTime, endTime) => {
+    const response = await Http.get(`statistical/pdf/enterppirse/${startTime}/${endTime}`)
+    return response;
+  },
+  aboutTimeTicket: async (startTime, endTime) => {
+    const response = await Http.get(`statistical/pdf/ticket/${startTime}/${endTime}`);
+    return response;
+  },
+  aboutTimeBookingHotelDetail: async (startTime, endTime) => {
+    const response = await Http.get(`statistical/pdf/bookingHotelDetail/${startTime}/${endTime}`)
+    return response;
   }
 };
