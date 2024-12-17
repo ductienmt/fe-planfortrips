@@ -2,12 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { pink } from "@mui/material/colors";
 import { Star } from "../../../../admin/pages/Components/Star";
-import { Button, IconButton, Radio, Tooltip } from "@mui/material";
-import { Delete, RemoveCircle } from "@mui/icons-material";
+import { IconButton, Radio, Tooltip } from "@mui/material";
+import { Delete } from "@mui/icons-material";
 import InfoIcon from "@mui/icons-material/Info";
 import { CouponService } from "../../../../services/apis/CouponService";
-import RoomServiceIcon from '@mui/icons-material/RoomService';
-const HotelCart = ({ selectedRoom, setSelectedRoom,setLoading }) => {
+import RoomServiceIcon from "@mui/icons-material/RoomService";
+import { useNavigate } from "react-router-dom";
+import { Modal, notification } from "antd";
+const HotelCart = ({hotel, selectedRoom, setSelectedRoom, setLoading,checkIn,checkOut }) => {
+  console.log(checkIn);
+  console.log(checkOut);
   const [openCoupon, setOpenCoupon] = useState(false);
   const couponRef = useRef(null);
   const [coupons, setCoupons] = useState([]);
@@ -15,8 +19,11 @@ const HotelCart = ({ selectedRoom, setSelectedRoom,setLoading }) => {
   const [priceRooms, setPriceRooms] = useState(0);
   const [cashAppliedCoupon, setCashAppliedCoupon] = useState(0);
   const [total, setTotal] = useState(0);
+  const [accommodationData, setAccommodationData] = useState(null);
+  const navigate = useNavigate();
   const handleCouponSelect = (coupon) => {
     setSelectedCoupon(coupon);
+    localStorage.setItem("selectedCoupon", JSON.stringify(coupon));
     const currentPriceRooms = selectedRoom.reduce(
       (sum, room) => sum + room.price,
       0
@@ -31,11 +38,42 @@ const HotelCart = ({ selectedRoom, setSelectedRoom,setLoading }) => {
 
     setCashAppliedCoupon(appliedDiscount);
     setTotal(currentPriceRooms - appliedDiscount);
+    setOpenCoupon(false);
   };
+  const handleRemoveCoupon = () => {
+    setSelectedCoupon(null);
+    setCashAppliedCoupon(0);
+    setTotal(priceRooms);
+    localStorage.removeItem("selectedCoupon");
+  };
+  useEffect(() => {
+    const fetch = async () => {
+      const storedCoupon = localStorage.getItem("selectedCoupon");
+      if (storedCoupon) {
+        const parsedCoupon = JSON.parse(storedCoupon);
+        setSelectedCoupon(parsedCoupon);
+
+        const currentPriceRooms = selectedRoom.reduce(
+          (sum, room) => sum + room.price,
+          0
+        );
+
+        let appliedDiscount = 0;
+        if (parsedCoupon.discount_type === "PERCENT") {
+          appliedDiscount =
+            (currentPriceRooms * parsedCoupon.discount_value) / 100;
+        } else {
+          appliedDiscount = parsedCoupon.discount_value;
+        }
+        setCashAppliedCoupon(appliedDiscount);
+        setTotal(currentPriceRooms - appliedDiscount);
+      }
+    };
+    fetch();
+  }, [selectedRoom]);
   useEffect(() => {
     const t = selectedRoom.reduce((sum, room) => sum + room.price, 0);
     setPriceRooms(t);
-    setTotal(t);
   }, [selectedRoom]);
   useEffect(() => {
     const fetch = async () => {
@@ -46,6 +84,17 @@ const HotelCart = ({ selectedRoom, setSelectedRoom,setLoading }) => {
         setCoupons(data);
         console.log(coupons);
       }
+      setAccommodationData({
+        name: hotel?.hotelName,
+        room: selectedRoom
+          .map((room) => room?.roomName)
+          .join(", "),
+        checkIn: checkIn,
+        checkInTime: checkIn,
+        checkOutDate: checkOut,
+        checkOutTime: checkOut,
+        type: "hotel",
+      });
     };
     fetch();
   }, []);
@@ -71,9 +120,54 @@ const HotelCart = ({ selectedRoom, setSelectedRoom,setLoading }) => {
   const handleFocus = () => {
     setOpenCoupon(true);
   };
-  const handlePayment = ()=>{
-    
-  }
+  const handlePayment = () => {
+    if (!selectedRoom || selectedRoom.length === 0) {
+      notification.warning({
+        message: 'Chưa chọn phòng',
+        description: 'Vui lòng chọn phòng trước khi thanh toán',
+        placement: 'topRight'
+      });
+      return;
+    }
+  
+    if (!checkIn || !checkOut) {
+      notification.warning({
+        message: 'Thông tin không đầy đủ',
+        description: 'Vui lòng chọn ngày check-in và check-out',
+        placement: 'topRight'
+      });
+      return;
+    }
+  
+    Modal.confirm({
+      title: 'Xác nhận đặt phòng',
+      content: (
+        <div>
+          <p><strong>Khách sạn:</strong> {hotel?.hotelName}</p>
+          <p><strong>Phòng:</strong> {selectedRoom.map(room => room?.roomName).join(", ")}</p>
+          <p><strong>Ngày check-in:</strong> {checkIn}</p>
+          <p><strong>Ngày check-out:</strong> {checkOut}</p>
+          <p><strong>Tổng tiền:</strong> {convertToVNDDB(total)}</p>
+          {selectedCoupon && (
+            <p><strong>Mã giảm giá:</strong> {selectedCoupon.code}</p>
+          )}
+        </div>
+      ),
+      okText: 'Xác nhận đặt phòng',
+      cancelText: 'Hủy',
+      onOk() {
+        sessionStorage.setItem("acoData", JSON.stringify(accommodationData));
+        notification.success({
+          message: 'Đặt phòng thành công',
+          description: 'Đang chuyển đến trang thanh toán...',
+          duration: 1.5,
+          onClose: () => {
+            navigate("/booking/hotel");
+          }
+        });
+      }
+    });
+  };
   return (
     <StyledWrapper>
       <div className="master-container cart-popup">
@@ -84,7 +178,7 @@ const HotelCart = ({ selectedRoom, setSelectedRoom,setLoading }) => {
               ? selectedRoom.map((room) => (
                   <>
                     <div className="product" key={room.id}>
-                      <RoomServiceIcon/>
+                      <RoomServiceIcon />
                       <div>
                         <span>{room.roomName}</span>
                         <p>{room.typeOfRoom}</p>
@@ -122,8 +216,17 @@ const HotelCart = ({ selectedRoom, setSelectedRoom,setLoading }) => {
               className="input_field"
               value={selectedCoupon?.code ?? ""}
               onFocus={handleFocus}
+              readOnly
             />
-            <button>Áp dụng</button>
+            {selectedCoupon && (
+              <button
+                type="button"
+                onClick={handleRemoveCoupon}
+                style={{ marginLeft: "10px" }}
+              >
+                Xóa mã
+              </button>
+            )}
           </div>
         </div>
         {openCoupon && (
@@ -176,7 +279,7 @@ const HotelCart = ({ selectedRoom, setSelectedRoom,setLoading }) => {
                         </label>
                       </div>
                     ))
-                  : "Chưa có phòng nào được đặt"}
+                  : "Danh sách mã giảm giá trống"}
               </div>
             </div>
           </div>
@@ -194,7 +297,7 @@ const HotelCart = ({ selectedRoom, setSelectedRoom,setLoading }) => {
               <sup></sup>
               {convertToVNDDB(total)}
             </label>
-            <button className="checkout-btn">Thanh toán</button>
+            <button className="checkout-btn" onClick={handlePayment}>Thanh toán</button>
           </div>
         </div>
       </div>

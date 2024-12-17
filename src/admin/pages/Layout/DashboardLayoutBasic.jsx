@@ -52,7 +52,7 @@ const NAVIGATION = [
       </NavLink>
     ),
     icon: (
-      <NavLink to="" className="nav-linkAdmin">
+      <NavLink to="statistical">
         <FontAwesomeIcon icon={faChartSimple} />
       </NavLink>
     ),
@@ -106,18 +106,6 @@ const NAVIGATION = [
       </NavLink>
     ),
   },
-  // {
-  //   title: (
-  //     <NavLink to="statistics" className="nav-linkAdmin">
-  //       Thống kê
-  //     </NavLink>
-  //   ),
-  //   icon: (
-  //     <NavLink to="statistics" className="nav-linkAdmin">
-  //       <FontAwesomeIcon icon={faChartPie} />
-  //     </NavLink>
-  //   ),
-  // },
   {
     title: "Giao dịch",
     icon: <FontAwesomeIcon icon={faMoneyBillWave} />,

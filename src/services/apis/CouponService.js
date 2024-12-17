@@ -25,7 +25,7 @@ export const CouponService = {
     return response.data;
   },
   deleteCoupon: async (id) => {
-    const response = await Http.delete(`/coupons/delete/${id}`);
+    const response = await Http.post(`/coupons/delete/${id}`);
     return response;
   },
   getCouponByCode: async (code, status) => {

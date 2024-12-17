@@ -5,41 +5,86 @@ import ChartReportCard from "../../accomodation/accpmodationComponent/chartRepor
 import RateCard from "../../accomodation/accpmodationComponent/rateCard/RateCard";
 import CommentCard from "../../accomodation/accpmodationComponent/commentCard/CommentCard";
 import { Table } from "antd";
+import { CompileEnterpriseService } from "../../../services/apis/CompileEnterpriseService";
 
 const AccomodationDashboard = () => {
-  const roomStatusData = [
+  const [revenueData, setRevenueData] = useState([]);
+  const [infoData, setInfoData] = useState({});
+  const [feedbackData, setFeedbackData] = useState({});
+  const [roomStatusData, setRoomStatusData] = useState([
     {
       color: "blue",
       icon: "fa-solid fa-key",
       title: "Phòng",
       status: "Đang sử dụng",
-      count: 10,
+      count: 0,
     },
     {
       color: "orange",
       icon: "fa-solid fa-unlock-keyhole",
       title: "Phòng",
       status: "Còn trống",
-      count: 10,
+      count: 0,
     },
     {
       color: "red",
       icon: "fa-solid fa-people-roof",
       title: "Phòng",
       status: "Đặt trước",
-      count: 10,
+      count: 0,
     },
     {
       color: "green",
       icon: "fa-solid fa-coins",
       title: "Tổng",
       status: "Phòng được đặt",
-      count: 10,
+      count: 0,
     },
-  ];
+  ]);
+  const [reportType, setReportType] = useState("week");
+
+  const onChangeReportType = (value) => {
+    setReportType(value);
+    loadDataRevenue(value);
+  };
+
+  const loadDataRevenue = async (typeRe) => {
+    try {
+      const response =
+        await CompileEnterpriseService.getAccommodationRevenue(typeRe);
+      setRevenueData(response.data);
+    } catch (error) {
+      console.log("error: " + error);
+    }
+  };
+
+  const loadCompileData = async () => {
+    try {
+      const [revenue, info, feedback] = await Promise.all([
+        CompileEnterpriseService.getAccommodationRevenue(reportType),
+        CompileEnterpriseService.getAccommodationInfo(),
+        CompileEnterpriseService.getAccommodationFeedback(),
+      ]);
+      setRevenueData(revenue.data);
+      setInfoData(info.data);
+      setFeedbackData(feedback.data);
+
+      setRoomStatusData((prevState) => {
+        const updatedData = [...prevState];
+        updatedData[0].count = info.data.roomInUse;
+        updatedData[1].count = info.data.roomEmpty;
+        updatedData[2].count = info.data.roomBookAdvance;
+        updatedData[3].count = info.data.roomUsed;
+        return updatedData;
+      });
+    } catch (error) {
+      console.log("error: " + error);
+    }
+  };
 
   useEffect(() => {
     document.title = "Thống kê";
+    loadCompileData();
   }, []);
 
   return (
@@ -72,14 +117,19 @@ const AccomodationDashboard = () => {
 
             {/* Card2 */}
             <div className="card-2-container">
-              <ChartReportCard amount="5.000.000" />
+              <ChartReportCard
+                onChangeReportType={onChangeReportType}
+                reportType={reportType}
+                revenueData={revenueData}
+              />
             </div>
+            <hr />
 
             {/* Card3 */}
             <div className="card-3-container">
-              <RateCard />
+              <RateCard ratingData={feedbackData} />
             </div>
-
+            <hr />
             {/* Card4 */}
             <div className="comment-dashboard">
               <section className="comment-content">

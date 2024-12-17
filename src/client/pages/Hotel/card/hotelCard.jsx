@@ -3,22 +3,20 @@ import "./hotelCard.css";
 import { Star } from "../../../../admin/pages/Components/Star";
 import SvgIcon from "./svgIcon";
 import { Link, useNavigate } from "react-router-dom";
-import { regexUrlIcon } from "../../../../utils/regex";
+import { Button } from "antd";
 const HotelCard = ({
   item,
   onClick,
   modalTarget,
   modalToogle,
   contentButton,
+  dateDepart = null,
+  dateReturn = null,
 }) => {
-  // console.log(item.hotelAmenities);
-  // const navigate = useNavigate();
-  // const originalPrice = 250000;
-  // const discountedPrice = 200000;
+  const navigate = useNavigate();
   const convertToVNDDB = (price) => {
     return price + ".000VND ";
   };
-  // const hasDiscount = discountedPrice < originalPrice;
   return (
     <>
       <div className="card custom-card-hotel mb-3">
@@ -55,7 +53,7 @@ const HotelCard = ({
 
                     // code mới Dtien
 
-                    <small className="amenity-item" key={index}>
+                    <small className="hotel-amenity-item" key={index}>
                       {/* <SvgIcon url={regexUrlIcon(ha.icon)} /> */}
                       <SvgIcon
                         url={
@@ -121,11 +119,13 @@ const HotelCard = ({
                     </button>
                   ) : (
                     <Link
-                      to={`/hotel-page/${item.hotel_id}`}
                       className="btn-booking mb-2"
                       style={{ textDecoration: "none" }}
+                      onClick={() => {
+                        navigate(`/hotel-page/${item?.hotel_id}?checkIn=${dateDepart}&checkOut=${dateReturn}`);
+                      }}
                     >
-                      <span>Đặt ngay</span>
+                      Đặt ngay
                     </Link>
                   )}
                   {/* end bổ sung */}
