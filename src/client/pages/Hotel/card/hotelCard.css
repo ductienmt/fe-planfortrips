@@ -2,7 +2,7 @@
   --primary-color: #2c3e50;
   --secondary-color: #34495e;
   --accent-color: #3498db;
-  --background-light: #f4f6f7;
+  --background-light: #dfe3e4;
   --text-color: #333;
   --spacing-small: 8px;
   --spacing-medium: 12px;
@@ -25,7 +25,7 @@
 
 .custom-img-hotel-card {
   width: 100%;
-  height: 250px;
+  height: 300px;
   object-fit: cover;
   border-top-left-radius: 12px;
   border-bottom-left-radius: 12px;

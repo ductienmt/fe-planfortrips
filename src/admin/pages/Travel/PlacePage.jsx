@@ -118,7 +118,7 @@ export default function PlacePageAdmin() {
             setOpen(true);
           }}
         >
-          Thêm mã giảm
+          Thêm địa điểm
         </Button>
         <GridToolbar />
       </Box>

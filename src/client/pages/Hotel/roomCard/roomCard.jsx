@@ -30,7 +30,6 @@ const RoomCard = ({ room_id, setSelectedRoom, selectedRoom }) => {
       const response = await RoomService.findRoomById(room_id);
       if (response) {
         setRoom(response);
-        console.log(response);
       }
     };
     fetch();
@@ -46,7 +45,7 @@ const RoomCard = ({ room_id, setSelectedRoom, selectedRoom }) => {
             <Image
               src={
                 room?.images?.length > 0
-                  ? room.images[0]?.url
+                  ? room.images[0]
                   : "../src/assets/imageRoomNotExist.jpg"
               }
               alt="Room Image"

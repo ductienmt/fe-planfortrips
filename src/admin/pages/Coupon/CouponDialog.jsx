@@ -124,12 +124,12 @@ export default function CouponDialog({
       const response = await CouponService.createCoupon(formData);
       if (response) {
         const newFormData = { ...formData, coupon_id: response.coupon_id };
-        toast("Tạo mới thành công");
+        toast.success("Tạo mới thành công");
         setRows((prevRows) => [...prevRows, newFormData]);
         handleClose();
       }
     } catch (error) {
-      toast("Lỗi");
+      toast.error("Lỗi");
       console.log(error.message);
     }
   };
@@ -139,7 +139,7 @@ export default function CouponDialog({
     try {
       const response = await CouponService.updateCoupon(id, formData);
       if (response) {
-        toast("Cập nhật thành công");
+        toast.success("Cập nhật thành công");
         setRows((prevRows) =>
           prevRows.map((row) =>
             row.coupon_id === response.coupon_id ? { ...row, ...formData } : row
@@ -148,7 +148,7 @@ export default function CouponDialog({
         handleClose();
       }
     } catch (error) {
-      toast("Lỗi");
+      toast.error("Lỗi");
       console.log(error.message);
     }
   };
