@@ -60,5 +60,13 @@ export const StatisticalService = {
   aboutTimeEnterprise: async (startTime, endTime) => {
     const response = await Http.get(`statistical/pdf/enterppirse/${startTime}/${endTime}`)
     return response;
+  },
+  aboutTimeTicket: async (startTime, endTime) => {
+    const response = await Http.get(`statistical/pdf/ticket/${startTime}/${endTime}`);
+    return response;
+  },
+  aboutTimeBookingHotelDetail: async (startTime, endTime) => {
+    const response = await Http.get(`statistical/pdf/bookingHotelDetail/${startTime}/${endTime}`)
+    return response;
   }
 };
