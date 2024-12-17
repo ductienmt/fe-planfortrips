@@ -252,7 +252,7 @@ const routeClient = () => [
       { path: "*", element: <NotFoundPage /> },
       {
         path: "/plan",
-        element: <ProtectedRoute allowedRoles={[ROLES.CLIENT]} />,
+        // element: <ProtectedRoute allowedRoles={[ROLES.CLIENT]} />,
         children: [
           { path: "", Component: PlanBefore },
           { path: "trip", Component: TravelPlan },

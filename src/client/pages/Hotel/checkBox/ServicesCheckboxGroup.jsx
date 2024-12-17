@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Star } from "../../../../admin/pages/Components/Star";
 
 const ratingList = [1, 2, 3, 4, 5];
@@ -19,7 +19,9 @@ const RatingCheckboxGroup = ({ setSelectedRating }) => {
       setSelectedRating(null);
     }
   };
-
+  useEffect(()=>{
+    setSelectedRating(5);
+  },[])
   return (
     <div>
       {ratingList.map((rating) => (
@@ -29,7 +31,7 @@ const RatingCheckboxGroup = ({ setSelectedRating }) => {
             className="form-check-input"
             id={`rating-${rating}`}
             name={rating}
-            checked={selectedRating === rating}
+            checked={selectedRating === rating || (rating == 5 && !selectedRating)}
             onChange={handleCheckboxChange}
           />
           <label htmlFor={`rating-${rating}`} className="form-check-label">

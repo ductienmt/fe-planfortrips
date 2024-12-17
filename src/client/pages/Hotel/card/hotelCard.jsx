@@ -3,7 +3,6 @@ import "./hotelCard.css";
 import { Star } from "../../../../admin/pages/Components/Star";
 import SvgIcon from "./svgIcon";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "antd";
 const HotelCard = ({
   item,
   onClick,

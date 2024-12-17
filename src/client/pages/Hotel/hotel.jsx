@@ -51,18 +51,13 @@ const Hotel = () => {
         setHotelAvailable(response.hotelResponseList);
         setTotalPage(response.totalPage);
       }
-      window.scrollTo(0, 0);
+      // window.scrollTo(0, 0);
     };
     fetch();
   }, [setPage]);
-  const filteredHotels = hotelAvailable.filter((hotel) =>
-    hotel.hotelAmenities.some((amenity) =>
-      selectedAmenities.includes(amenity.name)
-    )
-  );
-  const filteredHotelsByRating = selectedRating
-  ? hotelAvailable.filter((hotel) => hotel.rating <= selectedRating)
-  : hotelAvailable;
+  useEffect(()=>{
+      setTotalPage(hotelAvailable.length);
+  },[setSelectedAmenities,setSelectedRating])
   const handlePageChange = (e, value) => {
     setPage(value);
   };
@@ -118,25 +113,30 @@ const Hotel = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const renderList = () => {
     const filteredHotels = hotelAvailable.filter((hotel) => {
-      const matchesAmenities =
-        selectedAmenities.length === 0 ||
-        selectedAmenities.some((amenity) =>
+      const amenitiesFilter = 
+        selectedAmenities.length === 0 || 
+        selectedAmenities.every((selectedAmenity) =>
           hotel.hotelAmenities.some(
-            (hotelAmenity) => hotelAmenity.name === amenity
+            (hotelAmenity) => hotelAmenity.name === selectedAmenity
           )
         );
-
-      const matchesRating = !selectedRating || hotel.rating <= selectedRating;
-
-      return matchesAmenities || matchesRating;
+  
+      const ratingFilter = 
+        !selectedRating || 
+        hotel.rating <= selectedRating;
+  
+      return amenitiesFilter && ratingFilter;
     });
-
-    return filteredHotels.map((item, index) => (
+  
+    return (filteredHotels && filteredHotels.length > 0 ? (filteredHotels.map((item, index) => (
       <li key={index}>
-        <HotelCard item={item} dateDepart={dateDepart ?? null}
-  dateReturn={dateReturn ?? null}/>
+        <HotelCard
+          item={item}
+          dateDepart={dateDepart ?? null}
+          dateReturn={dateReturn ?? null}
+        />
       </li>
-    ));
+    ))) : ("Không có khách sạn nào có sẵn phòng!"))
   };
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
@@ -151,11 +151,11 @@ const Hotel = () => {
 
   const validation = () => {
     const today = new Date();
-    if (!dateReturn || dateReturn.trim() === '') {
+    if (!dateReturn || dateReturn.trim() === "") {
       setError("Ngày về không được để trống");
       return false;
     }
-  
+
     const departDate = new Date(dateDepart);
     const returnDate = new Date(dateReturn);
     if (isNaN(departDate.getTime())) {
@@ -174,7 +174,7 @@ const Hotel = () => {
       setError("Ngày đi không được lớn hơn ngày về");
       return false;
     }
-    setError('');
+    setError("");
     return true;
   };
   function addDaysToDate(dateStr, days) {
@@ -287,7 +287,7 @@ const Hotel = () => {
   const handleSearchHotel = async (e) => {
     e.preventDefault();
     if (!validation()) {
-      enqueueSnackbar(error, { variant: "error",hideIconVariant: 3000 });
+      enqueueSnackbar(error, { variant: "error", hideIconVariant: 3000 });
       return;
     }
     const departDate = convertToDate(dateDepart);
