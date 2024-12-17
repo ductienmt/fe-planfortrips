@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { TourService } from "../../../services/apis/TourService";
 import TourForm from "./Tour";
 import TourFormUpdate from "./TourEdit";
+import { Typography } from "@mui/material";
 
 const paginationModel = { page: 0, pageSize: 100 };
 
@@ -211,56 +212,62 @@ export default function TourAdmin() {
   ];
 
   return (
-    <Box
-      sx={{
-        height: "auto",
-        width: "100%",
-        backgroundColor: "#f5f5f5",
-        padding: "40px",
-        borderRadius: 2,
-        overflow: "hidden",
-      }}
-    >
-      <DataGrid
-        loading={isLoading}
-        slotProps={{
-          loadingOverlay: {
-            variant: "linear-progress",
-            noRowsVariant: "skeleton",
-          },
-        }}
-        getRowHeight={(params) => {
-          const baseHeight = 52; // Chiều cao tối thiểu
-          if (params.model.tags && params.model.tags.length > 1) {
-            return baseHeight + params.model.tags.length * 10;
-          }
-          return baseHeight;
-        }}
-        checkboxSelection={false}
-        rows={rows}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 5,
-            },
-          },
-        }}
-        getRowId={(row) => row.tour_id}
-        pageSizeOptions={[10, 25, 50, 100]}
-        disableRowSelectionOnClick
-        slots={{ toolbar: EditToolbar }}
+    <>
+      <div className="row my-2 ms-4">
+        <div className="col">
+          <Typography variant="h4" gutterBottom>
+            Quản lý Tour
+          </Typography>
+        </div>
+      </div>
+      <Box
         sx={{
+          height: "auto",
+          width: "100%",
+          backgroundColor: "#f5f5f5",
+          padding: "40px",
           borderRadius: 2,
-          border: "1px solid #ddd",
-          background: "#FFF",
-          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+          overflow: "hidden",
         }}
-      />
-      <TourFormUpdate
-        setRows={setRows}
-        selectedTourId={selectedTourId}
-      />
-    </Box>
+      >
+        <DataGrid
+          loading={isLoading}
+          slotProps={{
+            loadingOverlay: {
+              variant: "linear-progress",
+              noRowsVariant: "skeleton",
+            },
+          }}
+          getRowHeight={(params) => {
+            const baseHeight = 52; // Chiều cao tối thiểu
+            if (params.model.tags && params.model.tags.length > 1) {
+              return baseHeight + params.model.tags.length * 10;
+            }
+            return baseHeight;
+          }}
+          checkboxSelection={false}
+          rows={rows}
+          columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 5,
+              },
+            },
+          }}
+          getRowId={(row) => row.tour_id}
+          pageSizeOptions={[10, 25, 50, 100]}
+          disableRowSelectionOnClick
+          slots={{ toolbar: EditToolbar }}
+          sx={{
+            borderRadius: 2,
+            border: "1px solid #ddd",
+            background: "#FFF",
+            boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+          }}
+        />
+        <TourFormUpdate setRows={setRows} selectedTourId={selectedTourId} />
+      </Box>
+    </>
   );
 }

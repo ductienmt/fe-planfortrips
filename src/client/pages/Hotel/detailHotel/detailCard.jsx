@@ -44,8 +44,6 @@ const style = {
 
 
 const DetailCard = () => {
-  // window.scrollTo(0, 0);
- 
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const [hotel, setHotel] = useState({});

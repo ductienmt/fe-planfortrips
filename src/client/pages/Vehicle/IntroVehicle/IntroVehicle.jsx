@@ -4,29 +4,8 @@ import DateIntroVehicle from "./DateIntroVehicle";
 import InputIntroVehicle from "./InputIntroVehicle";
 import { ScheduleService } from "../../../../services/apis/ScheduleService";
 import { useNavigate } from "react-router-dom";
-
-const cardFooter = [
-  {
-    imgURL:
-      "https://th.bing.com/th/id/OIP.8fuon7GjxbP697ImISMKEgHaE8?rs=1&pid=ImgDetMain",
-    location: "Hà Nội",
-  },
-  {
-    imgURL:
-      "https://th.bing.com/th/id/OIP.8fuon7GjxbP697ImISMKEgHaE8?rs=1&pid=ImgDetMain",
-    location: "Hà Nội",
-  },
-  {
-    imgURL:
-      "https://th.bing.com/th/id/OIP.8fuon7GjxbP697ImISMKEgHaE8?rs=1&pid=ImgDetMain",
-    location: "Hà Nội",
-  },
-  {
-    imgURL:
-      "https://th.bing.com/th/id/OIP.8fuon7GjxbP697ImISMKEgHaE8?rs=1&pid=ImgDetMain",
-    location: "Hà Nội",
-  },
-];
+import ChooseProvince from "../../Checkin/chooseProvince/ChooseProvince";
+import { CityService } from "../../../../services/apis/CityService";
 
 const IntroVehicle = () => {
   const [formData, setFormData] = useState({
@@ -37,6 +16,7 @@ const IntroVehicle = () => {
   });
 
   const [schedules, setSchedules] = useState([]);
+  const [provinces, setProvinces] = useState([]);
 
   const navigate = useNavigate();
 
@@ -60,8 +40,22 @@ const IntroVehicle = () => {
     }));
   };
 
+  const loadDataCityFavorites = async () => {
+    try {
+      const response = await CityService.getFavoriteCity();
+      setProvinces(response);
+    } catch (error) {
+      console.log("Failed to fetch data", error);
+    }
+  };
+
+  const linkToLandingPage = () => {
+    navigate("/");
+  };
+
   useEffect(() => {
     document.title = "Tìm chuyến xe";
+    loadDataCityFavorites();
   }, []);
 
   return (
@@ -100,7 +94,7 @@ const IntroVehicle = () => {
           Khám phá những điểm đến phổ biến và được yêu thích
         </p>
         <div className="card-grid">
-          {cardFooter.map((card, index) => (
+          {/* {cardFooter.map((card, index) => (
             <div key={index} className="card">
               <img
                 src={card.imgURL}
@@ -114,7 +108,17 @@ const IntroVehicle = () => {
                 </p>
               </div>
             </div>
-          ))}
+          ))} */}
+          <div className="checkInPage-card-chooseProvince">
+            {provinces.map((province) => (
+              <ChooseProvince
+                key={province.city_id}
+                img={province.image_url}
+                provinceName={province.name_city}
+                // linkTo={`/check-in/city/${province.city_id}`}
+              />
+            ))}
+          </div>
         </div>
       </section>
       {/* CTA Section */}
@@ -125,7 +129,12 @@ const IntroVehicle = () => {
         <p className="intro-vehicle-cta-subtitle">
           Đặt vé dễ dàng, nhanh chóng và đảm bảo với hệ thống của chúng tôi.
         </p>
-        <button className="intro-vehicle-cta-button">Khám Phá Ngay</button>
+        <button
+          className="intro-vehicle-cta-button"
+          onClick={() => linkToLandingPage()}
+        >
+          Khám Phá Ngay
+        </button>
       </section>
     </div>
   );

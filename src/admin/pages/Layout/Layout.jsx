@@ -7,10 +7,8 @@ import { PageContainer } from "@toolpad/core";
 export default function LayoutAdmin() {
   return (
     <DashboardLayout>
-      <PageContainer>
         <Outlet />
         <ToastContainer />
-      </PageContainer>
     </DashboardLayout>
   );
 }

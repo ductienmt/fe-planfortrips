@@ -1,7 +1,7 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar, GridToolbarContainer } from "@mui/x-data-grid";
-import { Button, Switch, Toolbar } from "@mui/material";
+import { Button, Switch, Toolbar, Typography } from "@mui/material";
 import { Delete, Edit, RemoveRedEye } from "@mui/icons-material";
 import { CouponService } from "../../../services/apis/CouponService";
 import AddIcon from "@mui/icons-material/Add";
@@ -174,39 +174,48 @@ export default function PlacePageAdmin() {
   ];
 
   return (
-    <Box sx={{ height: 800, width: "100%" }}>
-      <DataGrid
-        loading={isLoading}
-        slotProps={{
-          loadingOverlay: {
-            variant: "linear-progress",
-            noRowsVariant: "skeleton",
-          },
-        }}
-        rows={rows}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 10,
+    <>
+      <div className="row my-2 ms-4">
+        <div className="col">
+          <Typography variant="h4" gutterBottom>
+            Quản lý điểm du lịch
+          </Typography>
+        </div>
+      </div>
+      <Box sx={{ height: 800, width: "100%" }}>
+        <DataGrid
+          loading={isLoading}
+          slotProps={{
+            loadingOverlay: {
+              variant: "linear-progress",
+              noRowsVariant: "skeleton",
             },
-          },
-        }}
-        getRowId={(row) => row.id}
-        pageSizeOptions={[10, 20, 50]}
-        checkboxSelection={false}
-        disableRowSelectionOnClick
-        slots={{ toolbar: ToolBar }}
-      />
-      <PlaceDialog
-        open={open}
-        setOpen={setOpen}
-        editMode={editMode}
-        setEditMode={setEditMode}
-        setRows={setRows}
-        selectedCouponId={selectedCouponId}
-        viewMode={viewMode}
-      />
-    </Box>
+          }}
+          rows={rows}
+          columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 10,
+              },
+            },
+          }}
+          getRowId={(row) => row.id}
+          pageSizeOptions={[10, 20, 50]}
+          checkboxSelection={false}
+          disableRowSelectionOnClick
+          slots={{ toolbar: ToolBar }}
+        />
+        <PlaceDialog
+          open={open}
+          setOpen={setOpen}
+          editMode={editMode}
+          setEditMode={setEditMode}
+          setRows={setRows}
+          selectedCouponId={selectedCouponId}
+          viewMode={viewMode}
+        />
+      </Box>
+    </>
   );
 }
