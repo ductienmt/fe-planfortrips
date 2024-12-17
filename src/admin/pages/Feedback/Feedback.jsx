@@ -6,6 +6,7 @@ import { FeedbackService } from "../../../services/apis/FeedbackService";
 import { UserService } from "../../../services/apis/UserService";
 import { Star } from "../Components/Star";
 import FeedbackDetail from "./Feedback/FeedbackDetail";
+import { Typography } from "@mui/material";
 
 export default function FeedbackPage() {
   const [feedbacks, setFeedbacks] = React.useState([]);
@@ -36,7 +37,7 @@ export default function FeedbackPage() {
     };
     fetchFeedbacks();
   }, []);
-  const ToolBar = ()=>{
+  const ToolBar = () => {
     React.useEffect(() => {
       setTimeout(() => {
         const buttonCol = document.querySelector(
@@ -47,27 +48,30 @@ export default function FeedbackPage() {
         );
         const buttonExport = document.querySelector(
           "button[aria-label='Export']"
-        )
+        );
         if (buttonCol) {
-          buttonCol.innerHTML = "<i class='fas fa-table-columns me-2'></i> Các Cột";
+          buttonCol.innerHTML =
+            "<i class='fas fa-table-columns me-2'></i> Các Cột";
         }
-        if(buttonFilter){
-          buttonFilter.innerHTML = "<i class='fas fa-filter me-2'></i> Lọc"
+        if (buttonFilter) {
+          buttonFilter.innerHTML = "<i class='fas fa-filter me-2'></i> Lọc";
         }
-        if(buttonExport){
-          buttonExport.innerHTML = "<i class='fas fa-download me-2'></i> Xuất"
+        if (buttonExport) {
+          buttonExport.innerHTML = "<i class='fas fa-download me-2'></i> Xuất";
         }
       }, 100);
     }, []);
     return (
-      <Box sx={{
-        display: "flex",
-        justifyContent: "flex-end",
-      }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
         <GridToolbar />
       </Box>
     );
-  }
+  };
   const columns = [
     { field: "id", headerName: "ID", width: 270 },
     {
@@ -130,44 +134,53 @@ export default function FeedbackPage() {
   ];
 
   return (
-    <Box
-      sx={{
-        height: "auto",
-        width: "100%",
-        backgroundColor: "#f5f5f5",
-        padding: "40px",
-        borderRadius: 2,
-        overflow: "hidden",
-      }}
-    >
-      <DataGrid
-        loading={isLoading}
-        rows={feedbacks}
-        getRowId={(row) => row.id}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 5,
-            },
-          },
-        }}
-        pageSizeOptions={[5]}
-        checkboxSelection={false}
-        slots={{ toolbar: ToolBar }}
-        disableRowSelectionOnClick
+    <>
+      <div className="row my-2 ms-4">
+        <div className="col">
+          <Typography variant="h4" gutterBottom>
+            Quản lý Đánh giá
+          </Typography>
+        </div>
+      </div>
+      <Box
         sx={{
+          height: "auto",
+          width: "100%",
+          backgroundColor: "#f5f5f5",
+          padding: "40px",
           borderRadius: 2,
-          border: "1px solid #ddd",
-          background: "#FFF",
-          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+          overflow: "hidden",
         }}
-      />
-      <FeedbackDetail
-        open={open}
-        setOpen={setOpen}
-        selectedTicket={selectedTicket}
-      />
-    </Box>
+      >
+        <DataGrid
+          loading={isLoading}
+          rows={feedbacks}
+          getRowId={(row) => row.id}
+          columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 5,
+              },
+            },
+          }}
+          pageSizeOptions={[5]}
+          checkboxSelection={false}
+          slots={{ toolbar: ToolBar }}
+          disableRowSelectionOnClick
+          sx={{
+            borderRadius: 2,
+            border: "1px solid #ddd",
+            background: "#FFF",
+            boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+          }}
+        />
+        <FeedbackDetail
+          open={open}
+          setOpen={setOpen}
+          selectedTicket={selectedTicket}
+        />
+      </Box>
+    </>
   );
 }

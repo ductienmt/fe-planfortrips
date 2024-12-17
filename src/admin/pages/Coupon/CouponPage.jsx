@@ -1,7 +1,7 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridToolbar, GridToolbarContainer } from "@mui/x-data-grid";
-import { Button, Switch } from "@mui/material";
+import { Button, Switch, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Delete, Edit, RemoveRedEye } from "@mui/icons-material";
 import { CouponService } from "../../../services/apis/CouponService";
@@ -17,7 +17,7 @@ export default function CouponAdmin() {
   const [selectedCouponId, setSelectedCouponId] = React.useState(null);
   const [viewMode, setViewMode] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [isRemove,setIsRemove] = React.useState(false)
+  const [isRemove, setIsRemove] = React.useState(false);
   const [formData, setFormData] = React.useState({
     code: "",
     discount_type: 1, // default value
@@ -54,7 +54,7 @@ export default function CouponAdmin() {
           paginationModel.pageSize,
           ""
         );
-        setIsRemove(false)
+        setIsRemove(false);
         if (couponData && couponData.listResponse) {
           setRows(couponData.listResponse);
           setIsLoading(false);
@@ -76,7 +76,7 @@ export default function CouponAdmin() {
       if (response) {
         toast.success("Xóa thành công");
         // setRows((prevRows) => prevRows.filter((row) => row.coupon_id !== id));
-        setIsRemove(true)
+        setIsRemove(true);
       }
     } catch (error) {
       toast("Lỗi");
@@ -95,15 +95,16 @@ export default function CouponAdmin() {
         );
         const buttonExport = document.querySelector(
           "button[aria-label='Export']"
-        )
+        );
         if (buttonCol) {
-          buttonCol.innerHTML = "<i class='fas fa-table-columns me-2'></i> Các Cột";
+          buttonCol.innerHTML =
+            "<i class='fas fa-table-columns me-2'></i> Các Cột";
         }
-        if(buttonFilter){
-          buttonFilter.innerHTML = "<i class='fas fa-filter me-2'></i> Lọc"
+        if (buttonFilter) {
+          buttonFilter.innerHTML = "<i class='fas fa-filter me-2'></i> Lọc";
         }
-        if(buttonExport){
-          buttonExport.innerHTML = "<i class='fas fa-download me-2'></i> Xuất"
+        if (buttonExport) {
+          buttonExport.innerHTML = "<i class='fas fa-download me-2'></i> Xuất";
         }
       }, 100);
     }, []);
@@ -217,16 +218,16 @@ export default function CouponAdmin() {
       getActions: (params) => [
         <Edit
           key="edit"
-          style={{ cursor:"pointer" }}
+          style={{ cursor: "pointer" }}
           onClick={() => {
             handleClick(params.row);
-            setEditMode(true)
+            setEditMode(true);
             setViewMode(false);
           }}
         />,
         <Delete
           key="delete"
-          style={{ cursor:"pointer" }}
+          style={{ cursor: "pointer" }}
           onClick={() => {
             handleDelete(params.row.coupon_id);
           }}
@@ -236,54 +237,63 @@ export default function CouponAdmin() {
   ];
 
   return (
-    <Box
-      sx={{
-        height: "auto",
-        width: "100%",
-        backgroundColor: "#f5f5f5",
-        padding: "40px",
-        borderRadius: 2,
-        overflow: "hidden",
-      }}
-    >
-      <DataGrid
-        loading={isLoading}
-        slotProps={{
-          loadingOverlay: {
-            variant: "linear-progress",
-            noRowsVariant: "skeleton",
-          },
-        }}
-        checkboxSelection={false}
-        rows={rows}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 5,
-            },
-          },
-        }}
-        getRowId={(row) => row.coupon_id}
-        pageSizeOptions={[10, 25, 50, 100]}
-        disableRowSelectionOnClick
-        slots={{ toolbar: EditToolbar }}
+    <>
+      <div className="row my-2 ms-4">
+        <div className="col">
+          <Typography variant="h4" gutterBottom>
+            Quản lý Mã giảm giá
+          </Typography>
+        </div>
+      </div>
+      <Box
         sx={{
+          height: "auto",
+          width: "100%",
+          backgroundColor: "#f5f5f5",
+          padding: "40px",
           borderRadius: 2,
-          border: "1px solid #ddd",
-          background: "#FFF",
-          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+          overflow: "hidden",
         }}
-      />
-      <CouponDialog
-        open={open}
-        setOpen={setOpen}
-        editMode={editMode}
-        setEditMode={setEditMode}
-        setRows={setRows}
-        selectedCouponId={selectedCouponId}
-        viewMode={viewMode}
-      />
-    </Box>
+      >
+        <DataGrid
+          loading={isLoading}
+          slotProps={{
+            loadingOverlay: {
+              variant: "linear-progress",
+              noRowsVariant: "skeleton",
+            },
+          }}
+          checkboxSelection={false}
+          rows={rows}
+          columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 5,
+              },
+            },
+          }}
+          getRowId={(row) => row.coupon_id}
+          pageSizeOptions={[10, 25, 50, 100]}
+          disableRowSelectionOnClick
+          slots={{ toolbar: EditToolbar }}
+          sx={{
+            borderRadius: 2,
+            border: "1px solid #ddd",
+            background: "#FFF",
+            boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+          }}
+        />
+        <CouponDialog
+          open={open}
+          setOpen={setOpen}
+          editMode={editMode}
+          setEditMode={setEditMode}
+          setRows={setRows}
+          selectedCouponId={selectedCouponId}
+          viewMode={viewMode}
+        />
+      </Box>
+    </>
   );
 }
