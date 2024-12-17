@@ -7,6 +7,7 @@ import { BookingDetailHotelService } from "../../../../services/apis/BookingDeta
 import { HotelService } from "../../../../services/apis/HotelService";
 import { RoomService } from "../../../../services/apis/RoomService";
 import BookingHotelDetail from "./BookingHotelDetail/BookingHotelDetail";
+import { Typography } from "@mui/material";
 export default function BookingHotel() {
   const [bookingHotel, setBookingHotel] = React.useState([]);
   const [selectedBookingHotel, setSelectedBookingHotel] = React.useState(null);
@@ -216,44 +217,53 @@ export default function BookingHotel() {
     },
   ];
   return (
-    <Box
-      sx={{
-        height: "auto",
-        width: "100%",
-        backgroundColor: "#f5f5f5",
-        padding: "40px",
-        borderRadius: 2,
-        overflow: "hidden",
-      }}
-    >
-      <DataGrid
-        loading={isLoading}
-        rows={bookingHotel}
-        getRowId={(row) => row.bookingHotelDetailId}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 5,
-            },
-          },
-        }}
-        pageSizeOptions={[5]}
-        checkboxSelection={false}
-        slots={{ toolbar: ToolBar }}
-        disableRowSelectionOnClick
+    <>
+      <div className="row my-2 ms-4">
+        <div className="col">
+          <Typography variant="h4" gutterBottom>
+            Quản lý Đơn đặt phòng
+          </Typography>
+        </div>
+      </div>
+      <Box
         sx={{
+          height: "auto",
+          width: "100%",
+          backgroundColor: "#f5f5f5",
+          padding: "40px",
           borderRadius: 2,
-          border: "1px solid #ddd",
-          background: "#FFF",
-          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+          overflow: "hidden",
         }}
-      />
-      <BookingHotelDetail
-        open={open}
-        setOpen={setOpen}
-        selectedBookingHotel={selectedBookingHotel}
-      />
-    </Box>
+      >
+        <DataGrid
+          loading={isLoading}
+          rows={bookingHotel}
+          getRowId={(row) => row.bookingHotelDetailId}
+          columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 5,
+              },
+            },
+          }}
+          pageSizeOptions={[5]}
+          checkboxSelection={false}
+          slots={{ toolbar: ToolBar }}
+          disableRowSelectionOnClick
+          sx={{
+            borderRadius: 2,
+            border: "1px solid #ddd",
+            background: "#FFF",
+            boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+          }}
+        />
+        <BookingHotelDetail
+          open={open}
+          setOpen={setOpen}
+          selectedBookingHotel={selectedBookingHotel}
+        />
+      </Box>
+    </>
   );
 }

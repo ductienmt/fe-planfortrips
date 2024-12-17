@@ -71,6 +71,11 @@ export const AccountEtpService = {
   update: async (data) => {
     return await Http.put(`/account-enterprises/update`, data);
   },
+  changePassword: async (data) => {
+    return await Http.post(
+      `/account-enterprises/change-password?newPassWord=${data}`
+    );
+  },
 };
 
 export default AccountEtpService;

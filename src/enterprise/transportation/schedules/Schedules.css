@@ -84,3 +84,13 @@
     height: 50px;
     width: 850px;
 }
+
+.li-list-route {
+    padding: 5px 15px;
+    cursor: pointer;
+}
+
+.li-list-route:hover {
+    background-color: #f5f5f5;
+
+}

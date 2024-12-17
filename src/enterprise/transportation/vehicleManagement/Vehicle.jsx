@@ -299,6 +299,9 @@ const Vehicle = () => {
     setFilterType(item);
   }, []);
 
+  useEffect(() => {
+    document.title = "Quản lý xe";
+  }, []);
   return (
     <>
       <div className="enterprise-vehicle-container">

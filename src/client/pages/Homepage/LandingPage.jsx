@@ -49,6 +49,10 @@ const LandingPage = () => {
     }
   };
 
+  const onClickTour = (id) => {
+    navigate(`/tour/detail/${id}`);
+  };
+
   useEffect(() => {
     document.title = "Trang chủ";
     window.scrollTo(0, 0);
@@ -155,7 +159,9 @@ const LandingPage = () => {
                     contentButton={"Xem chi tiết"}
                     tags={tour.tourTags}
                     numberPeopleUsed={tour.tourUsed}
-                    handleClick={() => {}}
+                    handleClick={() => {
+                      onClickTour(tour.tourId);
+                    }}
                   />
                 ))}
               </div>

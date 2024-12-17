@@ -141,6 +141,10 @@ const Seats = () => {
     setStartSeat2(floor2Seats.length > 0 ? floor2Seats.length + 1 : 1);
   }, [seats, getSeatsByFloor]);
 
+  useEffect(() => {
+    document.title = "Quản lý ghế của xe";
+  }, []);
+
   return (
     <div className="enterprise-Seats-container">
       <div className="Seats-title">

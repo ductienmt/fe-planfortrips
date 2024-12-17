@@ -159,6 +159,7 @@ const RoomVoucher = () => {
         //   sortField,
         //   sortOrder
         // ),
+        fetchVoucherData();
         handleFilterChangeType("Tất cả");
       },
     },

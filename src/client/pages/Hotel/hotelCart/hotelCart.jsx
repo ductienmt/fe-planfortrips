@@ -9,9 +9,19 @@ import { CouponService } from "../../../../services/apis/CouponService";
 import RoomServiceIcon from "@mui/icons-material/RoomService";
 import { useNavigate } from "react-router-dom";
 import { Modal, notification } from "antd";
-const HotelCart = ({hotel, selectedRoom, setSelectedRoom, setLoading,checkIn,checkOut }) => {
-  console.log(checkIn);
-  console.log(checkOut);
+import moment from "moment/moment";
+const HotelCart = ({
+  hotel,
+  selectedRoom,
+  setSelectedRoom,
+  setLoading,
+  checkIn,
+  checkOut,
+}) => {
+  checkIn = moment(checkIn || undefined).format("YYYY-MM-DD");
+  checkOut = moment(checkOut || checkIn)
+    .add(3, "days")
+    .format("YYYY-MM-DD");
   const [openCoupon, setOpenCoupon] = useState(false);
   const couponRef = useRef(null);
   const [coupons, setCoupons] = useState([]);
@@ -77,7 +87,7 @@ const HotelCart = ({hotel, selectedRoom, setSelectedRoom, setLoading,checkIn,che
   }, [selectedRoom]);
   useEffect(() => {
     const fetch = async () => {
-      const dataCoupon = await CouponService.getCoupons(0, 6, "");
+      const dataCoupon = await CouponService.getCoupons(0, 100, "");
       if (dataCoupon) {
         var data = dataCoupon.listResponse;
         data = data.filter((d) => d.is_active !== false);
@@ -86,9 +96,7 @@ const HotelCart = ({hotel, selectedRoom, setSelectedRoom, setLoading,checkIn,che
       }
       setAccommodationData({
         name: hotel?.hotelName,
-        room: selectedRoom
-          .map((room) => room?.roomName)
-          .join(", "),
+        room: selectedRoom.map((room) => room?.roomName).join(", "),
         checkIn: checkIn,
         checkInTime: checkIn,
         checkOutDate: checkOut,
@@ -123,49 +131,63 @@ const HotelCart = ({hotel, selectedRoom, setSelectedRoom, setLoading,checkIn,che
   const handlePayment = () => {
     if (!selectedRoom || selectedRoom.length === 0) {
       notification.warning({
-        message: 'Chưa chọn phòng',
-        description: 'Vui lòng chọn phòng trước khi thanh toán',
-        placement: 'topRight'
+        message: "Chưa chọn phòng",
+        description: "Vui lòng chọn phòng trước khi thanh toán",
+        placement: "topRight",
       });
       return;
     }
-  
+    console.log(checkIn);
+    console.log(checkOut);
     if (!checkIn || !checkOut) {
       notification.warning({
-        message: 'Thông tin không đầy đủ',
-        description: 'Vui lòng chọn ngày check-in và check-out',
-        placement: 'topRight'
+        message: "Thông tin không đầy đủ",
+        description: "Vui lòng chọn ngày check-in và check-out",
+        placement: "topRight",
       });
       return;
     }
-  
+
     Modal.confirm({
-      title: 'Xác nhận đặt phòng',
+      title: "Xác nhận đặt phòng",
       content: (
         <div>
-          <p><strong>Khách sạn:</strong> {hotel?.hotelName}</p>
-          <p><strong>Phòng:</strong> {selectedRoom.map(room => room?.roomName).join(", ")}</p>
-          <p><strong>Ngày check-in:</strong> {checkIn}</p>
-          <p><strong>Ngày check-out:</strong> {checkOut}</p>
-          <p><strong>Tổng tiền:</strong> {convertToVNDDB(total)}</p>
+          <p>
+            <strong>Khách sạn:</strong> {hotel?.hotelName}
+          </p>
+          <p>
+            <strong>Phòng:</strong>{" "}
+            {selectedRoom.map((room) => room?.roomName).join(", ")}
+          </p>
+          <p>
+            <strong>Ngày check-in:</strong> {checkIn}
+          </p>
+          <p>
+            <strong>Ngày check-out:</strong> {checkOut}
+          </p>
+          <p>
+            <strong>Tổng tiền:</strong> {convertToVNDDB(total)}
+          </p>
           {selectedCoupon && (
-            <p><strong>Mã giảm giá:</strong> {selectedCoupon.code}</p>
+            <p>
+              <strong>Mã giảm giá:</strong> {selectedCoupon.code}
+            </p>
           )}
         </div>
       ),
-      okText: 'Xác nhận đặt phòng',
-      cancelText: 'Hủy',
+      okText: "Xác nhận đặt phòng",
+      cancelText: "Hủy",
       onOk() {
         sessionStorage.setItem("acoData", JSON.stringify(accommodationData));
         notification.success({
-          message: 'Đặt phòng thành công',
-          description: 'Đang chuyển đến trang thanh toán...',
+          message: "Đặt phòng thành công",
+          description: "Đang chuyển đến trang thanh toán...",
           duration: 1.5,
           onClose: () => {
             navigate("/booking/hotel");
-          }
+          },
         });
-      }
+      },
     });
   };
   return (
@@ -297,7 +319,9 @@ const HotelCart = ({hotel, selectedRoom, setSelectedRoom, setLoading,checkIn,che
               <sup></sup>
               {convertToVNDDB(total)}
             </label>
-            <button className="checkout-btn" onClick={handlePayment}>Thanh toán</button>
+            <button className="checkout-btn" onClick={handlePayment}>
+              Thanh toán
+            </button>
           </div>
         </div>
       </div>

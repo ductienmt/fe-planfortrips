@@ -8,7 +8,7 @@ const YourTripsQuery = () => {
 
   const loadYourTripsQuery = async () => {
     try {
-      const res = await PlanServiceApi.getPlanById();
+      const res = await PlanServiceApi.getPlanByUserId();
       setTrips(res.data);
     } catch (error) {
       console.log(error);

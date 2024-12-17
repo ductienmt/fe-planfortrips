@@ -13,7 +13,6 @@ export const FeedbackService = {
   },
   createFeedback: async (form) => {
     const response = await Http.post(`/feedbacks/create`,form);
-    console.log(response.data);
-    return response.data;
+    return response.status;
   },
 };
