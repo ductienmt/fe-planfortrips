@@ -1,36 +1,36 @@
 import React, { useMemo } from "react";
-import { Rate, Tag, Progress } from "antd";
+import { Rate, Progress } from "antd";
 import "./RateCard.css";
 
-const RateCard = () => {
-  const criteria = [
-    { label: "Chất lượng", score: 1.0, color: "blue" },
-    { label: "Giá cả", score: 1.5, color: "green" },
-    { label: "Phục vụ", score: 1.3, color: "orange" },
-    { label: "Vị trí", score: 1.9, color: "red" },
-  ];
-
-  // Dữ liệu lượt đánh giá cho các sao từ 1 đến 5
-  const ratings = {
-    5: 100, 
-    4: 80,  
-    3: 50,  
-    2: 30,  
-    1: 20,  
+const RateCard = ({ ratingData }) => {
+  // Mặc định dữ liệu nếu không có từ BE
+  const defaultData = {
+    count_5_star: 0,
+    count_4_star: 0,
+    count_3_star: 0,
+    count_2_star: 0,
+    count_1_star: 0,
+    total_reviews: 0,
+    average_rating: 0,
   };
 
-  // Tính tổng và trung bình điểm
-  const totalScore = useMemo(
-    () => criteria.reduce((sum, item) => sum + item.score, 0),
-    [criteria]
-  );
-  const averageScore = useMemo(
-    () => (totalScore / criteria.length).toFixed(1),
-    [totalScore, criteria]
-  );
+  // Gộp dữ liệu từ props và mặc định
+  const data = { ...defaultData, ...ratingData };
 
-  // Tính phần trăm để hiển thị trong Progress
-  const percent = useMemo(() => (averageScore / 5) * 100, [averageScore]);
+  // Tính phần trăm cho Progress
+  const percent = useMemo(() => (data.average_rating / 5) * 100, [data]);
+
+  // Tạo object ratings cho hiển thị từng sao
+  const ratings = useMemo(
+    () => ({
+      5: data.count_5_star,
+      4: data.count_4_star,
+      3: data.count_3_star,
+      2: data.count_2_star,
+      1: data.count_1_star,
+    }),
+    [data]
+  );
 
   return (
     <>
@@ -41,14 +41,14 @@ const RateCard = () => {
             textTransform: "uppercase",
             color: "#ADADAD",
           }}
+          className="mb-0"
         >
           ĐÁNH GIÁ
         </h1>
         <button className="details-button">Xem chi tiết</button>
       </div>
-      <div className="rating-summary">
+      <div className="rating-summary mt-3">
         <div className="stars-rating">
-          <p className="growth">▲ 2.1% so với tuần rồi</p>
           {[5, 4, 3, 2, 1].map((star) => (
             <div key={star} className="star-row">
               <Rate disabled defaultValue={star} style={{ color: "#FFD700" }} />
@@ -57,25 +57,23 @@ const RateCard = () => {
           ))}
         </div>
 
-        <div className="criteria-scores">
-          {criteria.map((item) => (
-            <div key={item.label} className="criteria-item">
-              <Tag color={item.color} className="criteria-score">
-                {item.score}
-              </Tag>
-              <span>{item.label}</span>
-            </div>
-          ))}
-        </div>
-
         <div className="overall-rating">
           <Progress
             type="circle"
             percent={percent}
-            format={() => `${averageScore}/5.0`}
+            format={() =>
+              data.average_rating !== null
+                ? `${data.average_rating.toFixed(1)}/5.0`
+                : "0.0/5.0"
+            }
             width={150}
             strokeColor="#FFA500"
           />
+          <div
+            style={{ marginTop: "10px", fontSize: "14px", color: "#ADADAD" }}
+          >
+            Tổng đánh giá: {data.total_reviews} lượt
+          </div>
         </div>
       </div>
     </>

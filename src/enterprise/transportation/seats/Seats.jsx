@@ -1,140 +1,204 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./Seats.css";
 import SeatsCard from "../seatscard/Seatscard";
-import { InputFlied } from "../../../client/Components/Input/InputFlied";
 import { useNavigate } from "react-router-dom";
-import VehicleBooking from "../../../client/pages/Vehicle/VehicleBooking/VehicleBooking";
+import debounce from "lodash.debounce";
+import memoize from "lodash.memoize";
+import { VehiclesService } from "../../../services/apis/Vehicles";
+import { enqueueSnackbar } from "notistack";
+import { SeatService } from "../../../services/apis/SeatService";
 
 const Seats = () => {
   const navigate = useNavigate();
+  const [startSeat1, setStartSeat1] = useState("");
+  const [endSeat1, setEndSeat1] = useState("");
+  const [startSeat2, setStartSeat2] = useState("");
+  const [endSeat2, setEndSeat2] = useState("");
 
-  const hotelmData = {
-    hotelCode: "001",
-    name: "City Center Hotel",
-    status: "Đang hoạt động",
-    licensePlate: "79A-123.45",
-    capacity: "4 người",
-    driverName: "Nguyễn Văn A",
+  const [vehicleData, setVehicleData] = useState([]);
+  const [vehicleCapacity, setVehicleCapacity] = useState("");
+  const [vehicleId, setVehicleId] = useState("");
 
-    phone: "0456123789",
-    image: "/src/assets/beach.jpg",
-  };
+  const loadVehicleData = useCallback(
+    debounce(async () => {
+      try {
+        const res = await VehiclesService.getVehicleByEnterpriseId("all");
+        setVehicleData(res.data);
+        console.log(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }, 300),
+    []
+  );
 
-  const handleClick = () => {
-    navigate("/enterprise/accomodation/room-management");
-  };
+  const [seats, setSeats] = useState([]);
 
-   // Dữ liệu ghế cố định
-   const initialSeats = [
-    { id: "A1" },
-    { id: "A2" },
-    { id: "A3" },
-    { id: "A4" },
-    { id: "A5" },
-    { id: "A6" },
-    { id: "A7" },
-    { id: "A8" },
-    { id: "A9" },
-    { id: "A10" },
-    { id: "A11" },
-    { id: "A12" },
-    { id: "A13" },
-    { id: "A14" },
-    { id: "A15" },
-    { id: "A16" },
-    { id: "A17" },
-    { id: "B1" },
-    { id: "B2" },
-    { id: "B3" },
-    { id: "B4" },
-    { id: "B5" },
-    { id: "B6" },
-    { id: "B7" },
-    { id: "B8" },
-    { id: "B9" },
-    { id: "B10" },
-    { id: "B11" },
-    { id: "B12" },
-    { id: "B13" },
-    { id: "B14" },
-    { id: "B15" },
-  ];
+  const handleConfirmSeats = useCallback(() => {
+    const newSeats = [];
 
-  const [seats] = useState(initialSeats);
+    if (startSeat1 && endSeat1) {
+      const start = parseInt(startSeat1);
+      const end = parseInt(endSeat1);
+      if (!isNaN(start) && !isNaN(end) && start <= end) {
+        for (let i = start; i <= end; i++) {
+          newSeats.push(`A${i < 10 ? `0${i}` : i}`);
+        }
+      }
+    }
 
-  // Hàm phân loại ghế theo tầng
-  const getSeatsByFloor = (floor) => {
-    return seats.filter((seat) => seat.id.charAt(0) === floor);
-  };
+    if (startSeat2 && endSeat2) {
+      const start = parseInt(startSeat2);
+      const end = parseInt(endSeat2);
+      if (!isNaN(start) && !isNaN(end) && start <= end) {
+        for (let i = start; i <= end; i++) {
+          newSeats.push(`B${i < 10 ? `0${i}` : i}`);
+        }
+      }
+    }
 
-  // Hàm render ghế
-  const renderSeats = (seats) => {
-    return seats.map((seat) => (
-      <button
-        key={seat.id}
-        className="seat-button"
-        disabled
-      >
-        {seat.id}
-      </button>
-    ));
-  };
+    if (newSeats.length + seats.length > vehicleCapacity) {
+      enqueueSnackbar("Số lượng ghế vượt quá sức chứa của xe", {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
+      return;
+    }
 
+    setSeats((prevSeats) => [...prevSeats, ...newSeats]);
+    console.log("Ghế đã xác nhận:", newSeats);
+    createSeatsForVehicle(newSeats);
+  }, [startSeat1, endSeat1, startSeat2, endSeat2, seats, vehicleCapacity]);
+
+  const getSeatsByFloor = useCallback(
+    memoize((floor) =>
+      seats.filter((seat) => seat?.seatNumber.charAt(0) === floor)
+    ),
+    [seats]
+  );
+
+  const renderSeats = useCallback(
+    (seats) =>
+      seats.map((seat) => (
+        <button key={seat.id} className="seat-button" disabled>
+          {seat.seatNumber}
+        </button>
+      )),
+    []
+  );
+
+  const loadSeats = useCallback(async (id) => {
+    try {
+      const res = await VehiclesService.getSeatByVehicleId(id);
+      setSeats(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  const createSeats = useCallback(
+    async (code) => {
+      try {
+        await SeatService.create(vehicleId, code);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [vehicleId]
+  );
+
+  const createSeatsForVehicle = useCallback(
+    async (newSeats) => {
+      try {
+        await Promise.all(newSeats.map((seatCode) => createSeats(seatCode)));
+
+        enqueueSnackbar("Tạo ghế thành công", {
+          variant: "success",
+          autoHideDuration: 2000,
+        });
+        document.getElementById("closeSeatModal").click();
+      } catch (error) {
+        console.error("Lỗi khi tạo ghế:", error);
+        enqueueSnackbar("Có lỗi xảy ra khi tạo ghế", {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+        document.getElementById("closeSeatModal").click();
+      }
+    },
+    [createSeats]
+  );
+
+  useEffect(() => {
+    loadVehicleData();
+  }, [loadVehicleData]);
+
+  useEffect(() => {
+    const floor1Seats = getSeatsByFloor("A");
+    const floor2Seats = getSeatsByFloor("B");
+
+    setStartSeat1(floor1Seats.length > 0 ? floor1Seats.length + 1 : 1);
+    setStartSeat2(floor2Seats.length > 0 ? floor2Seats.length + 1 : 1);
+  }, [seats, getSeatsByFloor]);
 
   return (
-    <>
-      <div className="enterprise-Seats-container">
-        {/* Tiêu đề */}
-        <div className="Seats-title">
-          <h1
-            style={{
-              fontSize: "30px",
-              textTransform: "uppercase",
-              color: "#ADADAD",
-            }}
-          >
-            Quản lý ghế
-          </h1>
-        </div>
-
-        {/* Lựa chọn khách sạn */}
-        <div className="Seats-selection">
-          <div className="Seats-container">
-            <SeatsCard {...hotelmData} />
-            <button
-              type="button"
-              className="btn select-Seats-btn"
-              data-bs-toggle="modal"
-              data-bs-target="#seatModal"
-            >
-              Chọn xe
-            </button>
-          </div>
-        </div>
-
-        {/* Modal */}
-        <div
-          className="modal fade"
-          id="seatModal"
-          // data-bs-backdrop="static"
-          // data-bs-keyboard="false"
-          tabIndex="-1"
-          aria-labelledby="seatModalLabel"
-          aria-hidden="true"
+    <div className="enterprise-Seats-container">
+      <div className="Seats-title">
+        <h1
+          style={{
+            fontSize: "30px",
+            textTransform: "uppercase",
+            color: "#ADADAD",
+          }}
         >
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content p-3">
-              <div className="transport-topBar-items mb-3">
-                <div className="right-close-add-seat d-flex justify-content-end">
+          Quản lý ghế
+        </h1>
+      </div>
+
+      <div className="Seats-selection" style={{ width: "100%" }}>
+        {vehicleData.map((vehicle, index) => (
+          <div key={index} style={{ width: "100%" }}>
+            <div className="Seats-container" style={{ width: "100%" }}>
+              <SeatsCard {...vehicle} />
+              <button
+                type="button"
+                className="btn select-Seats-btn"
+                data-bs-toggle="modal"
+                data-bs-target="#seatModal"
+                onClick={() => {
+                  loadSeats(vehicle.code);
+                  setVehicleCapacity(vehicle.capacity);
+                  setVehicleId(vehicle.code);
+                }}
+              >
+                Chọn xe
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div
+        className="modal fade"
+        id="seatModal"
+        tabIndex="-1"
+        aria-labelledby="seatModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content p-3">
+            <div className="transport-topBar-items mb-3">
+              <div className="right-close-add-seat d-flex justify-content-between align-items-center">
+                <h3 className="m-0">Ghế của xe</h3>
+                <div className="d-flex justify-content-between align-items-center">
                   <button
                     type="button"
                     className="btn seats-button"
                     data-bs-toggle="modal"
-                    data-bs-target="#addrouteModal"
+                    data-bs-target="#addSeatForVehicle"
                   >
                     Thêm ghế
                   </button>
-                  {/* Sử dụng css của RoomVoucher   */}
                   <button
                     className="voucher-close-button"
                     data-bs-dismiss="modal"
@@ -146,135 +210,144 @@ const Seats = () => {
                   </button>
                 </div>
               </div>
-
-              {/* Chọn ghế */}
-              <div className="seats-container">
-                <div className="floor-section">
-                  <h4>Tầng 1</h4>
-                  <div className="seat-grid">
-                    {renderSeats(getSeatsByFloor("A"))}
-                  </div>
-                </div>
-                <div className="floor-section">
-                  <h4>Tầng 2</h4>
-                  <div className="seat-grid">
-                    {renderSeats(getSeatsByFloor("B"))}
-                  </div>
-                </div>
-              </div>
             </div>
-          </div>
-        </div>
 
-        <div
-          className="modal fade"
-          id="addrouteModal"
-          tabIndex="-1"
-          aria-labelledby="addrouteModal"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              {/* Modal Header */}
-              <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLabel">
-                  Thông Tin Ghế
-                </h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-
-              {/* Modal Body */}
-              <div className="modal-body">
-                <div className="row">
-                  {/* Cột 1 */}
-                  <div className="col-md-6">
-                    <label className="form-label" htmlFor="start-seat1">
-                      Tầng 1
-                    </label>
-                    <div className="mb-3 seat-input-wrapper">
-                      <div className="mb-3 ">
-                        <label htmlFor="start-seat1" className="form-label">
-                          Ghế Bắt Đầu
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control seat-input"
-                          id="start-seat1"
-                          placeholder="Nhập ghế bắt đầu"
-                        />
-                      </div>
-                      <div className="mb-3 ">
-                        <label htmlFor="end-seat1" className="form-label">
-                          Ghế Kết Thúc
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control seat-input"
-                          id="end-seat1"
-                          placeholder="Nhập ghế kết thúc"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Cột 2 */}
-
-                  <div className="col-md-6">
-                    <label className="form-label" htmlFor="start-seat1">
-                      Tầng 2
-                    </label>
-                    <div className="mb-3 seat-input-wrapper">
-                      <div className="mb-3 ">
-                        <label htmlFor="start-seat1" className="form-label">
-                          Ghế Bắt Đầu
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control seat-input"
-                          id="start-seat1"
-                          placeholder="Nhập ghế bắt đầu"
-                        />
-                      </div>
-                      <div className="mb-3 ">
-                        <label htmlFor="end-seat1" className="form-label">
-                          Ghế Kết Thúc
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control seat-input"
-                          id="end-seat1"
-                          placeholder="Nhập ghế kết thúc"
-                        />
-                      </div>
-                    </div>
-                  </div>
+            <div className="seats-container">
+              <div className="floor-section">
+                <h4>Tầng 1</h4>
+                <div className="seat-grid">
+                  {renderSeats(getSeatsByFloor("A"))}
                 </div>
               </div>
-
-              {/* Modal Footer */}
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-bs-toggle="modal"
-                  data-bs-target="#seatModal"
-                >
-                  Quay lại
-                </button>
-                <button type="button" className="btn btn-primary">
-                  Xác Nhận
-                </button>
+              <div className="floor-section">
+                <h4>Tầng 2</h4>
+                <div className="seat-grid">
+                  {renderSeats(getSeatsByFloor("B"))}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </>
+
+      <div
+        className="modal fade"
+        id="addSeatForVehicle"
+        tabIndex="-1"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5
+                className="modal-title"
+                id="exampleModalLabel"
+                style={{ color: "black" }}
+              >
+                Thông Tin Ghế
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                id="closeSeatModal"
+              ></button>
+            </div>
+
+            <div className="modal-body">
+              <div className="row">
+                <div className="col-md-6">
+                  <label className="form-label" htmlFor="start-seat1">
+                    Tầng 1
+                  </label>
+                  <div className="mb-3 seat-input-wrapper">
+                    <div className="mb-3 ">
+                      <label htmlFor="start-seat1" className="form-label">
+                        Ghế Bắt Đầu
+                      </label>
+                      <input
+                        type="number"
+                        className="form-control seat-input"
+                        id="start-seat1"
+                        value={startSeat1}
+                        readOnly
+                        placeholder="Nhập ghế bắt đầu"
+                      />
+                    </div>
+                    <div className="mb-3 ">
+                      <label htmlFor="end-seat1" className="form-label">
+                        Ghế Kết Thúc
+                      </label>
+                      <input
+                        type="number"
+                        className="form-control seat-input"
+                        id="end-seat1"
+                        value={endSeat1}
+                        onChange={(e) => setEndSeat1(e.target.value)}
+                        placeholder="Nhập ghế kết thúc"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-md-6">
+                  <label className="form-label" htmlFor="start-seat2">
+                    Tầng 2
+                  </label>
+                  <div className="mb-3 seat-input-wrapper">
+                    <div className="mb-3 ">
+                      <label htmlFor="start-seat2" className="form-label">
+                        Ghế Bắt Đầu
+                      </label>
+                      <input
+                        type="number"
+                        className="form-control seat-input"
+                        id="start-seat2"
+                        value={startSeat2}
+                        readOnly
+                        placeholder="Nhập ghế bắt đầu"
+                      />
+                    </div>
+                    <div className="mb-3 ">
+                      <label htmlFor="end-seat2" className="form-label">
+                        Ghế Kết Thúc
+                      </label>
+                      <input
+                        type="number"
+                        className="form-control seat-input"
+                        id="end-seat2"
+                        value={endSeat2}
+                        onChange={(e) => setEndSeat2(e.target.value)}
+                        placeholder="Nhập ghế kết thúc"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-toggle="modal"
+                data-bs-target="#seatModal"
+              >
+                Quay lại
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleConfirmSeats}
+              >
+                Xác Nhận
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

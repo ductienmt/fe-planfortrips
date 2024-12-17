@@ -6,10 +6,7 @@
   padding: 20px;
 }
 
-.enterprise-Seats-container
-  .enterprise-Seats-container
-  .enterprise-Seats-container
-  .nav-filterCombobox-Seats {
+.enterprise-Seats-container .enterprise-Seats-container .enterprise-Seats-container .nav-filterCombobox-Seats {
   display: flex;
 }
 
@@ -46,6 +43,8 @@
 .enterprise-Seats-container .Seats-selection {
   background-color: #fff;
   display: flex;
+  flex-direction: column;
+  gap: 20px;
   /* justify-content: center; */
   align-items: center;
   margin-top: 25px;
@@ -203,7 +202,8 @@
 }
 
 .right-close-add-seat .seats-button {
-  margin-right: 10px; /* Tạo khoảng cách bên phải */
+  margin-right: 10px;
+  /* Tạo khoảng cách bên phải */
 }
 
 .seats-container {

@@ -1,6 +1,7 @@
 .enterprise-schedules-container {
     margin: 10px;
     width: 100%;
+    height: fit-content;
     border-radius: 20px;
     box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.2);
     padding: 20px;
@@ -69,19 +70,17 @@
 .enterprise-schedules-container .modal3-footer {
     display: flex;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
     padding: 20px;
-  }
-.enterprise-schedules-container .modal-dialog{
- max-width: 40%; 
-  max-height: 40%;
-  }
-.enterprise-schedules-container .modal3-footer .footer-btn{
+}
+
+.enterprise-schedules-container .modal-dialog {
+    max-width: 40%;
+    max-height: 40%;
+}
+
+.enterprise-schedules-container .modal3-footer .footer-btn {
     background-color: cornflowerblue;
     height: 50px;
     width: 850px;
 }
-  
-
-  
- 

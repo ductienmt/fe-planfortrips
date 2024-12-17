@@ -21,8 +21,8 @@ export const ScheduleService = {
     });
     return await Http.get(`/schedules/getSamePrice?${params.toString()}`);
   },
-  getScheduleByEnterpriseId: async () => {
-    return await Http.get("/schedules/getByEnterpriseId");
+  getScheduleByEnterpriseId: async (filter) => {
+    return await Http.get(`/schedules/getByEnterpriseId?filter=${filter}`);
   },
   getSeatsByScheduleId: async (scheduleId) => {
     const params = new URLSearchParams({ scheduleId });
