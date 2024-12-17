@@ -43,7 +43,7 @@ const Login = () => {
         autoHideDuration: 1000,
         onExit: () => {
           const previousUrl = sessionStorage.getItem("previousUrl") || "/";
-          navigate(previousUrl); // Quay lại URL trước khi đăng nhập
+          navigate(previousUrl); 
           sessionStorage.removeItem("previousUrl");
         },
       });
@@ -62,7 +62,6 @@ const Login = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    // console.log(formData);
   };
 
   useEffect(() => {
@@ -78,7 +77,7 @@ const Login = () => {
   }, [queryParam]);
 
   const handleLoginWithGoogle = async (code) => {
-    const res = await callBackUrlGoogle(code);
+    const res = await callBackUrlGoogle(code);    
     if (res.firstOauth2)
       enqueueSnackbar("Chào mừng bạn lần đầu đăng nhập Google!", {
         variant: "success",
@@ -96,6 +95,7 @@ const Login = () => {
           navigate("/");
         },
       });
+      login(res.token, res.role, res.userName);     
   };
 
   return (
