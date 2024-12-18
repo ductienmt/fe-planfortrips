@@ -69,7 +69,7 @@ const HotelCart = ({
         );
 
         let appliedDiscount = 0;
-        if (parsedCoupon.discount_type === "PERCENT") {
+        if (parsedCoupon && parsedCoupon.discount_type === "PERCENT") {
           appliedDiscount =
             (currentPriceRooms * parsedCoupon.discount_value) / 100;
         } else {
@@ -84,6 +84,7 @@ const HotelCart = ({
   useEffect(() => {
     const t = selectedRoom.reduce((sum, room) => sum + room.price, 0);
     setPriceRooms(t);
+    setTotal(t);
   }, [selectedRoom]);
   useEffect(() => {
     const fetch = async () => {
@@ -92,20 +93,21 @@ const HotelCart = ({
         var data = dataCoupon.listResponse;
         data = data.filter((d) => d.is_active !== false);
         setCoupons(data);
-        console.log(coupons);
       }
       setAccommodationData({
-        name: hotel?.hotelName,
-        room: selectedRoom.map((room) => room?.roomName).join(", "),
+        name: hotel?.name,
+        roomId: selectedRoom.map((room) => room?.id).join(", "),
+        roomName: selectedRoom.map((room) => room?.roomName).join(", "),
         checkIn: checkIn,
-        checkInTime: checkIn,
+        checkInTime: `${checkIn} 14:00:00`,
         checkOutDate: checkOut,
-        checkOutTime: checkOut,
+        checkOutTime: `${checkOut} 12:00:00`,
         type: "hotel",
+        amount: total,
       });
     };
     fetch();
-  }, []);
+  });
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (couponRef.current && !couponRef.current.contains(event.target)) {
@@ -137,6 +139,8 @@ const HotelCart = ({
       });
       return;
     }
+    console.log(total);
+
     console.log(checkIn);
     console.log(checkOut);
     if (!checkIn || !checkOut) {
@@ -153,7 +157,7 @@ const HotelCart = ({
       content: (
         <div>
           <p>
-            <strong>Khách sạn:</strong> {hotel?.hotelName}
+            <strong>Khách sạn:</strong> {hotel?.name}
           </p>
           <p>
             <strong>Phòng:</strong>{" "}

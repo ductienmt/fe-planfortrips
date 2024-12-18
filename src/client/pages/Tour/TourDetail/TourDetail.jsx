@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { format } from "date-fns";
 import { TourService } from "../../../../services/apis/TourService";
 import "./TourDetail.css";
@@ -37,6 +37,7 @@ function TourDetail() {
   const [selectedDay, setSelectedDate] = useState(null);
   // Dữ liệu chuyến đi
   const [tripData, settripData] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
@@ -318,7 +319,7 @@ function TourDetail() {
           Hotel: tourDetail.hotelResponse,
         })
       );
-      alert("Đặt tour thành công");
+      navigate("/booking/tour");
     }
   };
 

@@ -50,7 +50,7 @@ const ServiceBank = {
       ticket_id: ticket_id,
       bank_code: "NCB",
       booking_id: bookingid,
-      amount: amount,
+      amount: amount * 1000,
     };
     try {
       const response = await PaymentService.createPayment(vnpay);

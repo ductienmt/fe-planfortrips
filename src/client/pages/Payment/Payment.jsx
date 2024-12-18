@@ -44,6 +44,7 @@ const Payment = () => {
   const planData = JSON.parse(sessionStorage.getItem("planData")) ?? null;
   const tranData = JSON.parse(sessionStorage.getItem("tranData")) ?? null;
   const acoData = JSON.parse(sessionStorage.getItem("acoData")) ?? null;
+  const tourData = JSON.parse(sessionStorage.getItem("tourData")) ?? null;
   const amount = sessionStorage.getItem("totalPrice");
   const tripData = JSON.parse(sessionStorage.getItem("tripData"));
   const [isLoading, setIsLoading] = useState(false);
@@ -55,6 +56,8 @@ const Payment = () => {
     type = "tran";
   } else if (acoData) {
     type = "aco";
+  } else if (tourData) {
+    type = "tour";
   }
 
   const [randomCode, setRanDomCode] = useState("");
@@ -117,30 +120,63 @@ const Payment = () => {
     }
   };
 
-  const handleCreateBooking = async (bookingDetails, paymentId) => {
+  // const handleCreateTour = async () => {
+  //   const tourData = sessionStorage.getItem("tourData");
+  //   if (finalPlanData) {
+  //     try {
+  //       const res = await PlanServiceApi.savePlan(finalPlanData);
+  //       setPlanId(res.data.planId);
+  //       console.log(res.data);
+
+  //       enqueueSnackbar("Tạo kế hoạch thành công", {
+  //         variant: "success",
+  //         autoHideDuration: 2000,
+  //         onExit: () => {
+  //           sessionStorage.removeItem("planData");
+  //           sessionStorage.removeItem("checkin");
+  //           sessionStorage.removeItem("checkout");
+  //           sessionStorage.removeItem("priceAc");
+  //           sessionStorage.removeItem("priceTr");
+  //           sessionStorage.removeItem("totalPrice");
+  //           sessionStorage.removeItem("userInformation");
+  //           sessionStorage.removeItem("tripData");
+  //         },
+  //       });
+  //       return res.data;
+  //     } catch (e) {
+  //       console.error(e);
+  //     }
+  //   }
+  // };
+
+  const handleCreateBooking = async (bookingDetails, paymentId, totalPrice) => {
     const dataToSendBooking = {
       bookingHotelDetailDto: bookingDetails,
       paymentId: paymentId,
+      totalPrice: totalPrice,
     };
 
     try {
       const res = await BookingHotelService.create(dataToSendBooking);
-      const updatedPlanData = { ...planData };
-      let updated = false;
+      if (planData) {
+        const updatedPlanData = { ...planData };
+        let updated = false;
 
-      updatedPlanData.planDetails.forEach((detail) => {
-        if (detail.hotelId) {
-          detail.ticketId = res.data.bookingHotelId;
-          updated = true;
+        updatedPlanData.planDetails.forEach((detail) => {
+          if (detail.hotelId) {
+            detail.ticketId = res.data.bookingHotelId;
+            updated = true;
+          }
+        });
+
+        if (updated) {
+          console.log(updatedPlanData);
+          sessionStorage.setItem("planData", JSON.stringify(updatedPlanData));
+        } else {
+          console.log("No hotel found to update ticketId.");
         }
-      });
-
-      if (updated) {
-        console.log(updatedPlanData);
-        sessionStorage.setItem("planData", JSON.stringify(updatedPlanData));
-      } else {
-        console.log("No hotel found to update ticketId.");
       }
+
       console.log(res.data);
 
       return res.data;
@@ -172,23 +208,25 @@ const Payment = () => {
 
       const ticketId = res.data.ticket_id;
 
-      const updatedPlanData = { ...planData };
-      let updated = false;
+      if (planData) {
+        const updatedPlanData = { ...planData };
+        let updated = false;
 
-      updatedPlanData.planDetails.forEach((detail) => {
-        if (detail.carId === carId) {
-          detail.ticketId = ticketId;
-          console.log("Updated PlanDetails with TicketId:", detail.ticketId);
+        updatedPlanData.planDetails.forEach((detail) => {
+          if (detail.carId === carId) {
+            detail.ticketId = ticketId;
+            console.log("Updated PlanDetails with TicketId:", detail.ticketId);
 
-          updated = true;
+            updated = true;
+          }
+        });
+
+        if (updated) {
+          // console.log("Updated PlanData with TicketId:", updatedPlanData);
+          sessionStorage.setItem("planData", JSON.stringify(updatedPlanData));
+        } else {
+          console.log("No matching carId found in PlanDetails.");
         }
-      });
-
-      if (updated) {
-        // console.log("Updated PlanData with TicketId:", updatedPlanData);
-        sessionStorage.setItem("planData", JSON.stringify(updatedPlanData));
-      } else {
-        console.log("No matching carId found in PlanDetails.");
       }
 
       return res.data;
@@ -330,7 +368,11 @@ const Payment = () => {
           setIsLoading(true);
           console.log("Booking details:", bookingDetails);
 
-          const bookingResponse = await handleCreateBooking(bookingDetails, 2);
+          const bookingResponse = await handleCreateBooking(
+            bookingDetails,
+            2,
+            acoData?.amount
+          );
           const bookingHotelId = bookingResponse.bookingHotelId;
 
           try {
@@ -379,6 +421,53 @@ const Payment = () => {
         } finally {
           setIsLoading(false);
         }
+      } else if (acoData) {
+        const checkinHours = sessionStorage.getItem("checkin");
+        const checkoutHours = sessionStorage.getItem("checkout");
+        const rooms = acoData.roomId.split(",").map((room) => room.trim());
+        // console.log(rooms);
+
+        const bookingDetails = rooms.map((room) => ({
+          roomId: room,
+          checkInTime: checkinHours ? checkinHours : "",
+          checkOutTime: checkoutHours ? checkoutHours : "",
+          price: acoData?.amount || 0,
+        }));
+
+        try {
+          const bookingResponse = await handleCreateBooking(bookingDetails, 2);
+          console.log(bookingResponse);
+
+          const bookingHotelId = bookingResponse.bookingHotelId;
+
+          await BankService.VNPay(0, bookingHotelId, acoData?.amount || 0);
+        } catch (error) {
+          console.log("Error creating booking:", error);
+        }
+      } else if (tourData) {
+        const bookingDetails = tourData.room.map((room) => ({
+          roomId: room.id,
+          checkInTime: room.checkInTime ? room.checkInTime : "",
+          checkOutTime: room.checkOutTime ? room.checkOutTime : "",
+          price: room.price ? room.price : 0,
+        }));
+
+        // ticket
+
+        const scheduleIdDe = tourData?.scheduleOrigin?.id;
+        const scheduleIdRe = tourData?.scheduleDes?.id;
+        const totalPriceTrDe =
+          (tourData.scheduleOrigin?.priceForOneTicket || 0) *
+          (tourData.seat?.seatOrigin?.length || 0);
+        const totalPriceTrRe =
+          (tourData.scheduleDes?.priceForOneTicket || 0) *
+          (tourData.seat?.seatDes?.length || 0);
+
+        console.log("Booking details:", bookingDetails);
+        console.log("Total price de:", totalPriceTrDe);
+        console.log("Total price re:", totalPriceTrRe);
+        console.log("ScheduleId de:", scheduleIdDe);
+        console.log("ScheduleId re:", scheduleIdRe);
       }
     } else if (activeMethod === "MOMO") {
       enqueueSnackbar("Chưa triển khai MOMO", {
@@ -554,7 +643,7 @@ const Payment = () => {
                     </p>
                   </div>
                   <div className="content">
-                    {planData ? (
+                    {planData || tourData ? (
                       <>
                         <div className="content-item">
                           <div className="content-item-left">Dịch vụ</div>

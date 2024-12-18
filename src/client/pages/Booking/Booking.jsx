@@ -16,6 +16,7 @@ import {
   differenceInHours,
 } from "date-fns";
 import { id } from "date-fns/locale";
+import { convertToVNDDB } from "../../../utils/FormatMoney";
 
 const Booking = () => {
   window.scrollTo(0, 0);
@@ -28,6 +29,13 @@ const Booking = () => {
         return [
           "Lên kế hoạch",
           "Xem và chỉnh sửa kế hoạch",
+          "Nhập thông tin",
+          "Thanh toán",
+        ];
+      case "tour":
+        return [
+          "Chọn tour",
+          "Chọn ngày khởi hành",
           "Nhập thông tin",
           "Thanh toán",
         ];
@@ -108,7 +116,7 @@ const Booking = () => {
 
   const tripData = JSON.parse(sessionStorage.getItem("tripData"));
 
-  const priceOneNight = tripData.accomodation?.rooms?.reduce(
+  const priceOneNight = tripData?.accomodation?.rooms?.reduce(
     (total, room) => total + room.price_per_night,
     0
   );
@@ -141,6 +149,129 @@ const Booking = () => {
 
     return durationInHours;
   };
+  const tourData = JSON.parse(sessionStorage.getItem("tourData"));
+  const [tourCheckinHours, setTourCheckinHours] = useState(null);
+  const [tourCheckoutHours, setTourCheckoutHours] = useState(null);
+  const [totalPriceTour, setTotalPriceTour] = useState(null);
+  const [totalPriceAccommodationTour, setTotalPriceAccommodationTour] =
+    useState(null);
+  const [totalPriceTransportationTour, setTotalPriceTransportationTour] =
+    useState(null);
+
+  const loadDataTour = () => {
+    const checkInDateTime = adjustCheckInTime(tourData.room[0]?.checkInTime);
+    const { time: checkInTimeT, date: checkInDateT } =
+      formatDateTime(checkInDateTime);
+    setTourCheckinHours(`${checkInDateT}T${checkInTimeT}`);
+
+    const checkOutDateTime = adjustCheckInTime(tourData.room[0]?.checkOutTime);
+    // console.log("checkoutdatetime" + checkOutDateTime);
+
+    const { time: checkOutTime, date: checkOutDate } =
+      formatDateTime(checkOutDateTime);
+
+    setTourCheckoutHours(`${checkOutDate}T${checkOutTime}`);
+
+    setAccommodationData({
+      name: tourData.Hotel?.name,
+      room: tourData.room?.map((room) => room.roomName).join(", "),
+      checkIn: checkInDateT,
+      checkInTime: checkInTimeT,
+      checkOutDate: checkOutDate,
+      checkOutTime: checkOutTime,
+      type: "hotel",
+    });
+
+    const {
+      totalPriceTransportation,
+      totalPriceAccommodation,
+      totalPriceTour,
+    } = calculateTotalPriceTour(tourData);
+
+    setTotalPriceTour(totalPriceTour);
+
+    const departureData = tourData.scheduleOrigin;
+    const returnData = tourData.scheduleDes;
+    const carCompany = tourData.carCompany;
+    const seats = tourData.seat;
+
+    const data =
+      transportationType === "departure" && departureData
+        ? processTransportationDataTour(departureData, true, seats, carCompany)
+        : processTransportationDataTour(returnData, false, seats, carCompany);
+
+    setTransportationData(data);
+  };
+
+  const calculateTotalPriceTour = (tourData) => {
+    // Tính tổng tiền vé
+    const totalPriceTransportation =
+      (tourData.scheduleOrigin?.priceForOneTicket || 0) *
+        (tourData.seat?.seatOrigin?.length || 0) +
+      (tourData.scheduleDes?.priceForOneTicket || 0) *
+        (tourData.seat?.seatDes?.length || 0);
+
+    setTotalPriceTransportationTour(totalPriceTransportation);
+
+    // Tính tổng tiền phòng
+    const totalPriceAccommodation = tourData.room?.reduce(
+      (acc, room) => acc + (room.price || 0),
+      0
+    );
+
+    // Tổng tiền tour
+    const totalPriceTour = totalPriceTransportation + totalPriceAccommodation;
+
+    setTotalPriceAccommodationTour(totalPriceAccommodation);
+
+    return {
+      totalPriceTransportation,
+      totalPriceAccommodation,
+      totalPriceTour,
+    };
+  };
+
+  const processTransportationDataTour = useCallback(
+    (data, isDeparture, seat, carCompany) => {
+      // const seats = data?.seatBook
+      //   ? data.seatBook.map((seat) => seat.seat_number).join(", ")
+      //   : "Chưa có dữ liệu chỗ ngồi";
+      let seats = "";
+      if (isDeparture) {
+        seats = seat.seatOrigin.map((seat) => seat.seatNumber).join(", ");
+      } else {
+        seats = seat.seatDes.map((seat) => seat.seatNumber).join(", ");
+      }
+
+      let lengthSeat = "";
+      if (isDeparture) {
+        lengthSeat = seat.seatOrigin?.length || 0;
+      } else {
+        lengthSeat = seat.seatDes?.length || 0;
+      }
+
+      const { time: departureTime, date: departureDate } = formatDateTime(
+        data?.departureTime
+      );
+      const { time: arrivalTime, date: arrivalDate } = formatDateTime(
+        data?.arrivalTime
+      );
+
+      return {
+        name: carCompany?.carCompanyName,
+        seat: seats,
+        numberSeat: lengthSeat,
+        departureTime,
+        arrivalTime,
+        departureDate,
+        arrivalDate,
+        scheduleId: data?.id,
+        routeId: data?.routeId,
+        isDeparture,
+      };
+    },
+    []
+  );
 
   const processTransportationData = useCallback((data, isDeparture) => {
     const seats = data?.seatBook
@@ -186,16 +317,6 @@ const Booking = () => {
   );
 
   const loadTripData = useCallback(() => {
-    // const seatsDe = tripData?.transportation?.departure?.seatBook
-    //   ? tripData.transportation.departure.seatBook
-    //       .map((seat) => seat.seat_number)
-    //       .join(", ")
-    //   : "Chưa có dữ liệu chỗ ngồi";
-
-    // const { time: checkInTime, date: checkInDate } = formatDateTime(
-    //   adjustCheckInTime(tripData.transportation?.departure?.arrivalTime)
-    // );
-
     const checkInDateTime = adjustCheckInTime(
       tripData.transportation?.departure?.arrivalTime
     );
@@ -254,16 +375,36 @@ const Booking = () => {
     });
   }, [transportationType, processTransportationData, tripData]);
 
+  const parseDateHotelBooking = (dateString) => {
+    const date = new Date(dateString);
+
+    return format(date, "dd/MM/yyyy");
+  };
+
+  const parseDateHotelNav = (dateString) => {
+    const date = new Date(dateString);
+
+    return format(date, "yyyy-MM-dd'T'HH:mm:ss");
+  };
+
+  const [priceAcAlone, setPriceAcAlone] = useState("");
+  const acco = JSON.parse(sessionStorage.getItem("acoData"));
+
   useEffect(() => {
     if (type === "plan") {
       loadTripData();
     } else if (type === "hotel") {
+      console.log(acco);
+      setPriceAcAlone(convertToVNDDB(acco.amount));
+
       setAccommodationData({
-        name: "Khách sạn B",
-        room: "Phòng A2",
-        checkIn: "2024-10-25",
-        checkOut: "2024-10-28",
-        type: "hotel",
+        name: acco?.name,
+        room: acco?.roomName,
+        checkIn: parseDateHotelBooking(acco?.checkIn),
+        checkInTime: acco?.checkInTime?.split(" ")[1],
+        checkOutDate: parseDateHotelBooking(acco?.checkOutDate),
+        checkOutTime: acco?.checkOutTime?.split(" ")[1],
+        type: acco?.type,
       });
     } else if (type === "transportation") {
       setTransportationData({
@@ -282,6 +423,8 @@ const Booking = () => {
         pickupLocation: "Bến xe Miền Đông",
         dropoffLocation: "Bến xe Vũng Tàu",
       });
+    } else if (type === "tour") {
+      loadDataTour();
     }
   }, [type]);
 
@@ -298,19 +441,20 @@ const Booking = () => {
       </div>
       <div className="booking-body">
         <div className="booking-body-left">
-          {type === "plan" && transportationData && accommodationData && (
-            <>
-              <Transportation
-                {...transportationData}
-                loadStation={loadStation}
-                stationData={stationData}
-                cityData={cityData}
-                loadCities={loadCities}
-                changeTransportationType={changeTransportationType}
-              />
-              <Accomodation {...accommodationData} />
-            </>
-          )}
+          {type === "plan" ||
+            (type === "tour" && transportationData && accommodationData && (
+              <>
+                <Transportation
+                  {...transportationData}
+                  loadStation={loadStation}
+                  stationData={stationData}
+                  cityData={cityData}
+                  loadCities={loadCities}
+                  changeTransportationType={changeTransportationType}
+                />
+                <Accomodation {...accommodationData} />
+              </>
+            ))}
           {type === "hotel" && accommodationData && (
             <Accomodation {...accommodationData} />
           )}
@@ -319,39 +463,62 @@ const Booking = () => {
           )}
         </div>
         <div className="booking-body-right">
-          <UserInformation
-            totalPrice={totalPriceTransportation + priceAc}
-            totalPriceTransportation={totalPriceTransportation}
-            priceOneSeatDe={tripData.transportation?.departure?.totalPrice / 2}
-            priceOneSeatRe={tripData.transportation?.return?.totalPrice / 2}
-            totalSeat={
-              tripData.transportation?.departure?.seatBook.length +
-              tripData.transportation?.return?.seatBook.length
-            }
-            priceOneNight={priceOneNight}
-            totalPriceAccommodation={priceAc}
-            totalRoom={tripData.accomodation?.rooms.length}
-            nights={calculateNights(
-              tripData.transportation?.departure?.departureTime,
-              tripData.transportation?.return?.departureTime
-            )}
-            checkinHours={formatDateTimeUtils(checkinHours)}
-            checkoutHours={formatDateTimeUtils(checkoutHours)}
-            // totalPrice={"456"}
-            // totalPriceTransportation={"456"}
-            // priceOneSeatDe={"456"}
-            // priceOneSeatRe={"456"}
-            // totalSeat={
-            //   "5"
-            // }
-            // priceOneNight={"7"}
-            // totalPriceAccommodation={"8"}
-            // totalRoom={"9"}
-            // nights={"7"}
-            // checkinHours={"6"}
-            // checkoutHours={"7"}
-            type={type}
-          />
+          {type === "plan" ? (
+            <UserInformation
+              totalPrice={totalPriceTransportation + priceAc}
+              totalPriceTransportation={totalPriceTransportation}
+              priceOneSeatDe={
+                tripData?.transportation?.departure?.totalPrice / 2
+              }
+              priceOneSeatRe={tripData?.transportation?.return?.totalPrice / 2}
+              totalSeat={
+                tripData?.transportation?.departure?.seatBook.length +
+                tripData?.transportation?.return?.seatBook.length
+              }
+              priceOneNight={priceOneNight}
+              totalPriceAccommodation={priceAc}
+              totalRoom={tripData?.accomodation?.rooms.length}
+              nights={calculateNights(
+                tripData?.transportation?.departure?.departureTime,
+                tripData?.transportation?.return?.departureTime
+              )}
+              checkinHours={formatDateTimeUtils(checkinHours)}
+              checkoutHours={formatDateTimeUtils(checkoutHours)}
+              type={type}
+            />
+          ) : type === "hotel" ? (
+            <UserInformation
+              totalPrice={priceAcAlone}
+              priceOneNight={priceAcAlone}
+              totalRoom={acco?.rooms.length}
+              // nights={calculateNights(checkInTime, checkOutTime)}
+              checkinHours={parseDateHotelNav(acco.checkInTime)}
+              checkoutHours={parseDateHotelNav(acco.checkOutTime)}
+              type={type}
+            />
+          ) : type === "tour" ? (
+            <UserInformation
+              totalPrice={totalPriceTour * 1000}
+              totalPriceTransportation={totalPriceTransportationTour * 1000}
+              totalPriceAccommodation={totalPriceAccommodationTour * 1000}
+              priceOneSeatDe={
+                (tourData.scheduleOrigin?.priceForOneTicket || 0) *
+                (tourData.seat?.seatOrigin?.length || 0) *
+                1000
+              }
+              priceOneSeatRe={
+                (tourData.scheduleDes?.priceForOneTicket || 0) *
+                (tourData.seat?.seatDes?.length || 0) *
+                1000
+              }
+              priceOneNight={priceAcAlone}
+              totalRoom={tripData?.accomodation?.rooms.length}
+              // nights={calculateNights(checkInTime, checkOutTime)}
+              checkinHours={formatDateTimeUtils(tourCheckinHours)}
+              checkoutHours={formatDateTimeUtils(tourCheckoutHours)}
+              type={type}
+            />
+          ) : null}
         </div>
       </div>
     </div>

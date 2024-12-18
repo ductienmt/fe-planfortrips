@@ -259,114 +259,45 @@ const UserInformation = ({
         </div>
         <div className="price-detail">
           <div className="price-detail-item">
-            {type === "plan" && (
-              <>
-                <div className="price-transportation">
-                  <div className="sumary-price">
-                    <p>Giá vé</p>
-                    <div
-                      className="price-icon"
-                      style={{ display: "flex", flexDirection: "row" }}
-                    >
-                      <p>{convertToVND(totalPriceTransportation)}</p>
-                      <button
-                        onClick={() =>
-                          setShowDetailPriceTransportation(
-                            !showDetailPriceTransportation
-                          )
-                        }
-                        style={{
-                          width: "fit-content",
-                          height: "fit-content",
-                          marginLeft: "5px",
-                          backgroundColor: "transparent",
-                          border: "none",
-                        }}
+            {type === "plan" ||
+              (type === "tour" && (
+                <>
+                  <div className="price-transportation">
+                    <div className="sumary-price">
+                      <p>Giá vé</p>
+                      <div
+                        className="price-icon"
+                        style={{ display: "flex", flexDirection: "row" }}
                       >
-                        {showDetailPriceTransportation ? (
-                          <KeyboardArrowUpIcon />
-                        ) : (
-                          <KeyboardArrowDownIcon />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                  <div
-                    className={`detail-pricee ${
-                      showDetailPriceTransportation ? "d-block" : "d-none"
-                    }`}
-                    style={{ fontSize: "14px" }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <p>Giá cho 1 vé chiều đi</p>
-                      <p>{convertToVND(priceOneSeatDe)}</p>
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <p>Giá cho 1 vé chiều về</p>
-                      <p>{convertToVND(priceOneSeatRe)}</p>
+                        <p>{convertToVND(totalPriceTransportation)}</p>
+                        <button
+                          onClick={() =>
+                            setShowDetailPriceTransportation(
+                              !showDetailPriceTransportation
+                            )
+                          }
+                          style={{
+                            width: "fit-content",
+                            height: "fit-content",
+                            marginLeft: "5px",
+                            backgroundColor: "transparent",
+                            border: "none",
+                          }}
+                        >
+                          {showDetailPriceTransportation ? (
+                            <KeyboardArrowUpIcon />
+                          ) : (
+                            <KeyboardArrowDownIcon />
+                          )}
+                        </button>
+                      </div>
                     </div>
                     <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                      }}
+                      className={`detail-pricee ${
+                        showDetailPriceTransportation ? "d-block" : "d-none"
+                      }`}
+                      style={{ fontSize: "14px" }}
                     >
-                      <p>Tổng số vé đã đặt</p>
-                      <p>
-                        <span>{totalSeat}</span> (cả đi và về)
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="price-accommodation">
-                  <div className="sumary-price">
-                    <p>Giá phòng</p>
-                    <div
-                      className="price-icon"
-                      style={{ display: "flex", flexDirection: "row" }}
-                    >
-                      <p>{convertToVND(totalPriceAccommodation)}</p>
-                      <button
-                        onClick={() =>
-                          setShowDetailPriceAccommodation(
-                            !showDetailPriceAccommodation
-                          )
-                        }
-                        style={{
-                          width: "fit-content",
-                          height: "fit-content",
-                          marginLeft: "5px",
-                          backgroundColor: "transparent",
-                          border: "none",
-                        }}
-                      >
-                        {showDetailPriceAccommodation ? (
-                          <KeyboardArrowUpIcon />
-                        ) : (
-                          <KeyboardArrowDownIcon />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                  <div
-                    className={`detail-pricee ${
-                      showDetailPriceAccommodation ? "d-block" : "d-none"
-                    }`}
-                  >
-                    <div className="detail-pricee" style={{ fontSize: "14px" }}>
                       <div
                         style={{
                           display: "flex",
@@ -374,8 +305,8 @@ const UserInformation = ({
                           justifyContent: "space-between",
                         }}
                       >
-                        <p>Giá cho {totalRoom} phòng</p>
-                        <p>{convertToVND(priceOneNight)}/1 đêm</p>
+                        <p>Giá cho 1 vé chiều đi</p>
+                        <p>{convertToVND(priceOneSeatDe)}</p>
                       </div>
                       <div
                         style={{
@@ -384,16 +315,89 @@ const UserInformation = ({
                           justifyContent: "space-between",
                         }}
                       >
-                        <p>Tổng số phòng đã đặt</p>
+                        <p>Giá cho 1 vé chiều về</p>
+                        <p>{convertToVND(priceOneSeatRe)}</p>
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <p>Tổng số vé đã đặt</p>
                         <p>
-                          {totalRoom} ({nights} đêm)
+                          <span>{totalSeat}</span> (cả đi và về)
                         </p>
                       </div>
                     </div>
                   </div>
-                </div>
-              </>
-            )}
+                  <div className="price-accommodation">
+                    <div className="sumary-price">
+                      <p>Giá phòng</p>
+                      <div
+                        className="price-icon"
+                        style={{ display: "flex", flexDirection: "row" }}
+                      >
+                        <p>{convertToVND(totalPriceAccommodation)}</p>
+                        <button
+                          onClick={() =>
+                            setShowDetailPriceAccommodation(
+                              !showDetailPriceAccommodation
+                            )
+                          }
+                          style={{
+                            width: "fit-content",
+                            height: "fit-content",
+                            marginLeft: "5px",
+                            backgroundColor: "transparent",
+                            border: "none",
+                          }}
+                        >
+                          {showDetailPriceAccommodation ? (
+                            <KeyboardArrowUpIcon />
+                          ) : (
+                            <KeyboardArrowDownIcon />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      className={`detail-pricee ${
+                        showDetailPriceAccommodation ? "d-block" : "d-none"
+                      }`}
+                    >
+                      <div
+                        className="detail-pricee"
+                        style={{ fontSize: "14px" }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <p>Giá cho {totalRoom} phòng</p>
+                          <p>{convertToVND(priceOneNight)}/1 đêm</p>
+                        </div>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <p>Tổng số phòng đã đặt</p>
+                          <p>
+                            {totalRoom} ({nights} đêm)
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              ))}
             {type === "hotel" && (
               <div className="price-accommodation">
                 <div className="sumary-price">
