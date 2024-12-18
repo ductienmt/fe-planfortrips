@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import InfoIcon from "@mui/icons-material/Info";
-import InputVehicle from "./InputVehicle";
 import DateVehicle from "./DateVehicle";
 import "../VehiclePage/vehiclepage.css";
 import { useNavigate } from "react-router-dom";
 import { ScheduleService } from "../../../../services/apis/ScheduleService";
+import { Slider } from "@mui/material";
 
 const VehiclePage = () => {
   const [selectedStars, setSelectedStars] = useState(0);
@@ -16,6 +16,12 @@ const VehiclePage = () => {
     endDate: "",
   });
   const [schedules, setSchedules] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState();
+  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [filteredSchedules, setFilteredSchedules] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedSchedules = sessionStorage.getItem("schedules");
@@ -30,22 +36,69 @@ const VehiclePage = () => {
     }
   }, []);
 
+  useEffect(() => {
+    handleSearch();
+  }, [formData]);
+
+  useEffect(() => {
+    let result = schedules;
+
+    // Apply price range filter
+    if (priceRange) {
+      result = result.filter(
+        (schedule) =>
+          schedule.priceForOneTicket >= priceRange[0] &&
+          schedule.priceForOneTicket <= priceRange[1]
+      );
+    }
+
+    // Apply star rating filter
+    if (selectedStars > 0) {
+      result = result.filter(
+        (schedule) => schedule.carCompanyRating >= selectedStars
+      );
+    }
+
+    // Apply sorting based on filter criteria
+    switch (filter) {
+      case "upPrice":
+        result = result.sort((a, b) => a.priceForOneTicket - b.priceForOneTicket);
+        break;
+      case "downPrice":
+        result = result.sort((a, b) => b.priceForOneTicket - a.priceForOneTicket);
+        break;
+      case "soonDepart":
+        result = result.sort(
+          (a, b) => new Date(a.departureTime) - new Date(b.departureTime)
+        );
+        break;
+      case "lateDepart":
+        result = result.sort(
+          (a, b) => new Date(b.departureTime) - new Date(a.departureTime)
+        );
+        break;
+      default:
+        break;
+    }
+
+    setFilteredSchedules(result);
+  }, [schedules, filter, priceRange, selectedStars]);
+
   const handleStarClick = (stars) => {
     setSelectedStars(stars);
   };
 
   const handleSearch = async () => {
-    setLoading(true); // Đang tải
+    setLoading(true);
     try {
       const response = await ScheduleService.getSchedules(formData);
-      const fetchedSchedules = response.data.data || []; // Đảm bảo dữ liệu không bị lỗi
+      const fetchedSchedules = response.data.data || [];
       setSchedules(fetchedSchedules);
-      console.log(fetchedSchedules);
       localStorage.setItem("schedules", JSON.stringify(fetchedSchedules));
     } catch (error) {
       console.error("Error fetching schedules:", error);
     } finally {
-      setLoading(false); // Kết thúc tải
+      setLoading(false);
     }
   };
 
@@ -58,12 +111,18 @@ const VehiclePage = () => {
     e.preventDefault();
     handleSearch();
   };
-  const [loading, setLoading] = useState(true);
 
-  const navigate = useNavigate(); // Hook điều hướng
   const handleBooking = (id) => {
-    // Chuyển hướng sang trang VehicleBooking và truyền id
     navigate(`/vehicle-booking/${id}`);
+  };
+
+  const swapLocation = (e) => {
+    e.preventDefault();
+    setFormData((prevData) => ({
+      ...prevData,
+      originalLocation: prevData.destination,
+      destination: prevData.originalLocation,
+    }));
   };
 
   const formatDateTime = (dateTimeString) => {
@@ -78,30 +137,52 @@ const VehiclePage = () => {
     const formattedDate = date.toLocaleString("vi-VN", options);
     return formattedDate.replace(/,/g, "");
   };
+
+  const handleSetPriceRange = (event, newValue) => {
+    setPriceRange(newValue);
+  };
+
   return (
     <>
       <div className="vehicle-header">
         <h3 style={{ fontWeight: "bold", color: "#005293" }}>Tìm chuyến xe</h3>
         <form onSubmit={handleSubmit}>
-          <InputVehicle
-            noiDi={formData.originalLocation}
-            setNoiDi={(value) =>
-              setFormData({ ...formData, originalLocation: value })
-            }
-            noiDen={formData.destination}
-            setNoiDen={(value) =>
-              setFormData({ ...formData, destination: value })
-            }
-          />
+          <div className="row mb-2">
+            <div className="col-5">
+              <input
+                type="text"
+                className="form-control"
+                value={formData.originalLocation}
+                onChange={handleChange}
+                name="originalLocation"
+              />
+            </div>
+            <div className="col-2 text-center">
+              <button className="input-vehicle__swap-btn btn" onClick={swapLocation}>
+                <img
+                  src="https://d1785e74lyxkqq.cloudfront.net/_next/static/v2/3/331a92149a02dc615986206c588d6642.svg"
+                  alt="Swap"
+                  width={24}
+                  height={24}
+                />
+              </button>
+            </div>
+            <div className="col-5">
+              <input
+                type="text"
+                className="form-control"
+                value={formData.destination}
+                onChange={handleChange}
+                name="destination"
+              />
+            </div>
+          </div>
+
           <DateVehicle
             departureDate={formData.startDate}
-            setDepartureDate={(value) =>
-              setFormData({ ...formData, startDate: value })
-            }
+            setDepartureDate={(value) => setFormData({ ...formData, startDate: value })}
             returnDate={formData.endDate}
-            setReturnDate={(value) =>
-              setFormData({ ...formData, endDate: value })
-            }
+            setReturnDate={(value) => setFormData({ ...formData, endDate: value })}
           />
 
           <button type="submit" className="vehicle-search-button">
@@ -117,57 +198,67 @@ const VehiclePage = () => {
           <div className="filter-sort">
             <label className="custom-checkbox">
               Giá tăng dần
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                onClick={() => setFilter("upPrice")}
+                checked={filter === "upPrice"}
+              />
               <span className="checkmark"></span>
             </label>
             <hr />
             <label className="custom-checkbox">
               Giá giảm dần
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                onClick={() => setFilter("downPrice")}
+                checked={filter === "downPrice"}
+              />
               <span className="checkmark"></span>
             </label>
             <hr />
             <label className="custom-checkbox">
               Giờ khởi hành sớm nhất
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                onClick={() => setFilter("soonDepart")}
+                checked={filter === "soonDepart"}
+              />
               <span className="checkmark"></span>
             </label>
             <hr />
             <label className="custom-checkbox">
-              Giờ khởi hành muộn nhấ
-              <input type="checkbox" />
+              Giờ khởi hành muộn nhất
+              <input
+                type="checkbox"
+                onClick={() => setFilter("lateDepart")}
+                checked={filter === "lateDepart"}
+              />
               <span className="checkmark"></span>
             </label>
           </div>
-          <b style={{ fontSize: "18px" }}>Bộ lọc </b>
+
+          <b style={{ fontSize: "18px" }}>Bộ lọc</b>
           <hr />
-          <b>Thời gian khởi hành</b>
-          <div className="filter-date">
-            <div>
-              Từ <br />
-              <select className="option-to">
-                <option selected>Open this select menu</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-            </div>
-            <div>
-              Đến <br />
-              <select className="option-form">
-                s<option selected>Open this select menu</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-            </div>
-          </div>
           <br />
-          <b style={{ fontSize: "18px" }}> Khoảng giá </b>
-          <div className="filter-price">
-            <b>0đ-100.000đ</b>
+          <div>
+            <b style={{ fontSize: "18px" }}>Khoảng giá</b>
+            <div className="filter-price">
+              <Slider
+                min={0}
+                max={1000}
+                step={1}
+                value={priceRange}
+                onChange={handleSetPriceRange}
+                renderTrack={(props) => <div {...props} className="track" />}
+                renderThumb={(props) => <div {...props} className="thumb" />}
+              />
+              <div style={{ marginTop: "10px" }}>
+                <span>{`Giá: ${priceRange[0]} VND - ${priceRange[1]} VND`}</span>
+              </div>
+            </div>
           </div>
-          <b style={{ fontSize: "18px" }}> Đánh giá </b>
+
+          <b style={{ fontSize: "18px" }}>Đánh giá</b>
           <div className="filter-review">
             <div className="star-buttons">
               {Array.from({ length: 5 }, (_, index) => {
@@ -185,10 +276,11 @@ const VehiclePage = () => {
             </div>
           </div>
         </div>
+
         <div className="main-content">
-          {schedules.length > 0 ? (
+          {filteredSchedules.length > 0 ? (
             <div className="content-card">
-              {schedules.map((bus, index) => (
+              {filteredSchedules.map((bus, index) => (
                 <div key={index} className="card">
                   <div className="right">
                     <div className="item1">
@@ -209,13 +301,9 @@ const VehiclePage = () => {
                     <div className="item2">
                       <div>
                         <span>
-                          <b style={{ fontSize: "25px" }}>
-                            {bus.carCompanyName}
-                          </b>
+                          <b style={{ fontSize: "25px" }}>{bus.carCompanyName}</b>
                         </span>{" "}
-                        <b style={{ fontSize: "20px" }}>
-                          ⭐{bus.carCompanyRating}/5
-                        </b>
+                        <b style={{ fontSize: "20px" }}>⭐{bus.carCompanyRating}/5</b>
                       </div>
                       <br />
                       <div className="voucher">
@@ -234,13 +322,7 @@ const VehiclePage = () => {
                   </div>
                   <div className="left">
                     <div>
-                      <h4
-                        style={{
-                          color: "red",
-                          fontSize: "20px",
-                          fontWeight: "bold",
-                        }}
-                      >
+                      <h4 style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}>
                         {Number(bus.priceForOneTicket).toFixed(2)} VND
                       </h4>
                       <p>còn {bus.countSeatsEmpty} chỗ</p>
@@ -249,16 +331,14 @@ const VehiclePage = () => {
                       <InfoIcon />
                     </div>
                     <div>
-                      <button onClick={() => handleBooking(bus.id)}>
-                        Đặt vé ngay
-                      </button>
+                      <button onClick={() => handleBooking(bus.id)}>Đặt vé ngay</button>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <div>{loading ? "" : "Không có kết quả tìm kiếm."}</div>
+            <p>Chưa có chuyến xe nào.</p>
           )}
         </div>
       </div>
